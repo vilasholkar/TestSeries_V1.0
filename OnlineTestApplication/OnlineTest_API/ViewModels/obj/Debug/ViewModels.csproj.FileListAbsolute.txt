@@ -1,0 +1,5 @@
+D:\AAYAM\SVN\OnlineTest_Front1\trunk\OnlineTestAPI\ViewModels\bin\Debug\ViewModels.dll
+D:\AAYAM\SVN\OnlineTest_Front1\trunk\OnlineTestAPI\ViewModels\bin\Debug\ViewModels.pdb
+D:\AAYAM\SVN\OnlineTest_Front1\trunk\OnlineTestAPI\ViewModels\obj\Debug\ViewModels.dll
+D:\AAYAM\SVN\OnlineTest_Front1\trunk\OnlineTestAPI\ViewModels\obj\Debug\ViewModels.pdb
+D:\AAYAM\SVN\OnlineTest_Front1\trunk\OnlineTestAPI\ViewModels\obj\Debug\ViewModels.csprojResolveAssemblyReference.cache

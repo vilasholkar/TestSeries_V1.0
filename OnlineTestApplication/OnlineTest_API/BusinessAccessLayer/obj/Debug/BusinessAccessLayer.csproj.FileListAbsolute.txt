@@ -1,0 +1,9 @@
+D:\AAYAM\SVN\OnlineTest_Front1\trunk\OnlineTestAPI\BusinessAccessLayer\obj\Debug\BusinessAccessLayer.csprojResolveAssemblyReference.cache
+D:\AAYAM\SVN\OnlineTest_Front1\trunk\OnlineTestAPI\BusinessAccessLayer\bin\Debug\BusinessAccessLayer.dll
+D:\AAYAM\SVN\OnlineTest_Front1\trunk\OnlineTestAPI\BusinessAccessLayer\bin\Debug\BusinessAccessLayer.pdb
+D:\AAYAM\SVN\OnlineTest_Front1\trunk\OnlineTestAPI\BusinessAccessLayer\bin\Debug\DataAccessLayer.dll
+D:\AAYAM\SVN\OnlineTest_Front1\trunk\OnlineTestAPI\BusinessAccessLayer\bin\Debug\ViewModels.dll
+D:\AAYAM\SVN\OnlineTest_Front1\trunk\OnlineTestAPI\BusinessAccessLayer\bin\Debug\DataAccessLayer.pdb
+D:\AAYAM\SVN\OnlineTest_Front1\trunk\OnlineTestAPI\BusinessAccessLayer\bin\Debug\ViewModels.pdb
+D:\AAYAM\SVN\OnlineTest_Front1\trunk\OnlineTestAPI\BusinessAccessLayer\obj\Debug\BusinessAccessLayer.dll
+D:\AAYAM\SVN\OnlineTest_Front1\trunk\OnlineTestAPI\BusinessAccessLayer\obj\Debug\BusinessAccessLayer.pdb
