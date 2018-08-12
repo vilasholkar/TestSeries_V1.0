@@ -18,9 +18,18 @@ export const navItems = [
     icon: 'icon-drop'
   },
   {
-    name: 'Start Quiz',
-    url: '/test/quiz',
-    icon: 'icon-pencil'
+    title: true,
+    name: 'Master'
+  },
+  {
+    name: 'Test Type',
+    url: '/master/test-type',
+    icon: 'icon-drop'
+  },
+  {
+    name: 'Test Series',
+    url: '/master/test-series',
+    icon: 'icon-drop'
   },
   {
     title: true,
@@ -228,18 +237,18 @@ export const navItems = [
         icon: 'icon-star'
       }
     ]
-  },
-  {
-    name: 'Download CoreUI',
-    url: 'http://coreui.io/angular/',
-    icon: 'icon-cloud-download',
-    class: 'mt-auto',
-    variant: 'success'
-  },
-  {
-    name: 'Try CoreUI PRO',
-    url: 'http://coreui.io/pro/angular/',
-    icon: 'icon-layers',
-    variant: 'danger'
   }
+  // {
+  //   name: 'Download CoreUI',
+  //   url: 'http://coreui.io/angular/',
+  //   icon: 'icon-cloud-download',
+  //   class: 'mt-auto',
+  //   variant: 'success'
+  // },
+  // {
+  //   name: 'Try CoreUI PRO',
+  //   url: 'http://coreui.io/pro/angular/',
+  //   icon: 'icon-layers',
+  //   variant: 'danger'
+  // }
 ];
