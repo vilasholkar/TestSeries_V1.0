@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { OnlineTestComponent } from './online-test/online-test.component';
-import { QuizComponent } from './quiz/quiz.component';
 const routes: Routes = [
   {
     path: '',
@@ -14,16 +13,9 @@ const routes: Routes = [
         path: 'online-test',
         component: OnlineTestComponent,
         data: {
-          title: 'online-test'
+          title: 'Online Test'
         }
-      },
-       {
-         path: 'quiz',
-         component: QuizComponent,
-         data: {
-           title: 'Quiz'
-         }
-       }
+      }
     ]
   }
 ];
