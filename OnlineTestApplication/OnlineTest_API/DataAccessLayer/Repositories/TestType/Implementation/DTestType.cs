@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ViewModels.Test;
+using ViewModels.TestType;
 
 namespace DataAccessLayer
 {
@@ -16,16 +17,17 @@ namespace DataAccessLayer
         {
             try
             {
-                SqlCommand cmd = new SqlCommand("sp_GetAllMasterData", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                SqlDataAdapter da = new SqlDataAdapter(cmd);
-                DataSet ds = new DataSet();
-                da.Fill(ds);
-                return ds.Tables[0].AsEnumerable().Select(s => new TestTypeViewModel()
+                List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+                List<DataTableMapping> dataTableMappingList = new List<DataTableMapping>();
+                dataTableMappingList.Add(new DataTableMapping("Table1", "TestType"));
+                dataTableMappingList.Add(new DataTableMapping("Table2", "QuestionType"));
+                dataTableMappingList.Add(new DataTableMapping("Table3", "Subject"));
+                Task<DataSet> ds = DGeneric.RunSP_ReturnDataSet("sp_GetAllMasterData", sqlParameterList, dataTableMappingList);
+                return ds.Result.Tables["TestType"].AsEnumerable().Select(s => new TestTypeViewModel()
                 {
                     TestTypeID = Convert.ToInt32(s["TestTypeID"]),
                     TestType = s["TestType"].ToString(),                    
-                }).ToList();
+                }).ToList();              
             }
             catch (Exception ex)
             {

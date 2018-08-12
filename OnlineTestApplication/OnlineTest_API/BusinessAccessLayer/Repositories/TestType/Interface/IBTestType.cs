@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ViewModels;
-using ViewModels.Test;
+using ViewModels.TestType;
 
 namespace BusinessAccessLayer
 {
