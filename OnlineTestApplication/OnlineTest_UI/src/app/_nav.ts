@@ -18,6 +18,11 @@ export const navItems = [
     icon: 'icon-drop'
   },
   {
+    name: 'Start Quiz',
+    url: '/test/quiz',
+    icon: 'icon-pencil'
+  },
+  {
     title: true,
     name: 'Theme'
   },
