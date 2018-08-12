@@ -10,6 +10,15 @@ export const navItems = [
   },
   {
     title: true,
+    name: 'Test'
+  },
+  {
+    name: 'Online Test',
+    url: '/test/online-test',
+    icon: 'icon-drop'
+  },
+  {
+    title: true,
     name: 'Theme'
   },
   {
