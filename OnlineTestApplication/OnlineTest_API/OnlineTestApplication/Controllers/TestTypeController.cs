@@ -23,7 +23,7 @@ namespace OnlineTestApplication.Controllers
         [Route("api/GetTestType", Name = "GetTestType")]
         public async Task<HttpResponseMessage> GetTestType()
         {
-            var response = Request.CreateResponse(HttpStatusCode.OK, JsonConvert.SerializeObject(_iBTestType.GetTestType()));
+            var response = Request.CreateResponse(HttpStatusCode.OK, _iBTestType.GetTestType());
             return response;
         }
     }
