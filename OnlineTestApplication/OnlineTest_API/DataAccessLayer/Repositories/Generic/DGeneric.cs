@@ -6,19 +6,38 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace DataAccessLayer
 {
     public class DGeneric
     {
-        private static readonly string connectionString = ConfigurationManager.ConnectionStrings["connectionstring"].ConnectionString;
-        public static async Task<object> RunSP_ReturnScaler(string procedureName, List<SqlParameter> parameters)
+        private static readonly string CnnStrVariableName = "Cnnstr";
+        private static string _ConnectionString = string.Empty;
+
+        public static string ConnectionString
+        {
+            get
+            {
+                if (_ConnectionString.Trim().Length == 0)
+                {
+                    _ConnectionString = ConfigurationManager.ConnectionStrings[CnnStrVariableName].ConnectionString;
+                }
+                return DGeneric._ConnectionString;
+            }
+            set
+            {
+                DGeneric._ConnectionString = value;
+            }
+        }
+        public static async Task<object> RunSP_ReturnScalerAsync(string procedureName, List<SqlParameter> parameters)
         {
             SqlTransaction trans = null;
             try
             {
-                using (var sqlConn = new SqlConnection(connectionString))
+                using (var sqlConn = new SqlConnection(ConnectionString))
                 {
                     await sqlConn.OpenAsync();
                     using (trans = sqlConn.BeginTransaction())
@@ -57,13 +76,50 @@ namespace DataAccessLayer
 
         }
 
-        public static async Task<bool> RunSP_ExecuteNonQuery(string procedureName, List<SqlParameter> parameters)
+        public static string RunSP_ExecuteNonQuery(string procedureName, List<SqlParameter> parameters)
+        {
+            try
+            {
+                using (SqlConnection sqlConn = new SqlConnection(ConnectionString))
+                {
+                    using (SqlCommand sqlCommand = new SqlCommand(procedureName, sqlConn))
+                    {
+                        sqlCommand.CommandType = CommandType.StoredProcedure;
+                        if (parameters != null)
+                        {
+                            sqlCommand.Parameters.AddRange(parameters.ToArray());
+                        }
+                        try
+                        {
+                            sqlConn.Open();
+                            sqlCommand.ExecuteNonQuery();
+                            return "Success";
+                        }
+                        catch (Exception ex)
+                        {
+
+                            return ex.Message;
+                        }
+                        finally
+                        {
+                            sqlConn.Close();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+               return ex.Message;
+            }
+            
+        }
+        public static async Task<string> RunSP_ExecuteNonQueryAsync(string procedureName, List<SqlParameter> parameters)
         {
             SqlTransaction trans = null;
             object storeCount = string.Empty;
             try
             {
-                using (var sqlConn = new SqlConnection(connectionString))
+                using (var sqlConn = new SqlConnection(ConnectionString))
                 {
                     await sqlConn.OpenAsync();
                     using (trans = sqlConn.BeginTransaction())
@@ -79,12 +135,12 @@ namespace DataAccessLayer
                             {
                                 await sqlCommand.ExecuteNonQueryAsync();
                                 trans.Commit();
-                                return true;
+                                return "Success";
                             }
-                            catch (Exception)
+                            catch (Exception ex)
                             {
                                 trans.Rollback();
-                                throw;
+                                return ex.Message;
                             }
                             finally
                             {
@@ -94,15 +150,14 @@ namespace DataAccessLayer
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+              return  ex.Message;    
             }
 
         }
 
-        public static async Task<DataSet> RunSP_ReturnDataSet(string procedureName, List<SqlParameter> parameters, List<DataTableMapping> dataTableMappingList)
+        public static async Task<DataSet> RunSP_ReturnDataSetAsync(string procedureName, List<SqlParameter> parameters, List<DataTableMapping> dataTableMappingList)
         {
             SqlTransaction trans = null;
             return await Task.Run(() =>
@@ -110,12 +165,13 @@ namespace DataAccessLayer
                 try
                 {
                     DataSet dsData = new DataSet();
-                    using (SqlConnection sqlConn = new SqlConnection(connectionString))
+                    using (SqlConnection sqlConn = new SqlConnection(ConnectionString))
                     {
+                        sqlConn.OpenAsync();
                         using (trans = sqlConn.BeginTransaction())
                         {
                             using (SqlCommand sqlCommand = new SqlCommand(procedureName, sqlConn))
-                            {
+                            {                                
                                 sqlCommand.CommandType = CommandType.StoredProcedure;
                                 if (parameters != null)
                                     sqlCommand.Parameters.AddRange(parameters.ToArray());
@@ -134,21 +190,76 @@ namespace DataAccessLayer
                                         trans.Commit();
                                     }
                                 }
-                                catch (Exception)
+                                catch (Exception ex)
                                 {
                                     trans.Rollback();
                                     throw;
+                                }
+                                finally
+                                {
+                                    sqlConn.Close();
                                 }
                             }
                         }
                     }
                     return dsData;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     throw;
                 }
             });
+        }
+
+        public static DataSet RunSP_ReturnDataSet(string procedureName, List<SqlParameter> parameters, List<DataTableMapping> dataTableMappingList)
+        {
+            DataSet dtData = new DataSet();
+            using (SqlConnection sqlConn = new SqlConnection(ConnectionString))
+            {
+                using (SqlCommand sqlCommand = new SqlCommand(procedureName, sqlConn))
+                {
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    if (parameters != null)
+                    {
+                        sqlCommand.Parameters.AddRange(parameters.ToArray());
+                    }
+                    using (SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand))
+                    {
+                        DataTableMapping[] dataTableMappingArray = dataTableMappingList.ToArray();
+                        // Call DataAdapter's TableMappings.Add method                       
+                        sqlDataAdapter.TableMappings.AddRange(dataTableMappingArray);
+                        sqlDataAdapter.Fill(dtData);
+                    }
+                }
+            }
+            return dtData;
+        }
+        public static List<T> BindDataList<T>(DataTable dt)
+        {
+            var columnNames = dt.Columns.Cast<DataColumn>().Select(c => c.ColumnName.ToLower()).ToList();
+            var properties = typeof(T).GetProperties();
+            return dt.AsEnumerable().Select(row =>
+            {
+                var objT = Activator.CreateInstance<T>();
+                foreach (var pro in properties)
+                {
+                    if (columnNames.Contains(pro.Name.ToLower()))
+                    {
+                        try
+                        {
+                            pro.SetValue(objT, row[pro.Name]);
+                        }
+                        catch (Exception ex) { }
+                    }
+                }
+                return objT;
+            }).ToList();
+        }
+
+        public static string ExtractParameterFromQueryString(string queryString)
+        {
+            Uri myUri = new Uri(queryString);
+            return HttpUtility.ParseQueryString(myUri.Query).Get(0);
         }
     }
 }
