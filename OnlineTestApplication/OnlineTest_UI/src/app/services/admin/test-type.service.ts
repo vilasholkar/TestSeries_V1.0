@@ -21,7 +21,6 @@ export class TestTypeService {
     return this.http.get(HostName.API_StartPoint + APIUrl.GET_TestTypes)
         .map((response: Response) => {
             const data = response;
-            // let s=responce.status;
             return data;
         })
         .catch((error: any) => {
