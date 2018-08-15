@@ -13,6 +13,6 @@ namespace DataAccessLayer
 
         string AddUpdateTestType(TestTypeViewModel objTestType);
 
-        string DeleteTestType(string queryString);
+        string DeleteTestType(TestTypeViewModel objTestType);
     }
 }
