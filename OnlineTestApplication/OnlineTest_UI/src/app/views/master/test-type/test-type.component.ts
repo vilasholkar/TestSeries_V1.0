@@ -15,7 +15,6 @@ export class TestTypeComponent implements OnInit {
   }
   // To get all the master data
    getTestType() {
-     debugger
      this.testTypeService.getTestTypes()
      .subscribe(data => {
       if (data.Message === 'Success') {
@@ -27,10 +26,10 @@ export class TestTypeComponent implements OnInit {
      });
    }
     AddEditTestType(model: TestType) {
-      debugger
       this.testTypeService.updateTestTypes(model)
      .subscribe(data => {
       if (data.Message === 'Success') {
+        this.getTestType();
          this.TestType = data.Object;
        }
      }, error => {
@@ -38,12 +37,12 @@ export class TestTypeComponent implements OnInit {
        console.log(error);
      });
     }
-    DeleteTestType(id: any) {
-      debugger
-      this.testTypeService.deleteTestTypeById(id)
+    DeleteTestType(model: TestType) {
+      this.testTypeService.deleteTestTypeById(model)
      .subscribe(data => {
       if (data.Message === 'Success') {
       // show alert for data updated successfully
+      this.getTestType();
       }
      }, error => {
        alert('error');
