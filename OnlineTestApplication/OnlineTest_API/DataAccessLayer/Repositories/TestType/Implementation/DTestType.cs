@@ -17,22 +17,39 @@ namespace DataAccessLayer
         {
             try
             {
-                List<SqlParameter> sqlParameterList = new List<SqlParameter>();
-                List<DataTableMapping> dataTableMappingList = new List<DataTableMapping>();
-                dataTableMappingList.Add(new DataTableMapping("Table1", "TestType"));
-                dataTableMappingList.Add(new DataTableMapping("Table2", "QuestionType"));
-                dataTableMappingList.Add(new DataTableMapping("Table3", "Subject"));
-                Task<DataSet> ds = DGeneric.RunSP_ReturnDataSet("sp_GetAllMasterData", sqlParameterList, dataTableMappingList);
-                return ds.Result.Tables["TestType"].AsEnumerable().Select(s => new TestTypeViewModel()
+                SqlCommand cmd = new SqlCommand("select * from TestType", con);
+                cmd.CommandType = CommandType.Text;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                return ds.Tables[0].AsEnumerable().Select(s => new TestTypeViewModel()
                 {
                     TestTypeID = Convert.ToInt32(s["TestTypeID"]),
-                    TestType = s["TestType"].ToString(),                    
-                }).ToList();              
+                    TestType = s["TestType"].ToString(),
+                }).ToList();
             }
             catch (Exception ex)
             {
                 throw;
             }
+            //try
+            //{
+            //    List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+            //    List<DataTableMapping> dataTableMappingList = new List<DataTableMapping>();
+            //    dataTableMappingList.Add(new DataTableMapping("Table1", "TestType"));
+            //    dataTableMappingList.Add(new DataTableMapping("Table2", "QuestionType"));
+            //    dataTableMappingList.Add(new DataTableMapping("Table3", "Subject"));
+            //    Task<DataSet> ds = DGeneric.RunSP_ReturnDataSet("sp_GetAllMasterData", sqlParameterList, dataTableMappingList);
+            //    return ds.Result.Tables["TestType"].AsEnumerable().Select(s => new TestTypeViewModel()
+            //    {
+            //        TestTypeID = Convert.ToInt32(s["TestTypeID"]),
+            //        TestType = s["TestType"].ToString(),                    
+            //    }).ToList();              
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw;
+            //}
         }
     }
 }
