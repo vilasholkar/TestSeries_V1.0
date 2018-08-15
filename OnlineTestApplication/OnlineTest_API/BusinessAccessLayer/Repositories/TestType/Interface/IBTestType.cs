@@ -11,5 +11,7 @@ namespace BusinessAccessLayer
     public interface IBTestType
     {
        Response<List<TestTypeViewModel>> GetTestType();
+       string AddUpdateTestType(TestTypeViewModel objTestType);
+       string DeleteTestType(string queryString);
     }
 }

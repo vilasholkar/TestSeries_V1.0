@@ -45,5 +45,13 @@ namespace BusinessAccessLayer
                 throw;
             }
         }
+        public string AddUpdateTestType(TestTypeViewModel objTestType)
+        {
+            return _iDTestType.AddUpdateTestType(objTestType);            
+        }
+        public string DeleteTestType(string queryString)
+        {
+            return _iDTestType.DeleteTestType(queryString);
+        }
     }
 }
