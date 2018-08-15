@@ -34,7 +34,7 @@ namespace OnlineTestApplication.Controllers
         }
         [HttpPost]
         [Route("api/DeleteTestType", Name = "DeleteTestType")]
-        public HttpResponseMessage AddUpdateTestType(object TestTypeID)
+        public HttpResponseMessage DeleteTestType(object TestTypeID)
         {
             return Request.CreateResponse(HttpStatusCode.OK, _iBTestType.DeleteTestType(TestTypeID.ToString()));
         }
