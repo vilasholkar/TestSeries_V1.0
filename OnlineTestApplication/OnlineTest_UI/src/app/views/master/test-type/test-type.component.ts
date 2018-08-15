@@ -38,9 +38,10 @@ export class TestTypeComponent implements OnInit {
      });
     }
     DeleteTestType(model: TestType) {
+      debugger;
       this.testTypeService.deleteTestTypeById(model)
      .subscribe(data => {
-      if (data.Message === 'Success') {
+      if (data === 'Success') {
       // show alert for data updated successfully
       this.getTestType();
       }
