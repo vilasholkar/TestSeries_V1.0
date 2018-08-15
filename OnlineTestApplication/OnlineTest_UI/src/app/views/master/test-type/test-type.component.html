@@ -11,11 +11,11 @@
                 <div class="col-sm-8">
                   <div class="form-group">
                     <label>Test Name</label>
-                    <input type="text" class="form-control" placeholder="Test Name">
+                    <input  type="text"  class="form-control" placeholder="Test Name">
                   </div>
                 </div>
               </div>
-              <button class="btn btn-primary">Submit</button>
+              <button (click)="AddEditTestType()" class="btn btn-primary">Submit</button>
             </form>
           </div>
         </div>
@@ -34,26 +34,15 @@
                     <th>Option</th>
                   </thead>
                   <tbody>
-                    <tr>
+                    <tr *ngFor="let testType of TestType">
                       <td>
-                        Mock Test
+                        {{testType.TestType}}
                       </td>
                       <td>
-                        <button class="btn btn-sm btn-info">Edit</button>
+                        <button (click)="AddEditTestType(testType)" class="btn btn-sm btn-info">Edit</button>
                       </td>
                       <td>
-                        <button class="btn btn-sm btn-danger">Delete</button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        Practice Test
-                      </td>
-                      <td>
-                        <button class="btn btn-sm btn-info">Edit</button>
-                      </td>
-                      <td>
-                        <button class="btn btn-sm btn-danger">Delete</button>
+                        <button (click)="DeleteTestType(testType.TestTypeID)" class="btn btn-sm btn-danger">Delete</button>
                       </td>
                     </tr>
                     </tbody>

@@ -27,4 +27,28 @@ export class TestTypeService {
             return Observable.throw(error);
         });
 }
+    updateTestTypes(TestType: any): Observable<any> {
+     this.headers = new Headers({ 'Content-Type': 'application/json' });
+     this.options = new RequestOptions({ headers: this.headers });
+     return this.http.put(HostName.API_StartPoint + APIUrl.GET_TestTypes + TestType.id, TestType)
+        .map((response: Response) => {
+             const data = response;
+             return data;
+        })
+        .catch((error: any) => {
+             return Observable.throw(error);
+        });
+    }
+    deleteTestTypeById(TestTypeId: any): Observable<any> {
+     this.headers = new Headers({ 'Content-Type': 'application/json' });
+     this.options = new RequestOptions({ headers: this.headers });
+    return this.http.delete(HostName.API_StartPoint + APIUrl.GET_TestTypes + TestTypeId)
+        .map((response: Response) => {
+             const data = response;
+             return data;
+        })
+        .catch((error: any) => {
+             return Observable.throw(error);
+        });
+}
 }
