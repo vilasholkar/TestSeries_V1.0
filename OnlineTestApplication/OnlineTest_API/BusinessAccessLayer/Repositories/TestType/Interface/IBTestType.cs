@@ -12,6 +12,6 @@ namespace BusinessAccessLayer
     {
        Response<List<TestTypeViewModel>> GetTestType();
        string AddUpdateTestType(TestTypeViewModel objTestType);
-       string DeleteTestType(string queryString);
+       string DeleteTestType(TestTypeViewModel objTestType);
     }
 }
