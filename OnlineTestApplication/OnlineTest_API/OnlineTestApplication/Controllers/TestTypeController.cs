@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using ViewModels.TestType;
 
 namespace OnlineTestApplication.Controllers
 {
@@ -21,10 +22,21 @@ namespace OnlineTestApplication.Controllers
 
         [HttpGet]
         [Route("api/GetTestType", Name = "GetTestType")]
-        public async Task<HttpResponseMessage> GetTestType()
+        public HttpResponseMessage GetTestType()
         {
-            var response = Request.CreateResponse(HttpStatusCode.OK, _iBTestType.GetTestType());
-            return response;
+            return Request.CreateResponse(HttpStatusCode.OK, _iBTestType.GetTestType());            
+        }
+        [HttpPost]
+        [Route("api/AddUpdateTestType", Name = "AddUpdateTestType")]
+        public HttpResponseMessage AddUpdateTestType(TestTypeViewModel objTestType)
+        {            
+            return Request.CreateResponse(HttpStatusCode.OK, _iBTestType.AddUpdateTestType(objTestType));            
+        }
+        [HttpPost]
+        [Route("api/DeleteTestType", Name = "DeleteTestType")]
+        public HttpResponseMessage AddUpdateTestType(object TestTypeID)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, _iBTestType.DeleteTestType(TestTypeID.ToString()));
         }
     }
 }
