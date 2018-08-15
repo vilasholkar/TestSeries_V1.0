@@ -63,10 +63,10 @@ namespace DataAccessLayer
         }
 
 
-        public string DeleteTestType(string queryString)
+        public string DeleteTestType(TestTypeViewModel objTestType)
         {
             List<SqlParameter> sqlParameterList = new List<SqlParameter>();
-            sqlParameterList.Add(new SqlParameter("TestTypeID", Convert.ToInt32(DGeneric.ExtractParameterFromQueryString(queryString))));
+            sqlParameterList.Add(new SqlParameter("TestTypeID", objTestType.TestTypeID));
             return DGeneric.RunSP_ExecuteNonQuery("sp_DeleteTestType", sqlParameterList);
         }
     }
