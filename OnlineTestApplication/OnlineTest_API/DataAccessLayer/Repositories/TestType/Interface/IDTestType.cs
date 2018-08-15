@@ -10,5 +10,9 @@ namespace DataAccessLayer
     public interface IDTestType
     {
         List<TestTypeViewModel> GetTestType();
+
+        string AddUpdateTestType(TestTypeViewModel objTestType);
+
+        string DeleteTestType(string queryString);
     }
 }
