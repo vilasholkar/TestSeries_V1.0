@@ -16,7 +16,6 @@ export class TestTypeService {
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     this.options = new RequestOptions({ headers: this.headers });
 }
-
   getTestTypes(): Observable<any> {
     return this.http.get(HostName.API_StartPoint + APIUrl.GET_TestTypes)
         .map((response: Response) => {
@@ -26,9 +25,8 @@ export class TestTypeService {
         .catch((error: any) => {
             return Observable.throw(error);
         });
-}
-    updateTestTypes(TestType: any): Observable<any> {
-        debugger
+  }
+  addEditTestTypes(TestType: any): Observable<any> {
      this.headers = new Headers({ 'Content-Type': 'application/json' });
      this.options = new RequestOptions({ headers: this.headers });
      return this.http.post(HostName.API_StartPoint + APIUrl.AddUpdateTestTypes, TestType)
@@ -39,9 +37,8 @@ export class TestTypeService {
         .catch((error: any) => {
              return Observable.throw(error);
         });
-    }
-    deleteTestTypeById(TestType: any): Observable<any> {
-        debugger
+  }
+  deleteTestTypeById(TestType: any): Observable<any> {
      this.headers = new Headers({ 'Content-Type': 'application/json' });
      this.options = new RequestOptions({ headers: this.headers });
      return this.http.post(HostName.API_StartPoint + APIUrl.DeleteTestTypes, TestType)
@@ -52,5 +49,5 @@ export class TestTypeService {
         .catch((error: any) => {
              return Observable.throw(error);
         });
-}
+  }
 }
