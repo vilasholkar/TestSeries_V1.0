@@ -42,8 +42,7 @@
                   <tbody>
                     <tr *ngFor="let testTypeModel of testType">
                       <td>
-                    <input value="{{testTypeModel.TestType}}" name="TestType" [(ngModel)]="testTypeModel.TestType" TestType="ngModel" id="TestType" type="text" class="form-control" >
-                        
+                      <input value="{{testTypeModel.TestType}}" name="TestType" [(ngModel)]="testTypeModel.TestType" TestType="ngModel" id="TestType" type="text" class="form-control" >
                       </td>
                       <td>
                         <button (click)="EditTestType(testTypeModel)" class="btn btn-sm btn-info">Edit</button>
