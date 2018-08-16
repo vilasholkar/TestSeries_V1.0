@@ -1,26 +1,32 @@
 <div class="animated fadeIn">
-  <div class="row">
-      <div class="col-sm-6">
+  <div class="container">
+    <button class="btn btn-md btn-success" (click)="changeShowStatus()">Add New</button>
+    <hr>
+    <div *ngIf="showAddDiv" class="row">
+      <div class="col-md-12">
         <div class="card">
           <div class="card-header">
             <strong class="card-title">Add Test Type</strong>
           </div>
           <div class="card-body">
-            <form>
+            <form id="TestTypeForm" name ="Form1" (ngSubmit)="AddTestType()" #testTypeForm="ngForm">
               <div class="row">
-                <div class="col-sm-8">
+                <div class="col-md-8">
                   <div class="form-group">
                     <label>Test Name</label>
-                    <input  type="text"  class="form-control" placeholder="Test Name">
+                    <input name="TestType" [(ngModel)]="testTypeModel.TestType" TestType="ngModel" id="TestType" type="text" class="form-control" >
+                    <input name="TestTypeID" hidden [(ngModel)]="testTypeModel.TestTypeID" TestTypeID="ngModel" id="TestTypeID" type="text" class="form-control" >
                   </div>
                 </div>
               </div>
-              <button (click)="AddEditTestType()" class="btn btn-primary">Submit</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
             </form>
           </div>
         </div>
       </div>
-      <div class="col-sm-6">
+    </div>   
+    <div class="row">   
+      <div class="col-md-12">
         <div class="card">
           <div class="card-header">
              <strong>Test Type List</strong>
@@ -30,93 +36,28 @@
                 <table class="table table-hover">
                   <thead class=" text-primary">
                     <th>Test Type</th>
-                    <th>Option</th>
-                    <th>Option</th>
+                    <th>Action</th>
+                    <th>Action</th>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let testType of TestType">
+                    <tr *ngFor="let testTypeModel of testType">
                       <td>
-                        {{testType.TestType}}
+                    <input value="{{testTypeModel.TestType}}" name="TestType" [(ngModel)]="testTypeModel.TestType" TestType="ngModel" id="TestType" type="text" class="form-control" >
+                        
                       </td>
                       <td>
-                        <button (click)="AddEditTestType(testType)" class="btn btn-sm btn-info">Edit</button>
+                        <button (click)="EditTestType(testTypeModel)" class="btn btn-sm btn-info">Edit</button>
                       </td>
                       <td>
-                        <button (click)="DeleteTestType(testType)" class="btn btn-sm btn-danger">Delete</button>
+                        <button (click)="DeleteTestType(testTypeModel)" class="btn btn-sm btn-danger">Delete</button>
                       </td>
                     </tr>
                     </tbody>
                 </table>
           </div>
-          <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-            <li class="page-item active">
-              <a class="page-link" href="#">1</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-          </ul>
           </div>
         </div>
       </div>
-    </div>
-    <!-- <div class="row">
-        <div class="col-sm-12">
-          <div class="card">
-            <div class="card-header">
-               <strong>Test Type List</strong>
-            </div>
-            <div class="card-body">
-            <div class="table-responsive">
-                  <table class="table table-hover">
-                    <thead class=" text-primary">
-                      <th>Test Type</th>
-                      <th>Option</th>
-                      <th>Option</th>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>
-                          Mock Test
-                        </td>
-                        <td>
-                          <button class="btn btn-sm btn-info">Edit</button>
-                        </td>
-                        <td>
-                          <button class="btn btn-sm btn-danger">Delete</button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          Practice Test
-                        </td>
-                        <td>
-                          <button class="btn btn-sm btn-info">Edit</button>
-                        </td>
-                        <td>
-                          <button class="btn btn-sm btn-danger">Delete</button>
-                        </td>
-                      </tr>
-                      </tbody>
-                  </table>
-            </div>
-            <ul class="pagination">
-              <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-              <li class="page-item active">
-                <a class="page-link" href="#">1</a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item"><a class="page-link" href="#">4</a></li>
-              <li class="page-item"><a class="page-link" href="#">Next</a></li>
-            </ul>
-            </div>
-          </div>
-        </div>
-       
-    </div> -->
-<div>
+    </div>  
   </div>
 </div>

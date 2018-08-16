@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {TestTypeService} from '../../../services/admin/test-type.service';
 import {TestType} from '../../../models/master';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-test-type',
@@ -8,29 +9,52 @@ import {TestType} from '../../../models/master';
   styleUrls: ['./test-type.component.scss']
 })
 export class TestTypeComponent implements OnInit {
-  constructor(private testTypeService: TestTypeService) { }
-  TestType: any = [];
+  showAddDiv: any;
+  testType: TestType;
+  testTypeModel: any = {};
+  constructor(private testTypeService: TestTypeService) {
+    this.showAddDiv = false;
+  }
   ngOnInit() {
     this.getTestType();
   }
-  // To get all the master data
-   getTestType() {
+    changeShowStatus() {
+    this.showAddDiv = !this.showAddDiv;
+    }
+    getTestType() {
      this.testTypeService.getTestTypes()
      .subscribe(data => {
       if (data.Message === 'Success') {
-         this.TestType = data.Object;
+         this.testType = data.Object;
        }
      }, error => {
        alert('error');
        console.log(error);
      });
-   }
-    AddEditTestType(model: TestType) {
-      this.testTypeService.updateTestTypes(model)
+    }
+    EditTestType(model: TestType) {
+      this.testType = model;
+      this.testTypeService.addEditTestTypes(this.testType)
      .subscribe(data => {
-      if (data.Message === 'Success') {
+      if (data === 'Success') {
+        this.testTypeModel = {};
         this.getTestType();
-         this.TestType = data.Object;
+        this.showAddDiv = false;
+       }
+     }, error => {
+       alert('error');
+       console.log(error);
+     });
+    }
+    AddTestType() {
+      this.testType = this.testTypeModel;
+      this.testTypeService.addEditTestTypes(this.testType)
+     .subscribe(data => {
+      if (data === 'Success') {
+        this.testTypeModel = {};
+        this.getTestType();
+        this.showAddDiv = false;
+
        }
      }, error => {
        alert('error');
@@ -38,12 +62,13 @@ export class TestTypeComponent implements OnInit {
      });
     }
     DeleteTestType(model: TestType) {
-      debugger;
-      this.testTypeService.deleteTestTypeById(model)
+      this.testType = model;
+      this.testTypeService.deleteTestTypeById(this.testType)
      .subscribe(data => {
       if (data === 'Success') {
-      // show alert for data updated successfully
       this.getTestType();
+      this.showAddDiv = false;
+
       }
      }, error => {
        alert('error');
