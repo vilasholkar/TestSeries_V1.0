@@ -26,7 +26,7 @@ export class TestTypeService {
             return Observable.throw(error);
         });
   }
-  addEditTestTypes(TestType: any): Observable<any> {
+  addUpdateTestTypes(TestType: any): Observable<any> {
      this.headers = new Headers({ 'Content-Type': 'application/json' });
      this.options = new RequestOptions({ headers: this.headers });
      return this.http.post(HostName.API_StartPoint + APIUrl.AddUpdateTestTypes, TestType)
