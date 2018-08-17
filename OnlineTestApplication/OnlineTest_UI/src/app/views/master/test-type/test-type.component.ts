@@ -22,8 +22,6 @@ export class TestTypeComponent implements OnInit {
   }
   ngOnInit() {
     this.getTestType();
-    // let el = $(this.rootNode.nativeElement).find('#TestTypeForm')[0];
-    // $('#TestTypeForm').DataTable();
   }
     Edit(model: TestType ) {
     this.isTestTypeReadonly = false;
@@ -42,9 +40,9 @@ export class TestTypeComponent implements OnInit {
        console.log(error);
      });
     }
-    EditTestType(model: TestType) {
+    UpdateTestType(model: TestType) {
       this.testType = model;
-      this.testTypeService.addEditTestTypes(this.testType)
+      this.testTypeService.addUpdateTestTypes(this.testType)
      .subscribe(data => {
       if (data === 'Success') {
         this.testTypeModel = {};
@@ -60,7 +58,7 @@ export class TestTypeComponent implements OnInit {
     }
     AddTestType() {
       this.testType = this.testTypeModel;
-      this.testTypeService.addEditTestTypes(this.testType)
+      this.testTypeService.addUpdateTestTypes(this.testType)
      .subscribe(data => {
       if (data === 'Success') {
         this.testTypeModel = {};
