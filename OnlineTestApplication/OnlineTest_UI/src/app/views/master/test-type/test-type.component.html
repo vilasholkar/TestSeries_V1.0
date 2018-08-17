@@ -16,12 +16,22 @@
                 <div class="col-md-8">
                   <div class="form-group">
                     <label>Test Name</label>
-                    <input name="TestType" [(ngModel)]="testTypeModel.TestType" TestType="ngModel" id="TestType" type="text" class="form-control" >
+                    <input autocomplete="off" name="TestType" [(ngModel)]="testTypeModel.TestType"
+                     #TestType="ngModel" required minlength="4"  type="text" class="form-control" >
+                    <div *ngIf="TestType.invalid && (TestType.dirty || TestType.touched)"
+                          class="alert alert-danger">
+                        <div *ngIf="TestType.errors.required">
+                          Test Type is required.
+                        </div>
+                        <div *ngIf="TestType.errors.minlength">
+                          This must be at least 4 characters long.
+                        </div>
+                    </div>
                     <input name="TestTypeID" hidden [(ngModel)]="testTypeModel.TestTypeID" TestTypeID="ngModel" id="TestTypeID" type="text" class="form-control" >
                   </div>
                 </div>
               </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="submit" [disabled]="!testTypeForm.form.valid" class="btn btn-primary">Submit</button>
             </form>
           </div>
         </div>
@@ -44,7 +54,7 @@
                   <tbody>
                     <tr *ngFor="let testTypeModel of testType">
                       <td>
-                      <input [readonly]="isTestTypeReadonly" value="{{testTypeModel.TestType}}" name="TestType" [(ngModel)]="testTypeModel.TestType" TestType="ngModel" id="TestType" type="text" class="form-control" >
+                      <input [readonly]="isTestTypeReadonly" autocomplete="off" value="{{testTypeModel.TestType}}" name="TestType" [(ngModel)]="testTypeModel.TestType" TestType="ngModel" id="TestType" type="text" class="form-control" >
                       </td>
                       <td>
                         <button (click)="Edit(testTypeModel)" aria-hidden="true" class="btn btn-sm btn-primary">
