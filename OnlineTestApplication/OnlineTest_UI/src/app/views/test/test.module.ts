@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 // OnlineTest Component
 import { OnlineTestComponent } from './online-test/online-test.component';
+import { QuizComponent } from './quiz/quiz.component';
 
 
 // Components Routing
@@ -18,7 +19,8 @@ import { TestRoutingModule } from './test-routing.module';
       TestRoutingModule
     ],
     declarations: [
-      OnlineTestComponent
+      OnlineTestComponent,
+      QuizComponent
     ],
     providers: [HttpClientModule]
   })
