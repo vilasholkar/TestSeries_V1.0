@@ -1,6 +1,8 @@
 <div class="animated fadeIn">
   <div class="container">
-    <button class="btn btn-md btn-success" (click)="changeShowStatus()">Add New</button>
+    <button class="btn btn-md btn-success" (click)="changeShowStatus()">
+      <strong> Add New</strong>
+    </button>
     <hr>
     <div *ngIf="showAddDiv" class="row">
       <div class="col-md-12">
@@ -42,13 +44,21 @@
                   <tbody>
                     <tr *ngFor="let testTypeModel of testType">
                       <td>
-                      <input value="{{testTypeModel.TestType}}" name="TestType" [(ngModel)]="testTypeModel.TestType" TestType="ngModel" id="TestType" type="text" class="form-control" >
+                      <input [readonly]="isTestTypeReadonly" value="{{testTypeModel.TestType}}" name="TestType" [(ngModel)]="testTypeModel.TestType" TestType="ngModel" id="TestType" type="text" class="form-control" >
                       </td>
                       <td>
-                        <button (click)="EditTestType(testTypeModel)" class="btn btn-sm btn-info"><strong>Edit</strong></button>
+                        <button (click)="Edit(testTypeModel)" aria-hidden="true" class="btn btn-sm btn-primary">
+                        <i class="fa fa-pencil"></i><strong> Edit</strong>
+                       </button>
+                        &nbsp;
+                      <button (click)="EditTestType(testTypeModel)" aria-hidden="true" class="btn btn-sm btn-primary">
+                        <i class="fa fa-floppy-o"></i><strong> Save</strong>
+                       </button>
                       </td>
                       <td>
-                        <button (click)="DeleteTestType(testTypeModel)" class="btn btn-sm btn-danger"><strong>Delete</strong></button>
+                        <button (click)="DeleteTestType(testTypeModel)" class="btn btn-sm btn-danger">
+                        <i class="fa fa-trash-o"></i> <strong> Delete</strong>
+                        </button>
                       </td>
                     </tr>
                     </tbody>
