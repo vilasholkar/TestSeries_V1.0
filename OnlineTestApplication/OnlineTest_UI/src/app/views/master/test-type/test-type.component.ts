@@ -3,7 +3,6 @@ import {TestTypeService} from '../../../services/admin/test-type.service';
 import {TestType} from '../../../models/master';
 import { NgForm } from '@angular/forms';
 import * as $ from 'jquery';
-const dt = require ('datatables.net');
 @Component({
   selector: 'app-test-type',
   templateUrl: './test-type.component.html',
