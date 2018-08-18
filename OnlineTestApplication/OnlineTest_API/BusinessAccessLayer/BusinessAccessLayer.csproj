@@ -45,6 +45,8 @@
     <Compile Include="Class1.cs" />
     <Compile Include="Repositories\Student\Interface\IBStudent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\Test\Implementation\BTestSeries.cs" />
+    <Compile Include="Repositories\Test\Interface\IBTestSeries.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj">
