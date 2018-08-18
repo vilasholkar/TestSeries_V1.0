@@ -17,6 +17,7 @@ export class TestTypeService {
     this.options = new RequestOptions({ headers: this.headers });
 }
   getTestTypes(): Observable<any> {
+      debugger
     return this.http.get(HostName.API_StartPoint + APIUrl.GET_TestTypes)
         .map((response: Response) => {
             const data = response;

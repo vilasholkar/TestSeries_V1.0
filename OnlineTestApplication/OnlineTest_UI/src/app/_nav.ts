@@ -13,6 +13,11 @@ export const navItems = [
     name: 'Test'
   },
   {
+    name: 'Test Series',
+    url: '/test/test-series',
+    icon: 'icon-drop'
+  },
+  {
     name: 'Online Test',
     url: '/test/online-test',
     icon: 'icon-drop'
@@ -29,11 +34,6 @@ export const navItems = [
   {
     name: 'Test Type',
     url: '/master/test-type',
-    icon: 'icon-drop'
-  },
-  {
-    name: 'Test Series',
-    url: '/master/test-series',
     icon: 'icon-drop'
   },
   {

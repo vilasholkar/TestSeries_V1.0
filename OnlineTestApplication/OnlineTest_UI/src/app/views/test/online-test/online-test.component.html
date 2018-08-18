@@ -1,194 +1,233 @@
 <div class="animated fadeIn">
-    <div class="row">
-        <div class="col-sm-12">
-          <div class="card">
-            <div class="card-header">
-              <strong class="card-title">Add Test</strong>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <strong class="card-title">Add Test</strong>
+        </div>
+        <div class="card-body">
+          <form name="" #onlineTestForm="ngForm">
+              <div class="row">
+                  <div class="col-sm-4">
+                      <mat-form-field class="example-full-width">
+                          <input matInput placeholder="Test Name">
+                        </mat-form-field>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <mat-form-field>
+                          <mat-select placeholder="Test Series">
+                            <mat-option>None</mat-option>
+                            <mat-option value="option">Option2</mat-option>
+                            <mat-option value="option">Option3</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                        <mat-form-field>
+                            <mat-select placeholder="Test Type">
+                              <mat-option value="option">Option1</mat-option>
+                              <mat-option value="option">Option2</mat-option>
+                              <mat-option value="option">Option3</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                    <mat-form-field>
+                        <mat-select placeholder="Session">
+                          <mat-option value="option">Option1</mat-option>
+                          <mat-option value="option">Option2</mat-option>
+                          <mat-option value="option">Option3</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                    <mat-form-field>
+                        <mat-select placeholder="Stream">
+                          <mat-option *ngFor="let food of foods" [value]="food.value">
+                          {{food.viewValue}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                    <mat-form-field>
+                        <mat-select placeholder="Course">
+                          <mat-option value="option">Option1</mat-option>
+                          <mat-option value="option">Option2</mat-option>
+                          <mat-option value="option">Option3</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                </div>
+              </div>
             </div>
-            <div class="card-body">
-              <form>
-                <div class="row">
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                      <label>Test Name</label>
-                      <input type="text" class="form-control" placeholder="Test Name">
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                      <label>Test Series</label>
-                      <select class="form-control">
-                        <option>--Select--</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                      <label>Test Type</label>
-                      <select class="form-control">
-                        <option>--Select--</option>
-                      </select>
-                    </div>
-                  </div>
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                    <mat-form-field>
+                        <mat-select placeholder="Batch">
+                          <mat-option value="option">Option1</mat-option>
+                          <mat-option value="option">Option2</mat-option>
+                          <mat-option value="option">Option3</mat-option>
+                        </mat-select>
+                      </mat-form-field>
                 </div>
-                <div class="row">
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                      <label>Session</label>
-                      <select class="form-control">
-                        <option>--Select--</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                      <label>Stream</label>
-                      <select class="form-control">
-                        <option>--Select--</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                      <label>Course</label>
-                      <select class="form-control">
-                        <option>--Select--</option>
-                      </select>
-                    </div>
-                  </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Subject">
+                      </mat-form-field>
                 </div>
-                <div class="row">
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                      <label>Batch</label>
-                      <select class="form-control">
-                        <option>--Select--</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                      <label>Subject</label>
-                      <input type="text" class="form-control" placeholder="Subject">
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                      <label>Topic</label>
-                      <input type="text" class="form-control" placeholder="Topic">
-                    </div>
-                  </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Topic">
+                      </mat-form-field>
                 </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                      <div class="form-group">
-                        <label>Test Duration</label>
-                        <input type="text" class="form-control" placeholder="Test Duration">
-                      </div>
-                    </div>
-                    <div class="col-sm-4">
-                      <div class="form-group">
-                        <label>Start</label>
-                        <input type="text" class="form-control" placeholder="Start">
-                      </div>
-                    </div>
-                    <div class="col-sm-4">
-                      <div class="form-group">
-                        <label>End</label>
-                        <input type="text" class="form-control" placeholder="End">
-                      </div>
-                    </div>
-                  </div>
-                <div class="row">
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                      <label>Test Marks</label>
-                      <input type="text" class="form-control" placeholder="Test Marks">
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                      <label>Passing Percentage</label>
-                      <input type="text" class="form-control" placeholder="Passing Percentage">
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <br>
-                      <!-- <div class="form-check">
-                          <input class="form-check-input" type="checkbox" name="radios" id="radio1" value="option1" >
-                          <label class="form-check-label" for="radio1">
-                            Is Negative Marking
-                          </label>
-                        </div> -->
-                        <div class="media">
-                            <label class="control control--checkbox mr-2">
-                              <input type="checkbox" name="docChkBox" [checked]="docTerm" #docChkBox="ngModel" [(ngModel)]="docTerm" required>
-                            </label>
-                            <div class="media-body">
-                              <label class="mb-0">Is Negative Marking</label>
-                            </div>
-                          </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-12">
-                    <div class="form-group">
-                      <label>Instructions</label>
-                      <textarea type="text" class="form-control" placeholder="Company">
-                      </textarea>
-                    </div>
-                  </div>
-                </div>
-                <button class="btn btn-primary">Submit</button>
-              </form>
+              </div>
             </div>
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Test Duration">
+                      </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="form-group">
+                    <mat-form-field class="example-full-width">
+                        <input matInput [matDatepicker]="startDatePicker" placeholder="Start Date">
+                        <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #startDatePicker></mat-datepicker>
+                      </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                  <div class="form-group">
+                      <mat-form-field class="example-full-width">
+                          <input matInput placeholder="Start Time">  
+                        <!-- <input matInput [matTimepicker]="startTimePicker" placeholder="Choose a time"> -->
+                          <!-- <mat-timepicker-toggle matSuffix [for]="startTimePicker"></mat-timepicker-toggle>
+                          <mat-timepicker #startTimePicker color="primary"></mat-timepicker> -->
+                          <!-- <input [ngxTimepicker]="startTimePicker">
+                          <ngx-material-timepicker #startTimePicker></ngx-material-timepicker> -->
+                        </mat-form-field>
+                  </div>
+                </div>
+              <div class="col-sm-2">
+                <div class="form-group">
+                    <mat-form-field class="example-full-width">
+                        <input matInput [matDatepicker]="endDatePicker" placeholder="End Date">
+                        <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #endDatePicker></mat-datepicker>
+                      </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                  <div class="form-group">
+                      <mat-form-field class="example-full-width">
+                          <input matInput placeholder="End Time">
+                        </mat-form-field>
+                  </div>
+                </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Test Marks">
+                      </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Passing Percentage">
+                      </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <br>
+                  <mat-checkbox>Is Negative Marking</mat-checkbox>
+            </div>
+            <div class="col-sm-2">
+              <br>  
+              <mat-checkbox>Is Visible</mat-checkbox>
           </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                    <mat-form-field class="example-full-width">
+                        <textarea matInput placeholder="Instruction"></textarea>
+                      </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <button mat-raised-button color="primary" [disabled]="!onlineTestForm.form.valid" (click)="AddTestSeries()">Save</button>
+          </form>
         </div>
       </div>
-      <div class="row">
-          <div class="col-sm-12">
-            <div class="card">
-              <div class="card-header">
-                 <strong>Test List</strong>
-              </div>
-              <div class="card-body">
-              <div class="table-responsive">
-                    <table class="table table-hover">
-                      <thead class=" text-primary">
-                        <th>Test No.</th>
-                        <th>Test Name</th>
-                        <th>Test Series</th>
-                        <th>Test Type</th>
-                        <th>Duration</th>
-                        <th>Start Date</th>
-                        <!-- <th>End Date</th>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Test List</strong>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-responsive-sm table-hover table-outline">
+              <thead class="thead-light">
+                <th>Test No.</th>
+                <th>Test Name</th>
+                <th>Test Series</th>
+                <th>Test Type</th>
+                <th>Duration</th>
+                <th>Start Date</th>
+                <!-- <th>End Date</th>
                                   <th>Course</th>
                                   <th>Batch</th> -->
-                        <th>Test Marks</th>
-                        <th>Option</th>
-                        <th>Option</th>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>
-                            01
-                          </td>
-                          <td>
-                            Test 1
-                          </td>
-                          <td>
-                            Lakshya Series
-                          </td>
-                          <td>
-                            Mock Test
-                          </td>
-                          <td>
-                            180 (min)
-                          </td>
-                          <td>
-                            20/08/2018
-                          </td>
-                          <!-- <td>
+                <th>Test Marks</th>
+                <th>Option</th>
+                <th>Option</th>
+                <th>Option</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    01
+                  </td>
+                  <td>
+                    Test 1
+                  </td>
+                  <td>
+                    Lakshya Series
+                  </td>
+                  <td>
+                    Mock Test
+                  </td>
+                  <td>
+                    180 (min)
+                  </td>
+                  <td>
+                    20/08/2018
+                  </td>
+                  <!-- <td>
                                               27/08/2018
                                             </td>
                                             <td>
@@ -197,36 +236,39 @@
                                               <td>
                                                   B1
                                                 </td> -->
-                          <td>
-                            720
-                          </td>
-                          <td>
-                            <button class="btn btn-sm btn-info">Edit</button>
-                          </td>
-                          <td>
-                            <button class="btn btn-sm btn-danger">Delete</button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            01
-                          </td>
-                          <td>
-                            Test 1
-                          </td>
-                          <td>
-                            Lakshya Series
-                          </td>
-                          <td>
-                            Mock Test
-                          </td>
-                          <td>
-                            180 (min)
-                          </td>
-                          <td>
-                            20/08/2018
-                          </td>
-                          <!-- <td>
+                  <td>
+                    720
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-info" ng-click="viewquestion()">View Question</button>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-info">Edit</button>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-danger">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    01
+                  </td>
+                  <td>
+                    Test 1
+                  </td>
+                  <td>
+                    Lakshya Series
+                  </td>
+                  <td>
+                    Mock Test
+                  </td>
+                  <td>
+                    180 (min)
+                  </td>
+                  <td>
+                    20/08/2018
+                  </td>
+                  <!-- <td>
                                                 27/08/2018
                                               </td>
                                               <td>
@@ -235,17 +277,20 @@
                                                 <td>
                                                     B1
                                                   </td> -->
-                          <td>
-                            720
-                          </td>
-                          <td>
-                            <button class="btn btn-sm btn-info">Edit</button>
-                          </td>
-                          <td>
-                            <button class="btn btn-sm btn-danger">Delete</button>
-                          </td>
-                        </tr>
-                        <!-- <tr>
+                  <td>
+                    720
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-info">View Question</button>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-info">Edit</button>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-danger">Delete</button>
+                  </td>
+                </tr>
+                <!-- <tr>
                                     <td>
                                       Minerva Hooper
                                     </td>
@@ -329,24 +374,34 @@
                                       $98,615
                                     </td>
                                   </tr> -->
-                      </tbody>
-                    </table>
-              </div>
-              <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                <li class="page-item active">
-                  <a class="page-link" href="#">1</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-              </ul>
-              </div>
-            </div>
+              </tbody>
+            </table>
           </div>
-          <!--/.col-->
-          <!-- <div class="col-lg-6">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" href="#">Prev</a>
+            </li>
+            <li class="page-item active">
+              <a class="page-link" href="#">1</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#">2</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#">3</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#">4</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#">Next</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+    <!-- <div class="col-lg-6">
             <div class="card">
               <div class="card-header">
                 <i class="fa fa-align-justify"></i> Striped Table
@@ -417,8 +472,8 @@
               </div>
             </div>
           </div> -->
-          <!--/.col-->
-      </div>
+    <!--/.col-->
+  </div>
   <div>
-    </div>
+  </div>
 </div>

@@ -1,0 +1,72 @@
+<div class="animated fadeIn">
+  <div class="container">
+    <button mat-raised-button color="basic" (click)="changeShowStatus()">Add New</button>
+    <hr>
+    <div class="row" *ngIf="showAddDiv">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-header">
+            <strong class="card-title">Add Test Series</strong>
+          </div>
+          <div class="card-body">
+            <form id="TestSeriesForm" name="Form1" (ngSubmit)="AddTestSeries()" #testSeriesForm="ngForm">
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Test Series" autocomplete="off" name="TestSeries" [(ngModel)]="testSeriesModel.TestSeries" #TestSeries="ngModel"
+                        required minlength="4" type="text">
+                      <mat-error *ngIf="TestSeries.invalid && (TestSeries.dirty || TestSeries.touched)">
+                        <mat-error *ngIf="TestSeries.errors.required">Test Series is required.</mat-error>
+                        <mat-error *ngIf="TestSeries.errors.minlength">This must be at least 4 characters long.</mat-error>
+                      </mat-error>
+                    </mat-form-field>
+                    <input name="TestSeriesID" hidden [(ngModel)]="testSeriesModel.TestSeriesID" TestTypeID="ngModel" id="TestSeriesID" type="text"
+                      class="form-control">
+                  </div>
+                </div>
+              </div>
+              <button mat-raised-button color="primary" [disabled]="!testSeriesForm.form.valid" (click)="AddTestSeries()">Save</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-header">
+            <strong>Test Type List</strong>
+          </div>
+          <div class="card-body">
+
+            <table class="table table-hover">
+              <thead>
+                <th>Test Series</th>
+                <th>Option</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let testSeriesModel of testSeries">
+                  <td>
+                    <input [readonly]="isTestSeriesReadonly" autocomplete="off" value="{{testSeriesModel.TestSeries}}" name="TestSeries" [(ngModel)]="testSeriesModel.TestSeries"
+                      TestSeries="ngModel" id="TestSeries" type="text" class="form-control">
+                  </td>
+                  <td>
+                    <div class="button-row">
+                      <button mat-raised-button color="accent" (click)="Edit(testSeriesModel)" aria-hidden="true">Edit</button>
+                      <button mat-raised-button color="primary" (click)="UpdateTestSeries(testSeriesModel)" aria-hidden="true">Save</button>
+                      <button mat-raised-button color="warn" (click)="DeleteTestSeries(testSeriesModel)" aria-hidden="true">Delete</button>
+
+                    </div>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
