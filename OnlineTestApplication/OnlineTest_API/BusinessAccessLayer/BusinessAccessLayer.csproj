@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Repositories\Master\Implementation\BMaster.cs" />
+    <Compile Include="Repositories\Master\Interface\IBMaster.cs" />
     <Compile Include="Repositories\TestType\Implementation\BTestType.cs" />
     <Compile Include="Repositories\TestType\Interface\IBTestType.cs" />
     <Compile Include="Repositories\Student\Implementation\BStudent.cs" />
@@ -58,6 +60,7 @@
       <Name>ViewModels</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
