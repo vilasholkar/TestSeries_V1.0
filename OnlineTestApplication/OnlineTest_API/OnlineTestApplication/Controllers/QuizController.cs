@@ -42,10 +42,12 @@ namespace OnlineTestApplication.Controllers
             public string description { get; set; }
             public List<Question> questions { get; set; }
         }
-        public HttpResponseMessage GetQuiz(String Parm)
+        [HttpGet]
+        [Route("api/GetQuiz", Name = "GetQuiz")]
+        public HttpResponseMessage GetQuiz(string quizName)
         {
             var personlist = new RootObject();
-            using (StreamReader sr = new StreamReader(System.Web.HttpContext.Current.Server.MapPath("~/App_Data/" + Parm)))
+            using (StreamReader sr = new StreamReader(System.Web.HttpContext.Current.Server.MapPath("~/App_Data/" + quizName)))
             {
                 personlist = JsonConvert.DeserializeObject<RootObject>(sr.ReadToEnd());
             }
