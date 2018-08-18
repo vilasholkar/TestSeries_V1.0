@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Repositories\Generic\DGeneric.cs" />
+    <Compile Include="Repositories\Master\Implementation\DMaster.cs" />
+    <Compile Include="Repositories\Master\Interface\IDMaster.cs" />
     <Compile Include="Repositories\TestType\Implementation\DTestType.cs" />
     <Compile Include="Repositories\TestType\Interface\IDTestType.cs" />
     <Compile Include="Repositories\Student\Implementation\DStudent.cs" />
