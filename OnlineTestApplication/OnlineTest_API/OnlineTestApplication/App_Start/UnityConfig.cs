@@ -23,6 +23,9 @@ namespace OnlineTestApplication
             container.RegisterType<IDTestType, DTestType>();
             container.RegisterType<IBTestType, BTestType>();
 
+            container.RegisterType<IDTestSeries, DTestSeries>();
+            container.RegisterType<IBTestSeries, BTestSeries>();
+
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }
     }
