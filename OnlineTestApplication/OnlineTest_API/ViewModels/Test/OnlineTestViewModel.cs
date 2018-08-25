@@ -11,7 +11,9 @@ namespace ViewModels.Test
         public int OnlineTestID { get; set; }
         public string OnlineTestNo { get; set; }
         public int TestSeriesID { get; set; }
+        public string TestSeriesName { get; set; }
         public int TestTypeID { get; set; }
+        public string TestTypeName { get; set; }
         public string TestName { get; set; }
         public string TestDuration { get; set; }
         public int SessionID { get; set; }
