@@ -8,8 +8,14 @@ using ViewModels.Master;
 
 namespace BusinessAccessLayer
 {
-   public interface IBMaster
+    public interface IBMaster
     {
         Response<List<StreamViewModel>> GetStream();
+
+        Response<List<CourseViewModel>> GetCourseByStream(int StreamId);
+
+        Response<List<BatchViewModel>> GetBatchByCourse(int CourseId);
+
+        Response<List<SessionViewModel>> GetSession();
     }
 }
