@@ -109,9 +109,9 @@ namespace DataAccessLayer
             }
             catch (Exception ex)
             {
-               return ex.Message;
+                return ex.Message;
             }
-            
+
         }
         public static async Task<string> RunSP_ExecuteNonQueryAsync(string procedureName, List<SqlParameter> parameters)
         {
@@ -152,7 +152,7 @@ namespace DataAccessLayer
             }
             catch (Exception ex)
             {
-              return  ex.Message;    
+                return ex.Message;
             }
 
         }
@@ -171,7 +171,7 @@ namespace DataAccessLayer
                         using (trans = sqlConn.BeginTransaction())
                         {
                             using (SqlCommand sqlCommand = new SqlCommand(procedureName, sqlConn))
-                            {                                
+                            {
                                 sqlCommand.CommandType = CommandType.StoredProcedure;
                                 if (parameters != null)
                                     sqlCommand.Parameters.AddRange(parameters.ToArray());
@@ -225,9 +225,12 @@ namespace DataAccessLayer
                     }
                     using (SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand))
                     {
-                        DataTableMapping[] dataTableMappingArray = dataTableMappingList.ToArray();
-                        // Call DataAdapter's TableMappings.Add method                       
-                        sqlDataAdapter.TableMappings.AddRange(dataTableMappingArray);
+                        if (dataTableMappingList != null)
+                        {
+                            DataTableMapping[] dataTableMappingArray = dataTableMappingList.ToArray();
+                            // Call DataAdapter's TableMappings.Add method                       
+                            sqlDataAdapter.TableMappings.AddRange(dataTableMappingArray);
+                        }
                         sqlDataAdapter.Fill(dtData);
                     }
                 }
@@ -260,6 +263,32 @@ namespace DataAccessLayer
         {
             Uri myUri = new Uri(queryString);
             return HttpUtility.ParseQueryString(myUri.Query).Get(0);
+        }
+
+        public static object GetNewId(string tableName, string columnName)
+        {
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+            {
+                string query = "SELECT  ISNULL(MAX(" + columnName + "),0)+1 FROM " + tableName + "";
+                using (SqlCommand sqlCommand = new SqlCommand(query, con))
+                {
+                    try
+                    {
+                        con.Open();
+                        sqlCommand.CommandType = CommandType.Text;
+                        return sqlCommand.ExecuteScalar();
+                    }
+                    catch (Exception ex)
+                    {
+                        return ex.Message;
+                    }
+                    finally
+                    {
+                        con.Close();
+                        sqlCommand.Dispose();
+                    }
+                }
+            }
         }
     }
 }
