@@ -12,21 +12,23 @@ namespace ViewModels.Master
    public class SessionViewModel
     {
         public int SessionID { get; set; }
-        public string Session { get; set; }
+        public string SessionName { get; set; }
     }
    public class StreamViewModel
    {
         public int StreamID { get; set; }
-        public string Stream { get; set; }
+        public string StreamName { get; set; }
     }
    public class CourseViewModel
     {
         public int CourseID { get; set; }
-        public string Course { get; set; }
+        public string CourseName { get; set; }
+        public int StreamID { get; set; }
     }
    public class BatchViewModel
     {
         public int BatchID { get; set; }
-        public string Batch { get; set; }
+        public string BatchName { get; set; }
+        public int CourseID { get; set; }
     }
 }
