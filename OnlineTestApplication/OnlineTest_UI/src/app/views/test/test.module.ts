@@ -10,8 +10,8 @@ import { CustomMaterialModule } from "../../custommaterial.module";
 import { TestSeriesComponent } from './test-series/test-series.component';
 import { OnlineTestComponent } from './online-test/online-test.component';
 import { QuizComponent } from './quiz/quiz.component';
-import { TabsModule } from 'ngx-bootstrap/tabs';
-// Components Routing
+import { TabsModule } from 'ngx-bootstrap/tabs';import {TestSeriesService} from '../../services/admin/test-series.service';
+import {TestTypeService} from '../../services/admin/test-type.service';// Components Routing
 import { TestRoutingModule } from './test-routing.module';
 import { ViewQuestionComponent } from './view-question/view-question.component';
 
@@ -32,6 +32,6 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
       ViewQuestionComponent,
       QuizComponent
     ],
-    providers: [HttpClientModule]
+    providers: [HttpClientModule,TestSeriesService,TestTypeService]
   })
   export class TestModule { }
