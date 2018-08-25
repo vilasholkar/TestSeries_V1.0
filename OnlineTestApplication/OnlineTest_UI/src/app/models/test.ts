@@ -5,10 +5,12 @@ export interface TestSeries {
     Description: any;
 }
 export interface OnlineTest {
-    OnlineTestID: any;
+    OnlineTestID: number;
     OnlineTestNo: any;
     TestSeriesID: any;
+    TestSeriesName: any;
     TestTypeID: any;
+    TestTypeName: any;
     TestName: any;
     TestDuration: any;
     SessionID: any;
@@ -21,14 +23,13 @@ export interface OnlineTest {
     TestMarks: any;
     PassingPercentage: any;
     IsNegativeMarking: any;
-    StartingDate: any;
-    StartingTime: any;
+    StartDate: any;
+    StartTime: any;
     EndDate: any;
     EndTime: any;
     IsVisible: any;
     IsActive: any;
     CreatedByUserID: any;
-    CreatedOnDate: any;
 }
 export interface Question {
     QuestionID: any;
