@@ -6,31 +6,40 @@
           <strong class="card-title">Add Test</strong>
         </div>
         <div class="card-body">
-          <form name="" #onlineTestForm="ngForm">
+          <form id="OnlineTestForm" name="Form" (ngSubmit)="addOnlineTest()" #onlineTestForm="ngForm">
               <div class="row">
                   <div class="col-sm-4">
                       <mat-form-field class="example-full-width">
-                          <input matInput placeholder="Test Name">
+                          <input [(ngModel)]="onlineTestModel.TestName" name="TestName" autocomplete="off"
+                           #TestName="ngModel" required matInput placeholder="Test Name" type="text">
+                           <mat-error *ngIf="TestName.invalid && (TestName.dirty || TestName.touched)">
+                              <mat-error *ngIf="TestName.errors.required">Test Name is required.</mat-error>
+                              <!-- <mat-error *ngIf="TestName.errors.minlength">This must be at least 4 characters long.</mat-error> -->
+                            </mat-error>
                         </mat-form-field>
                   </div>
                   <div class="col-sm-4">
                     <div class="form-group">
                       <mat-form-field>
-                          <mat-select placeholder="Test Series">
-                            <mat-option>None</mat-option>
-                            <mat-option value="option">Option2</mat-option>
-                            <mat-option value="option">Option3</mat-option>
+                          <mat-select [(ngModel)]="onlineTestModel.TestSeriesID" name="TestSeriesID" 
+                           #TestSeriesID="ngModel" placeholder="Test Series" required>
+                              <mat-option *ngFor="let testseries of testSeries" [value]="testseries.TestSeriesID">
+                                  {{testseries.TestSeries}}
+                              </mat-option>
                           </mat-select>
+                          <mat-error *ngIf="TestSeriesID.invalid && (TestSeriesID.dirty || TestSeriesID.touched)">
+                              <mat-error *ngIf="TestSeriesID.errors.required">Test Series is required.</mat-error>
+                            </mat-error>
                         </mat-form-field>
                     </div>
                   </div>
                   <div class="col-sm-4">
                     <div class="form-group">
                         <mat-form-field>
-                            <mat-select placeholder="Test Type">
-                              <mat-option value="option">Option1</mat-option>
-                              <mat-option value="option">Option2</mat-option>
-                              <mat-option value="option">Option3</mat-option>
+                            <mat-select [(ngModel)]="onlineTestModel.TestTypeID" name="TestTypeID" placeholder="Test Type">
+                                <mat-option *ngFor="let testtype of testType" [value]="testtype.TestTypeID">
+                                    {{testtype.TestTypeName}}
+                                </mat-option>
                             </mat-select>
                           </mat-form-field>
                     </div>
@@ -40,32 +49,41 @@
               <div class="col-sm-4">
                 <div class="form-group">
                     <mat-form-field>
-                        <mat-select placeholder="Session">
-                          <mat-option value="option">Option1</mat-option>
-                          <mat-option value="option">Option2</mat-option>
-                          <mat-option value="option">Option3</mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                </div>
-              </div>
-              <div class="col-sm-4">
-                <div class="form-group">
-                    <mat-form-field>
-                        <mat-select placeholder="Stream">
-                          <mat-option *ngFor="let food of foods" [value]="food.value">
-                          {{food.viewValue}}
+                        <mat-select [(ngModel)]="onlineTestModel.SessionID" name="SessionID" 
+                         #SessionID="ngModel" placeholder="Session" required>
+                          <mat-option *ngFor="let sessions of session" [value]="sessions.SessionID">
+                            {{sessions.SessionName}}
                           </mat-option>
                         </mat-select>
+                        <mat-error *ngIf="SessionID.invalid && (SessionID.dirty || SessionID.touched)">
+                          <mat-error *ngIf="SessionID.errors.required">Session is required.</mat-error>
+                        </mat-error>
                       </mat-form-field>
                 </div>
               </div>
               <div class="col-sm-4">
                 <div class="form-group">
                     <mat-form-field>
-                        <mat-select placeholder="Course">
-                          <mat-option value="option">Option1</mat-option>
-                          <mat-option value="option">Option2</mat-option>
-                          <mat-option value="option">Option3</mat-option>
+                        <mat-select [(ngModel)]="onlineTestModel.StreamID" name="StreamID"
+                         (ngModelChange)="onChangeStream($event)" [ngModelOptions]="{standalone: true}" 
+                          #StreamID="ngModel" placeholder="Stream" required>
+                          <mat-option *ngFor="let stream of stream" [value]="stream.StreamID">
+                          {{stream.StreamName}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="StreamID.invalid && (StreamID.dirty || StreamID.touched)">
+                          <mat-error *ngIf="StreamID.errors.required">Stream is required.</mat-error>
+                        </mat-error>
+                      </mat-form-field>
+                </div>
+              </div> 
+              <div class="col-sm-4">
+                <div class="form-group">
+                    <mat-form-field>
+                        <mat-select [(ngModel)]="onlineTestModel.CourseID" name="CourseID" (ngModelChange)="onChangeCourse($event)" [ngModelOptions]="{standalone: true}" placeholder="Course">
+                          <mat-option *ngFor="let course of course" [value]="course.CourseID">
+                            {{course.CourseName}}
+                          </mat-option>
                         </mat-select>
                       </mat-form-field>
                 </div>
@@ -75,10 +93,10 @@
               <div class="col-sm-4">
                 <div class="form-group">
                     <mat-form-field>
-                        <mat-select placeholder="Batch">
-                          <mat-option value="option">Option1</mat-option>
-                          <mat-option value="option">Option2</mat-option>
-                          <mat-option value="option">Option3</mat-option>
+                        <mat-select [(ngModel)]="onlineTestModel.BatchID" name="BatchID" placeholder="Batch">
+                          <mat-option *ngFor="let batch of batch" [value]="batch.BatchID">
+                            {{batch.BatchName}}
+                          </mat-option>
                         </mat-select>
                       </mat-form-field>
                 </div>
@@ -93,7 +111,7 @@
               <div class="col-sm-4">
                 <div class="form-group">
                     <mat-form-field class="example-full-width">
-                        <input matInput placeholder="Topic">
+                        <input [(ngModel)]="onlineTestModel.Topic" name="Topic" autocomplete="off" matInput placeholder="Topic" type="text">
                       </mat-form-field>
                 </div>
               </div>
@@ -102,23 +120,34 @@
               <div class="col-sm-4">
                 <div class="form-group">
                     <mat-form-field class="example-full-width">
-                        <input matInput placeholder="Test Duration">
+                        <input [(ngModel)]="onlineTestModel.TestDuration" name="TestDuration" 
+                         #TestDuration="ngModel" required autocomplete="off" type="text" 
+                         matInput placeholder="Test Duration">
+                         <mat-error *ngIf="TestDuration.invalid && (TestDuration.dirty || TestDuration.touched)">
+                          <mat-error *ngIf="TestDuration.errors.required">Test Duration is required.</mat-error>
+                          <!-- <mat-error *ngIf="TestName.errors.minlength">This must be at least 4 characters long.</mat-error> -->
+                        </mat-error>
                       </mat-form-field>
                 </div>
               </div>
               <div class="col-sm-2">
                 <div class="form-group">
                     <mat-form-field class="example-full-width">
-                        <input matInput [matDatepicker]="startDatePicker" placeholder="Start Date">
+                        <input [(ngModel)]="onlineTestModel.StartDate" name="StartDate" 
+                         #StartDate="ngModel" required autocomplete="off" matInput [matDatepicker]="startDatePicker" placeholder="Start Date">
                         <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker #startDatePicker></mat-datepicker>
+                        <mat-error *ngIf="StartDate.invalid && (StartDate.dirty || StartDate.touched)">
+                          <mat-error *ngIf="StartDate.errors.required">Start Date is required.</mat-error>
+                          <!-- <mat-error *ngIf="TestName.errors.minlength">This must be at least 4 characters long.</mat-error> -->
+                        </mat-error>
                       </mat-form-field>
                 </div>
               </div>
               <div class="col-sm-2">
                   <div class="form-group">
                       <mat-form-field class="example-full-width">
-                          <input matInput placeholder="Start Time">  
+                          <input [(ngModel)]="onlineTestModel.StartTime" name="StartTime" autocomplete="off" matInput placeholder="Start Time">  
                         <!-- <input matInput [matTimepicker]="startTimePicker" placeholder="Choose a time"> -->
                           <!-- <mat-timepicker-toggle matSuffix [for]="startTimePicker"></mat-timepicker-toggle>
                           <mat-timepicker #startTimePicker color="primary"></mat-timepicker> -->
@@ -130,16 +159,22 @@
               <div class="col-sm-2">
                 <div class="form-group">
                     <mat-form-field class="example-full-width">
-                        <input matInput [matDatepicker]="endDatePicker" placeholder="End Date">
+                        <input [(ngModel)]="onlineTestModel.EndDate" name="EndDate"
+                         #EndDate="ngModel" required autocomplete="off" matInput 
+                         [matDatepicker]="endDatePicker" placeholder="End Date">
                         <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker #endDatePicker></mat-datepicker>
+                        <mat-error *ngIf="EndDate.invalid && (EndDate.dirty || EndDate.touched)">
+                          <mat-error *ngIf="EndDate.errors.required">End Date is required.</mat-error>
+                          <!-- <mat-error *ngIf="TestName.errors.minlength">This must be at least 4 characters long.</mat-error> -->
+                        </mat-error>
                       </mat-form-field>
                 </div>
               </div>
               <div class="col-sm-2">
                   <div class="form-group">
                       <mat-form-field class="example-full-width">
-                          <input matInput placeholder="End Time">
+                          <input [(ngModel)]="onlineTestModel.EndTime" name="EndTime" autocomplete="off" matInput placeholder="End Time">
                         </mat-form-field>
                   </div>
                 </div>
@@ -148,36 +183,60 @@
               <div class="col-sm-4">
                 <div class="form-group">
                     <mat-form-field class="example-full-width">
-                        <input matInput placeholder="Test Marks">
+                        <input [(ngModel)]="onlineTestModel.TestMarks" name="TestMarks"
+                         #TestMarks="ngModel" required autocomplete="off" type="text" 
+                         matInput placeholder="Test Marks">
+                         <mat-error *ngIf="TestMarks.invalid && (TestMarks.dirty || TestMarks.touched)">
+                          <mat-error *ngIf="TestMarks.errors.required">Test Marks is required.</mat-error>
+                          <!-- <mat-error *ngIf="TestName.errors.minlength">This must be at least 4 characters long.</mat-error> -->
+                        </mat-error>
                       </mat-form-field>
                 </div>
               </div>
               <div class="col-sm-4">
                 <div class="form-group">
                     <mat-form-field class="example-full-width">
-                        <input matInput placeholder="Passing Percentage">
+                        <input [(ngModel)]="onlineTestModel.PassingPercentage" name="PassingPercentage" 
+                         #PassingPercentage="ngModel" required autocomplete="off"
+                          matInput placeholder="Passing Percentage">
+                          <mat-error *ngIf="PassingPercentage.invalid && (PassingPercentage.dirty || PassingPercentage.touched)">
+                            <mat-error *ngIf="PassingPercentage.errors.required">Test Marks is required.</mat-error>
+                            <!-- <mat-error *ngIf="TestName.errors.minlength">This must be at least 4 characters long.</mat-error> -->
+                          </mat-error>
                       </mat-form-field>
                 </div>
               </div>
               <div class="col-sm-2">
                 <br>
-                  <mat-checkbox>Is Negative Marking</mat-checkbox>
+                  <mat-checkbox [(ngModel)]="onlineTestModel.IsNegativeMarking" 
+                  #IsNegativeMarking="ngModel" required name="IsNegativeMarking">Is Negative Marking
+                </mat-checkbox>
+                <mat-error *ngIf="IsNegativeMarking.invalid && (IsNegativeMarking.dirty || IsNegativeMarking.touched)">
+                  <mat-error *ngIf="IsNegativeMarking.errors.required">IsNegativeMarking is required.</mat-error>
+                </mat-error>
             </div>
             <div class="col-sm-2">
               <br>  
-              <mat-checkbox>Is Visible</mat-checkbox>
+              <mat-checkbox [(ngModel)]="onlineTestModel.IsVisible" 
+               #IsVisible="ngModel" required name="IsVisible">Is Visible
+              </mat-checkbox>
+              <mat-error *ngIf="IsVisible.invalid && (IsVisible.dirty || IsVisible.touched)">
+                <mat-error *ngIf="IsVisible.errors.required">IsVisible is required.</mat-error>
+              </mat-error>
           </div>
             </div>
             <div class="row">
               <div class="col-sm-12">
                 <div class="form-group">
                     <mat-form-field class="example-full-width">
-                        <textarea matInput placeholder="Instruction"></textarea>
+                        <textarea [(ngModel)]="onlineTestModel.Instructions" name="Instructions" autocomplete="off" matInput placeholder="Instruction"></textarea>
                       </mat-form-field>
+                      <input name="OnlineTestID" hidden [(ngModel)]="onlineTestModel.OnlineTestID" id="OnlineTestID" 
+                      OnlineTestID="ngModel"  class="form-control" type="text">
                 </div>
               </div>
             </div>
-            <button mat-raised-button color="primary" [disabled]="!onlineTestForm.form.valid" (click)="AddTestSeries()">Save</button>
+            <button mat-raised-button color="primary" [disabled]="!onlineTestForm.form.valid">Save</button>
           </form>
         </div>
       </div>
@@ -208,24 +267,24 @@
                 <th>Option</th>
               </thead>
               <tbody>
-                <tr>
+                <tr *ngFor="let onlineTestModel of onlineTest">
                   <td>
-                    01
+                    {{onlineTestModel.OnlineTestNo}}
                   </td>
                   <td>
-                    Test 1
+                    {{onlineTestModel.TestName}}            
                   </td>
                   <td>
-                    Lakshya Series
+                    {{onlineTestModel.TestSeriesName}}            
                   </td>
                   <td>
-                    Mock Test
+                    {{onlineTestModel.TestTypeName}}            
                   </td>
                   <td>
-                    180 (min)
+                    {{onlineTestModel.TestDuration}}                    
                   </td>
                   <td>
-                    20/08/2018
+                    {{onlineTestModel.StartDate}}                    
                   </td>
                   <!-- <td>
                                               27/08/2018
@@ -237,143 +296,18 @@
                                                   B1
                                                 </td> -->
                   <td>
-                    720
+                    {{onlineTestModel.TestMarks}}                    
                   </td>
                   <td>
                     <button class="btn btn-sm btn-info" ng-click="viewquestion()">View Question</button>
                   </td>
                   <td>
-                    <button class="btn btn-sm btn-info">Edit</button>
+                    <button mat-raised-button color="accent" (click)="getOnlineTestById(onlineTestModel)" aria-hidden="true">Edit</button>
                   </td>
                   <td>
-                    <button class="btn btn-sm btn-danger">Delete</button>
+                    <button mat-raised-button color="warn"(click)="deleteOnlineTest(onlineTestModel)" aria-hidden="true">Delete</button>
                   </td>
                 </tr>
-                <tr>
-                  <td>
-                    01
-                  </td>
-                  <td>
-                    Test 1
-                  </td>
-                  <td>
-                    Lakshya Series
-                  </td>
-                  <td>
-                    Mock Test
-                  </td>
-                  <td>
-                    180 (min)
-                  </td>
-                  <td>
-                    20/08/2018
-                  </td>
-                  <!-- <td>
-                                                27/08/2018
-                                              </td>
-                                              <td>
-                                                  Foundation 1
-                                                </td>
-                                                <td>
-                                                    B1
-                                                  </td> -->
-                  <td>
-                    720
-                  </td>
-                  <td>
-                    <button class="btn btn-sm btn-info">View Question</button>
-                  </td>
-                  <td>
-                    <button class="btn btn-sm btn-info">Edit</button>
-                  </td>
-                  <td>
-                    <button class="btn btn-sm btn-danger">Delete</button>
-                  </td>
-                </tr>
-                <!-- <tr>
-                                    <td>
-                                      Minerva Hooper
-                                    </td>
-                                    <td>
-                                      Curaçao
-                                    </td>
-                                    <td>
-                                      Sinaai-Waas
-                                    </td>
-                                    <td class="text-right">
-                                      $23,789
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>
-                                      Sage Rodriguez
-                                    </td>
-                                    <td>
-                                      Netherlands
-                                    </td>
-                                    <td>
-                                      Baileux
-                                    </td>
-                                    <td class="text-right">
-                                      $56,142
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>
-                                      Philip Chaney
-                                    </td>
-                                    <td>
-                                      Korea, South
-                                    </td>
-                                    <td>
-                                      Overland Park
-                                    </td>
-                                    <td class="text-right">
-                                      $38,735
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>
-                                      Doris Greene
-                                    </td>
-                                    <td>
-                                      Malawi
-                                    </td>
-                                    <td>
-                                      Feldkirchen in Kärnten
-                                    </td>
-                                    <td class="text-right">
-                                      $63,542
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>
-                                      Mason Porter
-                                    </td>
-                                    <td>
-                                      Chile
-                                    </td>
-                                    <td>
-                                      Gloucester
-                                    </td>
-                                    <td class="text-right">
-                                      $78,615
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>
-                                      Jon Porter
-                                    </td>
-                                    <td>
-                                      Portugal
-                                    </td>
-                                    <td>
-                                      Gloucester
-                                    </td>
-                                    <td class="text-right">
-                                      $98,615
-                                    </td>
-                                  </tr> -->
               </tbody>
             </table>
           </div>
