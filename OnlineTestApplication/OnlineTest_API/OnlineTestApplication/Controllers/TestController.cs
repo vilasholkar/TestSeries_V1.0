@@ -14,10 +14,12 @@ namespace OnlineTestApplication.Controllers
     public class TestController : ApiController
     {
         private readonly IBTestSeries _iBTestSeries;
+        private readonly IBOnlineTest _iBOnlineTest;
 
-        public TestController(IBTestSeries iBTestSeries)
+        public TestController(IBTestSeries iBTestSeries, IBOnlineTest iBOnlineTest)
         {
             _iBTestSeries = iBTestSeries;
+            _iBOnlineTest = iBOnlineTest;
         }
 
         #region Test Series
@@ -38,6 +40,37 @@ namespace OnlineTestApplication.Controllers
         public HttpResponseMessage DeleteTestSeries(TestSeriesViewModel objTestSeries)
         {
             return Request.CreateResponse(HttpStatusCode.OK, _iBTestSeries.DeleteTestSeries(objTestSeries));
+        }
+        #endregion
+
+        #region OnlineTest
+
+        [HttpGet]
+        [Route("api/GetOnlineTest", Name = "GetOnlineTest")]
+        public HttpResponseMessage GetOnlineTest()
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, _iBOnlineTest.GetOnlineTest());
+        }
+
+        [HttpPost]
+        [Route("api/AddUpdateOnlineTest", Name = "AddUpdateOnlineTest")]
+        public HttpResponseMessage AddUpdateOnlineTest(OnlineTestViewModel objTestSeries)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, _iBOnlineTest.AddUpdateOnlineTest(objTestSeries));
+        }
+
+        [HttpPost]
+        [Route("api/DeleteOnlineTest", Name = "DeleteOnlineTest")]
+        public HttpResponseMessage DeleteOnlineTest(object OnlineTestId)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, _iBOnlineTest.DeleteOnlineTest(Convert.ToInt32(OnlineTestId)));
+        }
+
+        [HttpGet]
+        [Route("api/GetOnlineTestById", Name = "GetOnlineTestById")]
+        public HttpResponseMessage GetOnlineTestById(int OnlineTestId)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, _iBOnlineTest.GetOnlineTestById(OnlineTestId));
         }
         #endregion
     }
