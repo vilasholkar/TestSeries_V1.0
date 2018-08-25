@@ -1,0 +1,36 @@
+/* .card-header
+{
+    background-color: white;
+}
+.card-footer
+{
+    background-color: white;
+} */
+.example-h2 {
+    margin: 10px;
+  }
+  
+  .example-section {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+  }
+  
+  .example-margin {
+    margin: 0 20px;
+  }
+  
+
+ .button-row button,
+.button-row a {
+  margin-right: 8px;
+}
+
+.mat-raised-button {
+min-width: 50px;
+margin: 5px;
+}
+.mat-raised-button:focus {
+    outline: 0px auto;
+    }
