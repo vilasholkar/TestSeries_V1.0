@@ -12,5 +12,6 @@ namespace DataAccessLayer
        List<TestSeriesViewModel> GetTestSeries();
        string AddUpdateTestSeries(TestSeriesViewModel objTestSeries);
        string DeleteTestSeries(TestSeriesViewModel objTestSeries);
+
     }
 }
