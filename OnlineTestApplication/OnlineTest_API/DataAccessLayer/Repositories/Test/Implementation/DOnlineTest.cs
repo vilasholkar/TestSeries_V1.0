@@ -69,7 +69,7 @@ namespace DataAccessLayer
                 sqlParameterList.Add(new SqlParameter("IsVisible", objOnlineTest.IsVisible));
                 sqlParameterList.Add(new SqlParameter("IsActive", true));
                 sqlParameterList.Add(new SqlParameter("CreatedByUserID", 1));
-                sqlParameterList.Add(new SqlParameter("CreatedOnDate", DateTime.Now));
+                sqlParameterList.Add(new SqlParameter("CreatedOnDate", DGeneric.SystemDateTime));
 
                 return DGeneric.RunSP_ExecuteNonQuery("sp_AddUpdateOnlineTest", sqlParameterList);
             }
@@ -78,15 +78,12 @@ namespace DataAccessLayer
                 return ex.Message;
             }
         }
-
-
         public string DeleteOnlineTest(int OnlineTestId)
         {
             List<SqlParameter> sqlParameterList = new List<SqlParameter>();
             sqlParameterList.Add(new SqlParameter("@OnlineTestID", OnlineTestId));
             return DGeneric.RunSP_ExecuteNonQuery("sp_DeleteOnlineTest", sqlParameterList);
         }
-
         public OnlineTestViewModel GetOnlineTestById(int OnlineTestId)
         {
             List<SqlParameter> sqlParameterList = new List<SqlParameter>();
