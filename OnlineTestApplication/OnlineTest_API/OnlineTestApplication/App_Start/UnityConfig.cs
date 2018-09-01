@@ -10,11 +10,11 @@ namespace OnlineTestApplication
     {
         public static void RegisterComponents()
         {
-			var container = new UnityContainer();
-            
+            var container = new UnityContainer();
+
             // register all your components with the container here
             // it is NOT necessary to register your controllers
-            
+
             // e.g. container.RegisterType<ITestService, TestService>();
 
             container.RegisterType<IDStudent, DStudent>();
@@ -31,6 +31,9 @@ namespace OnlineTestApplication
 
             container.RegisterType<IDOnlineTest, DOnlineTest>();
             container.RegisterType<IBOnlineTest, BOnlineTest>();
+
+            container.RegisterType<IDQuiz, DQuiz>();
+            container.RegisterType<IBQuiz, BQuiz>();
 
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }
