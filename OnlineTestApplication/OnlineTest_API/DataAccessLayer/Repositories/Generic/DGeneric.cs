@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -12,10 +13,11 @@ using System.Web;
 
 namespace DataAccessLayer
 {
-    public class DGeneric
+    public static class DGeneric
     {
         private static readonly string CnnStrVariableName = "Cnnstr";
         private static string _ConnectionString = string.Empty;
+        public static DateTime SystemDateTime = DateTime.ParseExact(DateTime.Now.ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.CurrentCulture);
 
         public static string ConnectionString
         {
@@ -289,6 +291,11 @@ namespace DataAccessLayer
                     }
                 }
             }
+        }
+
+        public static DateTime ConvertDateTimeToDate(this object date)
+        {
+            return DateTime.ParseExact(date.ToString(), "dd/MM/yyyy", CultureInfo.CurrentCulture);
         }
     }
 }
