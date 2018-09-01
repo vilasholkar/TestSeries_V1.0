@@ -41,6 +41,8 @@
   <ItemGroup>
     <Compile Include="Repositories\Master\Implementation\BMaster.cs" />
     <Compile Include="Repositories\Master\Interface\IBMaster.cs" />
+    <Compile Include="Repositories\Quiz\Implementation\BQuiz.cs" />
+    <Compile Include="Repositories\Quiz\Interface\IBQuiz.cs" />
     <Compile Include="Repositories\TestType\Implementation\BTestType.cs" />
     <Compile Include="Repositories\TestType\Interface\IBTestType.cs" />
     <Compile Include="Repositories\Student\Implementation\BStudent.cs" />
