@@ -299,7 +299,8 @@
                     {{onlineTestModel.TestMarks}}                    
                   </td>
                   <td>
-                    <button class="btn btn-sm btn-info" ng-click="viewquestion()">View Question</button>
+                    <!-- <button class="btn btn-sm btn-info" (click)="viewQuestion(onlineTestModel)">View Question</button> -->
+                    <a routerLink="../view-question/{{onlineTestModel.OnlineTestID}}">View Question</a>
                   </td>
                   <td>
                     <button mat-raised-button color="accent" (click)="getOnlineTestById(onlineTestModel)" aria-hidden="true">Edit</button>
