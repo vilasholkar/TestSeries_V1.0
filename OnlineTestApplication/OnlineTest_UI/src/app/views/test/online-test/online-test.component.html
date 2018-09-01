@@ -133,7 +133,7 @@
               <div class="col-sm-2">
                 <div class="form-group">
                     <mat-form-field class="example-full-width">
-                        <input [(ngModel)]="onlineTestModel.StartDate" name="StartDate" 
+                        <input [(ngModel)]="onlineTestModel.StartDate" name="StartDate" readonly 
                          #StartDate="ngModel" required autocomplete="off" matInput [matDatepicker]="startDatePicker" placeholder="Start Date">
                         <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker #startDatePicker></mat-datepicker>
@@ -159,7 +159,7 @@
               <div class="col-sm-2">
                 <div class="form-group">
                     <mat-form-field class="example-full-width">
-                        <input [(ngModel)]="onlineTestModel.EndDate" name="EndDate"
+                        <input [(ngModel)]="onlineTestModel.EndDate" name="EndDate" readonly
                          #EndDate="ngModel" required autocomplete="off" matInput 
                          [matDatepicker]="endDatePicker" placeholder="End Date">
                         <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
@@ -284,7 +284,7 @@
                     {{onlineTestModel.TestDuration}}                    
                   </td>
                   <td>
-                    {{onlineTestModel.StartDate}}                    
+                    {{onlineTestModel.StartDate | date: 'dd/MM/yyyy'}}                    
                   </td>
                   <!-- <td>
                                               27/08/2018
