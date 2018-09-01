@@ -2,20 +2,21 @@ import { QuizConfig } from './quiz-config';
 import { Question } from './question';
 
 export class Quiz {
-    id: number;
-    name: string;
-    description: string;
+    onlineTestID: number;
+    testName: string;
+    instructions: string;
+    testDuration:string;
     config: QuizConfig;
     questions: Question[];
 
     constructor(data: any) {
         if (data) {
-            this.id = data.id;
-            this.name = data.name;
-            this.description = data.description;
+            this.onlineTestID = data.OnlineTestID;
+            this.testName = data.TestName;
+            this.instructions = data.Instructions;
             this.config = new QuizConfig(data.config);
             this.questions = [];
-            data.questions.forEach(q => {
+            data.Question.forEach(q => {
                 this.questions.push(new Question(q));
             });
         }

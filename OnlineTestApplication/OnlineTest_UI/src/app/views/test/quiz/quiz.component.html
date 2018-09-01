@@ -1,13 +1,18 @@
 <div class="animated fadeIn">
   <div class="row">
     <div class="col-6">
-      <h3>Quiz Application</h3>
+      <h3>{{quiz.testName}}</h3>
     </div>
     <div class="col-6 text-right">
-      Select Quiz:
+      <!-- Select Quiz:
       <select [(ngModel)]="quizName" (change)="loadQuiz(quizName)">
         <option *ngFor="let quiz of quizes" [value]="quiz.id">{{quiz.name}}</option>
-      </select>
+      </select> -->
+      <label>Language: </label>
+              <select [(ngModel)]="languageName" (change)="changeLanguage(languageName)">
+                <option value="english">English</option>
+                <option value="hindi">Hindi</option>
+              </select>
     </div>
   </div>
   <div id="quiz" class="row" style="margin-left:-35px;margin-right:-35px;">
@@ -15,31 +20,35 @@
       <div class="card card-accent-primary" style="height:550px" *ngFor="let question of filteredQuestions;">
         <div class="card-header">
           <div class="row">
-            <div class="col-sm-2">
-              <div class="badge badge-primary" style="font-size:16px">Question {{pager.index + 1}} of {{pager.count}}.</div>
+            <div class="col-sm-5">
+              <div class="badge badge-primary" style="font-size:16px">
+                <!-- Question {{pager.index + 1}} of {{pager.count}}. -->
+               Que. No. {{pager.index + 1}}.
+              </div>
             </div>
-            <div class="col-sm-3">
-              <h4 class="text-center font-weight-normal">{{quiz.name}}</h4>
-            </div>
-            <div class="col-sm-4 text-right">
+            <!-- <div class="col-sm-3">
+              <h4 class="text-center font-weight-normal">{{quiz.testName}}</h4>
+            </div> -->
+            <div class="col-sm-7 text-right">
               <!-- <label style="font-size:16px;font-weight:500;">Time Left : 175:05 min</label> -->
               <div *ngIf="config.duration" class="badge badge-primary float-right" style="font-size:16px;font-weight:500;">Time:
                 {{ellapsedTime}} / {{duration}}</div>
             </div>
-            <div class=" col-sm-3 text-right">
+            <!-- <div class=" col-sm-3 text-right">
               <label>Language: </label>
               <select>
                 <option value="english">English</option>
                 <option value="hindi">Hindi</option>
               </select>
-            </div>
+            </div> -->
           </div>
         </div>
         <perfect-scrollbar style="position: relative;width: 100%; max-height: 450px;overflow: auto;">
           <div class="card-body">
-            <h3 class="font-weight-normal">{{pager.index + 1}}.
+            <h3 class="font-weight-normal">
               <!-- <span [innerHTML]="question.name"></span> -->
-              <img [src]="question.name" style="max-height: 300px;width: 100%;" />
+              <img *ngIf="IsEnglish" [src]="question.image_English" style="max-height: 300px;width: 100%;" />
+              <img *ngIf="!IsEnglish" [src]="question.image_Hindi" style="max-height: 300px;width: 100%;" />
             </h3>
             <!-- <img src="http://demo.educationbridge.co.in/Shared/aspnet/Q3.png" /> -->
           </div>
@@ -48,7 +57,7 @@
           <div class="row text-left options">
             <div class="col-sm-2" *ngFor="let option of question.options">
               <div class="option">
-                <mat-checkbox color="primary" id="{{option.id}}" [(ngModel)]="option.selected" (change)="onSelect(question, option);">{{option.name}}</mat-checkbox>
+                <mat-checkbox color="primary" id="{{option.optionID}}" [(ngModel)]="option.selected" (change)="onSelect(question, option);">{{option.option}}</mat-checkbox>
                 <!-- <label class="font-weight-normal" [attr.for]="option.id">
                       <input id="{{option.id}}" type="checkbox" [(ngModel)]="option.selected" (change)="onSelect(question, option);" />{{option.name}}
                     </label> -->

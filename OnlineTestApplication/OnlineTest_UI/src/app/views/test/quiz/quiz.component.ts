@@ -43,6 +43,8 @@ export class QuizComponent implements OnInit {
   ellapsedTime = '00:00';
   duration = '';
 
+  IsEnglish:any;
+  languageName:any;
   constructor(private quizService: QuizService) {
    }
 
@@ -51,8 +53,16 @@ export class QuizComponent implements OnInit {
     this.quizes = this.quizService.getAll();
     this.quizName = this.quizes[0].id;
     this.loadQuiz(this.quizName);
+    this.languageName='english';
+    this.IsEnglish=true;
   }
-
+  changeLanguage(languageName:string)
+  {
+    if(languageName==='english')
+    this.IsEnglish=true;
+    else
+    this.IsEnglish=false;
+  }
   loadQuiz(quizName: string) {
     this.quizService.getQuiz(quizName).subscribe(res => {
       this.quiz = new Quiz(res);
@@ -87,8 +97,8 @@ export class QuizComponent implements OnInit {
   }
 
   onSelect(question: Question, option: Option) {
-    if (question.questionTypeId === 1) {
-      question.options.forEach((x) => { if (x.id !== option.id) x.selected = false; });
+    if (question.questionTypeID === 1) {
+      question.options.forEach((x) => { if (x.questionID !== option.questionID) x.selected = false; });
     }
 
     if (this.config.autoMove) {
@@ -113,7 +123,7 @@ export class QuizComponent implements OnInit {
 
   onSubmit() {
     const answers = [];
-    this.quiz.questions.forEach(x => answers.push({ 'quizId': this.quiz.id, 'questionId': x.id, 'answered': x.answered }));
+    this.quiz.questions.forEach(x => answers.push({ 'quizId': this.quiz.onlineTestID, 'questionId': x.questionID, 'answered': x.answered }));
     // Post your data to the server here. answers contains the questionId and the users' answer.
     console.log(this.quiz.questions);
     this.mode = 'result';
