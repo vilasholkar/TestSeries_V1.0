@@ -167,5 +167,39 @@ namespace DataAccessLayer
                 //return new QuizViewModel() { ErrorMessage = ex.Message };
             }
         }
+
+       public List<StudentOnlineTestViewModel> GetOnlineTestByStudentID(int StudentID)
+        {
+            List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+            sqlParameterList.Add(new SqlParameter("@StudentID", StudentID));
+            DataTable dt = DGeneric.RunSP_ReturnDataSet("sp_GetOnlineTestByStudentID", sqlParameterList, null).Tables[0];
+            return dt.AsEnumerable().Select(s => new StudentOnlineTestViewModel()
+            {
+                EligibleStudentID = Convert.ToInt32(s["EligibleStudentID"]),
+                StudentID = Convert.ToInt32(s["StudentID"]),
+                OnlineTestID = Convert.ToInt32(s["OnlineTestID"]),
+                OnlineTestNo = s["OnlineTestNo"].ToString(),
+                TestSeriesID = Convert.ToInt32(s["TestSeriesID"]),
+                TestTypeID = Convert.ToInt32(s["TestTypeID"]),
+                TestName = s["TestName"].ToString(),
+                TestDuration = s["TestDuration"].ToString(),
+                SessionID = Convert.ToInt32(s["SessionID"]),
+                StreamID = Convert.ToInt32(s["StreamID"]),
+                CourseID = Convert.ToInt32(s["CourseID"]),
+                BatchID = Convert.ToInt32(s["BatchID"]),
+                SubjectID = Convert.ToInt32(s["SubjectID"]),
+                Topic = s["Topic"].ToString(),
+                Instructions = s["Instructions"].ToString(),
+                TestMarks = s["TestMarks"].ToString(),
+                PassingPercentage = s["PassingPercentage"].ToString(),
+                IsNegativeMarking = Convert.ToBoolean(s["IsNegativeMarking"]),
+                IsVisible = Convert.ToBoolean(s["IsVisible"]),
+                StartTime = s["StartTime"].ToString(),
+                EndTime = s["EndTime"].ToString(),
+                StartDate = Convert.ToDateTime(s["StartDate"]),
+                EndDate = Convert.ToDateTime(s["EndDate"]),
+                IsActive = Convert.ToBoolean(s["IsActive"])
+            }).ToList();
+
     }
 }

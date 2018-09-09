@@ -14,5 +14,8 @@ namespace DataAccessLayer
         string DeleteOnlineTest(int OnlineTestId);
         OnlineTestViewModel GetOnlineTestById(int OnlineTestId);
         QuizViewModel GetQuestionsByTestId(int OnlineTestID);
+    	List<StudentOnlineTestViewModel> GetOnlineTestByStudentID(int StudentID);
+
+
     }
 }
