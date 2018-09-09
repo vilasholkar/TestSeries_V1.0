@@ -7,6 +7,14 @@ export const navItems = [
       variant: 'info',
       text: 'NEW'
     }
+  },{
+    title: true,
+    name: 'Student'
+  },
+  {
+    name: 'View Online Test',
+    url: '/student/view-online-test',
+    icon: 'icon-drop'
   },
   {
     title: true,
