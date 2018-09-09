@@ -8,8 +8,8 @@ namespace ViewModels.Question
 {
    public class OptionViewModel
     {
-        public int OptionId { get; set; }
-        public int QuestionId { get; set; }
+        public int OptionID { get; set; }
+        public int QuestionID { get; set; }
         public string Option { get; set; }
         public bool IsAnswer { get; set; }
     }

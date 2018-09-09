@@ -8,10 +8,11 @@ namespace ViewModels.Question
 {
     public class QuestionViewModel
     {
-        public int QuestionId { get; set; }
-        public int QuestionTypeId { get; set; }
+        public int QuestionID { get; set; }
+        public int QuestionTypeID { get; set; }
         public string Image_English { get; set; }
         public string Image_Hindi { get; set; }
+        public string CorrectAnswer { get; set; }
         public List<OptionViewModel> Options { get; set; }
         public QuestionTypeViewModel QuestionType { get; set; }
 
