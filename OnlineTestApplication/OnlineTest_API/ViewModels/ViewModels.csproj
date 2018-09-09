@@ -51,6 +51,7 @@
     <Compile Include="TestType\TestTypeViewModel.cs" />
     <Compile Include="Test\OnlineTestViewModel.cs" />
     <Compile Include="Test\QuizViewModel.cs" />
+    <Compile Include="Test\StudentOnlineTestViewModel.cs" />
     <Compile Include="Test\TestSeriesViewModel.cs" />
     <Compile Include="Test\TestTypeViewModel.cs" />
   </ItemGroup>
