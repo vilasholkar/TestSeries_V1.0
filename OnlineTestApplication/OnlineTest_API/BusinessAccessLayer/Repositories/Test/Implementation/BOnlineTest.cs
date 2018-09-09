@@ -16,7 +16,6 @@ namespace BusinessAccessLayer
         {
             _iDOnlineTest = iDOnlineTest;
         }
-
         public Response<List<OnlineTestViewModel>> GetOnlineTest()
         {
             try
@@ -55,14 +54,10 @@ namespace BusinessAccessLayer
         {
             return _iDOnlineTest.AddUpdateOnlineTest(objOnlineTest);
         }
-
-
         public string DeleteOnlineTest(int OnlineTestId)
         {
             return _iDOnlineTest.DeleteOnlineTest(OnlineTestId);
         }
-
-
         public Response<OnlineTestViewModel> GetOnlineTestById(int OnlineTestId)
         {
             try
@@ -90,6 +85,40 @@ namespace BusinessAccessLayer
             catch (Exception ex)
             {
                 return new Response<OnlineTestViewModel>
+                {
+                    IsSuccessful = false,
+                    Message = ex.Message,
+                    Object = null
+                };
+            }
+        }
+        public Response<QuizViewModel> GetQuestionsByTestId(int OnlineTestID)
+        {
+            try
+            {
+                var questionData = _iDOnlineTest.GetQuestionsByTestId(OnlineTestID);
+                if (questionData != null)
+                {
+                    return new Response<QuizViewModel>
+                    {
+                        IsSuccessful = true,
+                        Object = questionData,
+                        Message = "Success"
+                    };
+                }
+                else
+                {
+                    return new Response<QuizViewModel>
+                    {
+                        IsSuccessful = false,
+                        Message = "error",
+                        Object = null
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Response<QuizViewModel>
                 {
                     IsSuccessful = false,
                     Message = ex.Message,
