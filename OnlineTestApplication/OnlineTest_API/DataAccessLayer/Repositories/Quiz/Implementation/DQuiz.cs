@@ -18,6 +18,16 @@ namespace DataAccessLayer
             try
             {
                 //List<string> optionList = new List<string>();
+
+                //Dictionary<string, List<string>> t = new Dictionary<string, List<string>>();
+                //t.Add("t1", new List<string>() { "Col1", "Col2", "Col3", "Col4" });
+
+                //foreach (var d in t)
+                //{
+                //    string a = d.Key;
+                //    string b = string.Join(",", d.Value);
+                //}
+
                 Dictionary<int, string> optionList = new Dictionary<int, string>();
                 //optionList.Add("A");
                 //optionList.Add("B");
@@ -32,6 +42,7 @@ namespace DataAccessLayer
                 DataTable dt = DGeneric.RunSP_ReturnDataSet("sp_GetQuiz", paramerterList, null).Tables[0];
                 QuizViewModel quizViewModel = new QuizViewModel();
                 quizViewModel.Question = new List<QuestionViewModel>();
+                List<string> answerList = new List<string>();
                 if (dt.Rows.Count > 0)
                 {
                     foreach (DataRow dr in dt.Rows)
@@ -43,19 +54,23 @@ namespace DataAccessLayer
                             quizViewModel.TestDuration = dr["TestDuration"].ToString();
                             quizViewModel.Instructions = dr["Instructions"].ToString();
                             QuestionViewModel questionViewModel = new QuestionViewModel();
-                            questionViewModel.QuestionId = Convert.ToInt32(dr["QuestionId"]);
+                            questionViewModel.QuestionID = Convert.ToInt32(dr["QuestionId"]);
                             questionViewModel.Image_English = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_English"];
                             questionViewModel.Image_Hindi = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_Hindi"];
-                            questionViewModel.QuestionTypeId = Convert.ToInt32(dr["QuestionTypeId"]);
+                            questionViewModel.QuestionTypeID = Convert.ToInt32(dr["QuestionTypeId"]);
+                            answerList = dr["Answer"].ToString().Split(',').Select(s => s.ToString()).ToList();
                             questionViewModel.Options = new List<OptionViewModel>();
                             foreach (var optionItem in optionList)
                             {
-                                questionViewModel.Options.Add(new OptionViewModel()
-                                {
-                                    QuestionId = Convert.ToInt32(dr["QuestionId"]),
-                                    OptionId = optionItem.Key,
-                                    Option = optionItem.Value
-                                });
+                                OptionViewModel optionViewModel = new OptionViewModel();
+                                optionViewModel.QuestionID = Convert.ToInt32(dr["QuestionId"]);
+                                optionViewModel.OptionID = optionItem.Key;
+                                optionViewModel.Option = optionItem.Value;
+                                if (answerList.Any(a => a == optionItem.Value))
+                                    optionViewModel.IsAnswer = true;
+                                else
+                                    optionViewModel.IsAnswer = false;
+                                questionViewModel.Options.Add(optionViewModel);
                             }
                             questionViewModel.QuestionType = new QuestionTypeViewModel()
                             {
@@ -67,19 +82,23 @@ namespace DataAccessLayer
                         else
                         {
                             QuestionViewModel questionViewModel = new QuestionViewModel();
-                            questionViewModel.QuestionId = Convert.ToInt32(dr["QuestionId"]);
+                            questionViewModel.QuestionID = Convert.ToInt32(dr["QuestionId"]);
                             questionViewModel.Image_English = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_English"];
                             questionViewModel.Image_Hindi = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_Hindi"];
-                            questionViewModel.QuestionTypeId = Convert.ToInt32(dr["QuestionTypeId"]);
+                            questionViewModel.QuestionTypeID = Convert.ToInt32(dr["QuestionTypeId"]);
+                            answerList = dr["Answer"].ToString().Split(',').Select(s => s.ToString()).ToList();
                             questionViewModel.Options = new List<OptionViewModel>();
                             foreach (var optionItem in optionList)
                             {
-                                questionViewModel.Options.Add(new OptionViewModel()
-                                {
-                                    QuestionId = Convert.ToInt32(dr["QuestionId"]),
-                                    OptionId = optionItem.Key,
-                                    Option = optionItem.Value
-                                });
+                                OptionViewModel optionViewModel = new OptionViewModel();
+                                optionViewModel.QuestionID = Convert.ToInt32(dr["QuestionId"]);
+                                optionViewModel.OptionID = optionItem.Key;
+                                optionViewModel.Option = optionItem.Value;
+                                if (answerList.Any(a => a == optionItem.Value))
+                                    optionViewModel.IsAnswer = true;
+                                else
+                                    optionViewModel.IsAnswer = false;
+                                questionViewModel.Options.Add(optionViewModel);
                             }
                             questionViewModel.QuestionType = new QuestionTypeViewModel()
                             {
