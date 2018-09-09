@@ -18,6 +18,7 @@ import { ViewQuestionComponent } from './view-question/view-question.component';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+
 @NgModule({
     imports: [
       CommonModule,

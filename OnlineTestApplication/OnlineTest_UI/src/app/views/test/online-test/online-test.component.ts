@@ -4,6 +4,7 @@ import {TestSeriesService} from '../../../services/admin/test-series.service';
 import {TestTypeService} from '../../../services/admin/test-type.service';
 import {Stream,Course,Batch,TestType,Session} from '../../../models/master';
 import {OnlineTest,TestSeries} from '../../../models/test';
+import { MatSnackBar } from "@angular/material";
 
 @Component({
   selector: 'app-online-test',
@@ -11,6 +12,7 @@ import {OnlineTest,TestSeries} from '../../../models/test';
   styleUrls: ['./online-test.component.scss']
 })
 export class OnlineTestComponent implements OnInit {
+  showAddDiv:any;
   stream : Stream;
   course : Course;
   batch : Batch;
@@ -19,9 +21,11 @@ export class OnlineTestComponent implements OnInit {
   session : Session;
   onlineTest: OnlineTest;
   onlineTestModel: any = {};
+  minStartDate = new Date(2018, 0, 1);
+  maxStartDate = new Date(2020, 0, 1);
 
   constructor(private onlineTestService: OnlineTestService, private testTypeService: TestTypeService,
-  private testSeriesService: TestSeriesService) { }
+  private testSeriesService: TestSeriesService,public snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.getOnlineTest();
@@ -30,7 +34,9 @@ export class OnlineTestComponent implements OnInit {
     this.getTestSeries();
     this.getSession();
   }
-
+  changeShowStatus() {
+    this.showAddDiv = !this.showAddDiv;
+  }
   getStream(){
     debugger;
     this.onlineTestService.getStream()
@@ -116,9 +122,8 @@ export class OnlineTestComponent implements OnInit {
         this.getTestType();
         this.getTestSeries();
         this.getSession();
-        //this.showAddDiv = false;
-        alert('Record Added Successfully.');
-        //this.isTestTypeReadonly = true;
+        this.showAddDiv = false;
+        this.openSnackBar("Record Saved Successfully.", "Close");
        }
      }, error => {
        alert('error');
@@ -127,6 +132,7 @@ export class OnlineTestComponent implements OnInit {
   }
   deleteOnlineTest(OnlineTestModel){
     //this.onlineTest = model;
+    if (confirm("Are you sure to delete " + OnlineTestModel.TestName)) {
     this.onlineTestService.deleteOnlineTest(OnlineTestModel.OnlineTestID)
     .subscribe(data => {
       if (data === 'Success') {
@@ -140,8 +146,10 @@ export class OnlineTestComponent implements OnInit {
        console.log(error);
      });
   }
+}
   getOnlineTestById(OnlineTestModel){
     debugger;
+    this.showAddDiv=true;
     this.onlineTestService.getOnlineTestById(OnlineTestModel.OnlineTestID)
     .subscribe(data => {
       if (data.Message === 'Success') {
@@ -157,5 +165,10 @@ export class OnlineTestComponent implements OnInit {
        alert('error');
        console.log(error);
      });
+  }
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 }

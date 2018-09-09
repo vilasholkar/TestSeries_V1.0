@@ -1,5 +1,9 @@
 <div class="animated fadeIn">
-  <div class="row">
+    <button mat-raised-button color="basic" (click)="changeShowStatus()" style="outline: 0px;">
+        <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+        Add New</button>
+      <hr>
+  <div class="row"  *ngIf="showAddDiv">
     <div class="col-sm-12">
       <div class="card">
         <div class="card-header">
@@ -133,7 +137,7 @@
               <div class="col-sm-2">
                 <div class="form-group">
                     <mat-form-field class="example-full-width">
-                        <input [(ngModel)]="onlineTestModel.StartDate" name="StartDate" readonly 
+                        <input [(ngModel)]="onlineTestModel.StartDate" name="StartDate" readonly [min]="minStartDate" [max]="maxStartDate"
                          #StartDate="ngModel" required autocomplete="off" matInput [matDatepicker]="startDatePicker" placeholder="Start Date">
                         <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker #startDatePicker></mat-datepicker>
@@ -209,20 +213,20 @@
               <div class="col-sm-2">
                 <br>
                   <mat-checkbox [(ngModel)]="onlineTestModel.IsNegativeMarking" 
-                  #IsNegativeMarking="ngModel" required name="IsNegativeMarking">Is Negative Marking
+                  #IsNegativeMarking="ngModel" name="IsNegativeMarking">Is Negative Marking
                 </mat-checkbox>
-                <mat-error *ngIf="IsNegativeMarking.invalid && (IsNegativeMarking.dirty || IsNegativeMarking.touched)">
+                <!-- <mat-error *ngIf="IsNegativeMarking.invalid && (IsNegativeMarking.dirty || IsNegativeMarking.touched)">
                   <mat-error *ngIf="IsNegativeMarking.errors.required">IsNegativeMarking is required.</mat-error>
-                </mat-error>
+                </mat-error> -->
             </div>
             <div class="col-sm-2">
               <br>  
               <mat-checkbox [(ngModel)]="onlineTestModel.IsVisible" 
-               #IsVisible="ngModel" required name="IsVisible">Is Visible
+               #IsVisible="ngModel" name="IsVisible">Is Visible
               </mat-checkbox>
-              <mat-error *ngIf="IsVisible.invalid && (IsVisible.dirty || IsVisible.touched)">
+              <!-- <mat-error *ngIf="IsVisible.invalid && (IsVisible.dirty || IsVisible.touched)">
                 <mat-error *ngIf="IsVisible.errors.required">IsVisible is required.</mat-error>
-              </mat-error>
+              </mat-error> -->
           </div>
             </div>
             <div class="row">
@@ -250,7 +254,7 @@
         </div>
         <div class="card-body">
           <div class="table-responsive">
-            <table class="table table-responsive-sm table-hover table-outline">
+            <table class="table table-sm table-hover table-outline">
               <thead class="thead-light">
                 <th>Test No.</th>
                 <th>Test Name</th>
@@ -262,9 +266,9 @@
                                   <th>Course</th>
                                   <th>Batch</th> -->
                 <th>Test Marks</th>
-                <th>Option</th>
-                <th>Option</th>
-                <th>Option</th>
+                <th>View</th>
+                <th>Edit</th>
+                <th>Delete</th>
               </thead>
               <tbody>
                 <tr *ngFor="let onlineTestModel of onlineTest">
@@ -300,13 +304,19 @@
                   </td>
                   <td>
                     <!-- <button class="btn btn-sm btn-info" (click)="viewQuestion(onlineTestModel)">View Question</button> -->
-                    <a routerLink="../view-question/{{onlineTestModel.OnlineTestID}}">View Question</a>
+                    <a routerLink="../view-question/{{onlineTestModel.OnlineTestID}}"><mat-icon aria-label="icon">visibility</mat-icon></a>
                   </td>
                   <td>
-                    <button mat-raised-button color="accent" (click)="getOnlineTestById(onlineTestModel)" aria-hidden="true">Edit</button>
+                    <!-- <button mat-raised-button color="accent" (click)="getOnlineTestById(onlineTestModel)" aria-hidden="true">Edit</button> -->
+                    <button mat-icon-button color="primary" (click)="getOnlineTestById(onlineTestModel)" aria-hidden="true" style="outline: 0px;">
+                        <mat-icon aria-label="icon">edit</mat-icon>
+                      </button>
                   </td>
                   <td>
-                    <button mat-raised-button color="warn"(click)="deleteOnlineTest(onlineTestModel)" aria-hidden="true">Delete</button>
+                    <!-- <button mat-raised-button color="warn"(click)="deleteOnlineTest(onlineTestModel)" aria-hidden="true">Delete</button> -->
+                    <button mat-icon-button color="warn" (click)="deleteOnlineTest(onlineTestModel)" aria-hidden="true" style="outline: 0px;">
+                        <mat-icon aria-label="icon">delete</mat-icon>
+                      </button>
                   </td>
                 </tr>
               </tbody>
@@ -408,7 +418,5 @@
             </div>
           </div> -->
     <!--/.col-->
-  </div>
-  <div>
   </div>
 </div>

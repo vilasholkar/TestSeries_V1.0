@@ -24,7 +24,7 @@
                         <mat-error *ngIf="TestSeries.errors.maxlength">Reaches maximum limit.</mat-error>
                       </mat-error>
                     </mat-form-field>
-                    <input name="TestSeriesID" hidden [(ngModel)]="testSeriesModel.TestSeriesID" TestTypeID="ngModel" id="TestSeriesID" type="text"
+                    <input name="TestSeriesID" hidden [(ngModel)]="testSeriesModel.TestSeriesID" TestSeriesID="ngModel" id="TestSeriesID" type="text"
                       class="form-control">
                   </div>
                 </div>
@@ -50,11 +50,12 @@
       <div class="col-sm-12">
         <div class="card">
           <div class="card-header">
-            <strong>Test Type List</strong>
+            <strong>Test Series List</strong>
           </div>
           <div class="card-body">
-            <table class="table table-hover">
-              <thead>
+              <div class="table-responsive"> 
+                <table class="table table-outline table-striped ">
+              <thead class="thead-light">
                 <th>Test Series</th>
                 <th>Total Test</th>
                 <th>Option</th>
@@ -65,7 +66,7 @@
                     <!-- <input [readonly]="isTestSeriesReadonly" autocomplete="off" value="{{testSeriesModel.TestSeries}}" name="TestSeries" [(ngModel)]="testSeriesModel.TestSeries"
                       TestSeries="ngModel" id="TestSeries" type="text" class="form-control"> -->
                     <mat-form-field class="example-full-width">
-                      <input [readonly]="isTestSeriesReadonly" matInput placeholder="Test Series" value="{{testSeriesModel.TestSeries}}" autocomplete="off"
+                      <input [readonly]="isTestSeriesReadonly" matInput  value="{{testSeriesModel.TestSeries}}" autocomplete="off"
                         name="TestSeries" [(ngModel)]="testSeriesModel.TestSeries" #TestSeries="ngModel" required minlength="3"
                         maxlength="20" type="text">
                       <mat-error *ngIf="TestSeries.invalid && (TestSeries.dirty || TestSeries.touched)">
@@ -77,7 +78,7 @@
                   </td>
                   <td>
                     <mat-form-field class="example-full-width">
-                      <input [readonly]="isTestSeriesReadonly" matInput placeholder="Total Test" value="{{testSeriesModel.TotalTest}}" autocomplete="off"
+                      <input [readonly]="isTestSeriesReadonly" matInput value="{{testSeriesModel.TotalTest}}" autocomplete="off"
                         name="TotalTest" [(ngModel)]="testSeriesModel.TotalTest" #TotalTest="ngModel" required min="1" max="20"
                         type="number">
                       <mat-error *ngIf="TotalTest.invalid && (TotalTest.dirty || TotalTest.touched)">
@@ -111,6 +112,7 @@
               </tbody>
             </table>
           </div>
+        </div>
         </div>
       </div>
     </div>
