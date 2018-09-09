@@ -138,7 +138,7 @@ namespace DataAccessLayer
                             quizViewModel.TestSeries = dr["TestSeries"].ToString();
                             quizViewModel.TestType = dr["TestType"].ToString();
                             quizViewModel.TotalMarks = Convert.ToInt32(dr["TotalMarks"]);
-                            quizViewModel.PassingPercentage = dr["PassingPercentage"].ToString().Replace(" ","");
+                            quizViewModel.PassingPercentage = dr["PassingPercentage"].ToString().Replace(" ", "");
 
                             QuestionViewModel questionViewModel = new QuestionViewModel();
                             questionViewModel.QuestionID = Convert.ToInt32(dr["QuestionId"]);
@@ -168,7 +168,7 @@ namespace DataAccessLayer
             }
         }
 
-       public List<StudentOnlineTestViewModel> GetOnlineTestByStudentID(int StudentID)
+        public List<StudentOnlineTestViewModel> GetOnlineTestByStudentID(int StudentID)
         {
             List<SqlParameter> sqlParameterList = new List<SqlParameter>();
             sqlParameterList.Add(new SqlParameter("@StudentID", StudentID));
@@ -201,5 +201,7 @@ namespace DataAccessLayer
                 IsActive = Convert.ToBoolean(s["IsActive"])
             }).ToList();
 
+        }
     }
 }
+
