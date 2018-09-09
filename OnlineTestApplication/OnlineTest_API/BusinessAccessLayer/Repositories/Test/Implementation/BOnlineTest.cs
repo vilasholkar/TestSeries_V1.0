@@ -126,5 +126,39 @@ namespace BusinessAccessLayer
                 };
             }
         }
+  public Response<List<StudentOnlineTestViewModel>> GetOnlineTestByStudentID(int StudentID)
+        {
+            try
+            {
+                var onlineTestData = _iDOnlineTest.GetOnlineTestByStudentID(StudentID);
+                if (onlineTestData != null)
+                {
+                    return new Response<List<StudentOnlineTestViewModel>>
+                    {
+                        IsSuccessful = true,
+                        Object = onlineTestData,
+                        Message = "Success"
+                    };
+                }
+                else
+                {
+                    return new Response<List<StudentOnlineTestViewModel>>
+                    {
+                        IsSuccessful = false,
+                        Message = "error",
+                        Object = null
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Response<List<StudentOnlineTestViewModel>>
+                {
+                    IsSuccessful = false,
+                    Message = ex.Message,
+                    Object = null
+                };
+            }
+        }
     }
 }
