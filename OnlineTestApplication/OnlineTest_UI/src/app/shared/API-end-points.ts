@@ -14,5 +14,6 @@ export class APIUrl {
     public static GET_OnlineTest = 'api/GetOnlineTest';
     public static DeleteOnlineTest = 'api/DeleteOnlineTest';
     public static GetOnlineTestById = 'api/GetOnlineTestById';
+    public static GetQuestionsByTestId = 'api/GetQuestionsByTestId';
 
 }
