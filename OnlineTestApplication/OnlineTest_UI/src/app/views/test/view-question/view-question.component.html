@@ -15,8 +15,8 @@
               </tr>
               <tr>
                 <td>{{id}}</td>
-                <td>General Test 1</td>
-                <td>General Test</td>
+                <td>{{quizModel.TestName}}</td>
+                <td>{{quizModel.TestSeries}}</td>
               </tr>
               <tr style="font-size: 16px;font-weight: 600;">
                 <td>Test Type</td>
@@ -24,9 +24,9 @@
                 <td>Passing percentage</td>
               </tr>
               <tr>
-                <td>Practise Test</td>
-                <td>720</td>
-                <td>65%</td>
+                <td>{{quizModel.TestType}}</td>
+                <td>{{quizModel.TotalMarks}}</td>
+                <td>{{quizModel.PassingPercentage}}</td>
               </tr>
             </tbody>
           </table>
@@ -60,9 +60,9 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  <tr *ngFor="let questionData of Question">
                     <td valign="top">1</td>
-                    <td valign="top">61</td>
+                    <td valign="top">questionData.QuestionID</td>
                     <td>
                       <table border="0">
                         <tbody>
