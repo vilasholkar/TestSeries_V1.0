@@ -51,6 +51,9 @@ export const routes: Routes = [
     },
     children: [
       {
+        path: 'student',
+        loadChildren: './views/student/student.module#StudentModule'
+      },{
         path: 'test',
         loadChildren: './views/test/test.module#TestModule'
       },
