@@ -1,8 +1,7 @@
 import { Component, OnInit , ElementRef} from '@angular/core';
 import {TestTypeService} from '../../../services/admin/test-type.service';
 import {TestType} from '../../../models/master';
-import { NgForm } from '@angular/forms';
-
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-test-type',
@@ -16,7 +15,7 @@ export class TestTypeComponent implements OnInit {
   testTypeModel: any = {};
   rootNode: any;
   isTestTypeReadonly: any = true;
-  constructor(private testTypeService: TestTypeService, rootNode: ElementRef ) {
+  constructor(private testTypeService: TestTypeService, rootNode: ElementRef , public snackBar: MatSnackBar) {
     this.showAddDiv = false;
     this.rootNode = rootNode;
   }
@@ -36,7 +35,7 @@ export class TestTypeComponent implements OnInit {
          this.testType = data.Object;
        }
      }, error => {
-       alert('error');
+      this.openSnackBar("Error.", "Close");
        console.log(error);
      });
     }
@@ -49,10 +48,10 @@ export class TestTypeComponent implements OnInit {
         this.getTestType();
         this.showAddDiv = false;
         this.isTestTypeReadonly = true;
-        alert('Record Saved Successfully.');
+        this.openSnackBar("Record Saved Successfully.","Close");
        }
      }, error => {
-       alert('error');
+      this.openSnackBar("Error.", "Close");
        console.log(error);
      });
     }
@@ -64,28 +63,35 @@ export class TestTypeComponent implements OnInit {
         this.testTypeModel = {};
         this.getTestType();
         this.showAddDiv = false;
-        alert('Record Added Successfully.');
+        this.openSnackBar("Record Added Successfully.","Close");
         this.isTestTypeReadonly = true;
        }
      }, error => {
-       alert('error');
+      this.openSnackBar("Error.", "Close");
        console.log(error);
      });
     }
     DeleteTestType(model: TestType) {
+      if (confirm("Are you sure to delete " + model.TestTypeName)) {
       this.testType = model;
       this.testTypeService.deleteTestTypeById(this.testType)
      .subscribe(data => {
       if (data === 'Success') {
       this.getTestType();
       this.showAddDiv = false;
-      alert('Record Deleted Successfully.');
+      this.openSnackBar("Record Deleted Successfully.","CLose");
       this.isTestTypeReadonly = true;
       }
      }, error => {
-       alert('error');
+      this.openSnackBar("Error.", "Close");
        console.log(error);
      });
-    }
 
+    }
+  }
+    openSnackBar(message: string, action: string) {
+      this.snackBar.open(message, action, {
+        duration: 2000,
+      });
+    }
 }

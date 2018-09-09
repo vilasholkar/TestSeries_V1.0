@@ -1,9 +1,8 @@
-
 <div class="animated fadeIn">
-  <div class="container">
-    <button class="btn btn-md btn-success" (click)="changeShowStatus()">
-      <strong> Add New</strong>
-    </button>
+  
+      <button mat-raised-button color="basic" (click)="changeShowStatus()" style="outline: 0px;">
+          <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+          Add New</button>
     <hr>
     <div *ngIf="showAddDiv" class="row">
       <div class="col-md-12">
@@ -12,72 +11,83 @@
             <strong class="card-title">Add Test Type</strong>
           </div>
           <div class="card-body">
-            <form id="TestTypeForm" name ="Form1" (ngSubmit)="AddTestType()" #testTypeForm="ngForm">
+            <form id="TestTypeForm" name="Form1" (ngSubmit)="AddTestType()" #testTypeForm="ngForm">
               <div class="row">
-                <div class="col-md-8">
-                  <div class="form-group">
-                    <label>Test Name</label>
-                    <input autocomplete="off" name="TestType" [(ngModel)]="testTypeModel.TestType"
-                     #TestType="ngModel" required minlength="4"  type="text" class="form-control" >
-                    <div *ngIf="TestType.invalid && (TestType.dirty || TestType.touched)"
-                          class="alert alert-danger">
-                        <div *ngIf="TestType.errors.required">
-                          Test Type is required.
-                        </div>
-                        <div *ngIf="TestType.errors.minlength">
-                          This must be at least 4 characters long.
-                        </div>
+                  <div class="col-sm-4">
+                      <div class="form-group">
+                        <mat-form-field class="example-full-width">
+                          <input matInput placeholder="Test Type" autocomplete="off" name="TestType" [(ngModel)]="testTypeModel.TestType" #TestType="ngModel"
+                            required minlength="3" maxlength="20" type="text">
+                          <mat-error *ngIf="TestType.invalid && (TestType.dirty || TestType.touched)">
+                            <mat-error *ngIf="TestType.errors.required">Test Type is required.</mat-error>
+                            <mat-error *ngIf="TestType.errors.minlength">This must be at least 3 characters long.</mat-error>
+                            <mat-error *ngIf="TestType.errors.maxlength">Reaches maximum limit.</mat-error>
+                          </mat-error>
+                        </mat-form-field>
+                        <input name="TestTypeID" hidden [(ngModel)]="testTypeModel.TestTypeID" TestTypeID="ngModel" id="TestTypeID" type="text"
+                          class="form-control">
+                      </div>
                     </div>
-                    <input name="TestTypeID" hidden [(ngModel)]="testTypeModel.TestTypeID" TestTypeID="ngModel" id="TestTypeID" type="text" class="form-control" >
-                  </div>
-                </div>
               </div>
-              <button type="submit" [disabled]="!testTypeForm.form.valid" class="btn btn-primary">Submit</button>
+              <button mat-raised-button color="primary" [disabled]="!testTypeForm.form.valid">Save</button>
+              <!-- <button type="submit" [disabled]="!testTypeForm.form.valid" class="btn btn-primary">Submit</button> -->
             </form>
           </div>
         </div>
       </div>
-    </div>   
-    <div class="row">   
+    </div>
+    <div class="row">
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
-             <strong>Test Type List</strong>
+            <strong>Test Type List</strong>
           </div>
           <div class="card-body">
-          <div class="table-responsive">
-                <table class="table table-hover">
-                  <thead class=" text-primary">
-                    <th>Test Type</th>
-                    <th>Action</th>
-                    <th>Action</th>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let testTypeModel of testType">
-                      <td>
-                      <input [readonly]="isTestTypeReadonly" autocomplete="off" value="{{testTypeModel.TestType}}" name="TestType" [(ngModel)]="testTypeModel.TestType" TestType="ngModel" id="TestType" type="text" class="form-control" >
-                      </td>
-                      <td>
-                        <button (click)="Edit(testTypeModel)" aria-hidden="true" class="btn btn-sm btn-primary">
+            <div class="table-responsive">
+              <table class="table table-outline table-striped ">
+                <thead class="thead-light">
+                  <th>Test Type</th>
+                  <th>Action</th>
+
+                </thead>
+                <tbody>
+                  <tr *ngFor="let testTypeModel of testType">
+                    <td>
+                      <input [readonly]="isTestTypeReadonly" autocomplete="off" value="{{testTypeModel.TestType}}" name="TestType" [(ngModel)]="testTypeModel.TestType"
+                        TestType="ngModel" id="TestType" type="text" class="form-control col-sm-8">
+                    </td>
+                    <td>
+                      <!-- <button (click)="Edit(testTypeModel)" aria-hidden="true" class="btn btn-sm btn-primary">
                         <i class="fa fa-pencil"></i><strong> Edit</strong>
-                       </button>
-                        &nbsp;
+                      </button>
                       <button (click)="UpdateTestType(testTypeModel)" aria-hidden="true" class="btn btn-sm btn-primary">
                         <i class="fa fa-floppy-o"></i><strong> Save</strong>
-                       </button>
-                      </td>
-                      <td>
-                        <button (click)="DeleteTestType(testTypeModel)" class="btn btn-sm btn-danger">
+                      </button>
+                      <button (click)="DeleteTestType(testTypeModel)" class="btn btn-sm btn-danger">
                         <i class="fa fa-trash-o"></i> <strong> Delete</strong>
+                      </button> -->
+
+                      <div class="button-row">
+                        <button mat-icon-button color="primary" (click)="Edit(testTypeModel)" aria-hidden="true" style="outline: 0px;">
+                          <mat-icon aria-label="icon">edit</mat-icon>
                         </button>
-                      </td>
-                    </tr>
-                    </tbody>
-                </table>
-          </div>
+                        <button mat-icon-button color="primary" (click)="UpdateTestType(testTypeModel)" aria-hidden="true" style="outline: 0px;">
+                          <mat-icon aria-label="icon">done</mat-icon>
+                        </button>
+                        <!-- <button mat-icon-button color="primary" style="outline: 0px;">
+                              <mat-icon aria-label="icon">clear</mat-icon>
+                            </button> -->
+                        <button mat-icon-button color="warn" (click)="DeleteTestType(testTypeModel)" aria-hidden="true" style="outline: 0px;">
+                          <mat-icon aria-label="icon">delete</mat-icon>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
-    </div>  
-  </div>
+    </div>
 </div>
