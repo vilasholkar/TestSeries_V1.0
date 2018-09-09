@@ -13,6 +13,6 @@ namespace DataAccessLayer
         string AddUpdateOnlineTest(OnlineTestViewModel objOnlineTest);
         string DeleteOnlineTest(int OnlineTestId);
         OnlineTestViewModel GetOnlineTestById(int OnlineTestId);
-
+        QuizViewModel GetQuestionsByTestId(int OnlineTestID);
     }
 }
