@@ -1,5 +1,5 @@
 import { Option } from './option';
-
+import {QuestionType} from './QuestionType'
 export class Question {
     questionID: number;
     questionTypeID: number;
@@ -7,11 +7,12 @@ export class Question {
     image_Hindi: string;
     options: Option[];
     answered: boolean;
-
+    
+    
     constructor(data: any) {
         data = data || {};
-        this.questionID = data.QuestionID;
-        this.questionTypeID = data.QuestionTypeID;
+        this.questionID = data.QuestionId;
+        this.questionTypeID = data.QuestionTypeId;
         this.image_English = data.Image_English;
         this.image_Hindi = data.Image_Hindi;
         this.options = [];

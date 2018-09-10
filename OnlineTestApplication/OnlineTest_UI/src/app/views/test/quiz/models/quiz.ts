@@ -8,7 +8,7 @@ export class Quiz {
     testDuration:string;
     config: QuizConfig;
     questions: Question[];
-
+    
     constructor(data: any) {
         if (data) {
             this.onlineTestID = data.OnlineTestID;
