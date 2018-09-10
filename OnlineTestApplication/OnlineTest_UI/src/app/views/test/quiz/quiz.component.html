@@ -4,16 +4,12 @@
       <h3>{{quiz.testName}}</h3>
     </div>
     <div class="col-6 text-right">
-      <!-- Select Quiz:
-      <select [(ngModel)]="quizName" (change)="loadQuiz(quizName)">
-        <option *ngFor="let quiz of quizes" [value]="quiz.id">{{quiz.name}}</option>
-      </select> -->
       <label>Language: </label>
               <select [(ngModel)]="languageName" (change)="changeLanguage(languageName)">
                 <option value="english">English</option>
                 <option value="hindi">Hindi</option>
               </select>
-    </div>
+      </div>
   </div>
   <div id="quiz" class="row" style="margin-left:-35px;margin-right:-35px;">
     <div class="col-sm-9" *ngIf="mode=='quiz' && quiz">
@@ -22,82 +18,57 @@
           <div class="row">
             <div class="col-sm-5">
               <div class="badge badge-primary" style="font-size:16px">
-                <!-- Question {{pager.index + 1}} of {{pager.count}}. -->
                Que. No. {{pager.index + 1}}.
               </div>
             </div>
-            <!-- <div class="col-sm-3">
-              <h4 class="text-center font-weight-normal">{{quiz.testName}}</h4>
-            </div> -->
             <div class="col-sm-7 text-right">
-              <!-- <label style="font-size:16px;font-weight:500;">Time Left : 175:05 min</label> -->
               <div *ngIf="config.duration" class="badge badge-primary float-right" style="font-size:16px;font-weight:500;">Time:
                 {{ellapsedTime}} / {{duration}}</div>
             </div>
-            <!-- <div class=" col-sm-3 text-right">
-              <label>Language: </label>
-              <select>
-                <option value="english">English</option>
-                <option value="hindi">Hindi</option>
-              </select>
-            </div> -->
           </div>
         </div>
         <perfect-scrollbar style="position: relative;width: 100%; max-height: 450px;overflow: auto;">
           <div class="card-body">
             <h3 class="font-weight-normal">
-              <!-- <span [innerHTML]="question.name"></span> -->
               <img *ngIf="IsEnglish" [src]="question.image_English" style="max-height: 300px;width: 100%;" />
               <img *ngIf="!IsEnglish" [src]="question.image_Hindi" style="max-height: 300px;width: 100%;" />
             </h3>
-            <!-- <img src="http://demo.educationbridge.co.in/Shared/aspnet/Q3.png" /> -->
           </div>
         </perfect-scrollbar>
         <div class="card-footer">
           <div class="row text-left options">
             <div class="col-sm-2" *ngFor="let option of question.options">
-              <div class="option">
+              <div *ngIf="!QuestionTypeIsSingleChoice" class="option">
                 <mat-checkbox color="primary" id="{{option.optionID}}" [(ngModel)]="option.selected" (change)="onSelect(question, option);">{{option.option}}</mat-checkbox>
-                <!-- <label class="font-weight-normal" [attr.for]="option.id">
-                      <input id="{{option.id}}" type="checkbox" [(ngModel)]="option.selected" (change)="onSelect(question, option);" />{{option.name}}
-                    </label> -->
               </div>
+              <div *ngIf="QuestionTypeIsSingleChoice" class="option">
+                <mat-radio-button 
+                  [value]="option.optionID" 
+                  ngDefaultControl color="primary" 
+                  [(ngModel)]="option.selected" 
+                  name="option.selected"
+                  (click)="onSelect(question, option);">
+                  {{option.option}}
+                </mat-radio-button>
+              </div>   
             </div>
-          </div>
-          <mat-radio-group class="row" hidden>
-            <mat-radio-button class="col-sm-2" color="primary" value="1">Option 1</mat-radio-button>
-            <mat-radio-button class="col-sm-2" color="primary" value="2">Option 2</mat-radio-button>
-            <mat-radio-button class="col-sm-2" color="primary" value="3">Option 3</mat-radio-button>
-            <mat-radio-button class="col-sm-2" color="primary" value="4">Option 4</mat-radio-button>
-          </mat-radio-group>
-          <div class="row" hidden>
-            <mat-checkbox class="col-sm-2" color="primary">Option A</mat-checkbox>
-            <mat-checkbox class="col-sm-2" color="primary">Option B</mat-checkbox>
-            <mat-checkbox class="col-sm-2" color="primary">Option C</mat-checkbox>
-            <mat-checkbox class="col-sm-2" color="primary">Option D</mat-checkbox>
           </div>
           <hr/>
           <button mat-raised-button color="primary" *ngIf="config.allowBack" (click)="goTo(pager.index - 1);">Previous</button>
           <button mat-raised-button color="accent">Mark for Review & Next</button>
-          <button mat-raised-button>Clear Response</button>
-          <button mat-raised-button class="float-right" color="primary" (click)="goTo(pager.index + 1);">Save & Next</button>
-          <!--         
-          <button class="btn btn-default" *ngIf="config.allowBack" (click)="goTo(0);">First</button>
-      <button class="btn btn-default" *ngIf="config.allowBack" (click)="goTo(pager.index - 1);">Prev</button>
-      <button class="btn btn-primary" (click)="goTo(pager.index + 1);">Next</button>
-      <button class="btn btn-default" *ngIf="config.allowBack" (click)="goTo(pager.count - 1);">Last</button>
-       -->
+          <button mat-raised-button color="primary" (click)="goTo(pager.index + 1);">Save & Next</button>
+          <!-- <botton mat-raised-button color="primary" (click)="resetAnswer()">Reset</button> -->
+
         </div>
       </div>
     </div>
     <div class="col-sm-3">
-      <!-- *ngIf="mode=='review'" -->
       <div class="card card-accent-primary">
         <div class="card-header text-center" style="padding: 10px;">
           <mat-button-toggle-group name="fontStyle" aria-label="Font Style" value="Physics">
-            <mat-button-toggle value="Physics">Physics</mat-button-toggle>
-            <mat-button-toggle value="Chemistry">Chemistry</mat-button-toggle>
-            <mat-button-toggle value="Biology">Biology</mat-button-toggle>
+            <mat-button-toggle (click)="goTo(0)" value="Physics">Physics</mat-button-toggle>
+            <mat-button-toggle (click)="goTo(2)" value="Chemistry">Chemistry</mat-button-toggle>
+            <mat-button-toggle (click)="goTo(4)" value="Biology">Biology</mat-button-toggle>
           </mat-button-toggle-group>
         </div>
         <perfect-scrollbar style="position: relative;width: 100%; max-height: 418px;overflow: auto;">
@@ -107,14 +78,13 @@
             <button mat-raised-button color="accent" matTooltip="Mark for Review">7</button>
             <button mat-raised-button color="primary" matTooltip="Answered">45</button>
             <hr/>
-            <!-- <button mat-raised-button>1</button> -->
-            <button *ngFor="let question of quiz.questions; let index = index;" mat-raised-button (click)="goTo(index)" color="{{ isAnswered(question) == 'Answered'? 'primary': '' }}">{{index+
+            <button *ngFor="let question of quiz.questions; let index = index;" mat-raised-button (click)="goTo(index)" color="{{ isAnswered(question) == 'Answered'? 'primary': 'warn' }}">{{index+
               1}}
             </button>
           </div>
         </perfect-scrollbar>
         <div class="card-footer">
-          <div class="text-center"> <button mat-raised-button class="float-center" color="primary" >Submit</button>
+          <div class="text-center"> <button mat-raised-button (click)="onSubmit();" class="float-center" color="primary" >Submit</button>
           </div>
         </div>
       </div>
@@ -145,7 +115,7 @@
   </div>
 </div>
 
-<div class="row" hidden>
+<!-- <div class="row" hidden>
   <div class="col-6">
     <h3>Quiz Application</h3>
   </div>
@@ -164,7 +134,6 @@
       <div class="badge badge-info">Question {{pager.index + 1}} of {{pager.count}}.</div>
       <div *ngIf="config.duration" class="badge badge-info float-right">Time: {{ellapsedTime}} / {{duration}}</div>
       <h3 class="font-weight-normal">{{pager.index + 1}}.
-        <!-- <span [innerHTML]="question.name"></span> -->
         <img [src]="question.name" style="height: 200px;width: 100%;" />
       </h3>
       <div class="row text-left options">
@@ -183,7 +152,6 @@
       <button class="btn btn-default" *ngIf="config.allowBack" (click)="goTo(pager.index - 1);">Prev</button>
       <button class="btn btn-primary" (click)="goTo(pager.index + 1);">Next</button>
       <button class="btn btn-default" *ngIf="config.allowBack" (click)="goTo(pager.count - 1);">Last</button>
-      <!-- <pagination *ngIf="config.showPager" direction-links="false" total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" ng-change="pageChanged()"></pagination> -->
     </div>
   </div>
 
@@ -215,133 +183,5 @@
     <button class="btn btn-default" (click)="mode = 'quiz'">Quiz</button>
     <button class="btn btn-info" (click)="mode = 'review'">Review</button>
     <button class="btn btn-primary" (click)="onSubmit();">Submit Quiz</button>
-  </div>
-</div>
-
-<!-- <div class="animated fadeIn">
-  <div class="row" style="margin-left:-35px;margin-right:-35px;">
-    <div class="col-sm-9">
-      <div class="card card-accent-primary" style="height:550px">
-        <div class="card-header">
-          <div class="row">
-            <div class="col-sm-4">
-              <div class="badge badge-primary" style="font-size:16px">Question 1 of 15.</div>
-            </div>
-            <div class="col-sm-5 text-right">
-              <label style="font-size:16px;font-weight:500;">Time Left : 175:05 min</label>
-            </div>
-            <div class=" col-sm-3 text-right">
-              <label>Language: </label>
-              <select>
-                <option value="english">English</option>
-                <option value="hindi">Hindi</option>
-              </select>
-            </div>
-          </div>
-
-        </div>
-        <perfect-scrollbar style="position: relative;width: 100%; max-height: 450px;overflow: auto;">
-          <div class="card-body">
-            <img src="http://demo.educationbridge.co.in/Shared/aspnet/Q3.png" />
-          </div>
-        </perfect-scrollbar>
-        <div class="card-footer">
-          <mat-radio-group class="row">
-            <mat-radio-button class="col-sm-2" color="primary" value="1">Option 1</mat-radio-button>
-            <mat-radio-button class="col-sm-2" color="primary" value="2">Option 2</mat-radio-button>
-            <mat-radio-button class="col-sm-2" color="primary" value="3">Option 3</mat-radio-button>
-            <mat-radio-button class="col-sm-2" color="primary" value="4">Option 4</mat-radio-button>
-          </mat-radio-group>
-          <div class="row" hidden>
-            <mat-checkbox class="col-sm-2" color="primary">Option A</mat-checkbox>
-            <mat-checkbox class="col-sm-2" color="primary">Option B</mat-checkbox>
-            <mat-checkbox class="col-sm-2" color="primary">Option C</mat-checkbox>
-            <mat-checkbox class="col-sm-2" color="primary">Option D</mat-checkbox>
-          </div>
-          <hr/>
-          <button mat-raised-button color="primary">Previous</button>
-          <button mat-raised-button color="accent">Mark for Review & Next</button>
-          <button mat-raised-button>Clear Response</button>
-          <button mat-raised-button class="float-right" color="primary">Save & Next</button>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-3">
-      <div class="card card-accent-primary">
-        <div class="card-header text-center" style="padding: 10px;">
-          <mat-button-toggle-group name="fontStyle" aria-label="Font Style" value="Physics">
-            <mat-button-toggle value="Physics">Physics</mat-button-toggle>
-            <mat-button-toggle value="Chemistry">Chemistry</mat-button-toggle>
-            <mat-button-toggle value="Biology">Biology</mat-button-toggle>
-          </mat-button-toggle-group>
-        </div>
-        <perfect-scrollbar style="position: relative;width: 100%; max-height: 418px;overflow: auto;">
-          <div class="card-body text-center">
-            <button mat-raised-button matTooltip="Not Visited">5</button>
-            <button mat-raised-button color="warn" matTooltip="Not Answered">12</button>
-            <button mat-raised-button color="accent" matTooltip="Mark for Review">7</button>
-            <button mat-raised-button color="primary" matTooltip="Answered">45</button>
-            <hr/>
-            <button mat-raised-button>1</button>
-            <button mat-raised-button>2</button>
-            <button mat-raised-button>3</button>
-            <button mat-raised-button>4</button>
-            <button mat-raised-button>5</button>
-            <button mat-raised-button>5</button>
-            <button mat-raised-button>5</button>
-            <button mat-raised-button>5</button>
-            <button mat-raised-button>5</button>
-            <button mat-raised-button>5</button>
-            <button mat-raised-button>60</button>
-            <button mat-raised-button>70</button>
-            <button mat-raised-button>80</button>
-            <button mat-raised-button>10</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>1</button>
-            <button mat-raised-button>2</button>
-            <button mat-raised-button>3</button>
-            <button mat-raised-button>4</button>
-            <button mat-raised-button>5</button>
-            <button mat-raised-button>5</button>
-            <button mat-raised-button>5</button>
-            <button mat-raised-button>5</button>
-            <button mat-raised-button>5</button>
-            <button mat-raised-button>5</button>
-            <button mat-raised-button>60</button>
-            <button mat-raised-button>70</button>
-            <button mat-raised-button>80</button>
-            <button mat-raised-button>10</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>11</button>
-            <button mat-raised-button>11</button>
-          </div>
-        </perfect-scrollbar>
-        <div class="card-footer">
-          <div class="text-center"> <button mat-raised-button class="float-center" color="primary">Submit</button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </div> -->
