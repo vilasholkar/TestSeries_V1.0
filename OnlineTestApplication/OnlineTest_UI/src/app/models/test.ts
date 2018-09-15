@@ -52,3 +52,12 @@ export interface Question {
     CreatedByUserID: any;
     CreatedOnDate: any;
 }
+export interface EligibleStudent{
+    StudentID: any;
+    OnlineTestID: any;
+    EnrollmentNo: any;
+    StudentName: any;
+    Gender: any;
+    MobileNumber: any;
+    FatherMobileNo: any;
+}
