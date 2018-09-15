@@ -1,0 +1,67 @@
+<div class="card">
+<div class="card-header">
+  <strong class="card-header">Eligible Student</strong>
+</div>
+<div class="card-body">
+<table class="table table-sm table-hover table-outline">
+  <thead class="thead-light">
+    <th><mat-checkbox></mat-checkbox></th>
+    <th>Enrollment No</th>
+    <th>Student Name</th>
+    <th>Gender</th>
+    <th>Mobile No</th>
+    <!-- <th>Duration</th>
+    <th>Start Date</th>
+    <th>Test Marks</th>
+    <th>View</th>
+    <th>Edit</th>
+    <th>Delete</th> -->
+  </thead>
+  <tbody>
+    <tr *ngFor="let eligibleStudentData of eligibleStudent">
+      <td>
+          <mat-checkbox checked="true"></mat-checkbox>
+      </td>
+      <td>
+        {{eligibleStudentData.EnrollmentNo}}
+      </td>
+       <td>
+        {{eligibleStudentData.StudentName}}            
+      </td>
+      <td>
+        {{eligibleStudentData.Gender}}            
+      </td>
+      <td>
+        {{eligibleStudentData.MobileNumber}}            
+      </td>
+      <!-- <td>
+        {{onlineTestModel.TestDuration}}                    
+      </td>
+      <td>
+        {{onlineTestModel.StartDate | date: 'dd/MM/yyyy'}}                    
+      </td>
+      <td>
+        {{onlineTestModel.TestMarks}}                    
+      </td>
+      <td>
+        <a routerLink="../view-question/{{onlineTestModel.OnlineTestID}}"><mat-icon aria-label="icon">visibility</mat-icon></a>
+        <a routerLink="../eligible-student/{{onlineTestModel.OnlineTestID}}"><mat-icon aria-label="icon">visibility</mat-icon></a>
+      </td>
+      <td>
+        <button mat-icon-button color="primary" (click)="getOnlineTestById(onlineTestModel)" aria-hidden="true" style="outline: 0px;">
+            <mat-icon aria-label="icon">edit</mat-icon>
+          </button>
+      </td>
+      <td>
+        <button mat-icon-button color="warn" (click)="deleteOnlineTest(onlineTestModel)" aria-hidden="true" style="outline: 0px;">
+            <mat-icon aria-label="icon">delete</mat-icon>
+          </button>
+      </td> -->
+    </tr>
+  </tbody>
+</table>
+  <button mat-raised-button color="primary" (click)="addEligibleStudent()" style="outline: 0px;">
+      <mat-icon aria-label="Example icon-button with a heart icon">save</mat-icon>
+      Save</button>
+</div>
+</div>
