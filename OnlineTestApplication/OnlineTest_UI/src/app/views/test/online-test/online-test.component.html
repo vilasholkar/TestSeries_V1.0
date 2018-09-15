@@ -304,7 +304,8 @@
                   </td>
                   <td>
                     <!-- <button class="btn btn-sm btn-info" (click)="viewQuestion(onlineTestModel)">View Question</button> -->
-                    <a routerLink="../view-question/{{onlineTestModel.OnlineTestID}}"><mat-icon aria-label="icon">visibility</mat-icon></a>
+                    <a mat-icon-button color="primary" routerLink="../view-question/{{onlineTestModel.OnlineTestID}}"><mat-icon aria-label="icon">visibility</mat-icon></a>
+                    <a mat-icon-button color="primary" routerLink="../eligible-student/{{onlineTestModel.OnlineTestID}}"><mat-icon aria-label="icon">person_add</mat-icon></a>
                   </td>
                   <td>
                     <!-- <button mat-raised-button color="accent" (click)="getOnlineTestById(onlineTestModel)" aria-hidden="true">Edit</button> -->
