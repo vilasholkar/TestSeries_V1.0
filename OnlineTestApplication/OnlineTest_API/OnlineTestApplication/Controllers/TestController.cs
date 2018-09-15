@@ -15,11 +15,13 @@ namespace OnlineTestApplication.Controllers
     {
         private readonly IBTestSeries _iBTestSeries;
         private readonly IBOnlineTest _iBOnlineTest;
+        private readonly IBEligibleStudent _iBEligibleStudent;
 
-        public TestController(IBTestSeries iBTestSeries, IBOnlineTest iBOnlineTest)
+        public TestController(IBTestSeries iBTestSeries, IBOnlineTest iBOnlineTest, IBEligibleStudent iBEligibleStudent)
         {
             _iBTestSeries = iBTestSeries;
             _iBOnlineTest = iBOnlineTest;
+            _iBEligibleStudent = iBEligibleStudent;
         }
 
         #region Test Series
@@ -85,6 +87,15 @@ namespace OnlineTestApplication.Controllers
         public HttpResponseMessage GetOnlineTestByStudentID(int StudentID)
         {
             return Request.CreateResponse(HttpStatusCode.OK, _iBOnlineTest.GetOnlineTestByStudentID(StudentID));
+        }
+        #endregion
+
+        #region EligibleStudent
+        [HttpGet]
+        [Route("api/GetEligibleStudent", Name = "GetEligibleStudent")]
+        public HttpResponseMessage GetEligibleStudent(int OnlineTestID)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, _iBEligibleStudent.GetEligibleStudent(OnlineTestID));
         }
         #endregion
     }
