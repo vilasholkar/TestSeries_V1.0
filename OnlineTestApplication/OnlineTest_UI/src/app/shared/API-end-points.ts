@@ -17,4 +17,5 @@ export class APIUrl {
     public static GetQuestionsByTestId = 'api/GetQuestionsByTestId';
 public static GetOnlineTestByStudentID = 'api/GetOnlineTestByStudentID';
 public static Submit_Quiz = "api/SubmitQuiz";
+public static GetEligibleStudent = 'api/GetEligibleStudent';
 }
