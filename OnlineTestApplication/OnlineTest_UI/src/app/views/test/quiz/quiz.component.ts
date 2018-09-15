@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 // import { QuizService } from '../../../services/admin/quiz.service';
 import { QuizService } from '../../../services/admin/quiz.service';
@@ -44,13 +45,20 @@ export class QuizComponent implements OnInit {
   duration = '';
   IsEnglish:any;
   languageName:any;
-  constructor(private quizService: QuizService) {
-   }
+  testID:any;
 
+  constructor(private route: ActivatedRoute,private quizService: QuizService) {
+   }
   ngOnInit() {
+debugger;
+    this.testID= +this.route.snapshot.paramMap.get('testID');
+
     this.quizes = this.quizService.getAll();
     this.quizName = this.quizes[0].id;
-    this.loadQuiz(this.quizName);
+   
+
+    this.loadQuiz(this.testID);
+    
     this.languageName = 'english';
     this.IsEnglish = true;
   }
@@ -61,8 +69,9 @@ export class QuizComponent implements OnInit {
     else
     this.IsEnglish=false;
   }
-  loadQuiz(quizName: string) {
-    this.quizService.getQuiz(quizName).subscribe(res => {
+  
+  loadQuiz(testID: any) {
+    this.quizService.getQuiz(testID).subscribe(res => {
       this.quiz = new Quiz(res);
       console.log("res",res)
       console.log(this.quiz);

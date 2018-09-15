@@ -31,6 +31,7 @@ export interface OnlineTest {
     IsActive: any;
     CreatedByUserID: any;
 }
+
 export interface Question {
     QuestionID: any;
     QuestionNo: any;

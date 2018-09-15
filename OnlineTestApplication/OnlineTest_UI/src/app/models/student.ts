@@ -1,6 +1,6 @@
 export interface StudentOnlineTest {
     
-    StudentTestID: any;
+    EligibleStudentID: any;
     StudentID: any;
     OnlineTestID: any;
     OnlineTestNo: any;
@@ -27,4 +27,5 @@ export interface StudentOnlineTest {
     IsVisible: any;
     IsActive: any;
     CreatedByUserID: any;
+    CreatedOnDate: any;
 }

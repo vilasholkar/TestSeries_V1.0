@@ -32,7 +32,7 @@ export const navItems = [
   },
    {
     name: 'Start Quiz',
-    url: '/test/quiz',
+    url: '/test/quiz/1',
     icon: 'icon-pencil'
   },
   {

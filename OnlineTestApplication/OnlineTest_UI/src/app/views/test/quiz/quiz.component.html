@@ -66,6 +66,7 @@
       <div class="card card-accent-primary">
         <div class="card-header text-center" style="padding: 10px;">
           <mat-button-toggle-group name="fontStyle" aria-label="Font Style" value="Physics">
+          
             <mat-button-toggle (click)="goTo(0)" value="Physics">Physics</mat-button-toggle>
             <mat-button-toggle (click)="goTo(2)" value="Chemistry">Chemistry</mat-button-toggle>
             <mat-button-toggle (click)="goTo(4)" value="Biology">Biology</mat-button-toggle>
@@ -78,12 +79,15 @@
             <button mat-raised-button color="accent" matTooltip="Mark for Review">7</button>
             <button mat-raised-button color="primary" matTooltip="Answered">45</button>
             <hr/>
+         
+            
             <button *ngFor="let question of quiz.questions; let index = index;" mat-raised-button (click)="goTo(index)" color="{{ isAnswered(question) == 'Answered'? 'primary': 'warn' }}">{{index+
               1}}
             </button>
           </div>
         </perfect-scrollbar>
         <div class="card-footer">
+          
           <div class="text-center"> <button mat-raised-button (click)="onSubmit();" class="float-center" color="primary" >Submit</button>
           </div>
         </div>
@@ -114,6 +118,7 @@
     </div>
   </div>
 </div>
+
 
 <!-- <div class="row" hidden>
   <div class="col-6">

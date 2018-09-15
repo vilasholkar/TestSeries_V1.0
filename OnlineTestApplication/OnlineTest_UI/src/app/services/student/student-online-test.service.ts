@@ -24,7 +24,7 @@ export class StudentOnlineTestService {
   getOnlineTestByStudentID(StudentID: number): Observable<any>{
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     this.options = new RequestOptions({ headers: this.headers });
-    debugger;
+    // debugger;
     return this.http.get(HostName.API_StartPoint + APIUrl.GetOnlineTestByStudentID+"?StudentID="+StudentID)
       .map((response: Response) => {
         const data = response;

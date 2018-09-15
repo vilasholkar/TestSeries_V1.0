@@ -16,8 +16,9 @@ export class QuizService {
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     this.options = new RequestOptions({ headers: this.headers });
 }
-  getQuiz(quizId: string): Observable<any> {
-    return this.http.get(HostName.API_StartPoint + APIUrl.GET_Quiz + '?quizName=' + quizId)
+  getQuiz(testID: any): Observable<any> {
+    debugger;
+    return this.http.get(HostName.API_StartPoint + APIUrl.GET_Quiz + '?testID=' + testID)
         .map((response: Response) => {
             const data = response;
             return data;
