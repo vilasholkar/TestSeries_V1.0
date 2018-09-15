@@ -61,7 +61,7 @@ namespace OnlineTestApplication.Controllers
         //}
         [HttpGet]
         [Route("api/GetQuiz", Name = "GetQuiz")]
-        public HttpResponseMessage GetQuiz(string quizName)
+        public HttpResponseMessage GetQuiz(string testID)
         {
             return Request.CreateResponse(_iBQuiz.GetQuiz(1));
         }
