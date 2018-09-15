@@ -35,6 +35,9 @@ namespace OnlineTestApplication
             container.RegisterType<IDQuiz, DQuiz>();
             container.RegisterType<IBQuiz, BQuiz>();
 
+            container.RegisterType<IDEligibleStudent, DEligibleStudentcs>();
+            container.RegisterType<IBEligibleStudent, BEligibleStudent>();
+
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }
     }
