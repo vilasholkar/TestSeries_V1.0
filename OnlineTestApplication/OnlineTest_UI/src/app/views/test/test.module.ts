@@ -18,6 +18,7 @@ import { ViewQuestionComponent } from './view-question/view-question.component';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { EligibleStudentComponent } from './eligible-student/eligible-student.component';
 
 @NgModule({
     imports: [
@@ -31,7 +32,8 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
       TestSeriesComponent,
       OnlineTestComponent,
       ViewQuestionComponent,
-      QuizComponent
+      QuizComponent,
+      EligibleStudentComponent
     ],
     providers: [HttpClientModule,TestSeriesService,TestTypeService]
   })
