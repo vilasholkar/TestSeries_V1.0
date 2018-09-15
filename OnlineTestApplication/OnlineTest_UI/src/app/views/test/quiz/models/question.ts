@@ -6,8 +6,6 @@ export class Question {
     image_Hindi: string;
     options: Option[];
     answered: boolean;
-    
-    
     constructor(data: any) {
         data = data || {};
         this.questionID = data.QuestionId;

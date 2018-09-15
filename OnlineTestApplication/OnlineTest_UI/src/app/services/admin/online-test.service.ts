@@ -20,7 +20,6 @@ export class OnlineTestService {
   this.options = new RequestOptions({ headers: this.headers });
    }
    getStream(): Observable<any> {
-    debugger;
     return this.http.get(HostName.API_StartPoint + APIUrl.GET_Stream)
       .map((response: Response) => {
         const data = response;
@@ -33,7 +32,7 @@ export class OnlineTestService {
   getCourseByStream(StreamId: any): Observable<any> {
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     this.options = new RequestOptions({ headers: this.headers });
-    debugger;
+     
     return this.http.get(HostName.API_StartPoint + APIUrl.GET_CourseByStream+"?StreamId="+StreamId)
       .map((response: Response) => {
         const data = response;
@@ -46,7 +45,7 @@ export class OnlineTestService {
   getBatchByCourse(CourseId: any): Observable<any> {
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     this.options = new RequestOptions({ headers: this.headers });
-    debugger;
+     
     return this.http.get(HostName.API_StartPoint + APIUrl.GET_BatchByCourse+"?CourseId="+CourseId)
       .map((response: Response) => {
         const data = response;
@@ -57,7 +56,7 @@ export class OnlineTestService {
       });
   }
   getOnlineTest(): Observable<any> {
-    debugger;
+     
     return this.http.get(HostName.API_StartPoint + APIUrl.GET_OnlineTest)
       .map((response: Response) => {
         const data = response;
@@ -70,7 +69,7 @@ export class OnlineTestService {
   addUpdateOnlineTest(OnlineTest: any): Observable<any>{
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     this.options = new RequestOptions({ headers: this.headers });
-    debugger;
+     
     return this.http.post(HostName.API_StartPoint + APIUrl.AddUpdateOnlineTest,OnlineTest)
       .map((response: Response) => {
         const data = response;
@@ -81,7 +80,7 @@ export class OnlineTestService {
       });
   }
   getSession(): Observable<any> {
-    debugger;
+     
     return this.http.get(HostName.API_StartPoint + APIUrl.GET_Session)
       .map((response: Response) => {
         const data = response;
@@ -94,7 +93,7 @@ export class OnlineTestService {
   deleteOnlineTest(OnlineTestId: number): Observable<any>{
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     this.options = new RequestOptions({ headers: this.headers });
-    debugger;
+     
     return this.http.post(HostName.API_StartPoint + APIUrl.DeleteOnlineTest,OnlineTestId)
       .map((response: Response) => {
         const data = response;
@@ -107,7 +106,7 @@ export class OnlineTestService {
   getOnlineTestById(OnlineTestId: number): Observable<any>{
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     this.options = new RequestOptions({ headers: this.headers });
-    debugger;
+     
     return this.http.get(HostName.API_StartPoint + APIUrl.GetOnlineTestById+"?OnlineTestId="+OnlineTestId)
       .map((response: Response) => {
         const data = response;

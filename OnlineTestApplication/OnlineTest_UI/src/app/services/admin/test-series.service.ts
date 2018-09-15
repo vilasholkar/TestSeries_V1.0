@@ -19,7 +19,7 @@ export class TestSeriesService {
     this.options = new RequestOptions({ headers: this.headers });
   }
   getTestSeries(): Observable<any> {
-    debugger
+     
     return this.http.get(HostName.API_StartPoint + APIUrl.GET_TestSeries)
       .map((response: Response) => {
         const data = response;

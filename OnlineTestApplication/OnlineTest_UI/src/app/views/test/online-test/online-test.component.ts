@@ -38,7 +38,7 @@ export class OnlineTestComponent implements OnInit {
     this.showAddDiv = !this.showAddDiv;
   }
   getStream(){
-    debugger;
+     
     this.onlineTestService.getStream()
     .subscribe(data => {
       if(data.Message === 'Success')
@@ -48,7 +48,7 @@ export class OnlineTestComponent implements OnInit {
     })
   }
   getTestType() {
-    debugger;
+     
     this.testTypeService.getTestTypes()
     .subscribe(data => {
      if (data.Message === 'Success') {
@@ -71,7 +71,7 @@ export class OnlineTestComponent implements OnInit {
       });
   }
   getSession(){
-    debugger;
+     
     this.onlineTestService.getSession()
     .subscribe(data => {
       if(data.Message === 'Success')
@@ -81,7 +81,7 @@ export class OnlineTestComponent implements OnInit {
     })
   }
   onChangeStream(streamId){
-    debugger;
+     
     this.onlineTestService.getCourseByStream(streamId)
     .subscribe(data => {
       if(data.Message === 'Success')
@@ -91,7 +91,7 @@ export class OnlineTestComponent implements OnInit {
     })
   }
   onChangeCourse(courseId){
-    debugger;
+     
     this.onlineTestService.getBatchByCourse(courseId)
     .subscribe(data => {
       if(data.Message === 'Success')
@@ -101,7 +101,7 @@ export class OnlineTestComponent implements OnInit {
     })
   }
   getOnlineTest(){
-    debugger;
+     
     this.onlineTestService.getOnlineTest()
     .subscribe(data => {
       if(data.Message === 'Success')
@@ -111,7 +111,7 @@ export class OnlineTestComponent implements OnInit {
     })
   }
   addOnlineTest(){
-    debugger;
+     
     this.onlineTest = this.onlineTestModel;
     this.onlineTestService.addUpdateOnlineTest(this.onlineTest)
     .subscribe(data => {
@@ -148,7 +148,7 @@ export class OnlineTestComponent implements OnInit {
   }
 }
   getOnlineTestById(OnlineTestModel){
-    debugger;
+     
     this.showAddDiv=true;
     this.onlineTestService.getOnlineTestById(OnlineTestModel.OnlineTestID)
     .subscribe(data => {

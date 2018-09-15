@@ -16,6 +16,7 @@ import { Option, Question, Quiz, QuizConfig } from './models';
 export class QuizComponent implements OnInit {
   QuestionTypeIsSingleChoice:any;
   quizes: any[];
+  question:Question;
   quiz: Quiz = new Quiz(null);
   mode = 'quiz';
   quizName: string;
@@ -104,10 +105,10 @@ debugger;
       this.quiz.questions.slice(this.pager.index, this.pager.index + this.pager.size) : [];
   }
   onSelect(question: Question, option: Option) {
-    debugger
+     
     if (question.questionTypeID === 1) {
       question.options.forEach((x) => { if (x.questionID !== option.questionID) x.selected = false; });
-      debugger
+       
     }
     if (this.config.autoMove) {
       this.goTo(this.pager.index + 1);
@@ -127,12 +128,20 @@ debugger;
   }
   onSubmit() {
     const answers = [];
-    this.quiz.questions.forEach(x => answers.push({ 'quizId': this.quiz.onlineTestID, 'questionId': x.questionID, 'answered': x.answered }));
-    // Post your data to the server here. answers contains the questionId and the users' answer.
-    console.log(this.quiz.questions);
-    //this.mode = 'result';
+    this.quiz.questions.forEach(x => answers.push({ 'quizId': this.quiz.onlineTestID, 'questionId': x.questionID, 'answered': x.answered }));    
+    console.log(this.quiz.questions)
+    let question :Question;
+    // this.question= this.quiz.questions
+    //  this.quizService.SubmitQuiz(question)
+    //   .subscribe(data => {
+    //    if (data === 'Success') {
+    //      alert('Record Added Successfully.');
+    //     }
+    //   }, error => {
+    //     alert('error');
+    //     console.log(error);
+    //   });
+    
+    this.mode = 'result';
   }
-  // resetAnswer() {
-  //  option.selected = null;
-  // }
 }

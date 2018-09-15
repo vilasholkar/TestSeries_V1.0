@@ -8,14 +8,13 @@ export class Quiz {
     testDuration:string;
     config: QuizConfig;
     questions: Question[];
-    
     constructor(data: any) {
         if (data) {
             this.onlineTestID = data.OnlineTestID;
             this.testName = data.TestName;
             this.instructions = data.Instructions;
             this.config = new QuizConfig(data.config);
-            this.questions = [];
+            this.questions =[];
             data.Question.forEach(q => {
                 this.questions.push(new Question(q));
             });
