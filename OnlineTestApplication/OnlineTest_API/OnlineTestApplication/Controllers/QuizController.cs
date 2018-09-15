@@ -7,7 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-
+using ViewModels.Question;
 namespace OnlineTestApplication.Controllers
 {
     public class QuizController : ApiController
@@ -48,22 +48,18 @@ namespace OnlineTestApplication.Controllers
             public string description { get; set; }
             public List<Question> questions { get; set; }
         }
-        //[HttpGet]
-        //[Route("api/GetQuiz", Name = "GetQuiz")]
-        //public HttpResponseMessage GetQuiz(string quizName)
-        //{
-        //    var personlist = new RootObject();
-        //    using (StreamReader sr = new StreamReader(System.Web.HttpContext.Current.Server.MapPath("~/App_Data/" + quizName)))
-        //    {
-        //        personlist = JsonConvert.DeserializeObject<RootObject>(sr.ReadToEnd());
-        //    }
-        //    return Request.CreateResponse(personlist);
-        //}
+     
         [HttpGet]
         [Route("api/GetQuiz", Name = "GetQuiz")]
         public HttpResponseMessage GetQuiz(string testID)
         {
             return Request.CreateResponse(_iBQuiz.GetQuiz(1));
+        }
+        [HttpPost]
+        [Route("api/SubmitQuiz", Name = "SubmitQuiz")]
+        public HttpResponseMessage SubmitQuiz(QuestionViewModel questionViewModel)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK,"test");
         }
 
     }
