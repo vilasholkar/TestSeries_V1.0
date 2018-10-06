@@ -21,19 +21,19 @@ namespace OnlineTestApplication.Controllers
         [Route("api/GetStream", Name = "GetStream")]
         public HttpResponseMessage GetStream()
         {
-            return Request.CreateResponse(HttpStatusCode.OK, _iBMaster.GetStream());            
+            return Request.CreateResponse(HttpStatusCode.OK, _iBMaster.GetStream());
         }
-        [HttpGet]
+        [HttpPost]
         [Route("api/GetCourseByStream", Name = "GetCourseByStream")]
-        public HttpResponseMessage GetCourseByStream(int StreamId)
+        public HttpResponseMessage GetCourseByStream(int[] StreamId)
         {
-            return Request.CreateResponse(HttpStatusCode.OK, _iBMaster.GetCourseByStream(StreamId));
+            return Request.CreateResponse(HttpStatusCode.OK, _iBMaster.GetCourseByStream(string.Join(",", StreamId)));
         }
-        [HttpGet]
+        [HttpPost]
         [Route("api/GetBatchByCourse", Name = "GetBatchByCourse")]
-        public HttpResponseMessage GetBatchByCourse(int CourseId)
+        public HttpResponseMessage GetBatchByCourse(int[] CourseId)
         {
-            return Request.CreateResponse(HttpStatusCode.OK, _iBMaster.GetBatchByCourse(CourseId));
+            return Request.CreateResponse(HttpStatusCode.OK, _iBMaster.GetBatchByCourse(string.Join(",", CourseId)));
         }
         [HttpGet]
         [Route("api/GetSession", Name = "GetSession")]
