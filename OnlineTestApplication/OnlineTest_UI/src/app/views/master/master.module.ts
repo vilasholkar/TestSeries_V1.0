@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // OnlineTest Component
 import { TestTypeComponent } from './test-type/test-type.component';
+import { TestSeriesComponent } from './test-series/test-series.component';
 
 import {TestTypeService} from '../../services/admin/test-type.service';
 import { CustomMaterialModule } from "../../custommaterial.module";
@@ -21,8 +22,8 @@ import { MasterRoutingModule } from './master-routing.module';
       CustomMaterialModule
     ],
     declarations: [
-      TestTypeComponent
-      
+      TestTypeComponent,
+      TestSeriesComponent
     ],
     providers: [TestTypeService]
   })
