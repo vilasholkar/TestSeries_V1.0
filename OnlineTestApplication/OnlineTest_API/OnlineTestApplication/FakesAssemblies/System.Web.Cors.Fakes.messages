@@ -1,0 +1,5 @@
+E:\TestSeries\trunk\OnlineTestApplication\OnlineTest_API\OnlineTestApplication\Fakes\System.Web.Cors.fakes : warning : Cannot generate stub for System.Web.Cors.CorsConstants: type is sealed.
+E:\TestSeries\trunk\OnlineTestApplication\OnlineTest_API\OnlineTestApplication\Fakes\System.Web.Cors.fakes : warning : Cannot generate stub for System.Web.Cors.Properties.SRResources: type is not visible to exported or assembly(System.Web.Cors.Fakes).
+E:\TestSeries\trunk\OnlineTestApplication\OnlineTest_API\OnlineTestApplication\Fakes\System.Web.Cors.fakes : warning : Cannot generate shim for System.Web.Cors.ICorsEngine: type is an interface.
+E:\TestSeries\trunk\OnlineTestApplication\OnlineTest_API\OnlineTestApplication\Fakes\System.Web.Cors.fakes : warning : Cannot generate shim for System.Web.Cors.CorsResult+<>c: type is not supported because of internal limitations.
+E:\TestSeries\trunk\OnlineTestApplication\OnlineTest_API\OnlineTestApplication\Fakes\System.Web.Cors.fakes : warning : Cannot generate shim for System.Web.Cors.Properties.SRResources: type is not visible to exported or assembly(System.Web.Cors.Fakes).
