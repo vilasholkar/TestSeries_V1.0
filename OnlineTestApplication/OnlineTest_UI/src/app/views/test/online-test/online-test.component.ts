@@ -21,8 +21,10 @@ export class OnlineTestComponent implements OnInit {
   session : Session;
   onlineTest: OnlineTest;
   onlineTestModel: any = {};
-  minStartDate = new Date(2018, 0, 1);
+  minStartDate = Date.now();
   maxStartDate = new Date(2020, 0, 1);
+  dropdownSettings = {};
+  Title:any;
 
   constructor(private onlineTestService: OnlineTestService, private testTypeService: TestTypeService,
   private testSeriesService: TestSeriesService,public snackBar: MatSnackBar) { }
@@ -36,6 +38,8 @@ export class OnlineTestComponent implements OnInit {
   }
   changeShowStatus() {
     this.showAddDiv = !this.showAddDiv;
+    this.Title = "Add Test";
+    this.onlineTestModel = {};
   }
   getStream(){
      
@@ -81,7 +85,7 @@ export class OnlineTestComponent implements OnInit {
     })
   }
   onChangeStream(streamId){
-     
+     debugger;
     this.onlineTestService.getCourseByStream(streamId)
     .subscribe(data => {
       if(data.Message === 'Success')
@@ -91,7 +95,7 @@ export class OnlineTestComponent implements OnInit {
     })
   }
   onChangeCourse(courseId){
-     
+     debugger;
     this.onlineTestService.getBatchByCourse(courseId)
     .subscribe(data => {
       if(data.Message === 'Success')
@@ -111,7 +115,7 @@ export class OnlineTestComponent implements OnInit {
     })
   }
   addOnlineTest(){
-     
+     debugger;
     this.onlineTest = this.onlineTestModel;
     this.onlineTestService.addUpdateOnlineTest(this.onlineTest)
     .subscribe(data => {
@@ -147,19 +151,24 @@ export class OnlineTestComponent implements OnInit {
      });
   }
 }
+// streamCmFun(s1: Stream, s2: Stream): boolean {
+//   return s1 && s2 ? s1.StreamID === s2.StreamID : s1 === s2;
+// }
+// courseCmFun(c1: Course, c2: Course): boolean {
+//   return c1 && c2 ? c1 === c2.CourseID : c1 === c2;
+// }
   getOnlineTestById(OnlineTestModel){
-     
+     debugger;
     this.showAddDiv=true;
+    this.Title="Edit Test";
     this.onlineTestService.getOnlineTestById(OnlineTestModel.OnlineTestID)
     .subscribe(data => {
       if (data.Message === 'Success') {
         this.onlineTestModel = data.Object;
-        this.onChangeStream(data.Object.StreamID);
-        this.onChangeCourse(data.Object.CourseID);
-        //this.getOnlineTest();
+        this.onChangeStream(this.onlineTestModel.StreamID);
+        this.onChangeCourse(this.onlineTestModel.CourseID);
+        //this.getOnlineTest(); 
         //this.showAddDiv = false;
-        //alert('Record Deleted Successfully.');
-        //this.isTestTypeReadonly = true;
        }
      }, error => {
        alert('error');

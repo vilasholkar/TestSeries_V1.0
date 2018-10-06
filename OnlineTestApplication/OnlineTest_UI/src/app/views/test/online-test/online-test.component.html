@@ -7,7 +7,7 @@
     <div class="col-sm-12">
       <div class="card">
         <div class="card-header">
-          <strong class="card-title">Add Test</strong>
+          <strong class="card-title">{{Title}}</strong>
         </div>
         <div class="card-body">
           <form id="OnlineTestForm" name="Form" (ngSubmit)="addOnlineTest()" #onlineTestForm="ngForm">
@@ -70,7 +70,7 @@
                     <mat-form-field>
                         <mat-select [(ngModel)]="onlineTestModel.StreamID" name="StreamID"
                          (ngModelChange)="onChangeStream($event)" [ngModelOptions]="{standalone: true}" 
-                          #StreamID="ngModel" placeholder="Stream" required>
+                          #StreamID="ngModel" placeholder="Stream" multiple required>
                           <mat-option *ngFor="let stream of stream" [value]="stream.StreamID">
                           {{stream.StreamName}}
                           </mat-option>
@@ -84,7 +84,9 @@
               <div class="col-sm-4">
                 <div class="form-group">
                     <mat-form-field>
-                        <mat-select [(ngModel)]="onlineTestModel.CourseID" name="CourseID" (ngModelChange)="onChangeCourse($event)" [ngModelOptions]="{standalone: true}" placeholder="Course">
+                        <mat-select [(ngModel)]="onlineTestModel.CourseID" name="CourseID" 
+                        (ngModelChange)="onChangeCourse($event)" [ngModelOptions]="{standalone: true}" 
+                         multiple placeholder="Course">
                           <mat-option *ngFor="let course of course" [value]="course.CourseID">
                             {{course.CourseName}}
                           </mat-option>
@@ -97,7 +99,8 @@
               <div class="col-sm-4">
                 <div class="form-group">
                     <mat-form-field>
-                        <mat-select [(ngModel)]="onlineTestModel.BatchID" name="BatchID" placeholder="Batch">
+                        <mat-select [(ngModel)]="onlineTestModel.BatchID" name="BatchID" 
+                         multiple placeholder="Batch">
                           <mat-option *ngFor="let batch of batch" [value]="batch.BatchID">
                             {{batch.BatchName}}
                           </mat-option>
@@ -137,7 +140,7 @@
               <div class="col-sm-2">
                 <div class="form-group">
                     <mat-form-field class="example-full-width">
-                        <input [(ngModel)]="onlineTestModel.StartDate" name="StartDate" readonly [min]="minStartDate" [max]="maxStartDate"
+                        <input [(ngModel)]="onlineTestModel.StartDate" name="StartDate" readonly [min]="minStartDate | date: 'dd/MM/yyyy'" [max]="maxStartDate"
                          #StartDate="ngModel" required autocomplete="off" matInput [matDatepicker]="startDatePicker" placeholder="Start Date">
                         <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker #startDatePicker></mat-datepicker>
