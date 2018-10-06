@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ViewModels.Master;
 
 namespace ViewModels.Test
 {
@@ -17,9 +18,9 @@ namespace ViewModels.Test
         public string TestName { get; set; }
         public string TestDuration { get; set; }
         public int SessionID { get; set; }
-        public int StreamID { get; set; }
-        public int CourseID { get; set; }
-        public int BatchID { get; set; }
+        public int[] StreamID { get; set; }
+        public int[] CourseID { get; set; }
+        public int[] BatchID { get; set; }
         public int SubjectID { get; set; }
         public string Topic { get; set; }
         public string Instructions { get; set; }
