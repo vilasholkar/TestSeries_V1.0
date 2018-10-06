@@ -39,7 +39,7 @@
           <div class="row text-left options">
             <div class="col-sm-2" *ngFor="let option of question.options">
               <div *ngIf="!QuestionTypeIsSingleChoice" class="option">
-                <mat-checkbox color="primary" id="{{option.optionID}}" [(ngModel)]="option.selected" (change)="onSelect(question, option);">{{option.option}}</mat-checkbox>
+                <mat-checkbox color="primary" id="option{{option.optionID}}" [(ngModel)]="option.selected" (change)="onSelect(question, option);">{{option.option}}</mat-checkbox>
               </div>
               <div *ngIf="QuestionTypeIsSingleChoice" class="option">
                 <mat-radio-button 
@@ -58,7 +58,6 @@
           <button mat-raised-button color="accent">Mark for Review & Next</button>
           <button mat-raised-button color="primary" (click)="goTo(pager.index + 1);">Save & Next</button>
           <!-- <botton mat-raised-button color="primary" (click)="resetAnswer()">Reset</button> -->
-
         </div>
       </div>
     </div>
@@ -79,10 +78,12 @@
             <button mat-raised-button color="accent" matTooltip="Mark for Review">7</button>
             <button mat-raised-button color="primary" matTooltip="Answered">45</button>
             <hr/>
-         
-            
-            <button *ngFor="let question of quiz.questions; let index = index;" mat-raised-button (click)="goTo(index)" color="{{ isAnswered(question) == 'Answered'? 'primary': 'warn' }}">{{index+
-              1}}
+            <!-- [class.btn-primary]="true" -->
+            <!-- color="{{ isAnswered(question) == 'Answered'? 'primary': 'basic' }}" -->
+            <button *ngFor="let question of quiz.questions; let index = index;"
+              [color]="getStyle(question)"
+              mat-raised-button (click)="goTo(index)" >
+              {{index+1}}
             </button>
           </div>
         </perfect-scrollbar>
@@ -94,11 +95,11 @@
       </div>
     </div>
     <div class="col-sm-12">
-      <div class="card">
+      <div id="contentToConvert" class="card">
         <div class="card=body">
             <div class="result" *ngIf="mode=='result'">
-                <h2>Quiz Result</h2>
-                <div *ngFor="let question of quiz.questions; let index = index">
+                <h2>{{quiz.testName}}</h2>
+                <div  *ngFor="let question of quiz.questions; let index = index">
                   <div class="result-question">
                     <h5>{{index + 1}}. {{question.name}}</h5>
                     <div class="row">
@@ -111,7 +112,11 @@
                     </div>
                   </div>
                 </div>
-                <h4 class="alert alert-info text-center">You may close this window now.</h4>
+                <div>  
+                  <button mat-raised-button color="primary"id="downloadButton" type="button" value="Download Result" (click)="ConvertToPDF()">Download Result</button>
+
+                </div>  
+                <!-- <h4 class="alert alert-info text-center">You may close this window now.</h4> -->
               </div>
         </div>
       </div>
@@ -119,74 +124,3 @@
   </div>
 </div>
 
-
-<!-- <div class="row" hidden>
-  <div class="col-6">
-    <h3>Quiz Application</h3>
-  </div>
-  <div class="col-6 text-right">
-    Select Quiz:
-    <select [(ngModel)]="quizName" (change)="loadQuiz(quizName)">
-      <option *ngFor="let quiz of quizes" [value]="quiz.id">{{quiz.name}}</option>
-    </select>
-  </div>
-</div>
-<div id="quiz" hidden>
-  <h2 class="text-center font-weight-normal">{{quiz.name}}</h2>
-  <hr />
-  <div *ngIf="mode=='quiz' && quiz">
-    <div *ngFor="let question of filteredQuestions;">
-      <div class="badge badge-info">Question {{pager.index + 1}} of {{pager.count}}.</div>
-      <div *ngIf="config.duration" class="badge badge-info float-right">Time: {{ellapsedTime}} / {{duration}}</div>
-      <h3 class="font-weight-normal">{{pager.index + 1}}.
-        <img [src]="question.name" style="height: 200px;width: 100%;" />
-      </h3>
-      <div class="row text-left options">
-        <div class="col-6" *ngFor="let option of question.options">
-          <div class="option">
-            <label class="font-weight-normal" [attr.for]="option.id">
-              <input id="{{option.id}}" type="checkbox" [(ngModel)]="option.selected" (change)="onSelect(question, option);" />{{option.name}}
-            </label>
-          </div>
-        </div>
-      </div>
-    </div>
-    <hr />
-    <div class="text-center">
-      <button class="btn btn-default" *ngIf="config.allowBack" (click)="goTo(0);">First</button>
-      <button class="btn btn-default" *ngIf="config.allowBack" (click)="goTo(pager.index - 1);">Prev</button>
-      <button class="btn btn-primary" (click)="goTo(pager.index + 1);">Next</button>
-      <button class="btn btn-default" *ngIf="config.allowBack" (click)="goTo(pager.count - 1);">Last</button>
-    </div>
-  </div>
-
-  <div class="row text-center" *ngIf="mode=='review'">
-    <div class="col-4 cursor-pointer" *ngFor="let question of quiz.questions; let index = index;">
-      <div (click)="goTo(index)" class="p-3 mb-2 {{ isAnswered(question) == 'Answered'? 'bg-info': 'bg-warning' }}">{{index
-        + 1}}. {{ isAnswered(question) }}</div>
-    </div>
-  </div>
-  <div class="result" *ngIf="mode=='result'">
-    <h2>Quiz Result</h2>
-    <div *ngFor="let question of quiz.questions; let index = index">
-      <div class="result-question">
-        <h5>{{index + 1}}. {{question.name}}</h5>
-        <div class="row">
-          <div class="col-6" *ngFor="let Option of question.options">
-            <input id="{{Option.id}}" type="checkbox" disabled="disabled" [(ngModel)]="Option.selected" /> {{Option.name}}
-          </div>
-        </div>
-        <div class="p-1 m-2 alert {{ isCorrect(question) == 'correct'? 'alert-success': 'alert-danger'}}">Your answer is
-          {{isCorrect(question)}}.
-        </div>
-      </div>
-    </div>
-    <h4 class="alert alert-info text-center">You may close this window now.</h4>
-  </div>
-  <hr />
-  <div *ngIf="mode!='result'">
-    <button class="btn btn-default" (click)="mode = 'quiz'">Quiz</button>
-    <button class="btn btn-info" (click)="mode = 'review'">Review</button>
-    <button class="btn btn-primary" (click)="onSubmit();">Submit Quiz</button>
-  </div>
-</div> -->

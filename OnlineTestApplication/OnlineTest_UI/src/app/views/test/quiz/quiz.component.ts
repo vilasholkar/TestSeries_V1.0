@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
+import { Router } from '@angular/router';
 // import { QuizService } from '../../../services/admin/quiz.service';
 import { QuizService } from '../../../services/admin/quiz.service';
 import { HelperService } from '../../../services/helper.service';
 import { Option, Question, Quiz, QuizConfig } from './models';
 // import {GlobalVariables} from '../../../models/global-variables';
+import * as jspdf from 'jspdf';  
+  
+import html2canvas from 'html2canvas';  
 
 @Component({
   selector: 'app-quiz',
@@ -14,6 +17,7 @@ import { Option, Question, Quiz, QuizConfig } from './models';
   providers: [QuizService]
 })
 export class QuizComponent implements OnInit {
+  today=new Date();
   QuestionTypeIsSingleChoice:any;
   quizes: any[];
   question:Question;
@@ -48,18 +52,11 @@ export class QuizComponent implements OnInit {
   languageName:any;
   testID:any;
 
-  constructor(private route: ActivatedRoute,private quizService: QuizService) {
+  constructor(private router : Router,private route: ActivatedRoute,private quizService: QuizService) {
    }
   ngOnInit() {
-debugger;
     this.testID= +this.route.snapshot.paramMap.get('testID');
-
-    this.quizes = this.quizService.getAll();
-    this.quizName = this.quizes[0].id;
-   
-
     this.loadQuiz(this.testID);
-    
     this.languageName = 'english';
     this.IsEnglish = true;
   }
@@ -105,7 +102,9 @@ debugger;
       this.quiz.questions.slice(this.pager.index, this.pager.index + this.pager.size) : [];
   }
   onSelect(question: Question, option: Option) {
-     
+     debugger
+     const element = <HTMLInputElement> document.getElementById("1-input");
+     element.checked = false;
     if (question.questionTypeID === 1) {
       question.options.forEach((x) => { if (x.questionID !== option.questionID) x.selected = false; });
        
@@ -126,21 +125,48 @@ debugger;
   isCorrect(question: Question) {
     return question.options.every(x => x.selected === x.isAnswer) ? 'correct' : 'wrong';
   }
+  getStyle(question) {
+    var isanswered=this.isAnswered(question);
+    if(isanswered=="Answered") {
+      return 'primary';
+       } 
+    if(isanswered=="Not Answered") {
+      return 'basic';
+       } 
+
+    
+  }
+  public ConvertToPDF()  
+    {  
+      var data = document.getElementById('contentToConvert');  
+      html2canvas(data).then(canvas => {  
+        // Few necessary setting options  
+        var imgWidth = 208;   
+        var pageHeight = 295;    
+        var imgHeight = canvas.height * imgWidth / canvas.width;  
+        var heightLeft = imgHeight;  
+    
+        const contentDataURL = canvas.toDataURL('image/png')  
+        let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
+        var position = 0;  
+        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
+        pdf.save(this.quiz.testName+'_'+this.today+'.pdf'); // Generated PDF   
+        this.router.navigate(['/dashboard']);
+      });  
+    }  
   onSubmit() {
     const answers = [];
     this.quiz.questions.forEach(x => answers.push({ 'quizId': this.quiz.onlineTestID, 'questionId': x.questionID, 'answered': x.answered }));    
-    console.log(this.quiz.questions)
-    let question :Question;
-    // this.question= this.quiz.questions
-    //  this.quizService.SubmitQuiz(question)
-    //   .subscribe(data => {
-    //    if (data === 'Success') {
-    //      alert('Record Added Successfully.');
-    //     }
-    //   }, error => {
-    //     alert('error');
-    //     console.log(error);
-    //   });
+    console.log("res",this.quiz.questions)
+      // this.quizService.SubmitQuiz(this.quiz.questions)
+      //  .subscribe(data => {
+      //   if (data === 'Success') {
+      //     alert('Record Added Successfully.');
+      //    }
+      //  }, error => {
+      //    alert('error');
+      //    console.log(error);
+      //  });
     
     this.mode = 'result';
   }
