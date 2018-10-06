@@ -6,6 +6,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ViewModels;
+using ViewModels.Master;
 using ViewModels.Question;
 using ViewModels.Test;
 
@@ -27,9 +29,9 @@ namespace DataAccessLayer
                 TestName = s["TestName"].ToString(),
                 TestDuration = s["TestDuration"].ToString(),
                 SessionID = Convert.ToInt32(s["SessionID"]),
-                StreamID = Convert.ToInt32(s["StreamID"]),
-                CourseID = Convert.ToInt32(s["CourseID"]),
-                BatchID = Convert.ToInt32(s["BatchID"]),
+                //StreamID = s["StreamID"].ToString().Split(',').ToArray(),
+                //CourseID = Convert.ToInt32(s["CourseID"]),
+                //BatchID = Convert.ToInt32(s["BatchID"]),
                 SubjectID = Convert.ToInt32(s["SubjectID"]),
                 Topic = s["Topic"].ToString(),
                 Instructions = s["Instructions"].ToString(),
@@ -55,9 +57,9 @@ namespace DataAccessLayer
                 sqlParameterList.Add(new SqlParameter("TestName", !string.IsNullOrEmpty(objOnlineTest.TestName) ? objOnlineTest.TestName : string.Empty));
                 sqlParameterList.Add(new SqlParameter("TestDuration", !string.IsNullOrEmpty(objOnlineTest.TestDuration) ? objOnlineTest.TestDuration : string.Empty));
                 sqlParameterList.Add(new SqlParameter("SessionID", objOnlineTest.SessionID));
-                sqlParameterList.Add(new SqlParameter("StreamID", objOnlineTest.StreamID));
-                sqlParameterList.Add(new SqlParameter("CourseID", objOnlineTest.CourseID));
-                sqlParameterList.Add(new SqlParameter("BatchID", objOnlineTest.BatchID));
+                sqlParameterList.Add(new SqlParameter("StreamID", string.Join(",", objOnlineTest.StreamID)));
+                sqlParameterList.Add(new SqlParameter("CourseID", string.Join(",", objOnlineTest.CourseID)));
+                sqlParameterList.Add(new SqlParameter("BatchID", string.Join(",", objOnlineTest.BatchID)));
                 sqlParameterList.Add(new SqlParameter("SubjectID", objOnlineTest.SubjectID));
                 sqlParameterList.Add(new SqlParameter("Topic", !string.IsNullOrEmpty(objOnlineTest.Topic) ? objOnlineTest.Topic : string.Empty));
                 sqlParameterList.Add(new SqlParameter("Instructions", !string.IsNullOrEmpty(objOnlineTest.Instructions) ? objOnlineTest.Instructions : string.Empty));
@@ -73,7 +75,8 @@ namespace DataAccessLayer
                 sqlParameterList.Add(new SqlParameter("CreatedByUserID", 1));
                 sqlParameterList.Add(new SqlParameter("CreatedOnDate", DGeneric.SystemDateTime));
 
-                return DGeneric.RunSP_ExecuteNonQuery("sp_AddUpdateOnlineTest", sqlParameterList);
+                DGeneric.RunSP_ExecuteNonQuery("sp_AddUpdateOnlineTest", sqlParameterList);
+                return CommonEnum.Status.Success.ToString();
             }
             catch (Exception ex)
             {
@@ -88,33 +91,80 @@ namespace DataAccessLayer
         }
         public OnlineTestViewModel GetOnlineTestById(int OnlineTestId)
         {
+            var onlineTestViewModelData = new OnlineTestViewModel();
             List<SqlParameter> sqlParameterList = new List<SqlParameter>();
             sqlParameterList.Add(new SqlParameter("@OnlineTestID", OnlineTestId));
             DataTable dt = DGeneric.RunSP_ReturnDataSet("sp_GetOnlineTestById", sqlParameterList, null).Tables[0];
-            return dt.AsEnumerable().Select(s => new OnlineTestViewModel()
+            if (dt.Rows.Count > 0)
             {
-                OnlineTestID = Convert.ToInt32(s["OnlineTestID"]),
-                OnlineTestNo = s["OnlineTestNo"].ToString(),
-                TestSeriesID = Convert.ToInt32(s["TestSeriesID"]),
-                TestTypeID = Convert.ToInt32(s["TestTypeID"]),
-                TestName = s["TestName"].ToString(),
-                TestDuration = s["TestDuration"].ToString(),
-                SessionID = Convert.ToInt32(s["SessionID"]),
-                StreamID = Convert.ToInt32(s["StreamID"]),
-                CourseID = Convert.ToInt32(s["CourseID"]),
-                BatchID = Convert.ToInt32(s["BatchID"]),
-                SubjectID = Convert.ToInt32(s["SubjectID"]),
-                Topic = s["Topic"].ToString(),
-                Instructions = s["Instructions"].ToString(),
-                TestMarks = s["TestMarks"].ToString(),
-                PassingPercentage = s["PassingPercentage"].ToString(),
-                IsNegativeMarking = Convert.ToBoolean(s["IsNegativeMarking"]),
-                IsVisible = Convert.ToBoolean(s["IsVisible"]),
-                StartTime = s["StartTime"].ToString(),
-                EndTime = s["EndTime"].ToString(),
-                StartDate = Convert.ToDateTime(s["StartDate"]),
-                EndDate = Convert.ToDateTime(s["EndDate"])
-            }).FirstOrDefault();
+                foreach (DataRow item in dt.Rows)
+                {
+                    onlineTestViewModelData.OnlineTestID = Convert.ToInt32(item["OnlineTestID"]);
+                    onlineTestViewModelData.OnlineTestNo = item["OnlineTestNo"].ToString();
+                    onlineTestViewModelData.TestSeriesID = Convert.ToInt32(item["TestSeriesID"]);
+                    onlineTestViewModelData.TestTypeID = Convert.ToInt32(item["TestTypeID"]);
+                    onlineTestViewModelData.TestName = item["TestName"].ToString();
+                    onlineTestViewModelData.TestDuration = item["TestDuration"].ToString();
+                    onlineTestViewModelData.SessionID = Convert.ToInt32(item["SessionID"]);
+                    var streamList = item["StreamID"].ToString().Split(',').ToList();
+                    List<int> streamIDList = new List<int>();
+                    foreach (var streamRows in streamList)
+                    {
+                        streamIDList.Add(Convert.ToInt32(streamRows));
+                    }
+                    onlineTestViewModelData.StreamID = streamIDList.ToArray();
+                    var courseList = item["CourseID"].ToString().Split(',').ToList();
+                    List<int> courseIDList = new List<int>();
+                    foreach (var courseRows in courseList)
+                    {
+                        courseIDList.Add(Convert.ToInt32(courseRows));
+                    }
+                    onlineTestViewModelData.CourseID = courseIDList.ToArray();
+                    var batchList = item["BatchID"].ToString().Split(',').ToList();
+                    List<int> batchIDList = new List<int>();
+                    foreach (var batchRows in batchList)
+                    {
+                        batchIDList.Add(Convert.ToInt32(batchRows));
+                    }
+                    onlineTestViewModelData.BatchID = batchIDList.ToArray();
+                    onlineTestViewModelData.SubjectID = Convert.ToInt32(item["SubjectID"]);
+                    onlineTestViewModelData.Topic = item["Topic"].ToString();
+                    onlineTestViewModelData.Instructions = item["Instructions"].ToString();
+                    onlineTestViewModelData.TestMarks = item["TestMarks"].ToString();
+                    onlineTestViewModelData.PassingPercentage = item["PassingPercentage"].ToString();
+                    onlineTestViewModelData.IsNegativeMarking = Convert.ToBoolean(item["IsNegativeMarking"]);
+                    onlineTestViewModelData.IsVisible = Convert.ToBoolean(item["IsVisible"]);
+                    onlineTestViewModelData.StartTime = item["StartTime"].ToString();
+                    onlineTestViewModelData.EndTime = item["EndTime"].ToString();
+                    onlineTestViewModelData.StartDate = Convert.ToDateTime(item["StartDate"]);
+                    onlineTestViewModelData.EndDate = Convert.ToDateTime(item["EndDate"]);
+                }
+            }
+            return onlineTestViewModelData;
+            //return dt.AsEnumerable().Select(s => new OnlineTestViewModel()
+            //{
+            //    OnlineTestID = Convert.ToInt32(s["OnlineTestID"]),
+            //    OnlineTestNo = s["OnlineTestNo"].ToString(),
+            //    TestSeriesID = Convert.ToInt32(s["TestSeriesID"]),
+            //    TestTypeID = Convert.ToInt32(s["TestTypeID"]),
+            //    TestName = s["TestName"].ToString(),
+            //    TestDuration = s["TestDuration"].ToString(),
+            //    SessionID = Convert.ToInt32(s["SessionID"]),
+            //    StreamID = s["StreamID"].ToString().Split(',').ToArray(),
+            //    CourseID = Convert.ToInt32(s["CourseID"]),
+            //    BatchID = Convert.ToInt32(s["BatchID"]),
+            //    SubjectID = Convert.ToInt32(s["SubjectID"]),
+            //    Topic = s["Topic"].ToString(),
+            //    Instructions = s["Instructions"].ToString(),
+            //    TestMarks = s["TestMarks"].ToString(),
+            //    PassingPercentage = s["PassingPercentage"].ToString(),
+            //    IsNegativeMarking = Convert.ToBoolean(s["IsNegativeMarking"]),
+            //    IsVisible = Convert.ToBoolean(s["IsVisible"]),
+            //    StartTime = s["StartTime"].ToString(),
+            //    EndTime = s["EndTime"].ToString(),
+            //    StartDate = Convert.ToDateTime(s["StartDate"]),
+            //    EndDate = Convert.ToDateTime(s["EndDate"])
+            //}).FirstOrDefault();
         }
         public QuizViewModel GetQuestionsByTestId(int OnlineTestID)
         {
@@ -167,7 +217,6 @@ namespace DataAccessLayer
                 //return new QuizViewModel() { ErrorMessage = ex.Message };
             }
         }
-
         public List<StudentOnlineTestViewModel> GetOnlineTestByStudentID(int StudentID)
         {
             List<SqlParameter> sqlParameterList = new List<SqlParameter>();
