@@ -2,36 +2,49 @@ import { NgModule } from "@angular/core";
 // import { MatTabsModule } from "@angular/material/tabs";
 
 import {
-  MatButtonModule,MatButtonToggleModule,
-  MatCheckboxModule,MatRadioModule,
+  MatButtonModule,
+  MatButtonToggleModule,
+  MatCheckboxModule,
+  MatRadioModule,
   MatInputModule,
   MatCardModule,
   MatDividerModule,
   MatFormFieldModule,
   MatSelectModule,
-  MatTableModule, MatPaginatorModule, MatSortModule,
+  MatTableModule, 
+  MatPaginatorModule, 
+  MatSortModule,
   MatDatepickerModule,
   MatNativeDateModule,
   MatIconModule,
   MatSnackBarModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatTabsModule,
+  MatAutocompleteModule
   
 } from '@angular/material';
 
 const Modules = [
-  MatButtonModule,MatButtonToggleModule,
-  MatCheckboxModule,MatRadioModule,
+  MatButtonModule,
+  MatButtonToggleModule,
+  MatCheckboxModule,
+  MatRadioModule,
   MatInputModule,
   MatCardModule,
   MatDividerModule,
   MatFormFieldModule,
   MatSelectModule,
-  MatTableModule, MatPaginatorModule, MatSortModule,
+  MatTableModule, 
+  MatPaginatorModule, 
+  MatSortModule,
   MatDatepickerModule,
   MatNativeDateModule,
   MatIconModule,
   MatSnackBarModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatTabsModule,
+  MatAutocompleteModule
+
 ];
 
 @NgModule({
