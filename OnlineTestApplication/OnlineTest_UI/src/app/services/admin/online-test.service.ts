@@ -29,11 +29,12 @@ export class OnlineTestService {
         return Observable.throw(error);
       });
   }
-  getCourseByStream(StreamId: any): Observable<any> {
+  getCourseByStream(StreamId: Int32Array): Observable<any> {
+    debugger;
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     this.options = new RequestOptions({ headers: this.headers });
      
-    return this.http.get(HostName.API_StartPoint + APIUrl.GET_CourseByStream+"?StreamId="+StreamId)
+    return this.http.post(HostName.API_StartPoint + APIUrl.GET_CourseByStream,StreamId)
       .map((response: Response) => {
         const data = response;
         return data;
@@ -42,11 +43,12 @@ export class OnlineTestService {
         return Observable.throw(error);
       });
   }
-  getBatchByCourse(CourseId: any): Observable<any> {
+  getBatchByCourse(CourseId: Int32Array): Observable<any> {
+    debugger;
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     this.options = new RequestOptions({ headers: this.headers });
      
-    return this.http.get(HostName.API_StartPoint + APIUrl.GET_BatchByCourse+"?CourseId="+CourseId)
+    return this.http.post(HostName.API_StartPoint + APIUrl.GET_BatchByCourse,CourseId)
       .map((response: Response) => {
         const data = response;
         return data;
