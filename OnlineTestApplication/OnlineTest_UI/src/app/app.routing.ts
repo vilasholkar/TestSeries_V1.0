@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
+import {AuthGuard} from './shared/auth-guard/auth.guard'
 // Import Containers
 import { DefaultLayoutComponent } from './containers';
 
@@ -38,25 +38,25 @@ export const routes: Routes = [
   },
   {
     path: 'register',
-    component: RegisterComponent,
+    component: RegisterComponent,canActivate:[AuthGuard],
     data: {
       title: 'Register Page'
     }
   },
   {
     path: '',
-    component: DefaultLayoutComponent,
-    data: {
+    component: DefaultLayoutComponent,canActivate:[AuthGuard],
+    data: {  
       title: 'Home'
     },
     children: [
       {
         path: 'student',
-        loadChildren: './views/student/student.module#StudentModule'
+        loadChildren: './views/student/student.module#StudentModule',canActivate:[AuthGuard],
       },
       {
         path: 'test',
-        loadChildren: './views/test/test.module#TestModule'
+        loadChildren: './views/test/test.module#TestModule',canActivate:[AuthGuard],
       },
       {
         path: 'result',
@@ -64,39 +64,39 @@ export const routes: Routes = [
       },
       {
         path: 'master',
-        loadChildren: './views/master/master.module#MasterModule'
+        loadChildren: './views/master/master.module#MasterModule',canActivate:[AuthGuard],
       },
       {
         path: 'base',
-        loadChildren: './views/base/base.module#BaseModule'
+        loadChildren: './views/base/base.module#BaseModule',canActivate:[AuthGuard],
       },
       {
         path: 'buttons',
-        loadChildren: './views/buttons/buttons.module#ButtonsModule'
+        loadChildren: './views/buttons/buttons.module#ButtonsModule',canActivate:[AuthGuard],
       },
       {
         path: 'charts',
-        loadChildren: './views/chartjs/chartjs.module#ChartJSModule'
+        loadChildren: './views/chartjs/chartjs.module#ChartJSModule',canActivate:[AuthGuard],
       },
       {
         path: 'dashboard',
-        loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+        loadChildren: './views/dashboard/dashboard.module#DashboardModule',canActivate:[AuthGuard],
       },
       {
         path: 'icons',
-        loadChildren: './views/icons/icons.module#IconsModule'
+        loadChildren: './views/icons/icons.module#IconsModule',canActivate:[AuthGuard],
       },
       {
         path: 'notifications',
-        loadChildren: './views/notifications/notifications.module#NotificationsModule'
+        loadChildren: './views/notifications/notifications.module#NotificationsModule',canActivate:[AuthGuard],
       },
       {
         path: 'theme',
-        loadChildren: './views/theme/theme.module#ThemeModule'
+        loadChildren: './views/theme/theme.module#ThemeModule',canActivate:[AuthGuard],
       },
       {
         path: 'widgets',
-        loadChildren: './views/widgets/widgets.module#WidgetsModule'
+        loadChildren: './views/widgets/widgets.module#WidgetsModule',canActivate:[AuthGuard],
       }
     ]
   }
