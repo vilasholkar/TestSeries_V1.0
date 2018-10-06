@@ -7,6 +7,7 @@ import {APIUrl} from '../../shared/API-end-points';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import {Question} from '../../views/test/quiz/models'
 @Injectable()
 export class QuizService {
   private headers: Headers;
@@ -16,27 +17,25 @@ export class QuizService {
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     this.options = new RequestOptions({ headers: this.headers });
 }
-  getQuiz(testID: any): Observable<any> {
-    debugger;
+  getQuiz(testID: Question): Observable<any> {
     return this.http.get(HostName.API_StartPoint + APIUrl.GET_Quiz + '?testID=' + testID)
         .map((response: Response) => {
             const data = response;
             return data;
         })
         .catch((error: any) => {
-          debugger
             return Observable.throw(error);
         });
   }
-  get(url: string) {
-    return this.http.get(url);
-  }
-  getAll() {
-    return [
-      { id: 'data/aspnet.json', name: 'Asp.Net' },
-      { id: 'data/csharp.json', name: 'C Sharp' },
-      { id: 'data/designPatterns.json', name: 'Design Patterns' }
-    ];
-  }
-
+  SubmitQuiz(QuizResponse:Question[]): Observable<any> {
+    debugger
+     return this.http.post(HostName.API_StartPoint + APIUrl.Submit_Quiz, QuizResponse)
+        .map((response: Response) => {
+             const data = response;
+             return data;
+        })
+        .catch((error: any) => {
+             return Observable.throw(error);
+        });
+  }    
 }
