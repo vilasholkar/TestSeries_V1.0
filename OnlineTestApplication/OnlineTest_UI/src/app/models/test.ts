@@ -14,9 +14,9 @@ export interface OnlineTest {
     TestName: any;
     TestDuration: any;
     SessionID: any;
-    StreamID: any;
-    CourseID: any;
-    BatchID: any;
+    StreamID: Int32Array;
+    CourseID: Int32Array;
+    BatchID: Int32Array;
     SubjectID: any;
     Topic: any;
     Instructions: any;
