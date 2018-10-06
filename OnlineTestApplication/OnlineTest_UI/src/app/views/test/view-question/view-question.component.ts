@@ -12,18 +12,13 @@ export class ViewQuestionComponent implements OnInit {
  
   id:any;
   quizModel : Quiz;
+  // quizModelData: any = {};
   constructor(private route: ActivatedRoute,private viewQuestionService: ViewQuestionService) { }
 
   ngOnInit() {
     this.getQuestionsById();
   }
-  // getHero(): void {
-  //   // const id = +this.route.snapshot.paramMap.get('id');
-  //   this.id= +this.route.snapshot.paramMap.get('id');
-  //  // alert(this.id);
-  //   // this.heroService.getHero(id)
-  //   //   .subscribe(hero => this.hero = hero);
-  // }
+
   getQuestionsById(){
     debugger;
     this.id= +this.route.snapshot.paramMap.get('id');
