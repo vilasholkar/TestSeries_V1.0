@@ -1,4 +1,5 @@
 export class APIUrl {
+    public static  GET_Token='api/GetToken'
     public static GET_TestTypes = 'api/GetTestType';
     public static AddUpdateTestTypes = 'api/AddUpdateTestType';
     public static DeleteTestTypes = 'api/DeleteTestType';
@@ -15,7 +16,7 @@ export class APIUrl {
     public static DeleteOnlineTest = 'api/DeleteOnlineTest';
     public static GetOnlineTestById = 'api/GetOnlineTestById';
     public static GetQuestionsByTestId = 'api/GetQuestionsByTestId';
-    public static GetOnlineTestByStudentID = 'api/GetOnlineTestByStudentID';
+  public static GetOnlineTestByStudentID = 'api/GetOnlineTestByStudentID';
     public static Submit_Quiz = "api/SubmitQuiz";
     public static GetEligibleStudent = 'api/GetEligibleStudent';
 }
