@@ -57,7 +57,7 @@ namespace OnlineTestApplication.Controllers
         }
         [HttpPost]
         [Route("api/SubmitQuiz", Name = "SubmitQuiz")]
-        public HttpResponseMessage SubmitQuiz(QuestionViewModel questionViewModel)
+        public HttpResponseMessage SubmitQuiz(Object questionViewModel)
         {
             return Request.CreateResponse(HttpStatusCode.OK,"test");
         }
