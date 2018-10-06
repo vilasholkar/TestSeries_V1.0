@@ -52,7 +52,22 @@ namespace BusinessAccessLayer
         }
         public string AddUpdateOnlineTest(OnlineTestViewModel objOnlineTest)
         {
-            return _iDOnlineTest.AddUpdateOnlineTest(objOnlineTest);
+            try
+            {
+                var onlineTestData = _iDOnlineTest.AddUpdateOnlineTest(objOnlineTest);
+                if (!string.IsNullOrEmpty(onlineTestData))
+                {
+                    return onlineTestData;
+                }
+                else
+                {
+                    return onlineTestData;
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
         public string DeleteOnlineTest(int OnlineTestId)
         {
