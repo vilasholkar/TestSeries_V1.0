@@ -47,7 +47,7 @@ namespace BusinessAccessLayer
         }
 
 
-        public Response<List<CourseViewModel>> GetCourseByStream(int StreamId)
+        public Response<List<CourseViewModel>> GetCourseByStream(string StreamId)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace BusinessAccessLayer
         }
 
 
-        public Response<List<BatchViewModel>> GetBatchByCourse(int CourseId)
+        public Response<List<BatchViewModel>> GetBatchByCourse(string CourseId)
         {
             try
             {
