@@ -1,0 +1,188 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-9">
+            <h4>View Result</h4>
+        </div>
+        <div class="col-sm-3 text-right">
+            <mat-form-field>
+                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+            </mat-form-field>
+        </div>
+        <div class="col-sm-12">
+                    <div class="mat-elevation-z8">
+                        <perfect-scrollbar style="position: relative;width: 100%; max-height: 450px;overflow: auto;">
+                            <table mat-table [dataSource]="dataSource" matSort>
+                                <ng-container matColumnDef="Rank">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Rank </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.Rank}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="TestName">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Name </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.TestName}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="TestSeriesName">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Series </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.TestSeriesName}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="TestTypeName">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Type </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.TestTypeName}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="TestDate">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Date </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.TestDate}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="TotalAttempt">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Attempt </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.TotalAttempt}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="TotalCorrect">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Correct </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.TotalCorrect}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="TotalWrong">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Wrong </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.TotalWrong}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="TotalMarks">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Marks </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.TotalMarks}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="TotalMarksObtained">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Marks Obtained </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.TotalMarksObtained}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Percentage">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Percentage </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.Percentage}} </td>
+                                    </ng-container>
+                                <ng-container matColumnDef="button">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <a mat-button routerLink="/result/result-analysis/{{element.TestID}}" color="primary">Detail Analysis</a>
+                                        </td>
+                                </ng-container>
+                                
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+                                </tr>
+                            </table>
+                        </perfect-scrollbar>
+                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+                    </div>
+        </div>
+    </div>
+
+    <div class="card" style="display:none;">
+            <div class="card-header">
+                <strong>Test Result</strong>
+
+            </div>
+            <div class="card-body">
+                
+
+                <!-- <table class="table table-striped table-bordered table-hover nowrap" >
+              <thead class="thead-default">
+                  <tr>
+                      <th>
+                          Rank
+                      </th>
+                      <th>
+                          Test Name
+                      </th>
+                      <th>
+                          Test Date
+                      </th>
+                      <th>
+                          Total Attempt
+                      </th>
+                      <th>
+                          Total Correct
+                      </th>
+                      <th>
+                          Total Wrong
+                      </th>
+                      <th>
+                          Total Marks
+                      </th>
+                      <th>
+                          Total Marks Obtained
+                      </th>
+                      <th>
+                          Percentage
+                      </th>
+                      <th>
+                          Physics Right
+                      </th>
+                      <th>
+                          Physics Wrong
+                      </th>
+                      <th>
+                          Chemistry Right
+                      </th>
+                      <th>
+                          Chemistry Wrong
+                      </th>
+                      <th>
+                          Biology Right
+                      </th>
+                      <th>
+                          Biology Wrong
+                      </th>
+                  </tr>
+              </thead>
+              <tbody>
+                      <tr>
+                          <td>
+                              1
+                          </td>
+                          <td>
+                              GT
+                          </td>
+                          <td>
+                              23/08/2017
+                          </td>
+                          <td>
+                              90
+                          </td>
+                          <td>
+                              70
+                          </td>
+                          <td>
+                             20
+                          </td>
+                          <td>
+                              720
+                          </td>
+                          <td>
+                              260
+                          </td>
+                          <td>
+                              35%
+                          </td>
+                          <td>
+                             20
+                          </td>
+                          <td>
+                              5
+                          </td>
+                          <td>
+                              20
+                          </td>
+                          <td>
+                             5
+                          </td>
+                          <td>
+                              30
+                          </td>
+                          <td>
+                             0
+                          </td>
+                      </tr>
+              </tbody>
+          </table> -->
+            </div>
+        </div>
+</div>
