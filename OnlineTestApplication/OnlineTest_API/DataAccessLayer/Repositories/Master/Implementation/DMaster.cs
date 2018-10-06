@@ -28,7 +28,7 @@ namespace DataAccessLayer
             }
         }
 
-        public List<CourseViewModel> GetCourseByStream(int StreamId)
+        public List<CourseViewModel> GetCourseByStream(string StreamId)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace DataAccessLayer
         }
 
 
-        public List<BatchViewModel> GetBatchByCourse(int CourseId)
+        public List<BatchViewModel> GetBatchByCourse(string CourseId)
         {
             List<SqlParameter> parameter = new List<SqlParameter>();
             parameter.Add(new SqlParameter("CourseID", CourseId));

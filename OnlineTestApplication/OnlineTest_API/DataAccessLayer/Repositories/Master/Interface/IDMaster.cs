@@ -9,8 +9,8 @@ namespace DataAccessLayer
    public interface IDMaster
     {
        List<StreamViewModel> GetStream();
-       List<CourseViewModel> GetCourseByStream(int StreamId);
-       List<BatchViewModel> GetBatchByCourse(int CourseId);
+       List<CourseViewModel> GetCourseByStream(string StreamId);
+       List<BatchViewModel> GetBatchByCourse(string CourseId);
        List<SessionViewModel> GetSession();
     }
 }
