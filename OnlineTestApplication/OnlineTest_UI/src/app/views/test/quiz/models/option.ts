@@ -7,8 +7,8 @@ export class Option {
 
     constructor(data: any) {
         data = data || {};
-        this.optionID = data.OptionId;
-        this.questionID = data.QuestionId;
+        this.optionID = data.OptionID;
+        this.questionID = data.QuestionID;
         this.option = data.Option;
         this.isAnswer = data.IsAnswer;
     }
