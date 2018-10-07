@@ -7,7 +7,7 @@ import {APIUrl} from '../../shared/API-end-points';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
-import {Question} from '../../views/test/quiz/models'
+import {Question,Quiz} from '../../views/test/quiz/models'
 @Injectable()
 export class QuizService {
   private headers: Headers;
@@ -27,8 +27,8 @@ export class QuizService {
             return Observable.throw(error);
         });
   }
-  SubmitQuiz(QuizResponse:Question[]): Observable<any> {
-    debugger
+  SubmitQuiz(QuizResponse:Quiz): Observable<any> {
+    debugger;
      return this.http.post(HostName.API_StartPoint + APIUrl.Submit_Quiz, QuizResponse)
         .map((response: Response) => {
              const data = response;
