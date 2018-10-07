@@ -174,7 +174,7 @@ namespace DataAccessLayer
                 paramerterList.Add(new SqlParameter("@OnlineTestID", OnlineTestID));
                 DataTable dt = DGeneric.RunSP_ReturnDataSet("sp_GetQuiz", paramerterList, null).Tables[0];
                 QuizViewModel quizViewModel = new QuizViewModel();
-                quizViewModel.Question = new List<QuestionViewModel>();
+                quizViewModel.Questions = new List<QuestionViewModel>();
                 if (dt.Rows.Count > 0)
                 {
                     foreach (DataRow dr in dt.Rows)
@@ -195,7 +195,7 @@ namespace DataAccessLayer
                             questionViewModel.Image_English = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_English"];
                             questionViewModel.Image_Hindi = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_Hindi"];
                             questionViewModel.CorrectAnswer = dr["Answer"].ToString();
-                            quizViewModel.Question.Add(questionViewModel);
+                            quizViewModel.Questions.Add(questionViewModel);
                         }
                         else
                         {
@@ -204,7 +204,7 @@ namespace DataAccessLayer
                             questionViewModel.Image_English = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_English"];
                             questionViewModel.Image_Hindi = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_Hindi"];
                             questionViewModel.CorrectAnswer = dr["Answer"].ToString();
-                            quizViewModel.Question.Add(questionViewModel);
+                            quizViewModel.Questions.Add(questionViewModel);
                         }
                     }
                 }
@@ -233,9 +233,9 @@ namespace DataAccessLayer
                 TestName = s["TestName"].ToString(),
                 TestDuration = s["TestDuration"].ToString(),
                 SessionID = Convert.ToInt32(s["SessionID"]),
-                StreamID = Convert.ToInt32(s["StreamID"]),
-                CourseID = Convert.ToInt32(s["CourseID"]),
-                BatchID = Convert.ToInt32(s["BatchID"]),
+                //StreamID = Convert.ToInt32(s["StreamID"]),
+                //CourseID = Convert.ToInt32(s["CourseID"]),
+                //BatchID = Convert.ToInt32(s["BatchID"]),
                 SubjectID = Convert.ToInt32(s["SubjectID"]),
                 Topic = s["Topic"].ToString(),
                 Instructions = s["Instructions"].ToString(),

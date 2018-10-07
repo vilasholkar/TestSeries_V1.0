@@ -10,5 +10,6 @@ namespace DataAccessLayer
     public interface IDQuiz
     {
         QuizViewModel GetQuiz(int OnlineTestID);
+        string SubmitQuiz(QuizViewModel QuizViewModel);
     }
 }

@@ -4,8 +4,6 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ViewModels.Question;
 using ViewModels.Test;
 
@@ -41,7 +39,7 @@ namespace DataAccessLayer
                 paramerterList.Add(new SqlParameter("@OnlineTestID", OnlineTestID));
                 DataTable dt = DGeneric.RunSP_ReturnDataSet("sp_GetQuiz", paramerterList, null).Tables[0];
                 QuizViewModel quizViewModel = new QuizViewModel();
-                quizViewModel.Question = new List<QuestionViewModel>();
+                quizViewModel.Questions = new List<QuestionViewModel>();
                 List<string> answerList = new List<string>();
                 if (dt.Rows.Count > 0)
                 {
@@ -77,7 +75,7 @@ namespace DataAccessLayer
                                 QuestionTypeID = Convert.ToInt32(dr["QuestionTypeId"]),
                                 QuestionType = dr["QuestionType"].ToString()
                             };
-                            quizViewModel.Question.Add(questionViewModel);
+                            quizViewModel.Questions.Add(questionViewModel);
                         }
                         else
                         {
@@ -105,7 +103,7 @@ namespace DataAccessLayer
                                 QuestionTypeID = Convert.ToInt32(dr["QuestionTypeId"]),
                                 QuestionType = dr["QuestionType"].ToString()
                             };
-                            quizViewModel.Question.Add(questionViewModel);
+                            quizViewModel.Questions.Add(questionViewModel);
                         }
                     }
                 }
@@ -118,5 +116,13 @@ namespace DataAccessLayer
                 //return new QuizViewModel() { ErrorMessage = ex.Message };
             }
         }
+
+        public string SubmitQuiz(QuizViewModel QuizViewModel)
+        {
+
+
+            return null;
+        }
+        
     }
 }
