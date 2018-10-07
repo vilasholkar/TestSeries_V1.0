@@ -40,9 +40,9 @@ namespace BusinessAccessLayer
                     };
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
         public string AddUpdateTestSeries(TestSeriesViewModel objTestSeries)
