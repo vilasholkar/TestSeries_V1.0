@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using ViewModels.Question;
+using ViewModels.Test;
 namespace OnlineTestApplication.Controllers
 {
     public class QuizController : ApiController
@@ -19,10 +20,12 @@ namespace OnlineTestApplication.Controllers
         }
         public class Option
         {
-            public int id { get; set; }
-            public int questionId { get; set; }
-            public string name { get; set; }
+            public int optionID { get; set; }
+            public int questionID { get; set; }
+            public string option { get; set; }
             public bool isAnswer { get; set; }
+            public bool selected { get; set; }
+            
         }
 
         public class QuestionType
@@ -34,11 +37,12 @@ namespace OnlineTestApplication.Controllers
 
         public class Question
         {
-            public int id { get; set; }
-            public string name { get; set; }
-            public int questionTypeId { get; set; }
-            public List<Option> options { get; set; }
-            public QuestionType questionType { get; set; }
+            public int questionID { get; set; }
+            //public int questionTypeID { get; set; }
+            //public string image_English { get; set; }
+            //public string image_Hindi { get; set; }
+            //public List<Option> options { get; set; }
+           // public QuestionType questionType { get; set; }
         }
 
         public class RootObject
@@ -57,7 +61,7 @@ namespace OnlineTestApplication.Controllers
         }
         [HttpPost]
         [Route("api/SubmitQuiz", Name = "SubmitQuiz")]
-        public HttpResponseMessage SubmitQuiz(Object questionViewModel)
+        public HttpResponseMessage SubmitQuiz(QuizViewModel QuizViewModel)
         {
             return Request.CreateResponse(HttpStatusCode.OK,"test");
         }

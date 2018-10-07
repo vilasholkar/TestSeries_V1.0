@@ -22,6 +22,11 @@ namespace OnlineTestApplication
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+        protected void Session_Start(object sender, EventArgs e)
+        {
+            Session.Add("UserID", 0);
+            Session.Add("StudentID", 5010);
+        }
         protected void Application_BeginRequest(Object sender, EventArgs e)
         {
             CultureInfo newCulture = (CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
@@ -29,5 +34,6 @@ namespace OnlineTestApplication
             newCulture.DateTimeFormat.DateSeparator = "/";
             Thread.CurrentThread.CurrentCulture = newCulture;
         }
+
     }
 }
