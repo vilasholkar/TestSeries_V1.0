@@ -96,8 +96,12 @@
     </div>
     <div class="col-sm-12">
       <div id="contentToConvert" class="card">
+        <div class="card-header">
+          <strong class="card-title">Quiz Result</strong>
+        </div>
         <div class="card=body">
-            <div class="result" *ngIf="mode=='result'">
+            <div class="col-sm-12">
+              <div class="result" *ngIf="mode=='result'">
                 <h2>{{quiz.testName}}</h2>
                 <div  *ngFor="let question of quiz.questions; let index = index">
                   <div class="result-question">
@@ -109,6 +113,7 @@
                     </div>
                     <div class="p-1 m-2 alert {{ isCorrect(question) == 'correct'? 'alert-success': 'alert-danger'}}">Your answer is
                       {{isCorrect(question)}}.
+                      
                     </div>
                   </div>
                 </div>
@@ -118,6 +123,7 @@
                 </div>  
                 <!-- <h4 class="alert alert-info text-center">You may close this window now.</h4> -->
               </div>
+            </div>
         </div>
       </div>
     </div>

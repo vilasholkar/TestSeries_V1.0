@@ -15,7 +15,7 @@ export class Quiz {
             this.instructions = data.Instructions;
             this.config = new QuizConfig(data.config);
             this.questions =[];
-            data.Question.forEach(q => {
+            data.Questions.forEach(q => {
                 this.questions.push(new Question(q));
             });
         }

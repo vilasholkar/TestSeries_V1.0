@@ -1,5 +1,5 @@
 import { Option } from './option';
-import { QuestionType } from './QuestionType';
+//import { QuestionType } from './QuestionType';
 export class Question {
     questionID: number;
     questionTypeID: number;

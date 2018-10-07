@@ -61,6 +61,8 @@ export class TestResultComponent implements OnInit {
     }
    else if(value=='StudentResult')
     {
+      // studentID=510;
+      localStorage.setItem("studentID","510");
     this.tableStudentResult = true;
     }
   };

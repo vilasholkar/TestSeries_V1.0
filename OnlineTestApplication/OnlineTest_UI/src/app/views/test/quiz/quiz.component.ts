@@ -73,7 +73,7 @@ export class QuizComponent implements OnInit {
       this.quiz = new Quiz(res);
       console.log("res",res)
       console.log(this.quiz);
-      res.Question.forEach(x=>x.QuestionTypeId===1 ? this.QuestionTypeIsSingleChoice = true : this.QuestionTypeIsSingleChoice = false )
+      res.Questions.forEach(x=>x.QuestionTypeId===1 ? this.QuestionTypeIsSingleChoice = true : this.QuestionTypeIsSingleChoice = false )
       this.pager.count = this.quiz.questions.length;
       this.startTime = new Date();
       this.timer = setInterval(() => { this.tick(); }, 1000);
@@ -102,9 +102,9 @@ export class QuizComponent implements OnInit {
       this.quiz.questions.slice(this.pager.index, this.pager.index + this.pager.size) : [];
   }
   onSelect(question: Question, option: Option) {
-     debugger
-     const element = <HTMLInputElement> document.getElementById("1-input");
-     element.checked = false;
+    //  debugger
+    //  const element = <HTMLInputElement> document.getElementById("1-input");
+    //  element.checked = false;
     if (question.questionTypeID === 1) {
       question.options.forEach((x) => { if (x.questionID !== option.questionID) x.selected = false; });
        
@@ -158,15 +158,15 @@ export class QuizComponent implements OnInit {
     const answers = [];
     this.quiz.questions.forEach(x => answers.push({ 'quizId': this.quiz.onlineTestID, 'questionId': x.questionID, 'answered': x.answered }));    
     console.log("res",this.quiz.questions)
-      // this.quizService.SubmitQuiz(this.quiz.questions)
-      //  .subscribe(data => {
-      //   if (data === 'Success') {
-      //     alert('Record Added Successfully.');
-      //    }
-      //  }, error => {
-      //    alert('error');
-      //    console.log(error);
-      //  });
+      this.quizService.SubmitQuiz(this.quiz)
+       .subscribe(data => {
+        if (data === 'Success') {
+          alert('Record Added Successfully.');
+         }
+       }, error => {
+         alert('error');
+         console.log(error);
+       });
     
     this.mode = 'result';
   }
