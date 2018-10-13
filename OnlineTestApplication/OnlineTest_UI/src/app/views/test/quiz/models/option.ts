@@ -11,5 +11,6 @@ export class Option {
         this.questionID = data.QuestionID;
         this.option = data.Option;
         this.isAnswer = data.IsAnswer;
+        this.selected=false;
     }
 }
