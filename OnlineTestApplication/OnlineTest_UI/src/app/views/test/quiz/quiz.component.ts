@@ -17,6 +17,8 @@ import html2canvas from 'html2canvas';
   providers: [QuizService]
 })
 export class QuizComponent implements OnInit {
+  testDuration:any;
+  correctCount=0;
   today=new Date();
   QuestionTypeIsSingleChoice:any;
   quizes: any[];
@@ -25,10 +27,11 @@ export class QuizComponent implements OnInit {
   mode = 'quiz';
   quizName: string;
   config: QuizConfig = {
+ 
     'allowBack': true,
     'allowReview': true,
     'autoMove': false,  // if true, it will move to next question automatically when answered.
-    'duration': 12000,  // indicates the time (in secs) in which quiz needs to be completed. 0 means unlimited.
+    // 'duration': this.testDuration,  // indicates the time (in secs) in which quiz needs to be completed. 0 means unlimited.
     'pageSize': 1,
     'requiredAll': false,  // indicates if you must answer all the questions before submitting.
     'richText': false,
@@ -47,7 +50,7 @@ export class QuizComponent implements OnInit {
   startTime: Date;
   endTime: Date;
   ellapsedTime = '00:00';
-  duration = '';
+  duration:any;
   IsEnglish:any;
   languageName:any;
   testID:any;
@@ -70,21 +73,23 @@ export class QuizComponent implements OnInit {
   
   loadQuiz(testID: any) {
     this.quizService.getQuiz(testID).subscribe(res => {
+     
       this.quiz = new Quiz(res);
+      this.testDuration=res.TestDuration;
       console.log("res",res)
       console.log(this.quiz);
       res.Questions.forEach(x=>x.QuestionTypeId===1 ? this.QuestionTypeIsSingleChoice = true : this.QuestionTypeIsSingleChoice = false )
       this.pager.count = this.quiz.questions.length;
       this.startTime = new Date();
       this.timer = setInterval(() => { this.tick(); }, 1000);
-      this.duration = this.parseTime(this.config.duration);
+       this.duration = this.parseTime(this.testDuration);
     });
     this.mode = 'quiz';
   }
   tick() {
     const now = new Date();
     const diff = (now.getTime() - this.startTime.getTime()) / 1000;
-    if (diff >= this.config.duration) {
+    if (diff >= this.testDuration) {
       this.onSubmit();
     }
     this.ellapsedTime = this.parseTime(diff);
@@ -123,7 +128,11 @@ export class QuizComponent implements OnInit {
     return question.options.find(x => x.selected) ? 'Answered' : 'Not Answered';
   }
   isCorrect(question: Question) {
+     if (question.options.every(x => x.selected === x.isAnswer)) {
+      this.correctCount++;
+    }
     return question.options.every(x => x.selected === x.isAnswer) ? 'correct' : 'wrong';
+   
   }
   getStyle(question) {
     var isanswered=this.isAnswered(question);
