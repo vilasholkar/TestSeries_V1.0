@@ -7,7 +7,7 @@ import { HelperService } from '../../../services/helper.service';
 import { Option, Question, Quiz, QuizConfig } from './models';
 // import {GlobalVariables} from '../../../models/global-variables';
 import * as jspdf from 'jspdf';  
-  
+
 import html2canvas from 'html2canvas';  
 
 @Component({
@@ -19,6 +19,10 @@ import html2canvas from 'html2canvas';
 export class QuizComponent implements OnInit {
   testDuration:any;
   correctCount=0;
+  totalQuestions:number;
+  noOfQuestionAttempted:number=0;
+  countOfCorrectQues:number=0;
+  countOfIncorrectQues:number;
   today=new Date();
   QuestionTypeIsSingleChoice:any;
   quizes: any[];
@@ -65,6 +69,7 @@ export class QuizComponent implements OnInit {
   }
   changeLanguage(languageName:string)
   {
+    debugger
     if(languageName==='english')
     this.IsEnglish=true;
     else
@@ -80,6 +85,7 @@ export class QuizComponent implements OnInit {
       console.log(this.quiz);
       res.Questions.forEach(x=>x.QuestionTypeId===1 ? this.QuestionTypeIsSingleChoice = true : this.QuestionTypeIsSingleChoice = false )
       this.pager.count = this.quiz.questions.length;
+      this.totalQuestions=this.quiz.questions.length;
       this.startTime = new Date();
       this.timer = setInterval(() => { this.tick(); }, 1000);
        this.duration = this.parseTime(this.testDuration);
@@ -107,12 +113,11 @@ export class QuizComponent implements OnInit {
       this.quiz.questions.slice(this.pager.index, this.pager.index + this.pager.size) : [];
   }
   onSelect(question: Question, option: Option) {
-    //  debugger
-    //  const element = <HTMLInputElement> document.getElementById("1-input");
-    //  element.checked = false;
+     debugger
+   
     if (question.questionTypeID === 1) {
       question.options.forEach((x) => { if (x.questionID !== option.questionID) x.selected = false; });
-       
+       this.noOfQuestionAttempted += 1;
     }
     if (this.config.autoMove) {
       this.goTo(this.pager.index + 1);
@@ -128,10 +133,9 @@ export class QuizComponent implements OnInit {
     return question.options.find(x => x.selected) ? 'Answered' : 'Not Answered';
   }
   isCorrect(question: Question) {
-     if (question.options.every(x => x.selected === x.isAnswer)) {
-      this.correctCount++;
-    }
-    return question.options.every(x => x.selected === x.isAnswer) ? 'correct' : 'wrong';
+    // debugger
+    //   let count=question.options.every(x => x.selected == x.isAnswer).valueOf();
+    return question.options.every(x => x.selected == x.isAnswer) ? 'correct' : 'wrong';
    
   }
   getStyle(question) {
@@ -164,6 +168,7 @@ export class QuizComponent implements OnInit {
       });  
     }  
   onSubmit() {
+    
     const answers = [];
     this.quiz.questions.forEach(x => answers.push({ 'quizId': this.quiz.onlineTestID, 'questionId': x.questionID, 'answered': x.answered }));    
     console.log("res",this.quiz.questions)
@@ -178,5 +183,6 @@ export class QuizComponent implements OnInit {
        });
     
     this.mode = 'result';
+    
   }
 }

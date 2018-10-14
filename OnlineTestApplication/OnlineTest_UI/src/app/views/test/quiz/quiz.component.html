@@ -1,15 +1,19 @@
 <div class="animated fadeIn">
-  <div class="row">
+  <div *ngIf="mode=='quiz'"  class="row">
     <div class="col-6">
       <h4>{{quiz.testName}}</h4>
     </div>
     <div class="col-6 text-right">
-      <b>Language: </b>
-              <select [(ngModel)]="languageName" (change)="changeLanguage(languageName)">
-                <option value="english">English</option>
-                <option value="hindi">Hindi</option>
-              </select>
+      <b>Select Language : </b>
+        <mat-form-field>
+              <mat-select [(ngModel)]="languageName" (selectionChange)="changeLanguage(languageName)">
+                <mat-option value="english">English</mat-option>
+                <mat-option value="hindi">Hindi</mat-option>
+              </mat-select>
+         </mat-form-field>
+
       </div>
+     
   </div>
   <div id="quiz" class="row" style="margin-left:-35px;margin-right:-35px;">
     <div class="col-sm-9" *ngIf="mode=='quiz' && quiz">
@@ -17,15 +21,16 @@
         <div class="card-header">
           <div class="row">
             <div class="col-sm-5">
-              <div class="badge badge-primary" style="font-size:16px">
+              <div class="badge badge-info" style="font-size:16px">
                Que. No. {{pager.index + 1}}.
               </div>
+              
             </div>
             <div class="col-sm-7 text-right">
               <!-- <div *ngIf="config.duration" class="badge badge-primary float-right" style="font-size:16px;font-weight:500;">Time:
                 {{ellapsedTime}} / {{duration}}</div>
             </div> -->
-               <div  class="badge badge-primary float-right" style="font-size:16px;font-weight:500;">Time:
+               <div  class="badge badge-success float-right" style="font-size:16px;font-weight:500;">Time:
                 {{ellapsedTime}} / {{duration}}</div>
             </div>
           </div>
@@ -64,15 +69,19 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-3">
+    <div  *ngIf="mode=='quiz'" class="col-sm-3">
       <div class="card card-accent-primary">
-        <div class="card-header text-center" style="padding: 10px;">
-          <mat-button-toggle-group name="fontStyle" aria-label="Font Style"  value="Physics">
-          
+        <div class="">
+          <mat-button-toggle-group color="accent"  value="Physics">
             <mat-button-toggle (click)="goTo(0)" value="Physics"><b>Physics</b></mat-button-toggle>
             <mat-button-toggle (click)="goTo(2)" value="Chemistry"><b>Chemistry</b></mat-button-toggle>
             <mat-button-toggle (click)="goTo(4)" value="Biology"><b>Biology</b></mat-button-toggle>
           </mat-button-toggle-group>
+          <!-- <mat-tab-group name="fontStyle" aria-label="Font Style" >
+            <mat-tab label="First"> Content 1 </mat-tab>
+            <mat-tab label="Second"> Content 2 </mat-tab>
+            <mat-tab label="Third"> Content 3 </mat-tab>
+          </mat-tab-group> -->
         </div>
         <perfect-scrollbar style="position: relative;width: 100%; max-height: 418px;overflow: auto;">
           <div class="card-body text-center">
@@ -100,24 +109,40 @@
     <div class="col-sm-12" *ngIf="mode=='result'">  
       <div id="contentToConvert" class="card">
         <div class="card-header">
-          <strong class="card-title">Quiz Result</strong>
+          <strong class="card-title">Test Result : </strong>
+          <strong class="card-title">{{quiz.testName}}</strong>
         </div>
-        <div class="card=body">
-            <div class="col-sm-12">
+        <div class="mat-card body col-sm-12">
+          <br>
+          <div class="alert alert-info">
+          <strong>Total Questions : {{totalQuestions}}</strong><br>
+          <strong>Questions Attempted : {{noOfQuestionAttempted}}</strong><br>
+          <strong>Correct Answer(s) : {{countOfCorrectQues}}</strong><br>
+          <strong>Incorrect Answer(s) : 1</strong><br>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="mat-card body col-sm-12">
+            <div class="col-sm-6">
               <div class="result" *ngIf="mode=='result'">
-                <h2>{{quiz.testName}}</h2>
-                <h2>Correct Answer: {{correctCount}}</h2>
+                 <div class="col-sm-6 col-lg-3">
+      
+                 </div>
                 <div  *ngFor="let question of quiz.questions; let index = index">
                   <div class="result-question">
                     <h5>{{index + 1}}. {{question.name}}</h5>
+
                     <div class="row">
                       <div class="col-6" *ngFor="let Option of question.options">
-                        <input id="{{Option.id}}" type="checkbox" disabled="disabled" [(ngModel)]="Option.selected" /> {{Option.name}}
+                        <mat-checkbox color="primary" id="{{Option.id}}" type="checkbox" disabled="disabled" [(ngModel)]="Option.selected"> {{Option.option}}</mat-checkbox>
                       </div>
                     </div>
-                    <div class="p-1 m-2 alert {{ isCorrect(question) == 'correct'? 'alert-success': 'alert-danger'}}">Your answer is
-                      {{isCorrect(question)}}
-                    </div>
+                    <div id="test" class="p-1 m-4 alert {{ isCorrect(question) == 'correct'? 'alert-success': 'alert-danger'}}">Your answer is
+                      <strong>{{isCorrect(question)}}</strong>
+                    </div> 
+                     <!-- <div class="{{ isCorrect(question) == 'correct'? 'badge badge-success': 'badge  badge-danger'}}">
+                      <b>{{isCorrect(question)}}</b>
+                    </div> -->
                   </div>
                 </div>
                 <div>  
