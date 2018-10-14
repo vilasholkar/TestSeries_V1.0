@@ -22,7 +22,7 @@ export class DefaultLayoutComponent {
     this.changes = new MutationObserver((mutations) => {
       this.sidebarMinimized = document.body.classList.contains('sidebar-minimized');
       let userRole=localStorage.getItem("userRoles");
-          debugger
+          
           if(userRole==="Admin")
               {
               this.isAdmin=true;
