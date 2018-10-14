@@ -28,7 +28,6 @@ export class QuizService {
         });
   }
   SubmitQuiz(QuizResponse:Quiz): Observable<any> {
-    debugger;
      return this.http.post(HostName.API_StartPoint + APIUrl.Submit_Quiz, QuizResponse)
         .map((response: Response) => {
              const data = response;

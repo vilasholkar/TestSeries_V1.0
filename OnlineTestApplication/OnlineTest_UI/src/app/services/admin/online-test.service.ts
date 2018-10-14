@@ -30,7 +30,6 @@ export class OnlineTestService {
       });
   }
   getCourseByStream(StreamId: Int32Array): Observable<any> {
-    debugger;
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     this.options = new RequestOptions({ headers: this.headers });
      
@@ -44,7 +43,6 @@ export class OnlineTestService {
       });
   }
   getBatchByCourse(CourseId: Int32Array): Observable<any> {
-    debugger;
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     this.options = new RequestOptions({ headers: this.headers });
      

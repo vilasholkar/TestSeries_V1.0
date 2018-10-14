@@ -17,7 +17,6 @@ export class EligibleStudentService {
   this.options = new RequestOptions({ headers: this.headers });
    }
    getEligibleStudent(OnlieTestID:number): Observable<any> {
-    debugger;
     return this.http.get(HostName.API_StartPoint + APIUrl.GetEligibleStudent+"?OnlineTestID="+OnlieTestID)
       .map((response: Response) => {
         const data = response;
