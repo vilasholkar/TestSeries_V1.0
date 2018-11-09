@@ -297,5 +297,56 @@ namespace DataAccessLayer
         {
             return DateTime.ParseExact(date.ToString(), "dd/MM/yyyy", CultureInfo.CurrentCulture);
         }
+
+        public static object GetValue(string query)
+        {
+            SqlCommand sqlCommand = new SqlCommand();
+            sqlCommand.CommandText = query;
+            string str = DGeneric.ConnectionString;
+            SqlConnection cnn = new SqlConnection(str);
+            cnn.Open();
+
+            sqlCommand.Connection = cnn;
+
+            try
+            {
+            object obj = sqlCommand.ExecuteScalar();
+            cnn.Close();
+            sqlCommand.Dispose();
+            return obj;
+            }
+            catch (Exception ex)
+            {
+                cnn.Close();
+                sqlCommand.Dispose();
+                throw new Exception("DGeneric::GetValue::Error occured.", ex.InnerException);
+            }
+
+        }
+        public static DataSet GetData(string query)
+        {
+            SqlConnection cnn = new SqlConnection(DGeneric.ConnectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            sqlCommand.CommandText = query;
+            //sqlCommand.CommandType = CommandType.StoredProcedure;
+            //cnn.Open();
+            sqlCommand.Connection = cnn;
+            try
+            {
+            SqlDataAdapter objDa = new SqlDataAdapter(sqlCommand);
+            DataSet ds = new DataSet();
+            objDa.Fill(ds);
+            //cnn.Close();
+            sqlCommand.Dispose();
+            return ds;
+            }
+            catch (Exception ex)
+            {
+                cnn.Close();
+                sqlCommand.Dispose();
+                throw new Exception("DGeneric::GetData::Error occured.", ex.InnerException);
+            }
+
+        }
     }
 }
