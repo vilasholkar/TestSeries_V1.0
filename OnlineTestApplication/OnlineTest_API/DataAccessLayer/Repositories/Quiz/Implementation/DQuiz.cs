@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Web;
 using ViewModels.Question;
 using ViewModels.Test;
 
@@ -119,9 +120,60 @@ namespace DataAccessLayer
 
         public string SubmitQuiz(QuizViewModel QuizViewModel)
         {
+            try
+            {
+                int StudentID = 5123;
+                    // Convert.ToInt32(HttpContext.Current.Session["StudentID"]);
+            int OptionID = 0;
+            int AnswerID = 0;
+            bool IsCorrect=false;
+            DataTable dtStudentResponse = new DataTable();
+            dtStudentResponse.Columns.Add("StudentID", typeof(int));
+            dtStudentResponse.Columns.Add("TestID", typeof(int));
+            dtStudentResponse.Columns.Add("QuestionID", typeof(int));
+            dtStudentResponse.Columns.Add("SubjectID", typeof(int));
+            dtStudentResponse.Columns.Add("OptionID", typeof(int));
+            dtStudentResponse.Columns.Add("AnswerID", typeof(int));
+            dtStudentResponse.Columns.Add("IsCorrect", typeof(bool));
 
-
-            return null;
+            foreach (var Questions in QuizViewModel.Questions)
+            {
+                //What will happen when 2 answers are correct
+                Questions.SubjectID = 1;//For Testing Only
+                if (Questions.SubjectID == 1)//Physics
+                {
+                    foreach (var Options in Questions.Options)
+                    {
+                        if (Options.IsAnswer && Options.Selected)
+                        {
+                            OptionID = Options.OptionID;
+                            AnswerID = Options.OptionID;
+                            IsCorrect = true; 
+                        }
+                       else if (Options.IsAnswer && !Options.Selected)
+                        {
+                            OptionID = Options.OptionID;
+                            IsCorrect = false;
+                        }
+                        else if (!Options.IsAnswer && Options.Selected)
+                        {
+                            AnswerID = Options.OptionID;
+                            IsCorrect = false;
+                        }
+                    }
+                    dtStudentResponse.Rows.Add(StudentID, QuizViewModel.OnlineTestID, Questions.QuestionID, Questions.SubjectID,OptionID,AnswerID,IsCorrect);
+                    OptionID = 0; AnswerID = 0; IsCorrect = false;
+                }
+            }
+          
+            List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+            sqlParameterList.Add(new SqlParameter("@StudentResponseDetails", dtStudentResponse));
+            return DGeneric.RunSP_ExecuteNonQuery("sp_AddStudentResponse", sqlParameterList);
+            }
+            catch(Exception ex)
+            {
+                return ex.Message;
+            }
         }
         
     }
