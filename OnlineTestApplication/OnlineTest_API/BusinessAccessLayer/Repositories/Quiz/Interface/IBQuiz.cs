@@ -10,6 +10,6 @@ namespace BusinessAccessLayer
     public interface IBQuiz
     {
         QuizViewModel GetQuiz(int OnlineTestID);
-
+        string SubmitQuiz(QuizViewModel QuizViewModel);
     }
 }

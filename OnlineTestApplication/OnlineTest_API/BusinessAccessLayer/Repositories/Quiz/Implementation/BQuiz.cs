@@ -19,5 +19,9 @@ namespace BusinessAccessLayer
         {
             return _iDQuiz.GetQuiz(OnlineTestID);
         }
+       public string SubmitQuiz(QuizViewModel QuizViewModel)
+       {
+           return _iDQuiz.SubmitQuiz(QuizViewModel);
+       }
     }
 }
