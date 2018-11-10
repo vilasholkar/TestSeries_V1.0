@@ -12,5 +12,6 @@ namespace ViewModels.Question
         public int QuestionID { get; set; }
         public string Option { get; set; }
         public bool IsAnswer { get; set; }
+        public bool Selected { get; set; }
     }
 }

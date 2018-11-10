@@ -15,6 +15,6 @@ namespace ViewModels.Question
         public string CorrectAnswer { get; set; }
         public List<OptionViewModel> Options { get; set; }
         public QuestionTypeViewModel QuestionType { get; set; }
-
+        public int SubjectID { get; set; }
     }
 }
