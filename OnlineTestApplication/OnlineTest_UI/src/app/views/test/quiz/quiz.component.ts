@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
-// import { QuizService } from '../../../services/admin/quiz.service';
 import { QuizService } from '../../../services/admin/quiz.service';
 import { HelperService } from '../../../services/helper.service';
 import { Option, Question, Quiz, QuizConfig } from './models';
-// import {GlobalVariables} from '../../../models/global-variables';
 import * as jspdf from 'jspdf';  
-
 import html2canvas from 'html2canvas';  
+declare var $: any;
 
 @Component({
   selector: 'app-quiz',
@@ -22,7 +20,7 @@ export class QuizComponent implements OnInit {
   totalQuestions:number;
   noOfQuestionAttempted:number=0;
   countOfCorrectQues:number=0;
-  countOfIncorrectQues:number;
+  countOfIncorrectQues:number=0;
   today=new Date();
   QuestionTypeIsSingleChoice:any;
   quizes: any[];
@@ -69,7 +67,6 @@ export class QuizComponent implements OnInit {
   }
   changeLanguage(languageName:string)
   {
-    debugger
     if(languageName==='english')
     this.IsEnglish=true;
     else
@@ -77,8 +74,7 @@ export class QuizComponent implements OnInit {
   }
   
   loadQuiz(testID: any) {
-    this.quizService.getQuiz(testID).subscribe(res => {
-     
+      this.quizService.getQuiz(testID).subscribe(res => {
       this.quiz = new Quiz(res);
       this.testDuration=res.TestDuration;
       console.log("res",res)
@@ -90,6 +86,8 @@ export class QuizComponent implements OnInit {
       this.timer = setInterval(() => { this.tick(); }, 1000);
        this.duration = this.parseTime(this.testDuration);
     });
+    //$('.navbar-toggler-icon').click()
+
     this.mode = 'quiz';
   }
   tick() {
@@ -108,15 +106,15 @@ export class QuizComponent implements OnInit {
     return `${mins}:${secs}`;
   }
   get filteredQuestions() {
-    
-    return (this.quiz.questions) ?
-      this.quiz.questions.slice(this.pager.index, this.pager.index + this.pager.size) : [];
+    return (this.quiz.questions) ? this.quiz.questions.slice(this.pager.index, this.pager.index + this.pager.size) : [];
   }
-  onSelect(question: Question, option: Option) {
-     debugger
-   
+  onSelect(question: Question, option: Option) {   
     if (question.questionTypeID === 1) {
-      question.options.forEach((x) => { if (x.questionID !== option.questionID) x.selected = false; });
+      question.options.forEach((x) => 
+      { 
+        if (x.questionID !== option.questionID) 
+        x.selected = false;
+      });
        this.noOfQuestionAttempted += 1;
     }
     if (this.config.autoMove) {
@@ -133,10 +131,16 @@ export class QuizComponent implements OnInit {
     return question.options.find(x => x.selected) ? 'Answered' : 'Not Answered';
   }
   isCorrect(question: Question) {
-    // debugger
-    //   let count=question.options.every(x => x.selected == x.isAnswer).valueOf();
+     var status= question.options.every(x => x.selected == x.isAnswer) ? 'correct' : 'wrong'
+     if(status==='correct'){
+       //this.countOfCorrectQues++;
+     }
     return question.options.every(x => x.selected == x.isAnswer) ? 'correct' : 'wrong';
    
+  }
+  markForReview(question){
+    
+      $('question.questionID').prop('checked', true);
   }
   getStyle(question) {
     var isanswered=this.isAnswered(question);
@@ -146,8 +150,6 @@ export class QuizComponent implements OnInit {
     if(isanswered=="Not Answered") {
       return 'basic';
        } 
-
-    
   }
   public ConvertToPDF()  
     {  
@@ -181,7 +183,10 @@ export class QuizComponent implements OnInit {
          alert('error');
          console.log(error);
        });
-    
+        // debugger
+        //  var text= $('#test').text();
+        //     console.log(text) 
+
     this.mode = 'result';
     
   }

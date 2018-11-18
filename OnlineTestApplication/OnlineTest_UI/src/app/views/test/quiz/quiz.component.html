@@ -1,9 +1,9 @@
 <div class="animated fadeIn">
   <div *ngIf="mode=='quiz'"  class="row">
-    <div class="col-6">
-      <h4>{{quiz.testName}}</h4>
+    <div class="col-md-8 col-sm-8 ">
+      <h4 class="float-center">{{quiz.testName}}</h4>
     </div>
-    <div class="col-6 text-right">
+    <div class="col-md-4 col-sm-4 text-right">
       <b>Select Language : </b>
         <mat-form-field>
               <mat-select [(ngModel)]="languageName" (selectionChange)="changeLanguage(languageName)">
@@ -20,16 +20,13 @@
       <div class="card card-accent-primary" style="height:550px" *ngFor="let question of filteredQuestions;">
         <div class="card-header">
           <div class="row">
-            <div class="col-sm-5">
+            <div class="col-md-5 col-sm-5">
               <div class="badge badge-info" style="font-size:16px">
                Que. No. {{pager.index + 1}}.
               </div>
               
             </div>
-            <div class="col-sm-7 text-right">
-              <!-- <div *ngIf="config.duration" class="badge badge-primary float-right" style="font-size:16px;font-weight:500;">Time:
-                {{ellapsedTime}} / {{duration}}</div>
-            </div> -->
+            <div class="col-md-7 col-sm-5 text-right">
                <div  class="badge badge-success float-right" style="font-size:16px;font-weight:500;">Time:
                 {{ellapsedTime}} / {{duration}}</div>
             </div>
@@ -62,17 +59,17 @@
             </div>
           </div>
           <hr/>
-          <button mat-raised-button color="primary" *ngIf="config.allowBack" (click)="goTo(pager.index - 1);">Previous</button>
-          <button mat-raised-button color="accent">Mark for Review & Next</button>
+          <button  mat-raised-button color="primary" *ngIf="config.allowBack" (click)="goTo(pager.index - 1);">Previous</button>
+          <!-- <button id="{{question.questionID}}" (click)="markForReview(question)"  mat-raised-button color="accent">Mark for Review & Next</button> -->
+          <mat-checkbox hidden id="{{question.questionID}}" color="primary"  (change)="onSelect(question, option);"></mat-checkbox>
           <button mat-raised-button color="primary" (click)="goTo(pager.index + 1);">Save & Next</button>
           <!-- <botton mat-raised-button color="primary" (click)="resetAnswer()">Reset</button> -->
         </div>
       </div>
     </div>
-    <div  *ngIf="mode=='quiz'" class="col-sm-3">
+    <div  *ngIf="mode=='quiz'" class="col-md-3">
       <div class="card card-accent-primary">
-        <div class="">
-          <mat-button-toggle-group color="accent"  value="Physics">
+          <mat-button-toggle-group style="padding-left: 0px;padding-right: 0px;" class="col-md-12" color="accent"  value="Physics">
             <mat-button-toggle (click)="goTo(0)" value="Physics"><b>Physics</b></mat-button-toggle>
             <mat-button-toggle (click)="goTo(2)" value="Chemistry"><b>Chemistry</b></mat-button-toggle>
             <mat-button-toggle (click)="goTo(4)" value="Biology"><b>Biology</b></mat-button-toggle>
@@ -82,17 +79,16 @@
             <mat-tab label="Second"> Content 2 </mat-tab>
             <mat-tab label="Third"> Content 3 </mat-tab>
           </mat-tab-group> -->
-        </div>
         <perfect-scrollbar style="position: relative;width: 100%; max-height: 418px;overflow: auto;">
-          <div class="card-body text-center">
+          <div class="card-body text-center col-md-12">
             <button mat-raised-button matTooltip="Not Visited">5</button>
-            <button mat-raised-button color="warn" matTooltip="Not Answered">12</button>
-            <button mat-raised-button color="accent" matTooltip="Mark for Review">7</button>
+            <!-- <button mat-raised-button color="warn" matTooltip="Not Answered">12</button> -->
+            <!-- <button mat-raised-button color="accent" matTooltip="Mark for Review">7</button> -->
             <button mat-raised-button color="primary" matTooltip="Answered">45</button>
             <hr/>
             <!-- [class.btn-primary]="true" -->
             <!-- color="{{ isAnswered(question) == 'Answered'? 'primary': 'basic' }}" -->
-            <button *ngFor="let question of quiz.questions; let index = index;"
+            <button id="status{{question.questionID}}" *ngFor="let question of quiz.questions; let index = index;"
               [color]="getStyle(question)"
               mat-raised-button (click)="goTo(index)" >
               {{index+1}}
@@ -117,8 +113,8 @@
           <div class="alert alert-info">
           <strong>Total Questions : {{totalQuestions}}</strong><br>
           <strong>Questions Attempted : {{noOfQuestionAttempted}}</strong><br>
-          <strong>Correct Answer(s) : {{countOfCorrectQues}}</strong><br>
-          <strong>Incorrect Answer(s) : 1</strong><br>
+          <!-- <strong>Correct Answer(s) : {{countOfCorrectQues}}</strong><br>
+          <strong>Incorrect Answer(s) : 1</strong><br> -->
           </div>
         </div>
         <mat-divider></mat-divider>
@@ -128,7 +124,7 @@
                  <div class="col-sm-6 col-lg-3">
       
                  </div>
-                <div  *ngFor="let question of quiz.questions; let index = index">
+                <div id="test" *ngFor="let question of quiz.questions; let index = index">
                   <div class="result-question">
                     <h5>{{index + 1}}. {{question.name}}</h5>
 
@@ -137,7 +133,7 @@
                         <mat-checkbox color="primary" id="{{Option.id}}" type="checkbox" disabled="disabled" [(ngModel)]="Option.selected"> {{Option.option}}</mat-checkbox>
                       </div>
                     </div>
-                    <div id="test" class="p-1 m-4 alert {{ isCorrect(question) == 'correct'? 'alert-success': 'alert-danger'}}">Your answer is
+                    <div  id="test" class="p-1 m-4 alert {{ isCorrect(question) == 'correct'? 'alert-success': 'alert-danger'}}">Your answer is
                       <strong>{{isCorrect(question)}}</strong>
                     </div> 
                      <!-- <div class="{{ isCorrect(question) == 'correct'? 'badge badge-success': 'badge  badge-danger'}}">

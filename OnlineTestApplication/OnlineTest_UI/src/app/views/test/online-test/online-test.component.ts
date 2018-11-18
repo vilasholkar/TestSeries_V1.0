@@ -1,18 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy ,ViewChild} from '@angular/core';
 import {OnlineTestService} from '../../../services/admin/online-test.service';
 import {TestSeriesService} from '../../../services/admin/test-series.service';
 import {TestTypeService} from '../../../services/admin/test-type.service';
 import {Stream,Course,Batch,TestType,Session} from '../../../models/master';
 import {OnlineTest,TestSeries} from '../../../models/test';
 import { MatSnackBar } from "@angular/material";
-
+import { NgForm } from "@angular/forms";
+var $:any;
 @Component({
   selector: 'app-online-test',
   templateUrl: './online-test.component.html',
-  styleUrls: ['./online-test.component.scss']
+  styleUrls: ['./online-test.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+
 })
+
 export class OnlineTestComponent implements OnInit {
-  showAddDiv:any;
+  public dateTime: Date;
+  showAddDiv:any=false;
   stream : Stream;
   course : Course;
   batch : Batch;
@@ -21,28 +26,35 @@ export class OnlineTestComponent implements OnInit {
   session : Session;
   onlineTest: OnlineTest;
   onlineTestModel: any = {};
-  minStartDate = Date.now();
-  maxStartDate = new Date(2020, 0, 1);
   dropdownSettings = {};
   Title:any;
-
+  public minStartDate = new Date();
+  public maxStartDate = new Date(2020, 3, 25);
+  public minEndDate =new Date();
+  public maxEndDate = new Date(2020, 3, 25);
   constructor(private onlineTestService: OnlineTestService, private testTypeService: TestTypeService,
   private testSeriesService: TestSeriesService,public snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.getOnlineTest();
+  }
+
+  @ViewChild('onlineTestForm') exampleform :NgForm;
+  form = this.exampleform;
+
+  // @ViewChild('onlineTestForm') exampleform :NgForm;
+ 
+  changeShowStatus() {
     this.getStream();
     this.getTestType();
     this.getTestSeries();
-    this.getSession();
-  }
-  changeShowStatus() {
-    this.showAddDiv = !this.showAddDiv;
+    this.getSession(); 
+    debugger
+    //this.showAddDiv = !this.showAddDiv;
     this.Title = "Add Test";
-    this.onlineTestModel = {};
+    //this.onlineTestModel = {};
   }
   getStream(){
-     
     this.onlineTestService.getStream()
     .subscribe(data => {
       if(data.Message === 'Success')
@@ -52,10 +64,11 @@ export class OnlineTestComponent implements OnInit {
     })
   }
   getTestType() {
-     
+    
     this.testTypeService.getTestTypes()
     .subscribe(data => {
      if (data.Message === 'Success') {
+       
         this.testType = data.Object;
       }
     }, error => {
@@ -75,7 +88,6 @@ export class OnlineTestComponent implements OnInit {
       });
   }
   getSession(){
-     
     this.onlineTestService.getSession()
     .subscribe(data => {
       if(data.Message === 'Success')
@@ -85,7 +97,6 @@ export class OnlineTestComponent implements OnInit {
     })
   }
   onChangeStream(streamId){
-     debugger;
     this.onlineTestService.getCourseByStream(streamId)
     .subscribe(data => {
       if(data.Message === 'Success')
@@ -95,7 +106,6 @@ export class OnlineTestComponent implements OnInit {
     })
   }
   onChangeCourse(courseId){
-     debugger;
     this.onlineTestService.getBatchByCourse(courseId)
     .subscribe(data => {
       if(data.Message === 'Success')
@@ -105,7 +115,7 @@ export class OnlineTestComponent implements OnInit {
     })
   }
   getOnlineTest(){
-     
+    debugger
     this.onlineTestService.getOnlineTest()
     .subscribe(data => {
       if(data.Message === 'Success')
@@ -114,18 +124,15 @@ export class OnlineTestComponent implements OnInit {
       alert('error');
     })
   }
+  error:any={isError:false,errorMessage:''};
+
   addOnlineTest(){
-     debugger;
     this.onlineTest = this.onlineTestModel;
     this.onlineTestService.addUpdateOnlineTest(this.onlineTest)
     .subscribe(data => {
       if (data === 'Success') {
-        this.onlineTestModel = {};
-        this.getOnlineTest();
-        this.getStream();
-        this.getTestType();
-        this.getTestSeries();
-        this.getSession();
+        //this.onlineTestModel = {};
+        this.exampleform.reset();
         this.showAddDiv = false;
         this.openSnackBar("Record Saved Successfully.", "Close");
        }
@@ -149,17 +156,18 @@ export class OnlineTestComponent implements OnInit {
        alert('error');
        console.log(error);
      });
+    }
   }
-}
-// streamCmFun(s1: Stream, s2: Stream): boolean {
-//   return s1 && s2 ? s1.StreamID === s2.StreamID : s1 === s2;
-// }
-// courseCmFun(c1: Course, c2: Course): boolean {
-//   return c1 && c2 ? c1 === c2.CourseID : c1 === c2;
-// }
   getOnlineTestById(OnlineTestModel){
-     debugger;
-    this.showAddDiv=true;
+    this.getStream();
+    this.getTestType();
+    this.getTestSeries();
+    this.getSession(); 
+    if(this.showAddDiv==false)
+      {
+        this.showAddDiv=true;
+      }
+    
     this.Title="Edit Test";
     this.onlineTestService.getOnlineTestById(OnlineTestModel.OnlineTestID)
     .subscribe(data => {
@@ -167,8 +175,6 @@ export class OnlineTestComponent implements OnInit {
         this.onlineTestModel = data.Object;
         this.onChangeStream(this.onlineTestModel.StreamID);
         this.onChangeCourse(this.onlineTestModel.CourseID);
-        //this.getOnlineTest(); 
-        //this.showAddDiv = false;
        }
      }, error => {
        alert('error');

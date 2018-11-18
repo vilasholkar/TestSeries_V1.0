@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import {ResultAnalysisService} from '../../../services/student/result-analysis.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-result-analysis',
@@ -9,23 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 export class ResultAnalysisComponent implements OnInit {
   id: any;
   options: any;
-  constructor(private route: ActivatedRoute) { }
-
-  ngOnInit() {
-    this.getResultAnalysisByTestID();
-  }
-  getResultAnalysisByTestID() {
-
-    this.id = +this.route.snapshot.paramMap.get('id');
-    //   this.viewQuestionService.GetQuestionsByTestId(this.id as number)
-    //   .subscribe(data => {
-    //     if(data.Message === 'Success')
-    //     this.quizModel = data.Object;
-    // },error => {
-    // alert(this.id);
-    //   });
-  }
-
+  constructor(private route: ActivatedRoute,public snackBar: MatSnackBar, private resultAnalysisService :ResultAnalysisService) { }
   // Doughnut
   public EasyQuestionData: number[] = [60, 20, 20];
   public MediumQuestionData: number[] = [40, 10, 20];
@@ -76,6 +62,62 @@ export class ResultAnalysisComponent implements OnInit {
   public barChartData: any[] = [
     {data: [65, 59, 80], label: 'Percentage'}
   ];
+  ngOnInit() {
+    this.getResultAnalysisByTestID();
+  }
+  getResultAnalysisByTestID() {
+    this.id = +this.route.snapshot.paramMap.get('id');
+  }
+  ResultAnalysis() {
+     this.resultAnalysisService.ResultAnalysis(1)
+     .subscribe(data => {
+      if (data.Message === 'Success') {
+        //do something here!
+      }
+     }, error => {
+      this.openSnackBar("Error.", "Close");
+       console.log(error);
+     });
+  }
+  GetPaperAnalysis() {
+     this.resultAnalysisService.GetPaperAnalysis(1)
+     .subscribe(data => {
+      if (data.Message === 'Success') {
+        //do something here!
+      }
+     }, error => {
+      this.openSnackBar("Error.", "Close");
+       console.log(error);
+     });
+  } 
+  GetStudentMarksReview() {
+     this.resultAnalysisService.GetStudentMarksReview(1)
+     .subscribe(data => {
+      if (data.Message === 'Success') {
+        //do something here!
+      }
+     }, error => {
+      this.openSnackBar("Error.", "Close");
+       console.log(error);
+     });
+  } 
+  GetTopper_Average() {
+     this.resultAnalysisService.GetTopper_Average(1)
+     .subscribe(data => {
+      if (data.Message === 'Success') {
+        //do something here!
+      }
+     }, error => {
+      this.openSnackBar("Error.", "Close");
+       console.log(error);
+     });
+  } 
+  openSnackBar(message: string, action: string) {
+      this.snackBar.open(message, action, {
+        duration: 2000,
+      });
+  }
+  
   // Pie
   // public pieChartLabels: string[] = ['Download Sales', 'In-Store Sales', 'Mail Sales'];
   // public pieChartData: number[] = [300, 500, 100];

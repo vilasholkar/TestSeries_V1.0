@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { CustomMaterialModule } from "../../custommaterial.module";
 
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 // OnlineTest Component
 import { TestSeriesComponent } from './test-series/test-series.component';
@@ -26,7 +27,9 @@ import { EligibleStudentComponent } from './eligible-student/eligible-student.co
       FormsModule,
       TestRoutingModule,
       CustomMaterialModule,PerfectScrollbarModule,
-      TabsModule
+      TabsModule,
+      OwlDateTimeModule,
+      OwlNativeDateTimeModule,
     ],
     declarations: [
       TestSeriesComponent,
