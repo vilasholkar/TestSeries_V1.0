@@ -9,7 +9,7 @@ export class AuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot):  boolean {
-      if (localStorage.getItem('userToken') != null)
+      if (sessionStorage.getItem('userToken') != null)
       {
         let roles = next.data["roles"] as Array<string>;
         if (roles) {
