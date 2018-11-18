@@ -38,6 +38,12 @@ namespace OnlineTestApplication
             container.RegisterType<IDEligibleStudent, DEligibleStudentcs>();
             container.RegisterType<IBEligibleStudent, BEligibleStudent>();
 
+            container.RegisterType<IDResult, DResult>();
+            container.RegisterType<IBResult, BResult>();
+
+            container.RegisterType<IDAccount, DAccount>();
+            container.RegisterType<IBAccount, BAccount>();
+
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }
     }
