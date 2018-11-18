@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ResultAnalysisComponent } from './result-analysis/result-analysis.component';
 import { TestResultComponent } from './test-result/test-result.component';
+import { ResultComponent } from './result/result.component';
 const routes: Routes = [
     {
       path: '',
@@ -9,6 +10,13 @@ const routes: Routes = [
         title: 'Result'
       },
        children: [
+        {
+          path: 'result',
+          component: ResultComponent,
+          data: {
+            title: 'Result'
+          },
+        },
         {
           path: 'result-analysis/:id',
           component: ResultAnalysisComponent,

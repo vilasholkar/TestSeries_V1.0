@@ -11,6 +11,7 @@ import { StudentModule } from "../student/student.module";
 import { ResultRoutingModule } from './result-routing.module';
 import { ResultAnalysisComponent } from './result-analysis/result-analysis.component';
 import { TestResultComponent } from './test-result/test-result.component';
+import { ResultComponent } from './result/result.component';
 
 @NgModule({
     imports: [
@@ -25,7 +26,8 @@ import { TestResultComponent } from './test-result/test-result.component';
     ],
     declarations: [
        ResultAnalysisComponent,
-       TestResultComponent
+       TestResultComponent,
+       ResultComponent
     ],
     providers: [HttpClientModule]
   })
