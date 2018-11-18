@@ -8,8 +8,10 @@ namespace ViewModels.Account
 {
     public  class Login
     {
-        public int Id { get; set; }
+        public int UserID { get; set; }
         public string UserName { get; set; }
-        public string Password { get; set; }
+        public string UserPassword { get; set; }
+        public int UserTypeID { get; set; }
+        public string UserType { get; set; }
     }
 }
