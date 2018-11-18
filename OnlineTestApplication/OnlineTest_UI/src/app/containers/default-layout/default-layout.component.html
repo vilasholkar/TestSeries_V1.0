@@ -1,6 +1,6 @@
 <app-header
   [fixed]="true"
-  [navbarBrandFull]="{src: 'assets/img/brand/logo.svg', width: 89, height: 25, alt: 'CoreUI Logo'}"
+  [navbarBrandFull]="{src: 'assets/img/brand/logo.png', width: 89, height: 45, alt: 'CoreUI Logo'}"
   [navbarBrandMinimized]="{src: 'assets/img/brand/sygnet.svg', width: 30, height: 30, alt: 'CoreUI Logo'}"
   [sidebarToggler]="'lg'"
   [asideMenuToggler]="'lg'">
@@ -54,6 +54,9 @@
     <app-sidebar-nav *ngIf="isAdmin" [navItems]="navItemsAdmin" [perfectScrollbar] [disabled]="sidebarMinimized"></app-sidebar-nav>
     <!-- for student -->
     <app-sidebar-nav  *ngIf="isStudent" [navItems]="navItemsStudent" [perfectScrollbar] [disabled]="sidebarMinimized"></app-sidebar-nav>
+    <!-- for superadmin -->
+    <app-sidebar-nav  *ngIf="isSuperAdmin" [navItems]="navItems" [perfectScrollbar] [disabled]="sidebarMinimized"></app-sidebar-nav>
+    
     <app-sidebar-minimizer></app-sidebar-minimizer>
   </app-sidebar>
   <!-- Main content -->

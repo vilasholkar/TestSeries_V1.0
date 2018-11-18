@@ -1,6 +1,7 @@
 import { Component, Input ,OnInit} from '@angular/core';
 import { navItemsAdmin } from '../../_navAdmin';
 import { navItemsStudent } from '../../_navStudent';
+import { navItems } from '../../_nav';
 
 import { Router } from '@angular/router';
 @Component({
@@ -10,6 +11,7 @@ import { Router } from '@angular/router';
 export class DefaultLayoutComponent {
   public navItemsAdmin = navItemsAdmin;
   public navItemsStudent = navItemsStudent;
+  public navItems = navItems;
   public sidebarMinimized = true;
   public isAdmin=false;
   public isStudent=false;
@@ -22,7 +24,6 @@ export class DefaultLayoutComponent {
     this.changes = new MutationObserver((mutations) => {
       this.sidebarMinimized = document.body.classList.contains('sidebar-minimized');
       let userRole=localStorage.getItem("userRoles");
-          
           if(userRole==="Admin")
               {
               this.isAdmin=true;
