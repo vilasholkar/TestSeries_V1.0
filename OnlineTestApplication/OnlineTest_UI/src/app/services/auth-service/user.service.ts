@@ -34,7 +34,7 @@ export class UserService {
   }
   roleMatch(allowedRoles): boolean {
     var isMatch = false;
-    var userRoles: string[] = JSON.parse(localStorage.getItem('userRoles'));
+    var userRoles: string[] = JSON.parse(sessionStorage.getItem('userRoles'));
     allowedRoles.forEach(element => {
       if (userRoles.indexOf(element) > -1) {
         isMatch = true;
