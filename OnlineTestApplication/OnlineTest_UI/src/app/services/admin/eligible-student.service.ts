@@ -4,6 +4,7 @@ import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { HostName } from '../../shared/app-setting';
 import { APIUrl } from '../../shared/API-end-points';
+import {EligibleStudent} from '../../models/test';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +17,24 @@ export class EligibleStudentService {
   this.headers = new Headers({ 'Content-Type': 'application/json' });
   this.options = new RequestOptions({ headers: this.headers });
    }
-   getEligibleStudent(OnlieTestID:number): Observable<any> {
-    return this.http.get(HostName.API_StartPoint + APIUrl.GetEligibleStudent+"?OnlineTestID="+OnlieTestID)
+  //  getEligibleStudent(OnlieTestID:number): Observable<any> {
+  //   debugger;
+  //   return this.http.get(HostName.API_StartPoint + APIUrl.GetEligibleStudent+"?OnlineTestID="+OnlieTestID)
+  //     .map((response: Response) => {
+  //       const data = response;
+  //       return data;
+  //     })
+  //     .catch((error: any) => {
+  //       return Observable.throw(error);
+  //     });
+  // }
+
+  getEligibleStudent(OnlieTestID:number): Observable<EligibleStudent[]> {
+    return this.http.get<EligibleStudent[]>(HostName.API_StartPoint + APIUrl.GetEligibleStudent+"?OnlineTestID="+OnlieTestID);
+  }
+
+  addEligibleStudent(EligibleStudentJson:any): Observable<any>{
+    return this.http.post(HostName.API_StartPoint + APIUrl.AddEligibleStudent,EligibleStudentJson)
       .map((response: Response) => {
         const data = response;
         return data;
