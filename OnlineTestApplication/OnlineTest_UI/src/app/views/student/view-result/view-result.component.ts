@@ -25,7 +25,8 @@ selection = new SelectionModel<OT_Result>(true, []);
   constructor() { }
 
   ngOnInit() {
-    let studentID= localStorage.getItem("studentID");
+    debugger;
+    let StudentID= localStorage.getItem("StudentID");
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
