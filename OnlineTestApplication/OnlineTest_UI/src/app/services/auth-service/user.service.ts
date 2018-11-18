@@ -20,6 +20,7 @@ export class UserService {
   }
 
   userAuthentication(userName, password) {
+    debugger;
     var data = "username=" + userName + "&password=" + password + "&grant_type=password";
     var reqHeader = new HttpHeaders({ 'Content-Type': 'application//x-www-form-urlencoded','No-Auth':'True' });
     return this.http.post(HostName.API_StartPoint+ 'token', data, { headers: reqHeader });
