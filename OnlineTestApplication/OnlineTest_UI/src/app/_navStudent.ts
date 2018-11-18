@@ -31,6 +31,16 @@ export const navItemsStudent = [
     icon: 'icon-pencil'
   },
   
+  {
+    title: true,
+    name: 'Result'
+  },
+  {
+    name: 'Test Result',
+    url: '/result/test-result',
+    icon: 'icon-drop'
+  },
+  
 
  
 
