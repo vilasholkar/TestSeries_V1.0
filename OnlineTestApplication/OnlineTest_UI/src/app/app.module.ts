@@ -22,6 +22,7 @@ import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
+// import { AmazingTimePickerModule } from 'amazing-time-picker'; // this line you need
 
 
 const APP_CONTAINERS = [
@@ -43,7 +44,6 @@ import { AppRoutingModule } from './app.routing';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
-
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -51,7 +51,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     AppRoutingModule,
     AppAsideModule,
     AppBreadcrumbModule.forRoot(),
-    AppFooterModule,
+    AppFooterModule,  
     AppHeaderModule,
     AppSidebarModule,
     PerfectScrollbarModule,
@@ -59,6 +59,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     TabsModule.forRoot(),
     ChartsModule,
     HttpClientModule
+   // AmazingTimePickerModule
     ],
   declarations: [
     AppComponent,
