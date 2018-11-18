@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account\Login.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Enum\CommonEnum.cs" />
     <Compile Include="Master\MasterViewModel.cs" />
@@ -48,6 +49,10 @@
     <Compile Include="Question\QuestionTypeViewModel.cs" />
     <Compile Include="Question\QuestionViewModel.cs" />
     <Compile Include="Response.cs" />
+    <Compile Include="Result\OnlineTestResultViewModel.cs" />
+    <Compile Include="Result\PaperAnalysisViewModel.cs" />
+    <Compile Include="Result\StudentAttemptViewModel.cs" />
+    <Compile Include="Result\Topper_AverageViewModel.cs" />
     <Compile Include="Student\StudentViewModel.cs" />
     <Compile Include="TestType\TestTypeViewModel.cs" />
     <Compile Include="Test\EligibleStudentVIewModel.cs" />
@@ -57,6 +62,7 @@
     <Compile Include="Test\TestSeriesViewModel.cs" />
     <Compile Include="Test\TestTypeViewModel.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
