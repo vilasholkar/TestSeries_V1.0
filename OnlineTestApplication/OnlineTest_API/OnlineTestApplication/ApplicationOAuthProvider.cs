@@ -35,8 +35,8 @@ namespace OnlineTestApplication
             Login loginsetdetails = new Login();
             loginsetdetails.UserName = context.UserName;
             loginsetdetails.UserPassword = context.Password;
-            Login logingetdetails = _iBAccount.GetUserDetails(loginsetdetails);
-            //Login logingetdetails = DataAccessLayer.DAccount.GetUserDetails1(loginsetdetails);
+            //Login logingetdetails = _iBAccount.GetUserDetails(loginsetdetails);
+            Login logingetdetails = DataAccessLayer.DAccount.GetUserDetails1(loginsetdetails);
 
             // var currentUserRole = "Admin";
             if (logingetdetails != null)
