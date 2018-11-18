@@ -36,7 +36,7 @@ namespace BusinessAccessLayer
         {
             return _iDResult.GetStudentAttempt(StudentID, TestID);
         }
-        List<OnlineTestResultViewModel> GetOnlineTestResultByID(int StudentID, int TestID) 
+       public List<OnlineTestResultViewModel> GetOnlineTestResultByID(int StudentID, int TestID) 
         {
             return _iDResult.GetOnlineTestResultByID(StudentID, TestID);
         
