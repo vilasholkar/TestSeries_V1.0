@@ -10,6 +10,6 @@ namespace BusinessAccessLayer
 {
     public interface IBEligibleStudent
     {
-        Response<List<EligibleStudentViewModel>> GetEligibleStudent(int OnlineTestID);
+        EligibleStudentViewModel[] GetEligibleStudent(int OnlineTestID);
     }
 }
