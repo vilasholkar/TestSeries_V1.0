@@ -97,6 +97,12 @@ namespace OnlineTestApplication.Controllers
         {
             return Request.CreateResponse(HttpStatusCode.OK, _iBEligibleStudent.GetEligibleStudent(OnlineTestID));
         }
+        [HttpPost]
+        [Route("api/AddEligibleStudent", Name = "AddEligibleStudent")]
+        public HttpResponseMessage AddEligibleStudent(object EligibleStudentJson)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
         #endregion
     }
 }
