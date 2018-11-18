@@ -77,34 +77,38 @@ namespace DataAccessLayer
             }
 
         }
-
         public static string RunSP_ExecuteNonQuery(string procedureName, List<SqlParameter> parameters)
         {
+            SqlTransaction trans = null;
             try
             {
                 using (SqlConnection sqlConn = new SqlConnection(ConnectionString))
                 {
-                    using (SqlCommand sqlCommand = new SqlCommand(procedureName, sqlConn))
+                    sqlConn.Open();
+                    using (trans = sqlConn.BeginTransaction())
                     {
-                        sqlCommand.CommandType = CommandType.StoredProcedure;
-                        if (parameters != null)
+                        using (SqlCommand sqlCommand = new SqlCommand(procedureName, sqlConn, trans))
                         {
-                            sqlCommand.Parameters.AddRange(parameters.ToArray());
-                        }
-                        try
-                        {
-                            sqlConn.Open();
-                            sqlCommand.ExecuteNonQuery();
-                            return "Success";
-                        }
-                        catch (Exception ex)
-                        {
-
-                            return ex.Message;
-                        }
-                        finally
-                        {
-                            sqlConn.Close();
+                            sqlCommand.CommandType = CommandType.StoredProcedure;
+                            if (parameters != null)
+                            {
+                                sqlCommand.Parameters.AddRange(parameters.ToArray());
+                            }
+                            try
+                            {
+                                sqlCommand.ExecuteNonQuery();
+                                trans.Commit();
+                                return "Success";
+                            }
+                            catch (Exception ex)
+                            {
+                                trans.Rollback();
+                                return ex.Message;
+                            }
+                            finally
+                            {
+                                sqlConn.Close();
+                            }
                         }
                     }
                 }
@@ -158,7 +162,6 @@ namespace DataAccessLayer
             }
 
         }
-
         public static async Task<DataSet> RunSP_ReturnDataSetAsync(string procedureName, List<SqlParameter> parameters, List<DataTableMapping> dataTableMappingList)
         {
             SqlTransaction trans = null;
@@ -212,7 +215,6 @@ namespace DataAccessLayer
                 }
             });
         }
-
         public static DataSet RunSP_ReturnDataSet(string procedureName, List<SqlParameter> parameters, List<DataTableMapping> dataTableMappingList)
         {
             DataSet dtData = new DataSet();
@@ -260,13 +262,11 @@ namespace DataAccessLayer
                 return objT;
             }).ToList();
         }
-
         public static string ExtractParameterFromQueryString(string queryString)
         {
             Uri myUri = new Uri(queryString);
             return HttpUtility.ParseQueryString(myUri.Query).Get(0);
         }
-
         public static object GetNewId(string tableName, string columnName)
         {
             using (SqlConnection con = new SqlConnection(ConnectionString))
@@ -292,7 +292,6 @@ namespace DataAccessLayer
                 }
             }
         }
-
         public static DateTime ConvertDateTimeToDate(this object date)
         {
             return DateTime.ParseExact(date.ToString(), "dd/MM/yyyy", CultureInfo.CurrentCulture);
