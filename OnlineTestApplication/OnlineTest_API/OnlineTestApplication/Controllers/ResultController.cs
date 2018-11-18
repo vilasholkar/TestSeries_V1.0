@@ -26,28 +26,29 @@ namespace OnlineTestApplication.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, _iBResult.ResultAnalysis(TestID));
         }
 
-        [HttpGet]
-        [Route("api/GetOnlineTestResultByTestID", Name = "GetOnlineTestResultByTestID")]
-        public HttpResponseMessage GetOnlineTestResultByTestID(int TestID)
-        {
-            DataTable dt =_iBResult.GetOnlineTestResultByTestID(TestID);
-            if(dt.Rows.Count>0)
-            return Request.CreateResponse(HttpStatusCode.OK, dt);
-            else
-            return Request.CreateResponse(HttpStatusCode.OK, "No Records.");
-        }
+        //[HttpGet]
+        //[Route("api/GetOnlineTestResultByTestID", Name = "GetOnlineTestResultByTestID")]
+        //public HttpResponseMessage GetOnlineTestResultByTestID(int TestID)
+        //{
+        //    DataTable dt =_iBResult.GetOnlineTestResultByTestID(TestID);
+        //    if(dt.Rows.Count>0)
+        //    return Request.CreateResponse(HttpStatusCode.OK, dt);
+        //    else
+        //    return Request.CreateResponse(HttpStatusCode.OK, "No Records.");
+        //}
 
-        [HttpGet]
-        [Route("api/GetOnlineTestResultByStudentID", Name = "GetOnlineTestResultByStudentID")]
-        public HttpResponseMessage GetOnlineTestResultByStudentID(int StudentID)
-        {
-           // return Request.CreateResponse(HttpStatusCode.OK, _iBResult.GetOnlineTestResultByStudentID(StudentID));
-            DataTable dt = _iBResult.GetOnlineTestResultByStudentID(StudentID);
-            if (dt.Rows.Count > 0)
-                return Request.CreateResponse(HttpStatusCode.OK, dt);
-            else
-                return Request.CreateResponse(HttpStatusCode.OK, "No Records.");
-        }
+        //[HttpGet]
+        //[Route("api/GetOnlineTestResultByStudentID", Name = "GetOnlineTestResultByStudentID")]
+        //public HttpResponseMessage GetOnlineTestResultByStudentID(int StudentID)
+        //{
+        //   // return Request.CreateResponse(HttpStatusCode.OK, _iBResult.GetOnlineTestResultByStudentID(StudentID));
+        //    DataTable dt = _iBResult.GetOnlineTestResultByStudentID(StudentID);
+        //    if (dt.Rows.Count > 0)
+        //        return Request.CreateResponse(HttpStatusCode.OK, dt);
+        //    else
+        //        return Request.CreateResponse(HttpStatusCode.OK, "No Records.");
+        //}
+
         [HttpGet]
         [Route("api/GetPaperAnalysis", Name = "GetPaperAnalysis")]
         public HttpResponseMessage GetPaperAnalysis(int TestID)
@@ -61,13 +62,21 @@ namespace OnlineTestApplication.Controllers
         {
              return Request.CreateResponse(HttpStatusCode.OK, _iBResult.GetStudentAttempt(StudentID,TestID));
         }
-        
+       
         [HttpGet]
-        [Route("api/GetStudentMarksReview", Name = "GetStudentMarksReview")]
-        public HttpResponseMessage GetStudentMarksReview(int StudentID, int TestID)
+        [Route("api/GetOnlineTestResultByID", Name = "GetOnlineTestResultByID")]
+        public HttpResponseMessage GetOnlineTestResultByID(int StudentID, int TestID)
         {
-            return Request.CreateResponse(HttpStatusCode.OK, _iBResult.GetStudentMarksReview(StudentID, TestID));
+            return Request.CreateResponse(HttpStatusCode.OK, _iBResult.GetOnlineTestResultByID(StudentID, TestID));
+
+            
         }
+        //[HttpGet]
+        //[Route("api/GetStudentMarksReview", Name = "GetStudentMarksReview")]
+        //public HttpResponseMessage GetStudentMarksReview(int StudentID, int TestID)
+        //{
+        //    return Request.CreateResponse(HttpStatusCode.OK, _iBResult.GetStudentMarksReview(StudentID, TestID));
+        //}
         
         [HttpGet]
         [Route("api/GetTopper_Average", Name = "GetTopper_Average")]
