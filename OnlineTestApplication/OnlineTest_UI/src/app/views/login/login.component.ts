@@ -14,8 +14,8 @@ export class LoginComponent {
   OnSubmit(userName,password){
      this.userService.userAuthentication(userName,password).subscribe((data : any)=>{
        
-      localStorage.setItem('userToken',data.access_token);
-      localStorage.setItem('userRoles',data.Role);
+      sessionStorage.setItem('userToken',data.access_token);
+      sessionStorage.setItem('userRoles',data.Role);
       this.router.navigate(['/dashboard']);
     },
     (err : HttpErrorResponse)=>{
