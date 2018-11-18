@@ -244,6 +244,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MasterController.cs" />
     <Compile Include="Controllers\QuizController.cs" />
+    <Compile Include="Controllers\ResultController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\TestTypeController.cs" />
@@ -315,6 +316,7 @@
     <Content Include="Views\Test.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Views\Result\" />
     <Folder Include="Views\Student\" />
     <Folder Include="Views\Test\" />
   </ItemGroup>
