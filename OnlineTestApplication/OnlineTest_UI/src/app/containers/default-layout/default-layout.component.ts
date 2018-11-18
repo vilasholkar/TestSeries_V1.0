@@ -45,8 +45,8 @@ export class DefaultLayoutComponent {
 
    logout()
     {
-            localStorage.removeItem('userToken');
-             localStorage.removeItem('userRoles');
+            sessionStorage.removeItem('userToken');
+             sessionStorage.removeItem('userRoles');
             this.router.navigate(['/login']);
     }
 }
