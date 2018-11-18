@@ -17,14 +17,19 @@ export const navItemsStudent = [
     icon: 'icon-drop'
   },
   {
+    name: 'View Result',
+    url: '/student/view-result',
+    icon: 'icon-drop'
+  },
+  {
     title: true,
     name: 'Test'
   },
-  {
-    name: 'Online Test',
-    url: '/test/online-test',
-    icon: 'icon-drop'
-  },
+  // {
+  //   name: 'Online Test',
+  //   url: '/test/online-test',
+  //   icon: 'icon-drop'
+  // },
    {
     name: 'Start Quiz',
     url: '/test/quiz/1',
