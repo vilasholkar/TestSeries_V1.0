@@ -49,7 +49,7 @@
   </ul>
 </app-header>
 <div class="app-body">
-  <app-sidebar  [fixed]="true" [display]="'lg'">
+  <app-sidebar  id="sidebarTest" [fixed]="true" [display]="'lg'">
     <!-- for admin user -->
     <app-sidebar-nav *ngIf="isAdmin" [navItems]="navItemsAdmin" [perfectScrollbar] [disabled]="sidebarMinimized"></app-sidebar-nav>
     <!-- for student -->
@@ -60,9 +60,9 @@
     <app-sidebar-minimizer></app-sidebar-minimizer>
   </app-sidebar>
   <!-- Main content -->
-  <main class="main">
+  <main  class="main">
     <!-- Breadcrumb -->
-    <ol class="breadcrumb">
+    <ol *ngIf="false" class="breadcrumb">
       <app-breadcrumb></app-breadcrumb>
       <!-- Breadcrumb Menu-->
       <li *ngIf="false" class="breadcrumb-menu d-md-down-none">
