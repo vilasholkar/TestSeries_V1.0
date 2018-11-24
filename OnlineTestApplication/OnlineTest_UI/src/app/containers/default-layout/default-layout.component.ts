@@ -18,21 +18,23 @@ export class DefaultLayoutComponent {
   public isSuperAdmin=false;
   private changes: MutationObserver;
   public element: HTMLElement = document.body;
-
+  public userRole:string;
+  public currentUserRole:string;
   constructor(private router : Router) {
 
     this.changes = new MutationObserver((mutations) => {
       this.sidebarMinimized = document.body.classList.contains('sidebar-minimized');
-      let userRole=localStorage.getItem("userRoles");
-          if(userRole==="Admin")
+     this.userRole=sessionStorage.getItem("userRoles");
+      
+              if(this.userRole==="Admin")
               {
               this.isAdmin=true;
               }
-              if(userRole==="Student")
+              else if(this.userRole==="Student")
               {
               this.isStudent=true;
               }
-              if(userRole==="SuperAdmin")
+              else if(this.userRole==="SuperAdmin")
               {
               this.isSuperAdmin=true;
               }
@@ -42,7 +44,6 @@ export class DefaultLayoutComponent {
     });
    
   }
-
    logout()
     {
             sessionStorage.removeItem('userToken');
