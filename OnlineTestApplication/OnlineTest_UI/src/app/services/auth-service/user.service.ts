@@ -9,6 +9,7 @@ import {APIUrl} from '../../shared/API-end-points';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+
 @Injectable()
 export class UserService {
   private headers: Headers;
@@ -20,7 +21,6 @@ export class UserService {
   }
 
   userAuthentication(userName, password) {
-    debugger;
     var data = "username=" + userName + "&password=" + password + "&grant_type=password";
     var reqHeader = new HttpHeaders({ 'Content-Type': 'application//x-www-form-urlencoded','No-Auth':'True' });
     return this.http.post(HostName.API_StartPoint+ 'token', data, { headers: reqHeader });
