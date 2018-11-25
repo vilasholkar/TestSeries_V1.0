@@ -12,9 +12,10 @@ export class LoginComponent {
   ngOnInit() {
   }
   OnSubmit(userName,password){
+
      this.userService.userAuthentication(userName,password).subscribe((data : any)=>{
      
-       
+       debugger
       sessionStorage.setItem('userToken',data.access_token);
       sessionStorage.setItem('userRoles',data.Role);
       this.router.navigate(['/dashboard']);
