@@ -6,6 +6,8 @@ import {Stream,Course,Batch,TestType,Session} from '../../../models/master';
 import {OnlineTest,TestSeries} from '../../../models/test';
 import { MatSnackBar } from "@angular/material";
 import { NgForm } from "@angular/forms";
+import { NgxSpinnerService } from 'ngx-spinner';
+import {ToggleFullscreenDirective} from "../../../toggle-fullscreen-directive.directive";
 var $:any;
 @Component({
   selector: 'app-online-test',
@@ -33,7 +35,7 @@ export class OnlineTestComponent implements OnInit {
   public minEndDate =new Date();
   public maxEndDate = new Date(2020, 3, 25);
   constructor(private onlineTestService: OnlineTestService, private testTypeService: TestTypeService,
-  private testSeriesService: TestSeriesService,public snackBar: MatSnackBar) { }
+  private testSeriesService: TestSeriesService,public snackBar: MatSnackBar,private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.getOnlineTest();
@@ -49,10 +51,9 @@ export class OnlineTestComponent implements OnInit {
     this.getTestType();
     this.getTestSeries();
     this.getSession(); 
-    debugger
-    //this.showAddDiv = !this.showAddDiv;
+    this.showAddDiv = !this.showAddDiv;
     this.Title = "Add Test";
-    //this.onlineTestModel = {};
+    this.onlineTestModel = {};
   }
   getStream(){
     this.onlineTestService.getStream()
@@ -115,11 +116,12 @@ export class OnlineTestComponent implements OnInit {
     })
   }
   getOnlineTest(){
-    debugger
+    this.spinner.show();
     this.onlineTestService.getOnlineTest()
     .subscribe(data => {
       if(data.Message === 'Success')
         this.onlineTest = data.Object;
+        this.spinner.hide();
     },error => {
       alert('error');
     })
@@ -127,6 +129,7 @@ export class OnlineTestComponent implements OnInit {
   error:any={isError:false,errorMessage:''};
 
   addOnlineTest(){
+    this.spinner.show();
     this.onlineTest = this.onlineTestModel;
     this.onlineTestService.addUpdateOnlineTest(this.onlineTest)
     .subscribe(data => {
@@ -134,6 +137,7 @@ export class OnlineTestComponent implements OnInit {
         //this.onlineTestModel = {};
         this.exampleform.reset();
         this.showAddDiv = false;
+        this.spinner.hide();
         this.openSnackBar("Record Saved Successfully.", "Close");
        }
      }, error => {
@@ -142,15 +146,13 @@ export class OnlineTestComponent implements OnInit {
      });
   }
   deleteOnlineTest(OnlineTestModel){
-    //this.onlineTest = model;
+    this.spinner.show();
     if (confirm("Are you sure to delete " + OnlineTestModel.TestName)) {
     this.onlineTestService.deleteOnlineTest(OnlineTestModel.OnlineTestID)
     .subscribe(data => {
       if (data === 'Success') {
         this.getOnlineTest();
-        //this.showAddDiv = false;
-        alert('Record Deleted Successfully.');
-        //this.isTestTypeReadonly = true;
+        this.spinner.hide();
        }
      }, error => {
        alert('error');
@@ -159,6 +161,7 @@ export class OnlineTestComponent implements OnInit {
     }
   }
   getOnlineTestById(OnlineTestModel){
+    this.spinner.show();
     this.getStream();
     this.getTestType();
     this.getTestSeries();
@@ -175,6 +178,7 @@ export class OnlineTestComponent implements OnInit {
         this.onlineTestModel = data.Object;
         this.onChangeStream(this.onlineTestModel.StreamID);
         this.onChangeCourse(this.onlineTestModel.CourseID);
+        this.spinner.hide();
        }
      }, error => {
        alert('error');
