@@ -7,6 +7,8 @@ import { APIUrl } from '../../shared/API-end-points';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import { mapTo, delay } from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -25,6 +27,7 @@ export class TestSeriesService {
         const data = response;
         return data;
       })
+      .pipe(delay(2000))
       .catch((error: any) => {
         return Observable.throw(error);
       });
@@ -37,6 +40,7 @@ export class TestSeriesService {
         const data = response;
         return data;
       })
+      .pipe(delay(2000))
       .catch((error: any) => {
         return Observable.throw(error);
       });
@@ -49,6 +53,7 @@ export class TestSeriesService {
         const data = response;
         return data;
       })
+      .pipe(delay(2000))
       .catch((error: any) => {
         return Observable.throw(error);
       });
