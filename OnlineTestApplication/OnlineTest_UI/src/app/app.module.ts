@@ -11,6 +11,8 @@ import { AuthGuard } from './shared/auth-guard/auth.guard'
 import { AuthInterceptor } from './shared/auth-guard/auth.interceptors'
 // import { FormsModule }   from '@angular/forms';
 import { UserService } from './services/auth-service/user.service'
+//for spinner
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -58,7 +60,8 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
     ChartsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxSpinnerModule
    // AmazingTimePickerModule
     ],
   declarations: [
