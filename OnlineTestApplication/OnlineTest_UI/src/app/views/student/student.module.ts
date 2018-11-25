@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { CustomMaterialModule } from "../../custommaterial.module";
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 import {StudentOnlineTestService} from '../../services/student/student-online-test.service';
@@ -15,6 +16,7 @@ import { ViewResultComponent } from './view-result/view-result.component';
 @NgModule({
     imports: [
       CommonModule,
+      NgxSpinnerModule,
       FormsModule,
       StudentRoutingModule,
       CustomMaterialModule,
