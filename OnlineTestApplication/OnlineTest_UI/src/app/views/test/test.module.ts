@@ -15,6 +15,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';import {TestSeriesService} from 
 import {TestTypeService} from '../../services/admin/test-type.service';// Components Routing
 import { TestRoutingModule } from './test-routing.module';
 import { ViewQuestionComponent } from './view-question/view-question.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
@@ -30,6 +31,7 @@ import { EligibleStudentComponent } from './eligible-student/eligible-student.co
       TabsModule,
       OwlDateTimeModule,
       OwlNativeDateTimeModule,
+      NgxSpinnerModule
     ],
     declarations: [
       TestSeriesComponent,
