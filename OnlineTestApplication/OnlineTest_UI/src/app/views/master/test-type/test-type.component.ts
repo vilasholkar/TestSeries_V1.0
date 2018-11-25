@@ -2,6 +2,7 @@ import { Component, OnInit , ElementRef} from '@angular/core';
 import {TestTypeService} from '../../../services/admin/test-type.service';
 import {TestType} from '../../../models/master';
 import { MatSnackBar } from '@angular/material';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-test-type',
@@ -15,11 +16,13 @@ export class TestTypeComponent implements OnInit {
   testTypeModel: any = {};
   rootNode: any;
   isTestTypeReadonly: any = true;
-  constructor(private testTypeService: TestTypeService, rootNode: ElementRef , public snackBar: MatSnackBar) {
+  constructor(private testTypeService: TestTypeService, rootNode: ElementRef ,
+     public snackBar: MatSnackBar,private spinner: NgxSpinnerService) {
     this.showAddDiv = false;
     this.rootNode = rootNode;
   }
   ngOnInit() {
+    
     this.getTestType();
   }
     Edit(model: TestType ) {
@@ -29,10 +32,12 @@ export class TestTypeComponent implements OnInit {
     this.showAddDiv = !this.showAddDiv;
     }
     getTestType() {
+     this.spinner.show();
      this.testTypeService.getTestTypes()
      .subscribe(data => {
       if (data.Message === 'Success') {
          this.testType = data.Object;
+         this.spinner.hide();
        }
      }, error => {
       this.openSnackBar("Error.", "Close");
