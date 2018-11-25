@@ -3,6 +3,7 @@ import { Component, OnInit,ViewChild } from '@angular/core';
 import { StudentOnlineTestService } from '../../../services/student/student-online-test.service';
 import {StudentOnlineTest} from '../../../models/student';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-view-online-test',
   templateUrl: './view-online-test.component.html',
@@ -24,7 +25,7 @@ export class ViewOnlineTestComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   ///////////////////////
-  constructor(private studentOnlineTestService: StudentOnlineTestService) { }
+  constructor(private studentOnlineTestService: StudentOnlineTestService,private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
@@ -51,11 +52,12 @@ export class ViewOnlineTestComponent implements OnInit {
 
  
   getOnlineTestByStudentID(StudentID){
-    debugger;
+    this.spinner.show();
     this.studentOnlineTestService.getOnlineTestByStudentID(StudentID)
     .subscribe(data => {
       if (data.Message === 'Success') {
         this.studentOnlineTest = data.Object;
+        this.spinner.hide();
        }
      }, error => {
        alert('error');

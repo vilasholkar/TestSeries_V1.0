@@ -43,7 +43,7 @@
                 </td>
                 <td>
                   <!-- <a routerLink="/test/quiz/{{studentOnlineTestModel.OnlineTestID}}">Start</a> -->
-                  <a mat-raised-button color="primary" routerLink="/test/quiz/{{studentOnlineTestModel.OnlineTestID}}">Start</a>
+                  <a mat-raised-button color="primary" click="window.open(document.URL, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes')" routerLink="/test/quiz/{{studentOnlineTestModel.OnlineTestID}}">Start</a>
                   <!-- <a onclick="window.open(document.URL, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');">
                     Share Page
                   </a> -->
