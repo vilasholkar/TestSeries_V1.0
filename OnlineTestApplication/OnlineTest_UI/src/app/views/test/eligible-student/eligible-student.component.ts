@@ -6,6 +6,7 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { DataSource, SelectionModel } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/operator/filter';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-eligible-student',
@@ -23,18 +24,17 @@ export class EligibleStudentComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   //eligibleStudentArray=[];
   eligibleStudentArray: Array<{ OnlineTestID: number, StudentID: number }> = [];
-  constructor(private eligibleStudentService: EligibleStudentService, private route: ActivatedRoute) { }
+  constructor(private eligibleStudentService: EligibleStudentService,private spinner: NgxSpinnerService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    //this.getEligibleStudent();
-    debugger;
+    this.spinner.show();
     this.id = +this.route.snapshot.paramMap.get('id');
     localStorage.setItem("OnlineTestID", this.id);
-  //  this.dataSource = this.eligibleStudentService.getEligibleStudent(parseInt(this.id));
     this.eligibleStudentService.getEligibleStudent(parseInt(this.id)).subscribe(res => {
       this.dataSource =  new MatTableDataSource(res);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      this.spinner.hide();
     })
   }
   applyFilter(filterValue: string) {
