@@ -7,6 +7,7 @@ import { APIUrl } from '../../shared/API-end-points';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import { mapTo, delay } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -26,6 +27,7 @@ export class ResultAnalysisService {
         const data = response;
         return data;
       })
+      .pipe(delay(3000))
       .catch((error: any) => {
         return Observable.throw(error);
       });
