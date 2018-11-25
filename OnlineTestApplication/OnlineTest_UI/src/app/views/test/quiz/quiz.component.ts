@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,TemplateRef, ViewChild} from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { QuizService } from '../../../services/admin/quiz.service';
@@ -7,6 +8,8 @@ import { Option, Question, Quiz, QuizConfig } from './models';
 import * as jspdf from 'jspdf';  
 import html2canvas from 'html2canvas';  
 declare var $: any;
+import { NgxSpinnerService } from 'ngx-spinner';
+import {ToggleFullscreenDirective} from "../../../toggle-fullscreen-directive.directive";
 
 @Component({
   selector: 'app-quiz',
@@ -15,6 +18,7 @@ declare var $: any;
   providers: [QuizService]
 })
 export class QuizComponent implements OnInit {
+  showQuiz:boolean=false;
   testDuration:any;
   correctCount=0;
   totalQuestions:number;
@@ -57,13 +61,24 @@ export class QuizComponent implements OnInit {
   languageName:any;
   testID:any;
 
-  constructor(private router : Router,private route: ActivatedRoute,private quizService: QuizService) {
+  constructor(private router : Router,private route: ActivatedRoute
+    ,private spinner: NgxSpinnerService,private quizService: QuizService,private dialog: MatDialog) {
    }
   ngOnInit() {
     this.testID= +this.route.snapshot.paramMap.get('testID');
+  }
+  onNavigate(URL:String)
+  {
+      let link = URL+`/SiteAssets/Pages/help.aspx#/help`;
+      window.open(link, "_blank");
+  }
+  OpenQuiz()
+  {
+    // window.open(document.URL, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes')
+    this.showQuiz=true;
     this.loadQuiz(this.testID);
     this.languageName = 'english';
-    this.IsEnglish = true;
+    this.IsEnglish = true;   
   }
   changeLanguage(languageName:string)
   {
@@ -72,19 +87,22 @@ export class QuizComponent implements OnInit {
     else
     this.IsEnglish=false;
   }
-  
+  openDialogWithTemplateRef(templateRef: TemplateRef<any>) {
+    this.dialog.open(templateRef);
+  }
   loadQuiz(testID: any) {
+      this.spinner.show();
       this.quizService.getQuiz(testID).subscribe(res => {
       this.quiz = new Quiz(res);
+      this.spinner.hide();
       this.testDuration=res.TestDuration;
-      console.log("res",res)
-      console.log(this.quiz);
       res.Questions.forEach(x=>x.QuestionTypeId===1 ? this.QuestionTypeIsSingleChoice = true : this.QuestionTypeIsSingleChoice = false )
       this.pager.count = this.quiz.questions.length;
       this.totalQuestions=this.quiz.questions.length;
       this.startTime = new Date();
       this.timer = setInterval(() => { this.tick(); }, 1000);
-       this.duration = this.parseTime(this.testDuration);
+      this.duration = this.parseTime(this.testDuration);
+     
     });
     //$('.navbar-toggler-icon').click()
 
@@ -153,6 +171,7 @@ export class QuizComponent implements OnInit {
   }
   public ConvertToPDF()  
     {  
+      this.spinner.show();
       var data = document.getElementById('contentToConvert');  
       html2canvas(data).then(canvas => {  
         // Few necessary setting options  
@@ -167,27 +186,22 @@ export class QuizComponent implements OnInit {
         pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
         pdf.save(this.quiz.testName+'_'+this.today+'.pdf'); // Generated PDF   
         this.router.navigate(['/dashboard']);
+        this.spinner.hide();
       });  
     }  
   onSubmit() {
-    
+    this.spinner.show();
     const answers = [];
     this.quiz.questions.forEach(x => answers.push({ 'quizId': this.quiz.onlineTestID, 'questionId': x.questionID, 'answered': x.answered }));    
     console.log("res",this.quiz.questions)
       this.quizService.SubmitQuiz(this.quiz)
        .subscribe(data => {
         if (data === 'Success') {
-          alert('Record Added Successfully.');
          }
        }, error => {
          alert('error');
-         console.log(error);
        });
-        // debugger
-        //  var text= $('#test').text();
-        //     console.log(text) 
-
     this.mode = 'result';
-    
+    this.spinner.hide();
   }
 }

@@ -1,4 +1,36 @@
-<div class="animated fadeIn">
+<ngx-spinner 
+    bdColor = "rgba(51, 51, 51, 0.8)"
+    size = "large"
+    color = "#fff"
+    type = "timer">
+    <p style="padding-top:5px; font-size: 15px; color: black">Please Wait...</p>
+  </ngx-spinner>
+  <br>
+    
+  <!-- <div *ngIf="!showQuiz" class="animated fadeIn">
+  <div class="card"> 
+    <h3 style="padding-top:10px;padding-left:10px"> Instructions </h3>
+    <hr>
+    
+    <button mat-raised-button color="primary">I have read all the instruction(s).</button>
+  </div>
+  </div> -->
+  <!-- ---------------------- -->
+  <div *ngIf="!showQuiz" class="animated fadeIn">
+  <div class="card"> 
+    <h3 style="padding-top:10px;padding-left:10px"> Instructions </h3>
+    <hr>
+    <ul>
+      <li><h6>The student may not use his or her textbook, course notes, or receive help from a proctor or any other outside source.</h6> </li>
+      <li><h6> Students must complete the 50-question multiple-choice exam within the 75 minute time frame allotted for the exam.</h6></li>
+      <li><h6>Students must not stop the session and then return to it. This is especially important in the online environment where the system will "time-out" and not allow the student or you to reenter the exam site.</h6></li>
+    </ul>
+    <!-- <button toggleFullscreen>Toggle fullscreen</button> -->
+    <button mat-raised-button color="primary" (click)="openDialogWithTemplateRef(myDialog)">I have read all the instruction(s).</button>
+  </div>
+  </div>
+  
+<div *ngIf="showQuiz" class="animated fadeIn">
   <div *ngIf="mode=='quiz'"  class="row">
     <div class="col-md-8 col-sm-8 ">
       <h4 class="float-center">{{quiz.testName}}</h4>
@@ -24,7 +56,6 @@
               <div class="badge badge-info" style="font-size:16px">
                Que. No. {{pager.index + 1}}.
               </div>
-              
             </div>
             <div class="col-md-7 col-sm-5 text-right">
                <div  class="badge badge-success float-right" style="font-size:16px;font-weight:500;">Time:
@@ -60,10 +91,8 @@
           </div>
           <hr/>
           <button  mat-raised-button color="primary" *ngIf="config.allowBack" (click)="goTo(pager.index - 1);">Previous</button>
-          <!-- <button id="{{question.questionID}}" (click)="markForReview(question)"  mat-raised-button color="accent">Mark for Review & Next</button> -->
           <mat-checkbox hidden id="{{question.questionID}}" color="primary"  (change)="onSelect(question, option);"></mat-checkbox>
           <button mat-raised-button color="primary" (click)="goTo(pager.index + 1);">Save & Next</button>
-          <!-- <botton mat-raised-button color="primary" (click)="resetAnswer()">Reset</button> -->
         </div>
       </div>
     </div>
@@ -74,20 +103,11 @@
             <mat-button-toggle (click)="goTo(2)" value="Chemistry"><b>Chemistry</b></mat-button-toggle>
             <mat-button-toggle (click)="goTo(4)" value="Biology"><b>Biology</b></mat-button-toggle>
           </mat-button-toggle-group>
-          <!-- <mat-tab-group name="fontStyle" aria-label="Font Style" >
-            <mat-tab label="First"> Content 1 </mat-tab>
-            <mat-tab label="Second"> Content 2 </mat-tab>
-            <mat-tab label="Third"> Content 3 </mat-tab>
-          </mat-tab-group> -->
-        <perfect-scrollbar style="position: relative;width: 100%; max-height: 418px;overflow: auto;">
+            <perfect-scrollbar style="position: relative;width: 100%; max-height: 418px;overflow: auto;">
           <div class="card-body text-center col-md-12">
             <button mat-raised-button matTooltip="Not Visited">5</button>
-            <!-- <button mat-raised-button color="warn" matTooltip="Not Answered">12</button> -->
-            <!-- <button mat-raised-button color="accent" matTooltip="Mark for Review">7</button> -->
-            <button mat-raised-button color="primary" matTooltip="Answered">45</button>
+          <button mat-raised-button color="primary" matTooltip="Answered">45</button>
             <hr/>
-            <!-- [class.btn-primary]="true" -->
-            <!-- color="{{ isAnswered(question) == 'Answered'? 'primary': 'basic' }}" -->
             <button id="status{{question.questionID}}" *ngFor="let question of quiz.questions; let index = index;"
               [color]="getStyle(question)"
               mat-raised-button (click)="goTo(index)" >
@@ -113,9 +133,7 @@
           <div class="alert alert-info">
           <strong>Total Questions : {{totalQuestions}}</strong><br>
           <strong>Questions Attempted : {{noOfQuestionAttempted}}</strong><br>
-          <!-- <strong>Correct Answer(s) : {{countOfCorrectQues}}</strong><br>
-          <strong>Incorrect Answer(s) : 1</strong><br> -->
-          </div>
+        </div>
         </div>
         <mat-divider></mat-divider>
         <div class="mat-card body col-sm-12">
@@ -135,17 +153,12 @@
                     </div>
                     <div  id="test" class="p-1 m-4 alert {{ isCorrect(question) == 'correct'? 'alert-success': 'alert-danger'}}">Your answer is
                       <strong>{{isCorrect(question)}}</strong>
-                    </div> 
-                     <!-- <div class="{{ isCorrect(question) == 'correct'? 'badge badge-success': 'badge  badge-danger'}}">
-                      <b>{{isCorrect(question)}}</b>
-                    </div> -->
+                    </div>
                   </div>
                 </div>
                 <div>  
                   <button mat-raised-button color="primary"id="downloadButton" type="button" value="Download Result" (click)="ConvertToPDF()">Download Result</button>
-
                 </div>  
-                <!-- <h4 class="alert alert-info text-center">You may close this window now.</h4> -->
               </div>
             </div>
         </div>
@@ -153,4 +166,18 @@
     </div>
   </div>
 </div>
-
+<ng-template #myDialog>
+  <mat-dialog-content>
+    <h6>After clicking continue, Test will be started and you can not go back.</h6>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-raised-button color="warn" matDialogClose >Dismiss</button>
+    <button mat-raised-button color="primary"  (click)="OpenQuiz()" matDialogClose >Continue</button>
+  </mat-dialog-actions>
+</ng-template>
+ <!-- <a onclick="window.open(document.URL, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');">
+    Share Page
+ </a>  -->
+   <!-- <a onclick="window.close()">
+    Share Page
+ </a>  -->
