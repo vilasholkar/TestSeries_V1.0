@@ -13,7 +13,7 @@ export class ViewOnlineTestComponent implements OnInit {
   StudentID: number;
   studentOnlineTest:StudentOnlineTest;
   studentOnlineTestModel: any = {};
-
+  RedirectToURL:string;
   //Element For Material
   displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
   // displayedColumns: string[] = ['select','testseriesid', 'testseries', 'totaltest', 'description'];
@@ -30,9 +30,16 @@ export class ViewOnlineTestComponent implements OnInit {
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.getOnlineTestByStudentID(5110);
+    this.getOnlineTestByStudentID(34);
   }
 
+  redirectToTest(TestId:any)
+  {
+    sessionStorage.setItem("IsTestRunning","true");
+    this.RedirectToURL="/#/test/quiz/"+TestId;
+    window.open(this.RedirectToURL, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');
+    
+  }
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
@@ -52,6 +59,7 @@ export class ViewOnlineTestComponent implements OnInit {
 
  
   getOnlineTestByStudentID(StudentID){
+    debugger
     this.spinner.show();
     this.studentOnlineTestService.getOnlineTestByStudentID(StudentID)
     .subscribe(data => {
@@ -64,7 +72,6 @@ export class ViewOnlineTestComponent implements OnInit {
        console.log(error);
      });
   }
-
 }
 
 export interface PeriodicElement {
