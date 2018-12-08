@@ -9,7 +9,7 @@ import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';  
 declare var $: any;
 import { NgxSpinnerService } from 'ngx-spinner';
-import {ToggleFullscreenDirective} from "../../../toggle-fullscreen-directive.directive";
+// import {ToggleFullscreenDirective} from "../../../toggle-fullscreen-directive.directive";
 
 @Component({
   selector: 'app-quiz',
@@ -88,6 +88,9 @@ export class QuizComponent implements OnInit {
     this.IsEnglish=false;
   }
   openDialogWithTemplateRef(templateRef: TemplateRef<any>) {
+    this.dialog.open(templateRef);
+  }
+  openDialogWithTemplateRef2(templateRef: TemplateRef<any>) {
     this.dialog.open(templateRef);
   }
   loadQuiz(testID: any) {

@@ -6,16 +6,7 @@
     <p style="padding-top:5px; font-size: 15px; color: black">Please Wait...</p>
   </ngx-spinner>
   <br>
-    
-  <!-- <div *ngIf="!showQuiz" class="animated fadeIn">
-  <div class="card"> 
-    <h3 style="padding-top:10px;padding-left:10px"> Instructions </h3>
-    <hr>
-    
-    <button mat-raised-button color="primary">I have read all the instruction(s).</button>
-  </div>
-  </div> -->
-  <!-- ---------------------- -->
+ 
   <div *ngIf="!showQuiz" class="animated fadeIn">
   <div class="card"> 
     <h3 style="padding-top:10px;padding-left:10px"> Instructions </h3>
@@ -25,7 +16,6 @@
       <li><h6> Students must complete the 50-question multiple-choice exam within the 75 minute time frame allotted for the exam.</h6></li>
       <li><h6>Students must not stop the session and then return to it. This is especially important in the online environment where the system will "time-out" and not allow the student or you to reenter the exam site.</h6></li>
     </ul>
-    <!-- <button toggleFullscreen>Toggle fullscreen</button> -->
     <button mat-raised-button color="primary" (click)="openDialogWithTemplateRef(myDialog)">I have read all the instruction(s).</button>
   </div>
   </div>
@@ -66,8 +56,8 @@
         <perfect-scrollbar style="position: relative;width: 100%; max-height: 450px;overflow: auto;">
           <div class="card-body">
             <h3 class="font-weight-normal">
-              <img *ngIf="IsEnglish" [src]="question.image_English" style="max-height: 300px;width: 100%;" />
-              <img *ngIf="!IsEnglish" [src]="question.image_Hindi" style="max-height: 300px;width: 100%;" />
+              <img *ngIf="IsEnglish" [imageZoom]="question.image_English" [src]="question.image_English" style="max-height: 300px;width: 100%;" />
+              <img *ngIf="!IsEnglish" [imageZoom]="question.image_Hindi" [src]="question.image_Hindi" style="max-height: 300px;width: 100%;" />
             </h3>
           </div>
         </perfect-scrollbar>
@@ -117,7 +107,7 @@
         </perfect-scrollbar>
         <div class="card-footer">
           
-          <div class="text-center"> <button mat-raised-button (click)="onSubmit();" class="float-center" color="primary" >Submit</button>
+          <div class="text-center"> <button mat-raised-button (click)="openDialogWithTemplateRef2(SubmitConfirmationDialog)" class="float-center" color="primary" >Submit</button>
           </div>
         </div>
       </div>
@@ -144,7 +134,11 @@
                  </div>
                 <div id="test" *ngFor="let question of quiz.questions; let index = index">
                   <div class="result-question">
-                    <h5>{{index + 1}}. {{question.name}}</h5>
+
+                    <h5>Ques {{index + 1}}.</h5>
+                      <img *ngIf="IsEnglish"  [src]="question.image_English" style="max-height: 300px;width: 100%;" />
+                      <img *ngIf="!IsEnglish"  [src]="question.image_Hindi" style="max-height: 300px;width: 100%;" />
+           
 
                     <div class="row">
                       <div class="col-6" *ngFor="let Option of question.options">
@@ -175,9 +169,13 @@
     <button mat-raised-button color="primary"  (click)="OpenQuiz()" matDialogClose >Continue</button>
   </mat-dialog-actions>
 </ng-template>
- <!-- <a onclick="window.open(document.URL, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');">
-    Share Page
- </a>  -->
-   <!-- <a onclick="window.close()">
-    Share Page
- </a>  -->
+<ng-template #SubmitConfirmationDialog>
+  <mat-dialog-content>
+    <h6> Test will be submitted and you can not come back again.</h6>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-raised-button color="warn" matDialogClose >Dismiss</button>
+    <button mat-raised-button color="primary"  (click)="onSubmit();" matDialogClose >Submit</button>
+  </mat-dialog-actions>
+</ng-template>
+
