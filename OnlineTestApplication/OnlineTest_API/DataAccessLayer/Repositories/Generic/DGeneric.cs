@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using ViewModels;
 
 namespace DataAccessLayer
 {
@@ -98,7 +99,7 @@ namespace DataAccessLayer
                             {
                                 sqlCommand.ExecuteNonQuery();
                                 trans.Commit();
-                                return "Success";
+                                return CommonEnum.Status.Success.ToString();
                             }
                             catch (Exception ex)
                             {

@@ -10,5 +10,7 @@ namespace DataAccessLayer
     public interface IDEligibleStudent
     {
         List<EligibleStudentViewModel> GetEligibleStudent(int OnlineTestID);
+
+        string AddEligibleStudent(List<EligibleStudentViewModel> EligibleStudentData);
     }
 }
