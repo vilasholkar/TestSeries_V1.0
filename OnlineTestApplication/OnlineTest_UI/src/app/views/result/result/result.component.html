@@ -1,0 +1,67 @@
+<ngx-spinner 
+    bdColor = "rgba(51, 51, 51, 0.8)"
+    size = "large"
+    color = "#fff"
+    type = "ball-spin-clockwise-fade">
+    <p style="padding-top:5px; font-size: 15px; color: black">Please Wait...</p>
+  </ngx-spinner> 
+<div class="animated fadeIn">
+    <h4>Result</h4>
+    <div class="card">
+        <mat-tab-group backgroundColor="primary" (selectedTabChange)="onTabLinkClick($event)">
+            <mat-tab label="Test Wise">
+                <ng-template matTabContent>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <form class="example-form">
+                                    <mat-form-field class="example-full-width">
+                                        <input type="text" placeholder="Select Test" aria-label="Number" matInput [formControl]="testList" [matAutocomplete]="auto">
+                                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayTestFn" (optionSelected)='testSelected($event.option.value)'>
+                                            <mat-option *ngFor="let option of filteredTestOptions | async" [value]="option">
+                                                {{option.TestName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </form>
+                            </div>
+                            <!-- <div class="col-sm-4">
+                                <button mat-raised-button color="primary" (click)="onSearchResult('TestResult')">Search</button>
+                            </div> -->
+                        </div>
+                    </div>
+                </ng-template>
+            </mat-tab>
+            <mat-tab label="Student Wise">
+                <ng-template matTabContent>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <form class="example-form">
+                                    <mat-form-field class="example-full-width" >
+                                        <input type="text" placeholder="Select Student" aria-label="Number" matInput [formControl]="studentList" [matAutocomplete]="auto">
+                                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayStudentFn" (optionSelected)='studentSelected($event.option.value)'>
+                                            <mat-option *ngFor="let option of filteredStudentOptions | async" [value]="option">
+                                                <span>{{option.FirstName}} {{option.LastName}} ({{option.EnrollmentNo}})</span>
+                                            </mat-option>
+                                        </mat-autocomplete>
+
+                                    </mat-form-field>
+                                </form>
+                            </div>
+                            <!-- <div class="col-sm-4">
+                                <button mat-raised-button color="primary" (click)="onSearchResult('StudentResult');">Search</button>
+                            </div> -->
+                        </div>
+                    </div>
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+    <div *ngIf="tableTestResult">
+        <app-test-result [OnlineTestID]="OnlineTestID"></app-test-result>
+    </div>
+    <div *ngIf="tableStudentResult">
+        <app-view-result [StudentID]="StudentID"></app-view-result>
+    </div>
+</div>

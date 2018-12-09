@@ -1,94 +1,105 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { StudentOnlineTestService } from '../../../services/student/student-online-test.service';
-import {StudentOnlineTest} from '../../../models/student';
+import { StudentOnlineTest } from '../../../models/student';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { HelperService } from "../../../services/helper.service";
+import { APIUrl } from "../../../shared/API-end-points";
 @Component({
   selector: 'app-view-online-test',
   templateUrl: './view-online-test.component.html',
   styleUrls: ['./view-online-test.component.scss']
 })
 export class ViewOnlineTestComponent implements OnInit {
-  StudentID: number;
-  studentOnlineTest:StudentOnlineTest;
+  studentOnlineTest: StudentOnlineTest;
+  studentOnlineTest1: StudentOnlineTest[] = null;
   studentOnlineTestModel: any = {};
-  RedirectToURL:string;
+  PaginationConfig:any;
   //Element For Material
-  displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
-  // displayedColumns: string[] = ['select','testseriesid', 'testseries', 'totaltest', 'description'];
-  
-  // dataSource = new MatTableDataSource<studentOnlineTest>(ELEMENT_DATA);
-  // selection = new SelectionModel<studentOnlineTest>(true, []);
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-  selection = new SelectionModel<PeriodicElement>(true, []);
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  ///////////////////////
-  constructor(private studentOnlineTestService: StudentOnlineTestService,private spinner: NgxSpinnerService) { }
+  displayedColumns: string[] = ['OnlineTestNo', 'TestName', 'TestSeriesName', 'TestTypeName', 'TestDuration', 'StartDate', 'EndDate', 'TestMarks', 'button'];
+  displayedColumns1: string[] = ['OnlineTestNo', 'TestName', 'TestSeriesName', 'TestTypeName', 'TestDuration', 'StartDate', 'EndDate', 'TestMarks', 'button'];
+  dataSource: any = [];
+  dataSource1: any = [];
+  @ViewChild('paginator') paginator: MatPaginator;
+  @ViewChild('sort') sort: MatSort;
+  @ViewChild('paginator1') paginator1: MatPaginator;
+  @ViewChild('sort1') sort1: MatSort;
+  constructor(private studentOnlineTestService: StudentOnlineTestService,
+     private helperSvc: HelperService,
+     private spinner: NgxSpinnerService
+    ) { }
 
   ngOnInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    this.getOnlineTestByStudentID(34);
+    this.PaginationConfig=this.helperSvc.PaginationConfig;
+    let sessionStudentID = sessionStorage.getItem("StudentID");
+    if (!!sessionStudentID) {
+      this.getOnlineTestByStudentID1(34);
+      this.getOnlineTestByStudentID2(34);
+    }
+   // this.getOnlineTestByStudentID(34);
   }
 
-  redirectToTest(TestId:any)
-  {
-    sessionStorage.setItem("IsTestRunning","true");
-    this.RedirectToURL="/#/test/quiz/"+TestId;
-    window.open(this.RedirectToURL, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');
-    
-  }
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
+  applyFilter1(filterValue: string) {
+    this.dataSource1.filter = filterValue.trim().toLowerCase();
   }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  masterToggle() {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
-  }
-
- 
-  getOnlineTestByStudentID(StudentID){
-    debugger
+  getOnlineTestByStudentID(StudentID: any) {
     this.spinner.show();
     this.studentOnlineTestService.getOnlineTestByStudentID(StudentID)
-    .subscribe(data => {
-      if (data.Message === 'Success') {
-        this.studentOnlineTest = data.Object;
-        this.spinner.hide();
-       }
-     }, error => {
-       alert('error');
-       console.log(error);
-     });
-  }
-}
+      .subscribe(res => {
+        if (res.Message === 'Success') {
+          this.studentOnlineTest = res.Object;
+          this.spinner.hide();
+        }
+      }, error => {
+        alert('error');
+        console.log(error);
+      });
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
+  }
+  getOnlineTestByStudentID1(StudentID: any) {
+    this.helperSvc.getService(APIUrl.GetOnlineTestByStudentID+"?StudentID="+StudentID)
+      .subscribe(res => {
+        if (res.Message === 'Success') {
+          this.dataSource = new MatTableDataSource(res.Object as StudentOnlineTest[]);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }
+      }, error => {
+        alert('error');
+        console.log(error);
+      });
+    // this.studentOnlineTestService.getOnlineTestByStudentID(StudentID)
+      // .subscribe(data => {
+      //   if (data.Message === 'Success') {
+      //     //this.studentOnlineTest1 = data.Object as StudentOnlineTest[];
+      //     this.dataSource = new MatTableDataSource(data.Object as StudentOnlineTest[]);
+      //     this.dataSource.paginator = this.paginator;
+      //     this.dataSource.sort = this.sort;
+          
+      //   }
+      // }, error => {
+      //   alert('error');
+      //   console.log(error);
+      // });
+
+  }
+  getOnlineTestByStudentID2(StudentID: any) {
+    this.helperSvc.getService(APIUrl.GetOnlineTestByStudentID+"?StudentID="+StudentID)
+      .subscribe(data => {
+        if (data.Message === 'Success') {
+          //this.studentOnlineTest1 = data.Object as StudentOnlineTest[];
+          this.dataSource1 = new MatTableDataSource(data.Object as StudentOnlineTest[]);
+          this.dataSource1.paginator = this.paginator1;
+          this.dataSource1.sort = this.sort1;
+        }
+      }, error => {
+        alert('error');
+        console.log(error);
+      });
+  }
+
 }
-const ELEMENT_DATA: PeriodicElement[] = [
-  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-  { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-  { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-  { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-  { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-  { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-];

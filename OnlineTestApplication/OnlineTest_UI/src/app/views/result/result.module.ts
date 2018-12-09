@@ -6,12 +6,12 @@ import { CustomMaterialModule } from "../../custommaterial.module";
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { StudentModule } from "../student/student.module";
+import { NgxSpinnerModule } from 'ngx-spinner';
 
-// import {StudentOnlineTestService} from '../../services/student/student-online-test.service';
 import { ResultRoutingModule } from './result-routing.module';
 import { ResultAnalysisComponent } from './result-analysis/result-analysis.component';
 import { TestResultComponent } from './test-result/test-result.component';
-// import { ResultComponent } from './result/result.component';
+import { ResultComponent } from './result/result.component';
 
 @NgModule({
     imports: [
@@ -22,11 +22,13 @@ import { TestResultComponent } from './test-result/test-result.component';
       CustomMaterialModule,
       PerfectScrollbarModule,
       ChartsModule,
-      StudentModule
+      StudentModule,
+      NgxSpinnerModule
     ],
     declarations: [
        ResultAnalysisComponent,
        TestResultComponent,
+       ResultComponent
     ],
     providers: [HttpClientModule]
   })

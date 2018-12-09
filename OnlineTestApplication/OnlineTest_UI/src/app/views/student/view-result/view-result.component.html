@@ -1,3 +1,10 @@
+<ngx-spinner 
+    bdColor = "rgba(51, 51, 51, 0.8)"
+    size = "large"
+    color = "#fff"
+    type = "ball-spin-clockwise-fade">
+    <p style="padding-top:5px; font-size: 15px; color: black">Please Wait...</p>
+  </ngx-spinner> 
 <div class="animated fadeIn">
     <div class="row">
         <div class="col-sm-9">
@@ -5,22 +12,22 @@
         </div>
         <div class="col-sm-3 text-right">
             <mat-form-field>
-                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
             </mat-form-field>
         </div>
         <div class="col-sm-12">
-                    <div class="mat-elevation-z8">
-                        <perfect-scrollbar style="position: relative;width: 100%; max-height: 450px;overflow: auto;">
-                            <table mat-table [dataSource]="dataSource" matSort>
-                                <ng-container matColumnDef="Rank">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Rank </th>
-                                    <td mat-cell *matCellDef="let element"> {{element.Rank}} </td>
-                                </ng-container>
-                                <ng-container matColumnDef="TestName">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Name </th>
-                                    <td mat-cell *matCellDef="let element"> {{element.TestName}} </td>
-                                </ng-container>
-                                <ng-container matColumnDef="TestSeriesName">
+            <div class="mat-elevation-z8">
+                <perfect-scrollbar style="position: relative;width: 100%;overflow: auto;">
+                    <table mat-table [dataSource]="dataSource" matSort>
+                        <ng-container matColumnDef="Rank">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Rank </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Rank}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="TestName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Name </th>
+                            <td mat-cell *matCellDef="let element"> {{element.TestName}} </td>
+                        </ng-container>
+                        <!-- <ng-container matColumnDef="TestSeriesName">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Series </th>
                                     <td mat-cell *matCellDef="let element"> {{element.TestSeriesName}} </td>
                                 </ng-container>
@@ -31,59 +38,86 @@
                                 <ng-container matColumnDef="TestDate">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Date </th>
                                     <td mat-cell *matCellDef="let element"> {{element.TestDate}} </td>
-                                </ng-container>
+                                </ng-container> -->
+                        <ng-container matColumnDef="TotalAttempt">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Attempt </th>
+                            <td mat-cell *matCellDef="let element"> {{element.TotalAttempt}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="TotalCorrect">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Correct </th>
+                            <td mat-cell *matCellDef="let element"> {{element.TotalCorrect}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="TotalWrong">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Wrong </th>
+                            <td mat-cell *matCellDef="let element"> {{element.TotalWrong}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="TotalMarks">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Marks </th>
+                            <td mat-cell *matCellDef="let element"> {{element.TotalMarks}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="TotalMarksObtained">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Marks Obtained </th>
+                            <td mat-cell *matCellDef="let element"> {{element.TotalMarksObtained}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Percentage">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Percentage </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Percentage}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Physics_Right">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Physics Right </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Physics_Right}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Physics_Wrong">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Physics Wrong </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Physics_Wrong}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Chemistry_Right">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Chemistry Right </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Chemistry_Right}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Chemistry_Wrong">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Chemistry Wrong </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Chemistry_Wrong}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Biology_Right">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Biology Right </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Biology_Right}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Biology_Wrong">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Biology Wrong </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Biology_Wrong}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="button">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+                            <td mat-cell *matCellDef="let element">
+                                <!-- <a mat-button routerLink="/result/result-analysis/{{element.StudentID}}/{{element.TestID}}" color="primary">Detail
+                                    Analysis
+                                </a> -->
+                                <a mat-icon-button color="warn" routerLink="/result/result-analysis/{{element.StudentID}}/{{element.TestID}}">
+                                    <mat-icon aria-label="icon">insert_chart_outlined</mat-icon>
+                                </a>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+                        </tr>
+                    </table>
+                </perfect-scrollbar>
+                <mat-paginator [pageSizeOptions]="PaginationConfig" showFirstLastButtons></mat-paginator>
 
-                                <ng-container matColumnDef="TotalAttempt">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Attempt </th>
-                                    <td mat-cell *matCellDef="let element"> {{element.TotalAttempt}} </td>
-                                </ng-container>
-                                <ng-container matColumnDef="TotalCorrect">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Correct </th>
-                                    <td mat-cell *matCellDef="let element"> {{element.TotalCorrect}} </td>
-                                </ng-container>
-                                <ng-container matColumnDef="TotalWrong">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Wrong </th>
-                                    <td mat-cell *matCellDef="let element"> {{element.TotalWrong}} </td>
-                                </ng-container>
-                                <ng-container matColumnDef="TotalMarks">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Marks </th>
-                                    <td mat-cell *matCellDef="let element"> {{element.TotalMarks}} </td>
-                                </ng-container>
-                                <ng-container matColumnDef="TotalMarksObtained">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Marks Obtained </th>
-                                    <td mat-cell *matCellDef="let element"> {{element.TotalMarksObtained}} </td>
-                                </ng-container>
-                                <ng-container matColumnDef="Percentage">
-                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Percentage </th>
-                                        <td mat-cell *matCellDef="let element"> {{element.Percentage}} </td>
-                                    </ng-container>
-                                <ng-container matColumnDef="button">
-                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
-                                        <td mat-cell *matCellDef="let element">
-                                            <a mat-button routerLink="/result/result-analysis/{{element.TestID}}" color="primary">Detail Analysis</a>
-                                        </td>
-                                </ng-container>
-                                
-                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
-                                </tr>
-                            </table>
-                        </perfect-scrollbar>
-                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-
-                    </div>
+            </div>
         </div>
     </div>
 
     <div class="card" style="display:none;">
-            <div class="card-header">
-                <strong>Test Result</strong>
+        <div class="card-header">
+            <strong>Test Result</strong>
 
-            </div>
-            <div class="card-body">
-                
+        </div>
+        <div class="card-body">
 
-                <!-- <table class="table table-striped table-bordered table-hover nowrap" >
+
+            <!-- <table class="table table-striped table-bordered table-hover nowrap" >
               <thead class="thead-default">
                   <tr>
                       <th>
@@ -183,6 +217,6 @@
                       </tr>
               </tbody>
           </table> -->
-            </div>
         </div>
+    </div>
 </div>

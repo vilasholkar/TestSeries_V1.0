@@ -11,7 +11,8 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { TestSeriesComponent } from './test-series/test-series.component';
 import { OnlineTestComponent } from './online-test/online-test.component';
 import { QuizComponent } from './quiz/quiz.component';
-import { TabsModule } from 'ngx-bootstrap/tabs';import {TestSeriesService} from '../../services/admin/test-series.service';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import {TestSeriesService} from '../../services/admin/test-series.service';
 import {TestTypeService} from '../../services/admin/test-type.service';// Components Routing
 import { TestRoutingModule } from './test-routing.module';
 import { ViewQuestionComponent } from './view-question/view-question.component';

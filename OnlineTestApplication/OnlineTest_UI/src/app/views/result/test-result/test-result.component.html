@@ -1,4 +1,11 @@
-<div class="animated fadeIn">
+<ngx-spinner 
+    bdColor = "rgba(51, 51, 51, 0.8)"
+    size = "large"
+    color = "#fff"
+    type = "ball-spin-clockwise-fade">
+    <p style="padding-top:5px; font-size: 15px; color: black">Please Wait...</p>
+  </ngx-spinner> 
+  <div class="animated fadeIn">
     <div class="row" >
         <div class="col-sm-9">
             <h4>Test Result</h4>
@@ -10,7 +17,7 @@
         </div>
         <div class="col-sm-12">
             <div class="mat-elevation-z8">
-                <perfect-scrollbar style="position: relative;width: 100%; max-height: 450px;overflow: auto;">
+                <perfect-scrollbar style="position: relative;width: 100%;overflow: auto;">
                     <table mat-table [dataSource]="dataSource" matSort>
                         <ng-container matColumnDef="Rank">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Rank </th>
@@ -44,21 +51,51 @@
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Percentage </th>
                             <td mat-cell *matCellDef="let element"> {{element.Percentage}} </td>
                         </ng-container>
+                        <ng-container matColumnDef="Physics_Right">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Physics Right </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Physics_Right}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Physics_Wrong">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Physics Wrong </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Physics_Wrong}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Chemistry_Right">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Chemistry Right </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Chemistry_Right}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Chemistry_Wrong">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Chemistry Wrong </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Chemistry_Wrong}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Biology_Right">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Biology Right </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Biology_Right}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Biology_Wrong">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Biology Wrong </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Biology_Wrong}} </td>
+                        </ng-container>
                         <ng-container matColumnDef="button">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
                             <td mat-cell *matCellDef="let element">
-                                <a mat-button routerLink="/result/result-analysis/{{element.TestID}}" color="primary">Detail
+                                <!-- <a mat-button routerLink="/result/result-analysis/{{element.StudentID}}/{{element.TestID}}" color="primary">Detail
                                     Analysis
+                                </a> -->
+                                <a mat-icon-button color="warn" routerLink="/result/result-analysis/{{element.StudentID}}/{{element.TestID}}">
+                                    <mat-icon aria-label="icon">insert_chart_outlined</mat-icon>
                                 </a>
+
                             </td>
                         </ng-container>
 
                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
                         </tr>
+                        <!-- <tr *ngIf="dataSource.data.length === 0">Nol kjlfdsl kfbsd kfjb</tr> -->
+                        <!-- <tr mat-footer-row *matFooterRowDef="['disclaimer']" class="example-second-footer-row">dasdasasd</tr> -->
                     </table>
                 </perfect-scrollbar>
-                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                <mat-paginator [pageSizeOptions]="PaginationConfig" showFirstLastButtons></mat-paginator>
 
             </div>
         </div>
