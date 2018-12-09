@@ -20,31 +20,17 @@ namespace BusinessAccessLayer
         {
             try
             {
-                var eligibleStudentData = _iDEligibleStudent.GetEligibleStudent(OnlineTestID);
-                return eligibleStudentData.ToArray();
-                //if (eligibleStudentData != null)
-                //{
-                //    return new List<EligibleStudentViewModel>
-                //    {
-                //        IsSuccessful = true,
-                //        Object = eligibleStudentData,
-                //        Message = "Success"
-                //    };
-                //}
-                //else
-                //{
-                //    return new Response<List<EligibleStudentViewModel>>
-                //    {
-                //        IsSuccessful = false,
-                //        Message = "error",
-                //        Object = null
-                //    };
-                //}
+                return _iDEligibleStudent.GetEligibleStudent(OnlineTestID).ToArray();
             }
             catch (Exception ex)
             {
                 return null;
             }
+        }
+
+        public string AddEligibleStudent(List<EligibleStudentViewModel> EligibleStudentData)
+        {
+            return _iDEligibleStudent.AddEligibleStudent(EligibleStudentData);
         }
     }
 }
