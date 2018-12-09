@@ -6,9 +6,14 @@ import { HostName } from '../../shared/app-setting';
 import { APIUrl } from '../../shared/API-end-points';
 import {EligibleStudent} from '../../models/test';
 
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
+
 @Injectable({
   providedIn: 'root'
 })
+
 export class EligibleStudentService {
   private headers: Headers;
   private options: RequestOptions;
@@ -17,6 +22,7 @@ export class EligibleStudentService {
   this.headers = new Headers({ 'Content-Type': 'application/json' });
   this.options = new RequestOptions({ headers: this.headers });
    }
+
   //  getEligibleStudent(OnlieTestID:number): Observable<any> {
   //   debugger;
   //   return this.http.get(HostName.API_StartPoint + APIUrl.GetEligibleStudent+"?OnlineTestID="+OnlieTestID)
@@ -33,8 +39,12 @@ export class EligibleStudentService {
     return this.http.get<EligibleStudent[]>(HostName.API_StartPoint + APIUrl.GetEligibleStudent+"?OnlineTestID="+OnlieTestID);
   }
 
-  addEligibleStudent(EligibleStudentJson:any): Observable<any>{
-    return this.http.post(HostName.API_StartPoint + APIUrl.AddEligibleStudent,EligibleStudentJson)
+  addEligibleStudent(EligibleStudentData:any): Observable<any>{
+    debugger;
+    this.headers = new Headers({ 'Content-Type': 'application/json' });
+    this.options = new RequestOptions({ headers: this.headers });
+     
+    return this.http.post(HostName.API_StartPoint + APIUrl.AddEligibleStudent,EligibleStudentData)
       .map((response: Response) => {
         const data = response;
         return data;
@@ -42,5 +52,21 @@ export class EligibleStudentService {
       .catch((error: any) => {
         return Observable.throw(error);
       });
+  }
+  submitTest(TestVar:string){
+    debugger;
+    
+    return this.http.post(HostName.API_StartPoint + APIUrl.TestStudent+'?TestVar='+ TestVar +'', httpOptions).subscribe(result => {
+        console.log(result);
+      }, error => console.log('There was an error: '));
+
+    // return this.http.post(HostName.API_StartPoint + APIUrl.TestStudent,TestVar)
+    //   .map((response: Response) => {
+    //     const data = response;
+    //     return data;
+    //   })
+    //   .catch((error: any) => {
+    //     return Observable.throw(error);
+    //   });
   }
 }
