@@ -1,52 +1,13 @@
-<!-- <div class="card">
-<div class="card-header">
-  <strong class="card-header">Eligible Student</strong>
-</div>
-<div class="card-body">
-<table class="table table-sm table-hover table-outline">
-  <thead class="thead-light">
-    <th><mat-checkbox></mat-checkbox></th>
-    <th>Enrollment No</th>
-    <th>Student Name</th>
-    <th>Gender</th>
-    <th>Mobile No</th>
-  </thead>
-  <tbody>
-    <tr *ngFor="let eligibleStudentData of eligibleStudent">
-      <td>
-          <input type="checkbox" (change)="onChangeEligibleStudent(eligibleStudentData.OnlineTestID,eligibleStudentData.StudentID, $event.target.checked)">
-      </td>
-      <td>
-        {{eligibleStudentData.EnrollmentNo}}
-      </td>
-       <td>
-        {{eligibleStudentData.StudentName}}            
-      </td>
-      <td>
-        {{eligibleStudentData.Gender}}            
-      </td>
-      <td>
-        {{eligibleStudentData.MobileNumber}}            
-      </td>
-    </tr>
-  </tbody>
-</table>
-  <button mat-raised-button color="primary" (click)="addEligibleStudent()" style="outline: 0px;">
-      <mat-icon aria-label="Example icon-button with a heart icon">save</mat-icon>
-      Save</button>
-</div>
-</div> -->
-
 <div class="row">
-    <div class="col-sm-12">
-      <div class="card">
-        <div class="card-header">
-          <strong>Eligible Student</strong>
+    <div class="col-sm-9">
+          <h4>Eligible Student</h4>
         </div>
-        <div class="card-body">
+        <div class="col-sm-3">
           <mat-form-field>
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
           </mat-form-field>
+          </div>
+          <div class="col-sm-12">
           <div class="mat-elevation-z8">
             <table mat-table [dataSource]="dataSource" matSort>
               <ng-container matColumnDef="select">
@@ -55,7 +16,7 @@
                   </mat-checkbox>
                 </th>
                 <td mat-cell *matCellDef="let row">
-                  <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)" ng-value="row.StudentID">
+                  <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? pushEligibleStudent(row,$event) : null" [(ngModel)]="row.IsEligible" [checked]="selection.isSelected(row)">
                   </mat-checkbox>
                 </td>
               </ng-container>
@@ -94,8 +55,7 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <button mat-raised-button color="primary" (click)="addEligibleStudent()" style="outline: 0px;">
+  <br>
+  <button mat-raised-button color="primary" [disabled]="buttonState" (click)="addEligibleStudent()" style="outline: 0px;">
     <mat-icon aria-label="Example icon-button with a heart icon">save</mat-icon>
     Save</button>
