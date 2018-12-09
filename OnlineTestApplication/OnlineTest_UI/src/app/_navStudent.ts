@@ -14,36 +14,35 @@ export const navItemsStudent = [
   {
     name: 'View Online Test',
     url: '/student/view-online-test',
-    icon: 'icon-drop'
+    icon: 'icon-puzzle'
   },
   {
     name: 'View Result',
     url: '/student/view-result',
-    icon: 'icon-drop'
+    icon: 'icon-pie-chart'
   },
-  {
-    title: true,
-    name: 'Test'
-  },
+  // {
+  //   title: true,
+  //   name: 'Test'
+  // },
   // {
   //   name: 'Online Test',
   //   url: '/test/online-test',
   //   icon: 'icon-drop'
   // },
-   {
-    name: 'Start Quiz',
-    url: '/test/quiz/1',
-    icon: 'icon-pencil'
-  },
-  
-  {
-    title: true,
-    name: 'Result'
-  },
-  {
-    name: 'Test Result',
-    url: '/result/test-result',
-    icon: 'icon-drop'
-  },
+  //  {
+  //   name: 'Start Quiz',
+  //   url: '/test/quiz/1',
+  //   icon: 'icon-pencil'
+  // },
+  // {
+  //   title: true,
+  //   name: 'Result'
+  // },
+  // {
+  //   name: 'Test Result',
+  //   url: '/result/test-result',
+  //   icon: 'icon-drop'
+  // },
   
 ];

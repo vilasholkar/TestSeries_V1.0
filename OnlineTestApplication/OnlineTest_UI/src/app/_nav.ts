@@ -15,12 +15,12 @@ export const navItems = [
   {
     name: 'View Online Test',
     url: '/student/view-online-test',
-    icon: 'icon-drop'
+    icon: 'icon-puzzle'
   },
   {
     name: 'View Result',
     url: '/student/view-result',
-    icon: 'icon-drop'
+    icon: 'icon-pie-chart'
   },
   {
     title: true,
@@ -36,11 +36,11 @@ export const navItems = [
     url: '/test/online-test',
     icon: 'icon-drop'
   },
-  {
-   name: 'Start Quiz',
-   url: '/test/quiz/1',
-   icon: 'icon-pencil'
- },
+//   {
+//    name: 'Start Quiz',
+//    url: '/test/quiz/1',
+//    icon: 'icon-pencil'
+//  },
   {
     title: true,
     name: 'Result'
@@ -48,7 +48,7 @@ export const navItems = [
   {
     name: 'Test Result',
     url: '/result/test-result',
-    icon: 'icon-drop'
+    icon: 'icon-pie-chart'
   },
   {
     title: true,
