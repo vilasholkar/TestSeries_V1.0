@@ -19,12 +19,14 @@ export class DefaultLayoutComponent {
   private changes: MutationObserver;
   public element: HTMLElement = document.body;
   public userRole:string;
+  public FirstName:string;
   public currentUserRole:string;
   constructor(private router : Router) {
 
     this.changes = new MutationObserver((mutations) => {
       this.sidebarMinimized = document.body.classList.contains('sidebar-minimized');
      this.userRole=sessionStorage.getItem("userRoles");
+     this.FirstName=sessionStorage.getItem("FirstName");
       
               if(this.userRole==="Admin")
               {
