@@ -6,12 +6,18 @@ using System.Threading.Tasks;
 
 namespace ViewModels
 {
-   public class CommonEnum
+    public class CommonEnum
     {
-       public enum Status
+        public enum Status
         {
             Success,
             Failed
+        }
+        public enum TestStatus
+        {
+            NotStarted = 1,
+            Started = 2,
+            Completed = 3
         }
     }
 }

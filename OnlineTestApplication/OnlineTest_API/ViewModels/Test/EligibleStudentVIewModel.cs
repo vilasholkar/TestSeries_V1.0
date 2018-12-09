@@ -15,5 +15,6 @@ namespace ViewModels.Test
         public string Gender { get; set; }
         public string MobileNumber { get; set; }
         public string FatherMobileNo { get; set; }
+        public bool IsEligible { get; set; }
     }
 }
