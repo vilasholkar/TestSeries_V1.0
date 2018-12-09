@@ -51,7 +51,10 @@
     <Compile Include="Response.cs" />
     <Compile Include="Result\OnlineTestResultViewModel.cs" />
     <Compile Include="Result\PaperAnalysisViewModel.cs" />
+    <Compile Include="Result\RankViewModel.cs" />
+    <Compile Include="Result\ResultAnalysisViewModel.cs" />
     <Compile Include="Result\StudentAttemptViewModel.cs" />
+    <Compile Include="Result\StudentRankViewModel.cs" />
     <Compile Include="Result\Topper_AverageViewModel.cs" />
     <Compile Include="Student\StudentViewModel.cs" />
     <Compile Include="TestType\TestTypeViewModel.cs" />
