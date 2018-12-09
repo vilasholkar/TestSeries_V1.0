@@ -20,11 +20,17 @@ export class UserService {
   constructor(private http: HttpClient) { 
   }
 
-  userAuthentication(userName, password) {
-    var data = "username=" + userName + "&password=" + password + "&grant_type=password";
+  userAuthentication(userName, password,UserTypeID) {
+    var data ="username=" + userName + "&password=" + password + "&grant_type=password&UserTypeID="+UserTypeID;
     var reqHeader = new HttpHeaders({ 'Content-Type': 'application//x-www-form-urlencoded','No-Auth':'True' });
-    return this.http.post(HostName.API_StartPoint+ 'token', data, { headers: reqHeader });
-  
+    return this.http.post(HostName.API_StartPoint+ 'token', data, { headers: reqHeader })
+    .map((response: Response) => {
+      const data = response;
+      return data;
+    })
+    .catch((error: any) => {
+      return Observable.throw(error);
+    });
   }
   getUserClaims(){
    return  this.http.get(this.rootUrl+'/api/GetUserClaims');

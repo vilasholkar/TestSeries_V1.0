@@ -20,9 +20,13 @@ export class APIUrl {
     public static Submit_Quiz = "api/SubmitQuiz";
     public static GetEligibleStudent = 'api/GetEligibleStudent';
     public static AddEligibleStudent = 'api/AddEligibleStudent';
-    public static GetOnlineTestResultByTestID = 'api/GetOnlineTestResultByTestID';
-    public static GetOnlineTestResultByStudentID = 'api/GetOnlineTestResultByStudentID';
-    public static ResultAnalysis = 'api/GetOnlineTestResultByTestID';
-    public static GetPaperAnalysis = 'api/GetOnlineTestResultByTestID';
-    public static GetStudentMarksReview = 'api/GetOnlineTestResultByTestID';
-    public static GetTopper_Average = 'api/GetOnlineTestResultByTestID';}
+    // public static GetOnlineTestResultByTestID = 'api/GetOnlineTestResultByTestID';
+    public static GetOnlineTestResultByID = 'api/GetOnlineTestResultByID';
+    public static GetResultAnalysis = 'api/GetResultAnalysis';
+    public static GetPaperAnalysis = 'api/GetPaperAnalysis';
+    public static GetStudentAttempt = 'api/GetStudentAttempt';
+    public static GetStudentMarksReview = 'api/GetOnlineTestResultByID';
+    public static GetTopper_Average = 'api/GetTopper_Average';
+    public static GetStudentDetails = 'api/GetStudentDetails';
+
+}

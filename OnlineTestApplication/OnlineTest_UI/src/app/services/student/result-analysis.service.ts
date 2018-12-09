@@ -7,7 +7,7 @@ import { APIUrl } from '../../shared/API-end-points';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
-import { mapTo, delay } from 'rxjs/operators';
+import { OT_Result } from '../../models/result';
 @Injectable({
   providedIn: 'root'
 })
@@ -19,35 +19,39 @@ export class ResultAnalysisService {
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     this.options = new RequestOptions({ headers: this.headers });
   }
-  GetOnlineTestResultByTestID(TestID: number): Observable<any>{
+  GetOnlineTestResultByTestID(TestID: number): Observable<OT_Result[]>{
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     this.options = new RequestOptions({ headers: this.headers });
-    return this.http.get(HostName.API_StartPoint + APIUrl.GetOnlineTestResultByTestID+"?TestID="+TestID)
-      .map((response: Response) => {
-        const data = response;
-        return data;
-      })
-      .pipe(delay(3000))
-      .catch((error: any) => {
-        return Observable.throw(error);
-      });
+
+    return this.http.get<OT_Result[]>(HostName.API_StartPoint + APIUrl.GetOnlineTestResultByID+"?StudentID="+0+"&TestID="+TestID);
+
+    // return this.http.get(HostName.API_StartPoint + APIUrl.GetOnlineTestResultByID+"?StudentID="+0+"&TestID="+TestID)
+    //   .map((response: Response) => {
+    //     const data = response;
+    //     return data;
+    //   })
+    //   .catch((error: any) => {
+    //     return Observable.throw(error);
+    //   });
   }
-  GetOnlineTestResultByStudentID(StudentID: number): Observable<any>{
+  GetOnlineTestResultByStudentID(StudentID: number): Observable<OT_Result[]>{
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     this.options = new RequestOptions({ headers: this.headers });
-    return this.http.get(HostName.API_StartPoint + APIUrl.GetOnlineTestResultByStudentID+"?StudentID="+StudentID)
-      .map((response: Response) => {
-        const data = response;
-        return data;
-      })
-      .catch((error: any) => {
-        return Observable.throw(error);
-      });
+    return this.http.get<OT_Result[]>(HostName.API_StartPoint + APIUrl.GetOnlineTestResultByID+"?StudentID="+StudentID+"&TestID="+0);
+
+    // return this.http.get(HostName.API_StartPoint + APIUrl.GetOnlineTestResultByStudentID+"?StudentID="+StudentID)
+    //   .map((response: Response) => {
+    //     const data = response;
+    //     return data;
+    //   })
+    //   .catch((error: any) => {
+    //     return Observable.throw(error);
+    //   });
   }
-  ResultAnalysis(TestID: number): Observable<any>{
+  GetResultAnalysis(StudentID: number,TestID: number): Observable<any>{
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     this.options = new RequestOptions({ headers: this.headers });
-    return this.http.get(HostName.API_StartPoint + APIUrl.ResultAnalysis+"?TestID="+TestID)
+    return this.http.get(HostName.API_StartPoint + APIUrl.GetResultAnalysis+"?StudentID="+StudentID+"&TestID="+TestID)
       .map((response: Response) => {
         const data = response;
         return data;
