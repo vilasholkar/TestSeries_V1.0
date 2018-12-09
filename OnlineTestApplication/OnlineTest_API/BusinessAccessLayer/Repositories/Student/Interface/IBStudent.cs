@@ -10,6 +10,6 @@ namespace BusinessAccessLayer
 {
     public interface IBStudent
     {
-        Response<List<StudentViewModel>> GetStudent();
+        Response<List<StudentViewModel>> GetStudentDetails();
     }
 }

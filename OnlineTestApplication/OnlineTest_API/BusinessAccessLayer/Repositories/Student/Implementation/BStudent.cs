@@ -16,11 +16,11 @@ namespace BusinessAccessLayer
         {
             _iDStudent = iDStudent;
         }
-        public Response<List<StudentViewModel>> GetStudent()
+        public Response<List<StudentViewModel>> GetStudentDetails()
         {
             try
             {
-                var studentData = _iDStudent.GetStudent();
+                var studentData = _iDStudent.GetStudentDetails();
                 if (studentData != null)
                 {
                     return new Response<List<StudentViewModel>>
