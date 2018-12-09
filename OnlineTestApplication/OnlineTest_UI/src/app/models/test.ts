@@ -53,11 +53,12 @@ export interface Question {
     CreatedOnDate: any;
 }
 export interface EligibleStudent{
-    StudentID: any;
-    OnlineTestID: any;
-    EnrollmentNo: any;
-    StudentName: any;
-    Gender: any;
-    MobileNumber: any;
-    FatherMobileNo: any;
+    StudentID: Int32Array;
+    OnlineTestID: Int32Array;
+    EnrollmentNo: string;
+    StudentName: string;
+    Gender: string;
+    MobileNumber: string;
+    FatherMobileNo: string;
+    IsEligible: boolean;
 }
