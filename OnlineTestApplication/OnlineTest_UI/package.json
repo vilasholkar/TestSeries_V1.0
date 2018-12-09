@@ -59,6 +59,7 @@
     "ngx-material-timepicker": "^2.5.2",
     "ngx-perfect-scrollbar": "^6.2.0",
     "ngx-spinner": "^6.1.2",
+    "ngx-toastr": "^9.1.1",
     "rxjs": "^6.2.1",
     "rxjs-compat": "^6.2.1",
     "screenfull": "^3.3.3",
