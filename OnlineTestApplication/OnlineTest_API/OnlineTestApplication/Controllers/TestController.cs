@@ -1,5 +1,6 @@
 ﻿using BusinessAccessLayer;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -99,9 +100,9 @@ namespace OnlineTestApplication.Controllers
         }
         [HttpPost]
         [Route("api/AddEligibleStudent", Name = "AddEligibleStudent")]
-        public HttpResponseMessage AddEligibleStudent(object EligibleStudentJson)
+        public HttpResponseMessage AddEligibleStudent(List<EligibleStudentViewModel> EligibleStudentData)
         {
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return Request.CreateResponse(HttpStatusCode.OK,_iBEligibleStudent.AddEligibleStudent(EligibleStudentData));
         }
         #endregion
     }
