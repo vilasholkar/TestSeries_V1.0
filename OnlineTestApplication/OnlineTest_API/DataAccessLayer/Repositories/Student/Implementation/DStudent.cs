@@ -11,20 +11,47 @@ namespace DataAccessLayer
 {
     public class DStudent : IDStudent
     {
-        SqlConnection con = new SqlConnection(@"Data Source=HP\SQLEXPRESS;Initial Catalog=Demo;Persist Security Info=True;Integrated Security = true;");
-        public List<StudentViewModel> GetStudent()
+        public List<StudentViewModel> GetStudentDetails()
         {
             try
             {
-                SqlCommand cmd = new SqlCommand("Select id,name,institute from Student_Info", con);
-                SqlDataAdapter da = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                return dt.AsEnumerable().Select(s => new StudentViewModel()
+                string strQuery = @"SELECT  dbo.StudentAccount.StudentAccountID, dbo.StudentAccount.StudentID, dbo.StudentAccount.Password, dbo.StudentAccount.IsActive, 
+                      dbo.StudentAccount.CreatedByUserID, dbo.StudentAccount.CreatedOnDate, dbo.Student.EnrollmentNo, dbo.Student.EnrollmentDate, dbo.Student.FirstName, 
+                      dbo.Student.MiddleName, dbo.Student.LastName, dbo.Student.Gender, dbo.Student.DOB, dbo.Student.MobileNumber, dbo.Student.PhoneNumber, dbo.Student.Email, 
+                      dbo.Student.Address, dbo.Student.Landmark, dbo.Student.CityID, dbo.Student.Pin, dbo.Student.Medium, dbo.Student.Cast, dbo.Student.PhotoUrl, 
+                      dbo.Student.StreamID, dbo.Student.CourseID, dbo.Student.BatchID, dbo.Student.SessionID, dbo.Student.[School/College], dbo.Student.FatherName, 
+                      dbo.Student.FatherOccupation, dbo.Student.FatherMobile, dbo.Student.FatherEmail
+                    FROM dbo.Student RIGHT OUTER JOIN
+                      dbo.StudentAccount ON dbo.Student.StudentID = dbo.StudentAccount.StudentID";
+                
+                DataTable dt = DGeneric.GetData(strQuery).Tables[0];
+                return dt.AsEnumerable().Select(x => new StudentViewModel()
                 {
-                    ID = Convert.ToInt32(s["ID"]),
-                    Name = s["Name"].ToString(),
-                    Institute = s["Institute"].ToString()
+                    StudentAccountID = Convert.ToInt32(x["StudentAccountID"]),
+                    StudentID = Convert.ToInt32(x["StudentID"]),
+                    EnrollmentNo = x["EnrollmentNo"].ToString(),
+                    EnrollmentDate = x["EnrollmentDate"].ToString().ConvertDateTimeToString(),
+                    FirstName = x["FirstName"].ToString(),
+                    LastName = x["LastName"].ToString(),
+                    Gender = x["Gender"].ToString(),
+                    DOB = x["DOB"].ToString().ConvertDateTimeToString(),
+                    MobileNo = x["MobileNumber"].ToString(),
+                    Email = x["Email"].ToString(),
+                    Address = x["Address"].ToString(),
+                    Landmark = x["Landmark"].ToString(),
+                    Pincode = x["Pin"].ToString(),
+                    CityID = Convert.ToInt32(x["CityID"]),
+                    Caste = x["Cast"].ToString(),
+                    PhotoUrl = x["PhotoUrl"].ToString(),
+                    Medium = x["Medium"].ToString(),
+                    FatherName = x["FatherName"].ToString(),
+                    FatherMobile = x["FatherMobile"].ToString(),
+                    FatherEmail = x["FatherEmail"].ToString(),
+                    //SessionID = Convert.ToInt32(x["SessionID"]),
+                    //StreamID = Convert.ToInt32(x["StreamID"]),
+                    //CourseID = Convert.ToInt32(x["CourseID"]),
+                    //BatchID = Convert.ToInt32(x["BatchID"]),
+                   
                 }).ToList();
             }
             catch (Exception)

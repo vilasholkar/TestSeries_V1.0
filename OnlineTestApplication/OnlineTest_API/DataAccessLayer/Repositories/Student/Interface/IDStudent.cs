@@ -9,6 +9,6 @@ namespace DataAccessLayer
 {
    public interface IDStudent
     {
-       List<StudentViewModel> GetStudent();
+       List<StudentViewModel> GetStudentDetails();
     }
 }

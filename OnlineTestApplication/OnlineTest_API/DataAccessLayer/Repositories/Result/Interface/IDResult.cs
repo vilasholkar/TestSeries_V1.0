@@ -15,7 +15,7 @@ namespace DataAccessLayer
        //List<OnlineTestResultViewModel> GetOnlineTestResultByTestID(int TestID);
        //List<OnlineTestResultViewModel> GetOnlineTestResultByStudentID(int StudentID);
        //OnlineTestResultViewModel GetStudentMarksReview(int StudentID, int TestID);
-
+       ResultAnalysisViewModel GetResultAnalysis(int StudentID, int TestID);
        PaperAnalysisViewModel GetPaperAnalysis(int TestID);
        StudentAttemptViewModel GetStudentAttempt(int StudentID, int TestID);
        List<OnlineTestResultViewModel> GetOnlineTestResultByID(int StudentID, int TestID);

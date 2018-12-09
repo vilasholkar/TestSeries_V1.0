@@ -108,21 +108,30 @@ namespace DataAccessLayer
         //    return obj;
         //}
 
-      
+        public ResultAnalysisViewModel GetResultAnalysis(int StudentID, int TestID)
+        {
+            ResultAnalysisViewModel objResultAnalysis = new ResultAnalysisViewModel();
+            objResultAnalysis.PaperAnalysis = GetPaperAnalysis(TestID);
+            objResultAnalysis.StudentAttempt = GetStudentAttempt(StudentID, TestID);
+            objResultAnalysis.OnlineTestResult = GetOnlineTestResultByID(StudentID, TestID);
+            objResultAnalysis.Topper_Average = GetTopper_Average(TestID);
+            objResultAnalysis.StudentRank = StudentRank(Convert.ToInt32( objResultAnalysis.OnlineTestResult[0].TotalMarksObtained),Convert.ToString( objResultAnalysis.OnlineTestResult[0].StudentCaste));
+            return objResultAnalysis;
+        }
         public PaperAnalysisViewModel GetPaperAnalysis(int TestID)
         {
             string query = string.Format("select * from PaperAnalysis where TestID = {0} ", TestID);
             DataRow dr = DGeneric.GetData(query).Tables[0].Rows[0];
             PaperAnalysisViewModel obj = new PaperAnalysisViewModel();
 
-            obj.PaperAnalysisID = Convert.ToInt32(dr["OnlineTestID"]);
-            obj.TestID = Convert.ToInt32(dr["OnlineTestID"]);
-            obj.TotalEasy = dr["OnlineTestNo"].ToString();
-            obj.TotalMedium = dr["TestSeries"].ToString();
-            obj.TotalDifficult = dr["TestType"].ToString();
-            obj.EasyQuestionList = dr["TestName"].ToString();
-            obj.MediumQuestionList = dr["TestDuration"].ToString();
-            obj.DifficultQuestionList = dr["SessionID"].ToString();
+            obj.PaperAnalysisID = Convert.ToInt32(dr["PaperAnalysisID"]);
+            obj.TestID = Convert.ToInt32(dr["TestID"]);
+            obj.TotalEasy = dr["TotalEasy"].ToString();
+            obj.TotalMedium = dr["TotalMedium"].ToString();
+            obj.TotalDifficult = dr["TotalDifficult"].ToString();
+            obj.EasyQuestionList = dr["EasyQuestionList"].ToString();
+            obj.MediumQuestionList = dr["MediumQuestionList"].ToString();
+            obj.DifficultQuestionList = dr["DifficultQuestionList"].ToString();
 
             return obj;
 
@@ -143,7 +152,7 @@ namespace DataAccessLayer
             string query = string.Format("select * from StudentAttempt where StudentID= {0} and TestID = {1} ", StudentID, TestID);
             DataRow dr = DGeneric.GetData(query).Tables[0].Rows[0];
             StudentAttemptViewModel obj = new StudentAttemptViewModel();
-            obj.StudentAttemptID = Convert.ToInt32(dr["StudentAttemptIDStudentAttemptID"]);
+            obj.StudentAttemptID = Convert.ToInt32(dr["StudentAttemptID"]);
             obj.TestID = Convert.ToInt32(dr["TestID"]);
             obj.StudentID = Convert.ToInt32(dr["StudentID"]);
             obj.EasyCorrect = Convert.ToString(dr["EasyCorrect"]);
@@ -160,26 +169,46 @@ namespace DataAccessLayer
         }
         public List<OnlineTestResultViewModel> GetOnlineTestResultByID(int StudentID, int TestID)
         {
-            string query = string.Empty;
-            if (TestID != null && StudentID == null)
+            string basicquery = @"SELECT     dbo.OnlineTestResult.ResultID, dbo.OnlineTestResult.StudentID, dbo.OnlineTestResult.TestID, dbo.OnlineTestResult.Physics_Total, 
+                      dbo.OnlineTestResult.Physics_Right, dbo.OnlineTestResult.Physics_Wrong, dbo.OnlineTestResult.Chemistry_Total, dbo.OnlineTestResult.Chemistry_Right, 
+                      dbo.OnlineTestResult.Chemistry_Wrong, dbo.OnlineTestResult.Biology_Total, dbo.OnlineTestResult.Biology_Right, dbo.OnlineTestResult.Biology_Wrong, 
+                      dbo.OnlineTestResult.TotalCorrect, dbo.OnlineTestResult.TotalWrong, dbo.OnlineTestResult.TotalAttempt, dbo.OnlineTestResult.TotalMarksObtained, 
+                      dbo.OnlineTestResult.Percentage, dbo.OnlineTestResult.Rank, dbo.OnlineTestResult.TotalMarks, dbo.OnlineTestResult.QualifyingMarks, 
+                      dbo.OnlineTestResult.CreatedOnDate, dbo.OnlineTestResult.IsActive, dbo.Student.EnrollmentNo, dbo.Student.FirstName, dbo.Student.LastName, 
+                      dbo.Student.MobileNumber,dbo.Student.Cast, dbo.OnlineTest.OnlineTestNo, dbo.OnlineTest.TestSeriesID, dbo.OnlineTest.TestTypeID, dbo.OnlineTest.TestName,  dbo.OnlineTest.StartDate,
+                      dbo.OnlineTest.TestDuration, dbo.TestSeries.TestSeries, dbo.TestType.TestType
+                        FROM dbo.OnlineTestResult LEFT OUTER JOIN
+                      dbo.OnlineTest ON dbo.OnlineTestResult.TestID = dbo.OnlineTest.OnlineTestID LEFT OUTER JOIN
+                      dbo.Student ON dbo.OnlineTestResult.StudentID = dbo.Student.StudentID LEFT OUTER JOIN
+                      dbo.TestSeries ON dbo.OnlineTest.TestSeriesID = dbo.TestSeries.TestSeriesID LEFT OUTER JOIN
+                      dbo.TestType ON dbo.OnlineTest.TestTypeID = dbo.TestType.TestTypeID";
+            string strquery = string.Empty;
+            if (TestID > 0 && StudentID == 0)
             {
-                query = string.Format("select * from OnlineTestResult where TestID={0} ", TestID);
+                strquery = string.Format("{0} where OnlineTestResult.TestID={1} ", basicquery, TestID);
             }
-            else if (TestID == null && StudentID != null)
+            else if (TestID == 0 && StudentID > 0)
             {
-                query = string.Format("select * from OnlineTestResult where StudentID = {0} ", StudentID);
+                strquery = string.Format("{0} where OnlineTestResult.StudentID = {1} ", basicquery, StudentID);
             }
-            else if (TestID != null && StudentID != null)
+            else if (TestID > 0 && StudentID > 0)
             {
-                query = string.Format("select * from OnlineTestResult where StudentID= {0} and TestID = {1} ", StudentID, TestID);
+                strquery = string.Format("{0} where OnlineTestResult.StudentID= {1} and OnlineTestResult.TestID = {2} ", basicquery, StudentID, TestID);
             }
 
-            DataTable dt = DGeneric.GetData(query).Tables[0];
+            DataTable dt = DGeneric.GetData(strquery).Tables[0];
             return dt.AsEnumerable().Select(s => new OnlineTestResultViewModel()
             {
                 ResultID = Convert.ToInt32(s["ResultID"]),
                 TestID = Convert.ToInt32(s["TestID"]),
                 StudentID = Convert.ToInt32(s["StudentID"]),
+                EnrollmentNo = Convert.ToString(s["EnrollmentNo"]),
+                StudentName = Convert.ToString(s["FirstName"] + " " + s["LastName"]),
+                StudentCaste = Convert.ToString(s["Cast"]),
+                TestName = Convert.ToString(s["TestName"]),
+                TestDate = Convert.ToDateTime(s["StartDate"]),
+                TestSeriesName = Convert.ToString(s["TestSeries"]),
+                TestTypeName = Convert.ToString(s["TestType"]),
                 Physics_Total = Convert.ToString(s["Physics_Total"]),
                 Physics_Right = Convert.ToString(s["Physics_Right"]),
                 Physics_Wrong = Convert.ToString(s["Physics_Wrong"]),
@@ -207,8 +236,8 @@ namespace DataAccessLayer
             DataTable dt = DGeneric.GetData(query).Tables[0];
             return dt.AsEnumerable().Select(s => new Topper_AverageViewModel()
             {
-                Topper_AverageID = Convert.ToInt32(s["OnlineTestID"]),
-                Topper_Average = Convert.ToString(s["Physics_Total"]),
+                Topper_AverageID = Convert.ToInt32(s["Topper_AverageID"]),
+                Topper_Average = Convert.ToString(s["Topper_Average"]),
                 TestID = Convert.ToInt32(s["TestID"]),
                 Physics_Right = Convert.ToString(s["Physics_Right"]),
                 Physics_Wrong = Convert.ToString(s["Physics_Wrong"]),
@@ -223,6 +252,51 @@ namespace DataAccessLayer
                 Percentage = Convert.ToString(s["Percentage"]),
             }).ToList();
         }
+        public StudentRankViewModel StudentRank(int StudentMarks, string StudentCategory)
+        {
+            DataTable dtStudentRank = new DataTable();
+
+            DataTable dtRankList = DGeneric.GetData("select * from RankList").Tables[0];
+            List<RankViewModel> objRankList = ConvertDataTable<RankViewModel>(dtRankList);
+
+            //int StudentMarks = 360;
+            //Model.MarksReviewList.Find(x => x.RollNo == data.RollNo).TotalMarks;
+           // string StudentCategory = "OBC";
+            //Model.StudentList.Find(x => x.RollNo == data.RollNo).Category;
+            int AIR_UR = 0, SR_UR = 0, AIR_CAT_RANK = 0, SR_CAT_RANK = 0;
+            AIR_UR = objRankList.OrderBy(item => Math.Abs(StudentMarks - item.AIR_UR_S)).First().AIR_UR;
+            //AIR_UR = Model.RankList.OrderBy(item => Math.Abs(StudentMarks - item.AIR_UR_S)).First().AIR_UR;
+            SR_UR = objRankList.OrderBy(item => Math.Abs(StudentMarks - item.SR_UR_S)).First().SR_UR;
+
+            if (StudentCategory == "OBC")
+            {
+                AIR_CAT_RANK = objRankList.OrderBy(item => Math.Abs(StudentMarks - item.AIR_OBC_S)).First().AIR_OBC;
+                SR_CAT_RANK = objRankList.OrderBy(item => Math.Abs(StudentMarks - item.SR_OBC_S)).First().SR_OBC;
+            }
+            else if (StudentCategory == "SC")
+            {
+                AIR_CAT_RANK = objRankList.OrderBy(item => Math.Abs(StudentMarks - item.AIR_SC_S)).First().AIR_SC;
+                SR_CAT_RANK = objRankList.OrderBy(item => Math.Abs(StudentMarks - item.SR_SC_S)).First().SR_SC;
+            }
+            else if (StudentCategory == "ST")
+            {
+                AIR_CAT_RANK = objRankList.OrderBy(item => Math.Abs(StudentMarks - item.AIR_ST_S)).First().AIR_ST;
+                SR_CAT_RANK = objRankList.OrderBy(item => Math.Abs(StudentMarks - item.SR_ST_S)).First().SR_ST;
+            }
+            else
+            {
+                AIR_CAT_RANK = objRankList.OrderBy(item => Math.Abs(StudentMarks - item.AIR_UR_S)).First().AIR_UR;
+                SR_CAT_RANK = objRankList.OrderBy(item => Math.Abs(StudentMarks - item.SR_UR_S)).First().SR_UR;
+            }
+            StudentRankViewModel objRank = new StudentRankViewModel();
+            objRank.AIR_UR = AIR_UR;
+            objRank.SR_UR = SR_UR;
+            objRank.AIR_CAT_RANK = AIR_CAT_RANK;
+            objRank.SR_CAT_RANK = SR_CAT_RANK;
+
+            return objRank;
+        }
+
 
         #region Result Analysis
 
@@ -240,7 +314,6 @@ namespace DataAccessLayer
             DataTable dtStudentAttempt = StudentAttempt(dtStudentResponse, dtPaperAnalysis);
             DataTable dtStudentMarksReview = MarksReview(dtStudentResponse, dtPaperAnalysis);
             DataTable dtTopper_Average = Topper_Average(dtStudentMarksReview);
-
             List<SqlParameter> sqlParameterList = new List<SqlParameter>();
             sqlParameterList.Add(new SqlParameter("@TestID", TestID));
             sqlParameterList.Add(new SqlParameter("@TotalEasy", TotalEasy));
@@ -619,6 +692,8 @@ namespace DataAccessLayer
             dtTA.Columns.Remove("IsActive");
             return dtTA;
         }
+
+      
         //public DataTable TopTen(DataTable dt1)
         //{
         //    //DataTable dtTA = virtualTable();
@@ -663,7 +738,33 @@ namespace DataAccessLayer
             dt.Columns.Add("IsActive", typeof(bool));
             return dt;
         }
+        private static List<T> ConvertDataTable<T>(DataTable dt)
+        {
+            List<T> data = new List<T>();
+            foreach (DataRow row in dt.Rows)
+            {
+                T item = GetItem<T>(row);
+                data.Add(item);
+            }
+            return data;
+        }
+        private static T GetItem<T>(DataRow dr)
+        {
+            Type temp = typeof(T);
+            T obj = Activator.CreateInstance<T>();
 
+            foreach (DataColumn column in dr.Table.Columns)
+            {
+                foreach (PropertyInfo pro in temp.GetProperties())
+                {
+                    if (pro.Name == column.ColumnName)
+                        pro.SetValue(obj, dr[column.ColumnName], null);
+                    else
+                        continue;
+                }
+            }
+            return obj;
+        }
         #endregion
         #region Old Analysis
         //public DataTable RankList(HttpPostedFileBase RankFile)

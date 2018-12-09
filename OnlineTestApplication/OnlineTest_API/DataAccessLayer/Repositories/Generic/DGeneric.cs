@@ -297,7 +297,18 @@ namespace DataAccessLayer
         {
             return DateTime.ParseExact(date.ToString(), "dd/MM/yyyy", CultureInfo.CurrentCulture);
         }
-
+        public static string ConvertDateTimeToString(this string date)
+        {
+            if (!string.IsNullOrEmpty(date) && !string.IsNullOrWhiteSpace(date))
+            {
+                return Convert.ToDateTime(date).ToString("dd/MM/yyyy");
+                //return Convert.ToDateTime(date).ToShortDateString();
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
         public static object GetValue(string query)
         {
             SqlCommand sqlCommand = new SqlCommand();
@@ -319,7 +330,7 @@ namespace DataAccessLayer
             {
                 cnn.Close();
                 sqlCommand.Dispose();
-                throw new Exception("DGeneric::GetValue::Error occured.", ex.InnerException);
+                throw new Exception("DGeneric::GetValue::Error occured."+ex.Message.ToString(), ex.InnerException);
             }
 
         }
@@ -344,7 +355,7 @@ namespace DataAccessLayer
             {
                 cnn.Close();
                 sqlCommand.Dispose();
-                throw new Exception("DGeneric::GetData::Error occured.", ex.InnerException);
+                throw new Exception("DGeneric::GetData::Error occured."+ex.Message.ToString(), ex.InnerException);
             }
 
         }

@@ -230,6 +230,8 @@ namespace DataAccessLayer
                 OnlineTestNo = s["OnlineTestNo"].ToString(),
                 TestSeriesID = Convert.ToInt32(s["TestSeriesID"]),
                 TestTypeID = Convert.ToInt32(s["TestTypeID"]),
+                TestSeriesName = s["TestSeries"].ToString(),
+                TestTypeName = s["TestType"].ToString(),
                 TestName = s["TestName"].ToString(),
                 TestDuration = s["TestDuration"].ToString(),
                 SessionID = Convert.ToInt32(s["SessionID"]),
