@@ -53,20 +53,4 @@ export class EligibleStudentService {
         return Observable.throw(error);
       });
   }
-  submitTest(TestVar:string){
-    debugger;
-    
-    return this.http.post(HostName.API_StartPoint + APIUrl.TestStudent+'?TestVar='+ TestVar +'', httpOptions).subscribe(result => {
-        console.log(result);
-      }, error => console.log('There was an error: '));
-
-    // return this.http.post(HostName.API_StartPoint + APIUrl.TestStudent,TestVar)
-    //   .map((response: Response) => {
-    //     const data = response;
-    //     return data;
-    //   })
-    //   .catch((error: any) => {
-    //     return Observable.throw(error);
-    //   });
-  }
 }
