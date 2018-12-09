@@ -9,10 +9,10 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { Headers, Response, RequestOptions } from '@angular/http';
 import { AuthGuard } from './shared/auth-guard/auth.guard'
 import { AuthInterceptor } from './shared/auth-guard/auth.interceptors'
-// import { FormsModule }   from '@angular/forms';
+// Import Services
 import { UserService } from './services/auth-service/user.service'
-//for spinner
-import { NgxSpinnerModule } from 'ngx-spinner';
+import { HelperService } from './services/helper.service'
+
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -24,20 +24,11 @@ import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
-// import { AmazingTimePickerModule } from 'amazing-time-picker'; // this line you need
-
 
 const APP_CONTAINERS = [
   DefaultLayoutComponent
 ];
-
-import {
-  AppAsideModule,
-  AppBreadcrumbModule,
-  AppHeaderModule,
-  AppFooterModule,
-  AppSidebarModule,
-} from '@coreui/angular';
+import { AppAsideModule,AppBreadcrumbModule,AppHeaderModule,AppFooterModule,AppSidebarModule,} from '@coreui/angular';
 
 // Import routing module
 import { AppRoutingModule } from './app.routing';
@@ -46,6 +37,10 @@ import { AppRoutingModule } from './app.routing';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
+import { ToastrModule } from 'ngx-toastr';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { CustomMaterialModule } from "./custommaterial.module";
+
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -61,7 +56,11 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     TabsModule.forRoot(),
     ChartsModule,
     HttpClientModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    ToastrModule.forRoot({
+      timeOut: 1250,
+    }),
+    CustomMaterialModule
    // AmazingTimePickerModule
     ],
   declarations: [
@@ -73,7 +72,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     RegisterComponent
   ],
    providers: [
-     UserService,AuthGuard,
+     UserService,AuthGuard,HelperService,
     {
       provide : HTTP_INTERCEPTORS,
       useClass : AuthInterceptor,
