@@ -8,6 +8,11 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+using System.IO;
+
 namespace OnlineTestApplication.Controllers
 {
     public class ResultController : ApiController
@@ -48,7 +53,13 @@ namespace OnlineTestApplication.Controllers
         //    else
         //        return Request.CreateResponse(HttpStatusCode.OK, "No Records.");
         //}
-
+        
+        [HttpGet]
+        [Route("api/GetResultAnalysis", Name = "GetResultAnalysis")]
+        public HttpResponseMessage GetResultAnalysis(int StudentID,int TestID)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, _iBResult.GetResultAnalysis(StudentID,TestID));
+        }
         [HttpGet]
         [Route("api/GetPaperAnalysis", Name = "GetPaperAnalysis")]
         public HttpResponseMessage GetPaperAnalysis(int TestID)
@@ -84,5 +95,6 @@ namespace OnlineTestApplication.Controllers
         {
             return Request.CreateResponse(HttpStatusCode.OK, _iBResult.GetTopper_Average(TestID));
         }
+
     }
 }

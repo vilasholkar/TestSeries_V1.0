@@ -19,11 +19,12 @@ namespace OnlineTestApplication.Controllers
             _iBStudent = iBStudent;
         }
         [HttpGet]
-        [Route("api/GetStudent", Name = "GetStudent")]
-        public async Task<HttpResponseMessage> GetStudent()
+        [Route("api/GetStudentDetails", Name = "GetStudentDetails")]
+        public HttpResponseMessage GetStudentDetails()
         {
-            var response = Request.CreateResponse(HttpStatusCode.OK, JsonConvert.SerializeObject(_iBStudent.GetStudent()));
-            return response;
+            //var response = Request.CreateResponse(HttpStatusCode.OK, JsonConvert.SerializeObject(_iBStudent.GetStudent()));
+            //return response;
+            return Request.CreateResponse(HttpStatusCode.OK, _iBStudent.GetStudentDetails());
         }
     }
 }
