@@ -24,20 +24,21 @@ namespace OnlineTestApplication
         public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
             context.Validated();
+            string UserTypeID = context.Parameters.Where(f => f.Key == "UserTypeID").Select(f => f.Value).SingleOrDefault()[0];
+            context.OwinContext.Set<string>("UserTypeID", UserTypeID);
+
         }
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-            //if (context.UserName == "admin")
-            //{
-            //    if (context.Password == "admin")
-            //    {
+            string UserTypeID = context.OwinContext.Get<string>("UserTypeID");
+            
             Login loginsetdetails = new Login();
             loginsetdetails.UserName = context.UserName;
             loginsetdetails.UserPassword = context.Password;
+            loginsetdetails.UserTypeID =Convert.ToInt32(context.OwinContext.Get<string>("UserTypeID"));
             //Login logingetdetails = _iBAccount.GetUserDetails(loginsetdetails);
             Login logingetdetails = DataAccessLayer.DAccount.GetUserDetails1(loginsetdetails);
-
             // var currentUserRole = "Admin";
             if (logingetdetails != null)
             {
@@ -49,15 +50,25 @@ namespace OnlineTestApplication
                              "DisplayName",context.UserName
                             },
                             {
-                             "Role",currentUserRole         
+                             "Role",currentUserRole
+                            },
+                            {
+                             "UserID",logingetdetails.UserID.ToString()
+                            },
+                            {
+                             "FirstName",logingetdetails.FirstName
+                            },
+                            {
+                             "LastName",logingetdetails.LastName
+                            },
+                            {
+                             "MobileNo",logingetdetails.MobileNo
                             }
 	                    });
                 var token = new AuthenticationTicket(identity, props);
                 context.Validated(token);
 
             }
-            //    }
-            //}
             else if (context.UserName == "student")
             {
                 if (context.Password == "student")
@@ -97,8 +108,9 @@ namespace OnlineTestApplication
                 }
             }
             else
-               // context.SetError("invalid_grant", "The user name or password is incorrect.");
-            return; 
+            context.SetError("invalid_grant", "The username or password is incorrect.");
+            context.Response.Headers.Add("AuthorizationResponse",new[]{"Failed"});
+           // return; 
         }
 
         public override Task TokenEndpoint(OAuthTokenEndpointContext context)
