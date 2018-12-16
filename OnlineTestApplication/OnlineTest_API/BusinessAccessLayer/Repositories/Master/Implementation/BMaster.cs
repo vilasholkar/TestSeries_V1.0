@@ -138,5 +138,41 @@ namespace BusinessAccessLayer
                 throw;
             }
         }
+
+
+        public Response<MasterViewModel> GetMasterData()
+        {
+            try
+            {
+                var masterData = _iDMaster.GetMasterData();
+                if (masterData != null)
+                {
+                    return new Response<MasterViewModel>
+                    {
+                        IsSuccessful = true,
+                        Object = masterData,
+                        Message = CommonEnum.Status.Success.ToString()
+                    };
+                }
+                else
+                {
+                    return new Response<MasterViewModel>
+                    {
+                        IsSuccessful = false,
+                        Message = CommonEnum.Status.Failed.ToString(),
+                        Object = null
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Response<MasterViewModel>
+                {
+                    IsSuccessful = false,
+                    Message = ex.Message,
+                    Object = null
+                };
+            }
+        }
     }
 }

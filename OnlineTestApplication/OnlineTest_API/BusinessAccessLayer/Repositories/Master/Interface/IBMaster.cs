@@ -17,5 +17,7 @@ namespace BusinessAccessLayer
         Response<List<BatchViewModel>> GetBatchByCourse(string CourseId);
 
         Response<List<SessionViewModel>> GetSession();
+
+        Response<MasterViewModel> GetMasterData();
     }
 }
