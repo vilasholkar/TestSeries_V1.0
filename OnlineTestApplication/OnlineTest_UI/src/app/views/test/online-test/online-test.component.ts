@@ -1,18 +1,16 @@
-import { Component, OnInit, ChangeDetectionStrategy ,ViewChild} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {OnlineTestService} from '../../../services/admin/online-test.service';
 import {TestSeriesService} from '../../../services/admin/test-series.service';
 import {TestTypeService} from '../../../services/admin/test-type.service';
 import {Stream,Course,Batch,TestType,Session} from '../../../models/master';
 import {OnlineTest,TestSeries} from '../../../models/test';
 import { MatSnackBar } from "@angular/material";
-import { NgForm } from "@angular/forms";
-var $:any;
+
 @Component({
   selector: 'app-online-test',
   templateUrl: './online-test.component.html',
   styleUrls: ['./online-test.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
-
+  //changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class OnlineTestComponent implements OnInit {
@@ -39,21 +37,22 @@ export class OnlineTestComponent implements OnInit {
     debugger;
     this.getOnlineTest();
   }
-
-  // @ViewChild('onlineTestForm') exampleform :NgForm;
-  // form = this.exampleform;
-
-  // @ViewChild('onlineTestForm') exampleform :NgForm;
  
   changeShowStatus() {
     debugger;
-    this.getStream();
-    this.getTestType();
-    this.getTestSeries();
-    this.getSession(); 
+    this.onlineTestModel = {};
+    this.onlineTestService.getMasterData()
+    .subscribe(data => {
+      if(data.Message === 'Success')
+        this.stream = data.Object.Stream;
+        this.testType = data.Object.TestType;
+        this.testSeries = data.Object.TestSeries;
+        this.session = data.Object.Session;
+    },error => {
+      alert('error');
+    })
     this.showAddDiv = !this.showAddDiv;
     this.Title = "Add Test";
-    //this.onlineTestModel = {};
   }
   getStream(){
     this.onlineTestService.getStream()
@@ -129,11 +128,11 @@ export class OnlineTestComponent implements OnInit {
 
   addOnlineTest(){
     debugger;
-    this.onlineTest = this.onlineTestModel;
-    this.onlineTestService.addUpdateOnlineTest(this.onlineTest)
+    //this.onlineTest = this.onlineTestModel;
+    this.onlineTestService.addUpdateOnlineTest(this.onlineTestModel)
     .subscribe(data => {
       if (data === 'Success') {
-        this.onlineTestModel = {};
+        //this.onlineTestModel = {};
         //this.exampleform.reset();
         this.showAddDiv = !this.showAddDiv;
         this.getOnlineTest();
@@ -161,24 +160,20 @@ export class OnlineTestComponent implements OnInit {
      });
     }
   }
-  getOnlineTestById(OnlineTestModel){
+  getOnlineTestById(OnlineTestID){
     debugger;
-    this.getStream();
-    this.getTestType();
-    this.getTestSeries();
-    this.getSession(); 
-    if(this.showAddDiv==false)
-      {
-        this.showAddDiv=true;
-      }
-    
+    this.showAddDiv=true;
     this.Title="Edit Test";
-    this.onlineTestService.getOnlineTestById(OnlineTestModel.OnlineTestID)
+    this.onlineTestService.getOnlineTestById(OnlineTestID)
     .subscribe(data => {
       if (data.Message === 'Success') {
-        this.onlineTestModel = data.Object;
-        this.onChangeStream(this.onlineTestModel.StreamID);
-        this.onChangeCourse(this.onlineTestModel.CourseID);
+        this.stream = data.Object.MasterData.Stream;
+        this.testType = data.Object.MasterData.TestType;
+        this.testSeries = data.Object.MasterData.TestSeries;
+        this.session = data.Object.MasterData.Session;
+        this.onlineTestModel = data.Object.OnlineTestData;
+        this.course = data.Object.OnlineTestData.Course;
+        this.batch = data.Object.OnlineTestData.Batch;
        }
      }, error => {
        alert('error');
