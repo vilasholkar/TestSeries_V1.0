@@ -12,5 +12,6 @@ namespace DataAccessLayer
        List<CourseViewModel> GetCourseByStream(string StreamId);
        List<BatchViewModel> GetBatchByCourse(string CourseId);
        List<SessionViewModel> GetSession();
+       MasterViewModel GetMasterData();
     }
 }
