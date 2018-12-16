@@ -14,7 +14,7 @@ export class APIUrl {
     public static GET_Session = 'api/GetSession';
     public static GET_OnlineTest = 'api/GetOnlineTest';
     public static DeleteOnlineTest = 'api/DeleteOnlineTest';
-    public static GetOnlineTestById = 'api/GetOnlineTestById';
+    public static GetOnlineTestById = 'api/GetOnlineTestMasterDataByTestID';
     public static GetQuestionsByTestId = 'api/GetQuestionsByTestId';
     public static GetOnlineTestByStudentID = 'api/GetOnlineTestByStudentID';
     public static Submit_Quiz = "api/SubmitQuiz";
@@ -28,5 +28,6 @@ export class APIUrl {
     public static GetStudentMarksReview = 'api/GetOnlineTestResultByID';
     public static GetTopper_Average = 'api/GetTopper_Average';
     public static GetStudentDetails = 'api/GetStudentDetails';
+    public static GetMasterData = 'api/GetMasterData';
 
 }
