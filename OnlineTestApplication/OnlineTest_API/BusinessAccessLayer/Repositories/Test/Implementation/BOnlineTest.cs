@@ -12,9 +12,12 @@ namespace BusinessAccessLayer
     public class BOnlineTest : IBOnlineTest
     {
         private readonly IDOnlineTest _iDOnlineTest;
-        public BOnlineTest(IDOnlineTest iDOnlineTest)
+
+        private readonly IDMaster _iDMaster;
+        public BOnlineTest(IDOnlineTest iDOnlineTest, IDMaster iDMaster)
         {
             _iDOnlineTest = iDOnlineTest;
+            _iDMaster = iDMaster;
         }
         public Response<List<OnlineTestViewModel>> GetOnlineTest()
         {
@@ -141,7 +144,7 @@ namespace BusinessAccessLayer
                 };
             }
         }
-  public Response<List<StudentOnlineTestViewModel>> GetOnlineTestByStudentID(int StudentID)
+        public Response<List<StudentOnlineTestViewModel>> GetOnlineTestByStudentID(int StudentID)
         {
             try
             {
@@ -168,6 +171,42 @@ namespace BusinessAccessLayer
             catch (Exception ex)
             {
                 return new Response<List<StudentOnlineTestViewModel>>
+                {
+                    IsSuccessful = false,
+                    Message = ex.Message,
+                    Object = null
+                };
+            }
+        }
+        public Response<OnlineTestMasterViewModel> GetOnlineTestMasterDataByTestID(int OnlineTestID)
+        {
+            try
+            {
+                var onlineTestMasterData = new OnlineTestMasterViewModel();
+                onlineTestMasterData.OnlineTestData = _iDOnlineTest.GetOnlineTestById(OnlineTestID);
+                onlineTestMasterData.MasterData = _iDMaster.GetMasterData();
+                if (onlineTestMasterData != null)
+                {
+                    return new Response<OnlineTestMasterViewModel>
+                    {
+                        IsSuccessful = true,
+                        Object = onlineTestMasterData,
+                        Message = CommonEnum.Status.Success.ToString()
+                    };
+                }
+                else
+                {
+                    return new Response<OnlineTestMasterViewModel>
+                    {
+                        IsSuccessful = false,
+                        Message = CommonEnum.Status.Failed.ToString(),
+                        Object = null
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Response<OnlineTestMasterViewModel>
                 {
                     IsSuccessful = false,
                     Message = ex.Message,

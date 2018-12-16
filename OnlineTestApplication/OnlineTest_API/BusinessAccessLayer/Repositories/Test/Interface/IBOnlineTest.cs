@@ -15,7 +15,8 @@ namespace BusinessAccessLayer
         string DeleteOnlineTest(int OnlineTestId);
         Response<OnlineTestViewModel> GetOnlineTestById(int OnlineTestId);
         Response<QuizViewModel> GetQuestionsByTestId(int OnlineTestID);
-Response<List<StudentOnlineTestViewModel>> GetOnlineTestByStudentID(int StudentID);
+        Response<List<StudentOnlineTestViewModel>> GetOnlineTestByStudentID(int StudentID);
+        Response<OnlineTestMasterViewModel> GetOnlineTestMasterDataByTestID(int OnlineTestID);
 
     }
 }
