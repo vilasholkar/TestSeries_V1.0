@@ -41,5 +41,11 @@ namespace OnlineTestApplication.Controllers
         {
             return Request.CreateResponse(HttpStatusCode.OK, _iBMaster.GetSession());
         }
+        [HttpGet]
+        [Route("api/GetMasterData", Name = "GetMasterData")]
+        public HttpResponseMessage GetMasterData()
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, _iBMaster.GetMasterData());
+        }
     }
 }

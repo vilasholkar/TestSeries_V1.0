@@ -89,6 +89,12 @@ namespace OnlineTestApplication.Controllers
         {
             return Request.CreateResponse(HttpStatusCode.OK, _iBOnlineTest.GetOnlineTestByStudentID(StudentID));
         }
+        [HttpGet]
+        [Route("api/GetOnlineTestMasterDataByTestID", Name = "GetOnlineTestMasterDataByTestID")]
+        public HttpResponseMessage GetOnlineTestMasterDataByTestID(int OnlineTestID)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, _iBOnlineTest.GetOnlineTestMasterDataByTestID(OnlineTestID));
+        }
         #endregion
 
         #region EligibleStudent
