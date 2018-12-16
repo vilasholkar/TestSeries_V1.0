@@ -12,7 +12,7 @@ namespace DataAccessLayer
         List<OnlineTestViewModel> GetOnlineTest();
         string AddUpdateOnlineTest(OnlineTestViewModel objOnlineTest);
         string DeleteOnlineTest(int OnlineTestId);
-        OnlineTestViewModel GetOnlineTestById(int OnlineTestId);
+        OnlineTestViewModel GetOnlineTestById(int OnlineTestID);
         QuizViewModel GetQuestionsByTestId(int OnlineTestID);
     	List<StudentOnlineTestViewModel> GetOnlineTestByStudentID(int StudentID);
 
