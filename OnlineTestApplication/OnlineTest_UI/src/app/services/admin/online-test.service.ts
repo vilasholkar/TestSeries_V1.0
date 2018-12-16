@@ -62,7 +62,6 @@ export class OnlineTestService {
         const data = response;
         return data;
       })
-      .pipe(delay(3000))
       .catch((error: any) => {
         return Observable.throw(error);
       });
@@ -105,6 +104,7 @@ export class OnlineTestService {
       });
   }
   getOnlineTestById(OnlineTestId: number): Observable<any>{
+    debugger;
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     this.options = new RequestOptions({ headers: this.headers });
      
@@ -117,6 +117,15 @@ export class OnlineTestService {
         return Observable.throw(error);
       });
   }
-
+  getMasterData(): Observable<any> {
+    return this.http.get(HostName.API_StartPoint + APIUrl.GetMasterData)
+      .map((response: Response) => {
+        const data = response;
+        return data;
+      })
+      .catch((error: any) => {
+        return Observable.throw(error);
+      });
+  }
  
 }
