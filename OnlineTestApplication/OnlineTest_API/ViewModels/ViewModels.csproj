@@ -59,6 +59,7 @@
     <Compile Include="Student\StudentViewModel.cs" />
     <Compile Include="TestType\TestTypeViewModel.cs" />
     <Compile Include="Test\EligibleStudentVIewModel.cs" />
+    <Compile Include="Test\OnlineTestMasterViewModel.cs" />
     <Compile Include="Test\OnlineTestViewModel.cs" />
     <Compile Include="Test\QuizViewModel.cs" />
     <Compile Include="Test\StudentOnlineTestViewModel.cs" />
