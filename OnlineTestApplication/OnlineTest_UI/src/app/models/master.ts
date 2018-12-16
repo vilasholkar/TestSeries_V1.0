@@ -16,11 +16,11 @@ export interface Stream {
     StreamID: any;
     StreamName: any;
 }
-export interface Course {
+export class Course {
     CourseID: any;
-    CourseName: any;    
+    CourseName: any;
 }
-export interface Batch {
+export class Batch {
     BatchID: any;
     BatchName: any;    
 }
