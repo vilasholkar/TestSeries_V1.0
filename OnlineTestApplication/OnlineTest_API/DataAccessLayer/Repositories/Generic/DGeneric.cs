@@ -216,7 +216,7 @@ namespace DataAccessLayer
                 }
             });
         }
-        public static DataSet RunSP_ReturnDataSet(string procedureName, List<SqlParameter> parameters, List<DataTableMapping> dataTableMappingList)
+        public static DataSet RunSP_ReturnDataSet(string procedureName, List<SqlParameter> parameters, IList<DataTableMapping> dataTableMappingList)
         {
             DataSet dtData = new DataSet();
             using (SqlConnection sqlConn = new SqlConnection(ConnectionString))
@@ -224,13 +224,13 @@ namespace DataAccessLayer
                 using (SqlCommand sqlCommand = new SqlCommand(procedureName, sqlConn))
                 {
                     sqlCommand.CommandType = CommandType.StoredProcedure;
-                    if (parameters != null)
+                    if (parameters != null && parameters.Count > 0)
                     {
                         sqlCommand.Parameters.AddRange(parameters.ToArray());
                     }
                     using (SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand))
                     {
-                        if (dataTableMappingList != null)
+                        if (dataTableMappingList != null && dataTableMappingList.Count > 0)
                         {
                             DataTableMapping[] dataTableMappingArray = dataTableMappingList.ToArray();
                             // Call DataAdapter's TableMappings.Add method                       
@@ -321,16 +321,16 @@ namespace DataAccessLayer
 
             try
             {
-            object obj = sqlCommand.ExecuteScalar();
-            cnn.Close();
-            sqlCommand.Dispose();
-            return obj;
+                object obj = sqlCommand.ExecuteScalar();
+                cnn.Close();
+                sqlCommand.Dispose();
+                return obj;
             }
             catch (Exception ex)
             {
                 cnn.Close();
                 sqlCommand.Dispose();
-                throw new Exception("DGeneric::GetValue::Error occured."+ex.Message.ToString(), ex.InnerException);
+                throw new Exception("DGeneric::GetValue::Error occured." + ex.Message.ToString(), ex.InnerException);
             }
 
         }
@@ -344,18 +344,18 @@ namespace DataAccessLayer
             sqlCommand.Connection = cnn;
             try
             {
-            SqlDataAdapter objDa = new SqlDataAdapter(sqlCommand);
-            DataSet ds = new DataSet();
-            objDa.Fill(ds);
-            //cnn.Close();
-            sqlCommand.Dispose();
-            return ds;
+                SqlDataAdapter objDa = new SqlDataAdapter(sqlCommand);
+                DataSet ds = new DataSet();
+                objDa.Fill(ds);
+                //cnn.Close();
+                sqlCommand.Dispose();
+                return ds;
             }
             catch (Exception ex)
             {
                 cnn.Close();
                 sqlCommand.Dispose();
-                throw new Exception("DGeneric::GetData::Error occured."+ex.Message.ToString(), ex.InnerException);
+                throw new Exception("DGeneric::GetData::Error occured." + ex.Message.ToString(), ex.InnerException);
             }
 
         }
