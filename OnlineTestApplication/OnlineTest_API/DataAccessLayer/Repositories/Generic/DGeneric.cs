@@ -35,17 +35,17 @@ namespace DataAccessLayer
                 DGeneric._ConnectionString = value;
             }
         }
-        public static async Task<object> RunSP_ReturnScalerAsync(string procedureName, List<SqlParameter> parameters)
+        public static string RunSP_ReturnScaler(string procedureName, List<SqlParameter> parameters)
         {
             SqlTransaction trans = null;
             try
             {
                 using (var sqlConn = new SqlConnection(ConnectionString))
                 {
-                    await sqlConn.OpenAsync();
+                   sqlConn.Open();
                     using (trans = sqlConn.BeginTransaction())
                     {
-                        using (var sqlCommand = new SqlCommand(procedureName, sqlConn))
+                        using (var sqlCommand = new SqlCommand(procedureName, sqlConn,trans))
                         {
                             sqlCommand.CommandType = CommandType.StoredProcedure;
                             if (parameters != null)
@@ -54,9 +54,9 @@ namespace DataAccessLayer
                             }
                             try
                             {
-                                var returnValue = await sqlCommand.ExecuteScalarAsync();
+                                var returnValue = sqlCommand.ExecuteScalar();
                                 trans.Commit();
-                                return returnValue;
+                                return returnValue.ToString();
                             }
                             catch (Exception)
                             {
