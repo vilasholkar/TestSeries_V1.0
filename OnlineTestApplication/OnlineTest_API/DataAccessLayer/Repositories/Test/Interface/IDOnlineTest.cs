@@ -15,7 +15,7 @@ namespace DataAccessLayer
         OnlineTestViewModel GetOnlineTestById(int OnlineTestID);
         QuizViewModel GetQuestionsByTestId(int OnlineTestID);
     	List<StudentOnlineTestViewModel> GetOnlineTestByStudentID(int StudentID);
-
+        List<OnlineTestViewModel> GetOnlineTest_ForGenerateResult();
 
     }
 }
