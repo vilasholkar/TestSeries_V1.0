@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -76,7 +77,16 @@ namespace DataAccessLayer
                 sqlParameterList.Add(new SqlParameter("CreatedByUserID", 1));
                 sqlParameterList.Add(new SqlParameter("CreatedOnDate", DGeneric.SystemDateTime));
 
-                DGeneric.RunSP_ExecuteNonQuery("sp_AddUpdateOnlineTest", sqlParameterList);
+               string OnlineTestID = DGeneric.RunSP_ReturnScaler("sp_AddUpdateOnlineTest", sqlParameterList);
+
+               if (!Directory.Exists("educationbridge.co.in\\" + OnlineTestID + "\\English"))
+                {
+                    Directory.CreateDirectory("C:\\" + OnlineTestID + "\\English");
+                }
+               if (!Directory.Exists("C:\\" + OnlineTestID + "\\Hindi"))
+                {
+                    Directory.CreateDirectory("C:\\" + OnlineTestID + "\\Hindi");
+                }
                 return CommonEnum.Status.Success.ToString();
             }
             catch (Exception ex)
@@ -265,6 +275,43 @@ namespace DataAccessLayer
                 IsActive = Convert.ToBoolean(s["IsActive"])
             }).ToList();
 
+        }
+        public List<OnlineTestViewModel> GetOnlineTest_ForGenerateResult() 
+        {
+            try
+            {
+                DataTable dt = DGeneric.RunSP_ReturnDataSet("sp_GetOnlineTestForGenerateResult", null, null).Tables[0];
+                return dt.AsEnumerable().Select(s => new OnlineTestViewModel()
+                {
+                    OnlineTestID = Convert.ToInt32(s["OnlineTestID"]),
+                    OnlineTestNo = s["OnlineTestNo"].ToString(),
+                    TestSeriesID = Convert.ToInt32(s["TestSeriesID"]),
+                    TestSeriesName = s["TestSeries"].ToString(),
+                    TestTypeID = Convert.ToInt32(s["TestTypeID"]),
+                    TestTypeName = s["TestType"].ToString(),
+                    TestName = s["TestName"].ToString(),
+                    TestDuration = s["TestDuration"].ToString(),
+                    SessionID = Convert.ToInt32(s["SessionID"]),
+                    //StreamID = s["StreamID"].ToString().Split(',').ToArray(),
+                    //CourseID = Convert.ToInt32(s["CourseID"]),
+                    //BatchID = Convert.ToInt32(s["BatchID"]),
+                    SubjectID = Convert.ToInt32(s["SubjectID"]),
+                    Topic = s["Topic"].ToString(),
+                    Instructions = s["Instructions"].ToString(),
+                    TestMarks = s["TestMarks"].ToString(),
+                    PassingPercentage = s["PassingPercentage"].ToString(),
+                    IsNegativeMarking = Convert.ToBoolean(s["IsNegativeMarking"]),
+                    IsVisible = Convert.ToBoolean(s["IsVisible"]),
+                    StartTime = s["StartTime"].ToString(),
+                    EndTime = s["EndTime"].ToString(),
+                    StartDate = Convert.ToDateTime(s["StartDate"]),
+                    EndDate = Convert.ToDateTime(s["EndDate"])
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
