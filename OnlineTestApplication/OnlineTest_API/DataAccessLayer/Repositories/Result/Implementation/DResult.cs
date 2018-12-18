@@ -16,98 +16,6 @@ namespace DataAccessLayer
         int TotalMarks = 0;
         string QualifyingMarks = string.Empty;
 
-        //public List<OnlineTestResultViewModel> GetOnlineTestResultByTestID(int TestID)
-        //{
-        //    string query = string.Format("select * from OnlineTestResult where TestID={0} ", TestID);
-        //    DataTable dt = DGeneric.GetData(query).Tables[0];
-        //    return dt.AsEnumerable().Select(s => new OnlineTestResultViewModel()
-        //    {
-        //        ResultID = Convert.ToInt32(s["ResultID"]),
-        //        TestID = Convert.ToInt32(s["TestID"]),
-        //        StudentID = Convert.ToInt32(s["StudentID"]),
-        //        Physics_Total = Convert.ToString(s["Physics_Total"]),
-        //        Physics_Right = Convert.ToString(s["Physics_Right"]),
-        //        Physics_Wrong = Convert.ToString(s["Physics_Wrong"]),
-        //        Chemistry_Total = Convert.ToString(s["Chemistry_Total"]),
-        //        Chemistry_Right = Convert.ToString(s["Chemistry_Right"]),
-        //        Chemistry_Wrong = Convert.ToString(s["Chemistry_Wrong"]),
-        //        Biology_Total = Convert.ToString(s["Biology_Total"]),
-        //        Biology_Right = Convert.ToString(s["Biology_Right"]),
-        //        Biology_Wrong = Convert.ToString(s["Biology_Wrong"]),
-        //        TotalCorrect = Convert.ToString(s["TotalCorrect"]),
-        //        TotalWrong = Convert.ToString(s["TotalWrong"]),
-        //        TotalAttempt = Convert.ToString(s["TotalAttempt"]),
-        //        TotalMarksObtained = Convert.ToString(s["TotalMarksObtained"]),
-        //        Percentage = Convert.ToString(s["Percentage"]),
-        //        Rank = Convert.ToString(s["Rank"]),
-        //        TotalMarks = Convert.ToString(s["TotalMarks"]),
-        //        QualifyingMarks = Convert.ToString(s["QualifyingMarks"]),
-        //        CreatedOnDate = Convert.ToDateTime(s["CreatedOnDate"]),
-        //        IsActive = Convert.ToBoolean(s["IsActive"])
-        //    }).ToList();
-        //}
-        //public List<OnlineTestResultViewModel> GetOnlineTestResultByStudentID(int StudentID)
-        //{
-        //    string query = string.Format("select * from OnlineTestResult where StudentID = {0} ", StudentID);
-        //    DataTable dt = DGeneric.GetData(query).Tables[0];
-        //    return dt.AsEnumerable().Select(s => new OnlineTestResultViewModel()
-        //    {
-        //        ResultID = Convert.ToInt32(s["ResultID"]),
-        //        TestID = Convert.ToInt32(s["TestID"]),
-        //        StudentID = Convert.ToInt32(s["StudentID"]),
-        //        Physics_Total = Convert.ToString(s["Physics_Total"]),
-        //        Physics_Right = Convert.ToString(s["Physics_Right"]),
-        //        Physics_Wrong = Convert.ToString(s["Physics_Wrong"]),
-        //        Chemistry_Total = Convert.ToString(s["Chemistry_Total"]),
-        //        Chemistry_Right = Convert.ToString(s["Chemistry_Right"]),
-        //        Chemistry_Wrong = Convert.ToString(s["Chemistry_Wrong"]),
-        //        Biology_Total = Convert.ToString(s["Biology_Total"]),
-        //        Biology_Right = Convert.ToString(s["Biology_Right"]),
-        //        Biology_Wrong = Convert.ToString(s["Biology_Wrong"]),
-        //        TotalCorrect = Convert.ToString(s["TotalCorrect"]),
-        //        TotalWrong = Convert.ToString(s["TotalWrong"]),
-        //        TotalAttempt = Convert.ToString(s["TotalAttempt"]),
-        //        TotalMarksObtained = Convert.ToString(s["TotalMarksObtained"]),
-        //        Percentage = Convert.ToString(s["Percentage"]),
-        //        Rank = Convert.ToString(s["Rank"]),
-        //        TotalMarks = Convert.ToString(s["TotalMarks"]),
-        //        QualifyingMarks = Convert.ToString(s["QualifyingMarks"]),
-        //        CreatedOnDate = Convert.ToDateTime(s["CreatedOnDate"]),
-        //        IsActive = Convert.ToBoolean(s["IsActive"])
-        //    }).ToList();
-        //}
-        //public OnlineTestResultViewModel GetStudentMarksReview(int StudentID, int TestID)
-        //{
-        //    string query = string.Format("select * from OnlineTestResult where StudentID= {0} and TestID = {1} ", StudentID, TestID);
-        //    DataRow dr = DGeneric.GetData(query).Tables[0].Rows[0];
-
-        //    OnlineTestResultViewModel obj = new OnlineTestResultViewModel();
-        //    obj.ResultID = Convert.ToInt32(dr["ResultID"]);
-        //    obj.TestID = Convert.ToInt32(dr["TestID"]);
-        //    obj.StudentID = Convert.ToInt32(dr["StudentID"]);
-        //    obj.Physics_Total = Convert.ToString(dr["Physics_Total"]);
-        //    obj.Physics_Right = Convert.ToString(dr["Physics_Right"]);
-        //    obj.Physics_Wrong = Convert.ToString(dr["Physics_Wrong"]);
-        //    obj.Chemistry_Total = Convert.ToString(dr["Chemistry_Total"]);
-        //    obj.Chemistry_Right = Convert.ToString(dr["Chemistry_Right"]);
-        //    obj.Chemistry_Wrong = Convert.ToString(dr["Chemistry_Wrong"]);
-        //    obj.Biology_Total = Convert.ToString(dr["Biology_Total"]);
-        //    obj.Biology_Right = Convert.ToString(dr["Biology_Right"]);
-        //    obj.Biology_Wrong = Convert.ToString(dr["Biology_Wrong"]);
-        //    obj.TotalCorrect = Convert.ToString(dr["TotalCorrect"]);
-        //    obj.TotalWrong = Convert.ToString(dr["TotalWrong"]);
-        //    obj.TotalAttempt = Convert.ToString(dr["TotalAttempt"]);
-        //    obj.TotalMarksObtained = Convert.ToString(dr["TotalMarksObtained"]);
-        //    obj.Percentage = Convert.ToString(dr["Percentage"]);
-        //    obj.Rank = Convert.ToString(dr["Rank"]);
-        //    obj.TotalMarks = Convert.ToString(dr["TotalMarks"]);
-        //    obj.QualifyingMarks = Convert.ToString(dr["QualifyingMarks"]);
-        //    obj.CreatedOnDate = Convert.ToDateTime(dr["CreatedOnDate"]);
-        //    obj.IsActive = Convert.ToBoolean(dr["IsActive"]);
-
-        //    return obj;
-        //}
-
         public ResultAnalysisViewModel GetResultAnalysis(int StudentID, int TestID)
         {
             ResultAnalysisViewModel objResultAnalysis = new ResultAnalysisViewModel();
@@ -298,7 +206,7 @@ namespace DataAccessLayer
         }
 
 
-        #region Result Analysis
+        #region Generate Result Analysis
 
         public string ResultAnalysis(int TestID)
         {
@@ -308,35 +216,42 @@ namespace DataAccessLayer
             QualifyingMarks = Convert.ToString(dr["PassingPercentage"]);
             DataTable dtEligibleStudent = GetEligibleStudentByTestID(TestID);
             DataTable dtStudentResponse = GetStudentResponseByTestID(TestID);
-            int TotalEasy = 0, TotalMedium = 0, TotalDifficult = 0;
-            string EasyQuestionList = string.Empty, MediumQuestionList = string.Empty, DifficultQuestionList = string.Empty;
-            DataTable dtPaperAnalysis = PaperAnalysis(dtStudentResponse, out TotalEasy, out TotalMedium, out TotalDifficult, out EasyQuestionList, out MediumQuestionList, out DifficultQuestionList);
-            DataTable dtStudentAttempt = StudentAttempt(dtStudentResponse, dtPaperAnalysis);
-            DataTable dtStudentMarksReview = MarksReview(dtStudentResponse, dtPaperAnalysis);
-            DataTable dtTopper_Average = Topper_Average(dtStudentMarksReview);
-            List<SqlParameter> sqlParameterList = new List<SqlParameter>();
-            sqlParameterList.Add(new SqlParameter("@TestID", TestID));
-            sqlParameterList.Add(new SqlParameter("@TotalEasy", TotalEasy));
-            sqlParameterList.Add(new SqlParameter("@TotalMedium", TotalMedium));
-            sqlParameterList.Add(new SqlParameter("@TotalDifficult", TotalDifficult));
-            sqlParameterList.Add(new SqlParameter("@EasyQuestionList", EasyQuestionList));
-            sqlParameterList.Add(new SqlParameter("@MediumQuestionList", MediumQuestionList));
-            sqlParameterList.Add(new SqlParameter("@DifficultQuestionList", DifficultQuestionList));
-            string temp = DGeneric.RunSP_ExecuteNonQuery("sp_AddPaperAnalysis", sqlParameterList);
+            if (dtStudentResponse.Rows.Count != 0)
+            {
+                int TotalEasy = 0, TotalMedium = 0, TotalDifficult = 0;
+                string EasyQuestionList = string.Empty, MediumQuestionList = string.Empty, DifficultQuestionList = string.Empty;
+                DataTable dtPaperAnalysis = PaperAnalysis(dtStudentResponse, out TotalEasy, out TotalMedium, out TotalDifficult, out EasyQuestionList, out MediumQuestionList, out DifficultQuestionList);
+                DataTable dtStudentAttempt = StudentAttempt(dtStudentResponse, dtPaperAnalysis);
+                DataTable dtStudentMarksReview = MarksReview(dtStudentResponse, dtPaperAnalysis);
+                DataTable dtTopper_Average = Topper_Average(dtStudentMarksReview);
+                List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+                sqlParameterList.Add(new SqlParameter("@TestID", TestID));
+                sqlParameterList.Add(new SqlParameter("@TotalEasy", TotalEasy));
+                sqlParameterList.Add(new SqlParameter("@TotalMedium", TotalMedium));
+                sqlParameterList.Add(new SqlParameter("@TotalDifficult", TotalDifficult));
+                sqlParameterList.Add(new SqlParameter("@EasyQuestionList", EasyQuestionList));
+                sqlParameterList.Add(new SqlParameter("@MediumQuestionList", MediumQuestionList));
+                sqlParameterList.Add(new SqlParameter("@DifficultQuestionList", DifficultQuestionList));
+                string temp = DGeneric.RunSP_ExecuteNonQuery("sp_AddPaperAnalysis", sqlParameterList);
 
-            List<SqlParameter> sqlParameterList1 = new List<SqlParameter>();
-            sqlParameterList1.Add(new SqlParameter("@StudentAttempt", dtStudentAttempt));
-            string temp1 = DGeneric.RunSP_ExecuteNonQuery("sp_AddStudentAttempt", sqlParameterList1);
+                List<SqlParameter> sqlParameterList1 = new List<SqlParameter>();
+                sqlParameterList1.Add(new SqlParameter("@StudentAttempt", dtStudentAttempt));
+                string temp1 = DGeneric.RunSP_ExecuteNonQuery("sp_AddStudentAttempt", sqlParameterList1);
 
-            List<SqlParameter> sqlParameterList2 = new List<SqlParameter>();
-            sqlParameterList2.Add(new SqlParameter("@OnlineTestResult", dtStudentMarksReview));
-            string temp2 = DGeneric.RunSP_ExecuteNonQuery("sp_AddOnlineTestResult", sqlParameterList2);
+                List<SqlParameter> sqlParameterList2 = new List<SqlParameter>();
+                sqlParameterList2.Add(new SqlParameter("@OnlineTestResult", dtStudentMarksReview));
+                string temp2 = DGeneric.RunSP_ExecuteNonQuery("sp_AddOnlineTestResult", sqlParameterList2);
 
-            List<SqlParameter> sqlParameterList3 = new List<SqlParameter>();
-            sqlParameterList3.Add(new SqlParameter("@Topper_Average", dtTopper_Average));
-            string temp3 = DGeneric.RunSP_ExecuteNonQuery("sp_AddTopper_Average", sqlParameterList3);
+                List<SqlParameter> sqlParameterList3 = new List<SqlParameter>();
+                sqlParameterList3.Add(new SqlParameter("@Topper_Average", dtTopper_Average));
+                string temp3 = DGeneric.RunSP_ExecuteNonQuery("sp_AddTopper_Average", sqlParameterList3);
 
-            return "Done";
+                return "Result Generated Sucessfully.";
+            }
+            else {
+                return "No student had given test.";
+            }
+            
         }
         public DataRow GetOnlineTestByID(int TestID)
         {
@@ -346,7 +261,7 @@ namespace DataAccessLayer
         }
         public DataTable GetEligibleStudentByTestID(int TestID)
         {
-            string query = string.Format("select * from EligibleStudent where TestID={0} ", TestID);
+            string query = string.Format("select * from EligibleStudent where OnlineTestID={0} ", TestID);
             DataTable dt = DGeneric.GetData(query).Tables[0];
             return dt;
         }
