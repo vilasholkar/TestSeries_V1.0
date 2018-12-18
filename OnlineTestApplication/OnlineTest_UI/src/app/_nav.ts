@@ -46,8 +46,13 @@ export const navItems = [
     name: 'Result'
   },
   {
-    name: 'Test Result',
-    url: '/result/test-result',
+    name: 'Generate Result',
+    url: '/result/generate-result',
+    icon: 'icon-pencil'
+  },
+  {
+    name: 'Result',
+    url: '/result/result',
     icon: 'icon-pie-chart'
   },
   {

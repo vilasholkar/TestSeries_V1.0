@@ -7,20 +7,21 @@ export const navItemsAdmin= [
       variant: 'info',
       text: 'NEW'
     }
-  },{
-    title: true,
-    name: 'Student'
   },
-  {
-    name: 'View Online Test',
-    url: '/student/view-online-test',
-    icon: 'icon-puzzle'
-  },
-  {
-    name: 'View Result',
-    url: '/student/view-result',
-    icon: 'icon-pie-chart'
-  },
+  // {
+  //   title: true,
+  //   name: 'Student'
+  // },
+  // {
+  //   name: 'View Online Test',
+  //   url: '/student/view-online-test',
+  //   icon: 'icon-puzzle'
+  // },
+  // {
+  //   name: 'View Result',
+  //   url: '/student/view-result',
+  //   icon: 'icon-pie-chart'
+  // },
   {
     title: true,
     name: 'Test'
@@ -43,6 +44,11 @@ export const navItemsAdmin= [
   {
     title: true,
     name: 'Result'
+  },
+  {
+    name: 'Generate Result',
+    url: '/result/generate-result',
+    icon: 'icon-pencil'
   },
   {
     name: 'Result',

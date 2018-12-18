@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 // import { MatTabsModule } from "@angular/material/tabs";
-import {MatDialogModule} from '@angular/material/dialog';
+//import {MatDialogModule} from '@angular/material/dialog';
 
 import {
   MatButtonModule,
@@ -21,7 +21,8 @@ import {
   MatSnackBarModule,
   MatTooltipModule,
   MatTabsModule,
-  MatAutocompleteModule
+  MatAutocompleteModule,
+  MatDialogModule
   
 } from '@angular/material';
 
