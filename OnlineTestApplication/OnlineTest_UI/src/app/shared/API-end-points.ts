@@ -29,5 +29,7 @@ export class APIUrl {
     public static GetTopper_Average = 'api/GetTopper_Average';
     public static GetStudentDetails = 'api/GetStudentDetails';
     public static GetMasterData = 'api/GetMasterData';
+    public static GenerateResultAnalysis = 'api/ResultAnalysis';
+    public static GetOnlineTest_ForGenerateResult = 'api/GetOnlineTest_ForGenerateResult';
 
 }
