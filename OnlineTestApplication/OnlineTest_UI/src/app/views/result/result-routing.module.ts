@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ResultAnalysisComponent } from './result-analysis/result-analysis.component';
 import { TestResultComponent } from './test-result/test-result.component';
 import { ResultComponent } from './result/result.component';
+import { GenerateResultComponent } from './generate-result/generate-result.component';
 const routes: Routes = [
   {
     path: '',
@@ -29,6 +30,13 @@ const routes: Routes = [
         component: TestResultComponent,
         data: {
           title: 'Test Result'
+        }
+      },
+      {
+        path: 'generate-result',
+        component: GenerateResultComponent,
+        data: {
+          title: 'Generate Result'
         }
       }
     ]

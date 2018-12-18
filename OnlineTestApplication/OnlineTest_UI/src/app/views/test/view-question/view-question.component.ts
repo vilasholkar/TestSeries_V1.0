@@ -17,12 +17,12 @@ export class ViewQuestionComponent implements OnInit {
   constructor(private route: ActivatedRoute,private viewQuestionService: ViewQuestionService) { }
 
   ngOnInit() {
+    this.id= +this.route.snapshot.paramMap.get('id');
     this.getQuestionsById();
   }
 
   getQuestionsById(){
     debugger;
-    this.id= +this.route.snapshot.paramMap.get('id');
     this.viewQuestionService.GetQuestionsByTestId(this.id as number)
     .subscribe(data => {
       if(data.Message === 'Success')

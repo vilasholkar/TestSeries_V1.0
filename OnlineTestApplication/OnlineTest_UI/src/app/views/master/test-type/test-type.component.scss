@@ -4,6 +4,37 @@
 // .ng-invalid:not(form)  {
 //   border-left: 5px solid #a94442; /* red */
 // }
+// .container {
+//     display: flex;
+//     flex-direction: column;
+//   }
+  
+  table {
+      width: 100%;
+    }
+//     .mat-form-field {
+//       font-size: 14px;
+//       width: 100%;
+//     }
+//     .mat-column-select {
+//       overflow: initial;
+//     }
+//     a:hover{
+//       text-decoration: none;
+//     }
 .mat-form-field{
     display: unset;   
+    font-size: 14px;
+  flex-grow: 1;
+  margin-top: 8px;
    }
+
+/* Mat table */
+.no-results {
+  display: flex;
+  justify-content: center;
+  padding: 14px;
+  font-size: 14px;
+  font-style: italic;
+ 
+}

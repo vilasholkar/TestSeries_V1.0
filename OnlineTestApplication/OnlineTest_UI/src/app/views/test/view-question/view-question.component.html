@@ -42,7 +42,7 @@
         </div>
         <div class="card-body">
             <div class="tab-pane box active amit" style="overflow-x:auto;">
-              <div style="color: #707070; font-size: 15px;padding:8px 0 8px 0px;font-weight: 600;">Subject Name&nbsp;:-Physics</div>
+              <!-- <div style="color: #707070; font-size: 15px;padding:8px 0 8px 0px;font-weight: 600;">Subject Name&nbsp;:-Physics</div> -->
               <table cellspacing="0" cellpadding="0" border="0" class="table table-bordered">
                 <thead>
                   <tr>
@@ -61,7 +61,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let questionData of quizModel.Question">
+                  <tr *ngFor="let questionData of quizModel.Questions">
                     <td valign="top">{{questionData.QuestionID}}</td>
                     <td valign="top">{{questionData.CorrectAnswer}}</td>
                     <td>

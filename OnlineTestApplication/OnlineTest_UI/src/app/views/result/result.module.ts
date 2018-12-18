@@ -12,6 +12,7 @@ import { ResultRoutingModule } from './result-routing.module';
 import { ResultAnalysisComponent } from './result-analysis/result-analysis.component';
 import { TestResultComponent } from './test-result/test-result.component';
 import { ResultComponent } from './result/result.component';
+import { GenerateResultComponent } from './generate-result/generate-result.component';
 
 @NgModule({
     imports: [
@@ -28,7 +29,8 @@ import { ResultComponent } from './result/result.component';
     declarations: [
        ResultAnalysisComponent,
        TestResultComponent,
-       ResultComponent
+       ResultComponent,
+       GenerateResultComponent
     ],
     providers: [HttpClientModule]
   })

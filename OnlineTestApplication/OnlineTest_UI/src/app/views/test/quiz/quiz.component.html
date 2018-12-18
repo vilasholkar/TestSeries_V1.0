@@ -56,8 +56,8 @@
         <perfect-scrollbar style="position: relative;width: 100%; max-height: 450px;overflow: auto;">
           <div class="card-body">
             <h3 class="font-weight-normal">
-              <img *ngIf="IsEnglish" [imageZoom]="question.image_English" [src]="question.image_English" style="max-height: 300px;width: 100%;" />
-              <img *ngIf="!IsEnglish" [imageZoom]="question.image_Hindi" [src]="question.image_Hindi" style="max-height: 300px;width: 100%;" />
+              <img *ngIf="IsEnglish"  [src]="question.image_English" style="max-height: 300px;width: 100%;" />
+              <img *ngIf="!IsEnglish"  [src]="question.image_Hindi" style="max-height: 300px;width: 100%;" />
             </h3>
           </div>
         </perfect-scrollbar>

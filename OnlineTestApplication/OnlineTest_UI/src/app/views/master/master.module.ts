@@ -9,6 +9,7 @@ import { TestSeriesComponent } from './test-series/test-series.component';
 
 import {TestTypeService} from '../../services/admin/test-type.service';
 import { CustomMaterialModule } from "../../custommaterial.module";
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { NgxSpinnerModule } from 'ngx-spinner';
 // Components Routing
 import { MasterRoutingModule } from './master-routing.module';
@@ -19,7 +20,8 @@ import { MasterRoutingModule } from './master-routing.module';
       CommonModule,
       FormsModule,
       MasterRoutingModule,
-      CustomMaterialModule
+      CustomMaterialModule,
+      PerfectScrollbarModule
     ],
     declarations: [
       TestTypeComponent,
