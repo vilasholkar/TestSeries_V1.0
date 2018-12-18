@@ -40,9 +40,14 @@ namespace BusinessAccessLayer
                     };
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                return new Response<List<StudentViewModel>>
+                {
+                    IsSuccessful = false,
+                    Message = ex.Message,
+                    Object = null
+                };
             }
         }
     }

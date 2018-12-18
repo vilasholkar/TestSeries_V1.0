@@ -40,9 +40,14 @@ namespace BusinessAccessLayer
                     };
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                return new Response<List<TestTypeViewModel>>
+                {
+                    IsSuccessful = false,
+                    Message = ex.Message,
+                    Object = null
+                };
             }
         }
         public string AddUpdateTestType(TestTypeViewModel objTestType)

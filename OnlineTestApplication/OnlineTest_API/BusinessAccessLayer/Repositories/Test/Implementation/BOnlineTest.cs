@@ -214,5 +214,40 @@ namespace BusinessAccessLayer
                 };
             }
         }
+        public Response<List<OnlineTestViewModel>> GetOnlineTest_ForGenerateResult()
+        {
+            try
+            {
+                var onlineTestData = _iDOnlineTest.GetOnlineTest_ForGenerateResult();
+                if (onlineTestData != null)
+                {
+                    return new Response<List<OnlineTestViewModel>>
+                    {
+                        IsSuccessful = true,
+                        Object = onlineTestData,
+                        Message = "Success"
+                    };
+                }
+                else
+                {
+                    return new Response<List<OnlineTestViewModel>>
+                    {
+                        IsSuccessful = false,
+                        Message = "error",
+                        Object = null
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Response<List<OnlineTestViewModel>>
+                {
+                    IsSuccessful = false,
+                    Message = ex.Message,
+                    Object = null
+                };
+            }
+        }
+      
     }
 }

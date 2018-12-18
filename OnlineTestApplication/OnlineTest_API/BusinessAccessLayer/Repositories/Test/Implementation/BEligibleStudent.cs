@@ -16,15 +16,38 @@ namespace BusinessAccessLayer
         {
             _iDEligibleStudent = iDEligibleStudent;
         }
-        public EligibleStudentViewModel[] GetEligibleStudent(int OnlineTestID)
+        public Response<List<EligibleStudentViewModel>> GetEligibleStudent(int OnlineTestID)
         {
             try
             {
-                return _iDEligibleStudent.GetEligibleStudent(OnlineTestID).ToArray();
+                var eligibleStudentData = _iDEligibleStudent.GetEligibleStudent(OnlineTestID);
+                if (eligibleStudentData != null)
+                {
+                    return new Response<List<EligibleStudentViewModel>>
+                    {
+                        IsSuccessful = true,
+                        Object = eligibleStudentData,
+                        Message = "Success"
+                    };
+                }
+                else
+                {
+                    return new Response<List<EligibleStudentViewModel>>
+                    {
+                        IsSuccessful = false,
+                        Message = "error",
+                        Object = null
+                    };
+                }
             }
             catch (Exception ex)
             {
-                return null;
+                return new Response<List<EligibleStudentViewModel>>
+                {
+                    IsSuccessful = false,
+                    Message = ex.Message,
+                    Object = null
+                };
             }
         }
 

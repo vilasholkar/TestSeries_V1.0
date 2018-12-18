@@ -21,14 +21,6 @@ namespace BusinessAccessLayer
         {
             return _iDResult.ResultAnalysis(TestID);
         }
-        //public DataTable GetOnlineTestResultByTestID(int TestID)
-        //{
-        //    return _iDResult.GetOnlineTestResultByTestID(TestID);
-        //}
-        //public DataTable GetOnlineTestResultByStudentID(int StudentID)
-        //{
-        //    return _iDResult.GetOnlineTestResultByStudentID(StudentID);
-        //}
        public Response<ResultAnalysisViewModel> GetResultAnalysis(int StudentID, int TestID)
         {
             
@@ -106,10 +98,7 @@ namespace BusinessAccessLayer
                 };
             }
         }
-        //public DataRow GetStudentMarksReview(int StudentID, int TestID)
-        //{
-        //    return _iDResult.GetStudentMarksReview(StudentID, TestID);
-        //}
+
         public List<Topper_AverageViewModel> GetTopper_Average(int TestID)
         {
             return _iDResult.GetTopper_Average(TestID);

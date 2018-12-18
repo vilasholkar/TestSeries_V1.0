@@ -40,9 +40,14 @@ namespace BusinessAccessLayer
                     };
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                return new Response<List<StreamViewModel>>
+                {
+                    IsSuccessful = false,
+                    Message = ex.Message,
+                    Object = null
+                };
             }
         }
 
@@ -71,9 +76,14 @@ namespace BusinessAccessLayer
                     };
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                return new Response<List<CourseViewModel>>
+                {
+                    IsSuccessful = false,
+                    Message = ex.Message,
+                    Object = null
+                };
             }
         }
 
@@ -102,9 +112,14 @@ namespace BusinessAccessLayer
                     };
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                return new Response<List<BatchViewModel>>
+                {
+                    IsSuccessful = false,
+                    Message = ex.Message,
+                    Object = null
+                };
             }
         }
 
@@ -133,9 +148,14 @@ namespace BusinessAccessLayer
                     };
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                return new Response<List<SessionViewModel>>
+                {
+                    IsSuccessful = false,
+                    Message = ex.Message,
+                    Object = null
+                };
             }
         }
 
