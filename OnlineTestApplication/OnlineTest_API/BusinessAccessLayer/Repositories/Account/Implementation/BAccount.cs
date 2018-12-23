@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ViewModels;
 using ViewModels.Account;
 
 namespace BusinessAccessLayer
@@ -15,9 +16,40 @@ namespace BusinessAccessLayer
         {
             _iDAccount = iDAccount;
         }
-      public Login GetUserDetails(Login user)
+      public Response<Login> GetUserDetails(Login user)
        {
-           return _iDAccount.GetUserDetails(user);
+          // return _iDAccount.GetUserDetails(user);
+           try
+           {
+               var loginData = _iDAccount.GetUserDetails(user);
+               if (loginData != null)
+               {
+                   return new Response<Login>
+                   {
+                       IsSuccessful = true,
+                       Object = loginData,
+                       Message = "Success"
+                   };
+               }
+               else
+               {
+                   return new Response<Login>
+                   {
+                       IsSuccessful = false,
+                       Message = "error",
+                       Object = null
+                   };
+               }
+           }
+           catch (Exception ex)
+           {
+               return new Response<Login>
+               {
+                   IsSuccessful = false,
+                   Message = ex.Message,
+                   Object = null
+               };
+           }
        }
     }
 }
