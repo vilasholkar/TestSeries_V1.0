@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using ViewModels.Account;
 
 namespace DataAccessLayer
@@ -25,8 +26,11 @@ namespace DataAccessLayer
                Userlist = new Login()
                {
                    UserID = Convert.ToInt32(dr["UserID"]),
+                   FirstName = dr["FirstName"].ToString(),
+                   LastName = dr["LastName"].ToString(),
+                   MobileNo = dr["Mobile"].ToString(),
                    UserName = dr["UserName"].ToString(),
-                   UserPassword = Convert.ToString(dr["UserPassword"]),
+                   UserTypeID = Convert.ToInt32(dr["UserTypeID"]),
                    UserType = Convert.ToString(dr["UserType"])
                };
            }
@@ -35,6 +39,7 @@ namespace DataAccessLayer
 
        public static Login GetUserDetails1(Login user)
        {
+           try { 
            List<SqlParameter> parameter = new List<SqlParameter>();
            parameter.Add(new SqlParameter("@UserName", user.UserName));
            parameter.Add(new SqlParameter("@Password", user.UserPassword));
@@ -57,6 +62,12 @@ namespace DataAccessLayer
                };
            }
            return Userlist;
+               
+           }
+           catch(Exception ex)
+           {
+               throw new Exception("DA::GetUserDetails1::Error occured." + ex.Message.ToString(), ex.InnerException);
+           }
        }
 
     }
