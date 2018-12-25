@@ -15,26 +15,36 @@ namespace DataAccessLayer
 
        public Login GetUserDetails(Login user)
        {
-           List<SqlParameter> parameter = new List<SqlParameter>();
-           parameter.Add(new SqlParameter("@UserName", user.UserName));
-           parameter.Add(new SqlParameter("@Password", user.UserPassword));
-           DataTable dt = DGeneric.RunSP_ReturnDataSet("sp_UserLogin", parameter,null).Tables[0];
-
-           Login Userlist = null;
-           foreach (DataRow dr in dt.Rows)
+           try
            {
-               Userlist = new Login()
+               List<SqlParameter> parameter = new List<SqlParameter>();
+               parameter.Add(new SqlParameter("@UserName", user.UserName));
+               parameter.Add(new SqlParameter("@Password", user.UserPassword));
+               parameter.Add(new SqlParameter("@UserTypeID", user.UserTypeID));
+               DataTable dt = DGeneric.RunSP_ReturnDataSet("sp_Login", parameter, null).Tables[0];
+
+               Login Userlist = null;
+               foreach (DataRow dr in dt.Rows)
                {
-                   UserID = Convert.ToInt32(dr["UserID"]),
-                   FirstName = dr["FirstName"].ToString(),
-                   LastName = dr["LastName"].ToString(),
-                   MobileNo = dr["Mobile"].ToString(),
-                   UserName = dr["UserName"].ToString(),
-                   UserTypeID = Convert.ToInt32(dr["UserTypeID"]),
-                   UserType = Convert.ToString(dr["UserType"])
-               };
+                   Userlist = new Login()
+                   {
+                       UserID = Convert.ToInt32(dr["UserID"]),
+                       FirstName = dr["FirstName"].ToString(),
+                       LastName = dr["LastName"].ToString(),
+                       MobileNo = dr["Mobile"].ToString(),
+                       UserName = dr["UserName"].ToString(),
+                       //  UserPassword = Convert.ToString(dr["UserPassword"]),
+                       UserTypeID = Convert.ToInt32(dr["UserTypeID"]),
+                       UserType = Convert.ToString(dr["UserType"])
+                   };
+               }
+               return Userlist;
+
            }
-           return Userlist;
+           catch (Exception ex)
+           {
+               throw new Exception("DA::GetUserDetails1::Error occured." + ex.Message.ToString(), ex.InnerException);
+           }
        }
 
        public static Login GetUserDetails1(Login user)

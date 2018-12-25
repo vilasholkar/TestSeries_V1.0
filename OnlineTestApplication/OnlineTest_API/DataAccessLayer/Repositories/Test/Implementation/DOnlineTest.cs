@@ -77,16 +77,16 @@ namespace DataAccessLayer
                 sqlParameterList.Add(new SqlParameter("CreatedByUserID", 1));
                 sqlParameterList.Add(new SqlParameter("CreatedOnDate", DGeneric.SystemDateTime));
 
-               string OnlineTestID = DGeneric.RunSP_ReturnScaler("sp_AddUpdateOnlineTest", sqlParameterList);
+                string OnlineTestID = DGeneric.RunSP_ExecuteNonQuery("sp_AddUpdateOnlineTest", sqlParameterList);
 
-               if (!Directory.Exists("educationbridge.co.in\\" + OnlineTestID + "\\English"))
-                {
-                    Directory.CreateDirectory("C:\\" + OnlineTestID + "\\English");
-                }
-               if (!Directory.Exists("C:\\" + OnlineTestID + "\\Hindi"))
-                {
-                    Directory.CreateDirectory("C:\\" + OnlineTestID + "\\Hindi");
-                }
+                //if (!Directory.Exists("educationbridge.co.in\\" + OnlineTestID + "\\English"))
+                // {
+                //     Directory.CreateDirectory("C:\\" + OnlineTestID + "\\English");
+                // }
+                //if (!Directory.Exists("C:\\" + OnlineTestID + "\\Hindi"))
+                // {
+                //     Directory.CreateDirectory("C:\\" + OnlineTestID + "\\Hindi");
+                // }
                 return CommonEnum.Status.Success.ToString();
             }
             catch (Exception ex)
@@ -122,8 +122,11 @@ namespace DataAccessLayer
                             case "OnlineTest":
                                 onlineTestViewModelData = DGeneric.BindDataList<OnlineTestViewModel>(dt).FirstOrDefault();
                                 onlineTestViewModelData.StreamID = dt.Rows[0]["StreamID"].ToString().Split(',').Select(int.Parse).ToArray();
-                                onlineTestViewModelData.CourseID = dt.Rows[0]["CourseID"].ToString().Split(',').Select(int.Parse).ToArray();
-                                onlineTestViewModelData.BatchID = dt.Rows[0]["BatchID"].ToString().Split(',').Select(int.Parse).ToArray();
+                                //Vaibhav Changed because of empty data  
+                                // onlineTestViewModelData.CourseID = dt.Rows[0]["CourseID"].ToString().Split(',').Select(int.Parse).ToArray();
+                                // onlineTestViewModelData.BatchID = dt.Rows[0]["BatchID"].ToString().Split(',').Select(int.Parse).ToArray();
+                                onlineTestViewModelData.CourseID = dt.Rows[0]["CourseID"].ToString() != string.Empty ? dt.Rows[0]["CourseID"].ToString().Split(',').Select(int.Parse).ToArray() : null;
+                                onlineTestViewModelData.BatchID = dt.Rows[0]["BatchID"].ToString() != string.Empty ? dt.Rows[0]["BatchID"].ToString().Split(',').Select(int.Parse).ToArray() : null;
                                 break;
                             case "Course":
                                 onlineTestViewModelData.Course = DGeneric.BindDataList<CourseViewModel>(dt);
@@ -276,7 +279,7 @@ namespace DataAccessLayer
             }).ToList();
 
         }
-        public List<OnlineTestViewModel> GetOnlineTest_ForGenerateResult() 
+        public List<OnlineTestViewModel> GetOnlineTest_ForGenerateResult()
         {
             try
             {

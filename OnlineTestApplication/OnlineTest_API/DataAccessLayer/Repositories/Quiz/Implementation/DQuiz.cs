@@ -54,6 +54,7 @@ namespace DataAccessLayer
                             quizViewModel.Instructions = dr["Instructions"].ToString();
                             QuestionViewModel questionViewModel = new QuestionViewModel();
                             questionViewModel.QuestionID = Convert.ToInt32(dr["QuestionId"]);
+                            questionViewModel.SubjectID = Convert.ToInt32(dr["SubjectID"]);
                             questionViewModel.Image_English = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_English"];
                             questionViewModel.Image_Hindi = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_Hindi"];
                             questionViewModel.QuestionTypeID = Convert.ToInt32(dr["QuestionTypeId"]);
@@ -82,6 +83,7 @@ namespace DataAccessLayer
                         {
                             QuestionViewModel questionViewModel = new QuestionViewModel();
                             questionViewModel.QuestionID = Convert.ToInt32(dr["QuestionId"]);
+                            questionViewModel.SubjectID = Convert.ToInt32(dr["SubjectID"]);
                             questionViewModel.Image_English = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_English"];
                             questionViewModel.Image_Hindi = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_Hindi"];
                             questionViewModel.QuestionTypeID = Convert.ToInt32(dr["QuestionTypeId"]);
@@ -122,7 +124,7 @@ namespace DataAccessLayer
         {
             try
             {
-                int StudentID = 5123;
+               // int StudentID = 5123;
                     // Convert.ToInt32(HttpContext.Current.Session["StudentID"]);
             int OptionID = 0;
             int AnswerID = 0;
@@ -139,7 +141,7 @@ namespace DataAccessLayer
             foreach (var Questions in QuizViewModel.Questions)
             {
                 //What will happen when 2 answers are correct
-                Questions.SubjectID = 1;//For Testing Only
+               // Questions.SubjectID = 1;//For Testing Only
                 if (Questions.SubjectID == 1)//Physics
                 {
                     foreach (var Options in Questions.Options)
@@ -161,9 +163,53 @@ namespace DataAccessLayer
                             IsCorrect = false;
                         }
                     }
-                    dtStudentResponse.Rows.Add(StudentID, QuizViewModel.OnlineTestID, Questions.QuestionID, Questions.SubjectID,OptionID,AnswerID,IsCorrect);
-                    OptionID = 0; AnswerID = 0; IsCorrect = false;
                 }
+                if (Questions.SubjectID == 2)//Chemistry
+                {
+                    foreach (var Options in Questions.Options)
+                    {
+                        if (Options.IsAnswer && Options.Selected)
+                        {
+                            OptionID = Options.OptionID;
+                            AnswerID = Options.OptionID;
+                            IsCorrect = true;
+                        }
+                        else if (Options.IsAnswer && !Options.Selected)
+                        {
+                            OptionID = Options.OptionID;
+                            IsCorrect = false;
+                        }
+                        else if (!Options.IsAnswer && Options.Selected)
+                        {
+                            AnswerID = Options.OptionID;
+                            IsCorrect = false;
+                        }
+                    }
+                }
+                if (Questions.SubjectID == 3)//Biology
+                {
+                    foreach (var Options in Questions.Options)
+                    {
+                        if (Options.IsAnswer && Options.Selected)
+                        {
+                            OptionID = Options.OptionID;
+                            AnswerID = Options.OptionID;
+                            IsCorrect = true;
+                        }
+                        else if (Options.IsAnswer && !Options.Selected)
+                        {
+                            OptionID = Options.OptionID;
+                            IsCorrect = false;
+                        }
+                        else if (!Options.IsAnswer && Options.Selected)
+                        {
+                            AnswerID = Options.OptionID;
+                            IsCorrect = false;
+                        }
+                    }
+                }
+                dtStudentResponse.Rows.Add(QuizViewModel.StudentID, QuizViewModel.OnlineTestID, Questions.QuestionID, Questions.SubjectID, OptionID, AnswerID, IsCorrect);
+                OptionID = 0; AnswerID = 0; IsCorrect = false;
             }
           
             List<SqlParameter> sqlParameterList = new List<SqlParameter>();
