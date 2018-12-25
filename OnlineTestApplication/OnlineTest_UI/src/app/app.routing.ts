@@ -12,7 +12,7 @@ import { RegisterComponent } from './views/register/register.component';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'login',
     pathMatch: 'full',
   },
   {
@@ -38,65 +38,65 @@ export const routes: Routes = [
   },
   {
     path: 'register',
-    component: RegisterComponent,canActivate:[AuthGuard],
+    component: RegisterComponent,
     data: {
       title: 'Register Page'
     }
   },
   {
     path: '',
-    component: DefaultLayoutComponent,canActivate:[AuthGuard],
+    component: DefaultLayoutComponent,
     data: {  
       title: 'Home'
     },
     children: [
       {
         path: 'student',
-        loadChildren: './views/student/student.module#StudentModule',canActivate:[AuthGuard],
+        loadChildren: './views/student/student.module#StudentModule',
       },
       {
         path: 'test',
-        loadChildren: './views/test/test.module#TestModule',canActivate:[AuthGuard],
+        loadChildren: './views/test/test.module#TestModule',
       },
       {
         path: 'result',
-        loadChildren: './views/result/result.module#ResultModule'
+        loadChildren: './views/result/result.module#ResultModule',
       },
       {
         path: 'master',
-        loadChildren: './views/master/master.module#MasterModule',canActivate:[AuthGuard],
+        loadChildren: './views/master/master.module#MasterModule',
       },
       {
         path: 'base',
-        loadChildren: './views/base/base.module#BaseModule',canActivate:[AuthGuard],
+        loadChildren: './views/base/base.module#BaseModule',
       },
       {
         path: 'buttons',
-        loadChildren: './views/buttons/buttons.module#ButtonsModule',canActivate:[AuthGuard],
+        loadChildren: './views/buttons/buttons.module#ButtonsModule',
       },
       {
         path: 'charts',
-        loadChildren: './views/chartjs/chartjs.module#ChartJSModule',canActivate:[AuthGuard],
+        loadChildren: './views/chartjs/chartjs.module#ChartJSModule',
       },
       {
         path: 'dashboard',
-        loadChildren: './views/dashboard/dashboard.module#DashboardModule',canActivate:[AuthGuard],
+        loadChildren: './views/dashboard/dashboard.module#DashboardModule',
       },
       {
         path: 'icons',
-        loadChildren: './views/icons/icons.module#IconsModule',canActivate:[AuthGuard],
+        loadChildren: './views/icons/icons.module#IconsModule',
       },
       {
         path: 'notifications',
-        loadChildren: './views/notifications/notifications.module#NotificationsModule',canActivate:[AuthGuard],
+        loadChildren: './views/notifications/notifications.module#NotificationsModule',
       },
       {
         path: 'theme',
-        loadChildren: './views/theme/theme.module#ThemeModule',canActivate:[AuthGuard],
+        loadChildren: './views/theme/theme.module#ThemeModule',
       },
       {
         path: 'widgets',
-        loadChildren: './views/widgets/widgets.module#WidgetsModule',canActivate:[AuthGuard],
+        loadChildren: './views/widgets/widgets.module#WidgetsModule',
       }
     ]
   }

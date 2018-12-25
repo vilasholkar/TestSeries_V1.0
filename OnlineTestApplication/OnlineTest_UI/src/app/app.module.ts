@@ -72,12 +72,13 @@ import { CustomMaterialModule } from "./custommaterial.module";
     RegisterComponent
   ],
    providers: [
-     UserService,AuthGuard,HelperService,
-    {
-      provide : HTTP_INTERCEPTORS,
-      useClass : AuthInterceptor,
-      multi : true
-    },
+     UserService,HelperService,
+    //  AuthGuard,
+    // {
+    //   provide : HTTP_INTERCEPTORS,
+    //   useClass : AuthInterceptor,
+    //   multi : true
+    // },
   {
      provide: LocationStrategy,
      useClass: HashLocationStrategy
