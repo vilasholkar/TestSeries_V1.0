@@ -164,7 +164,7 @@ export class OnlineTestComponent implements OnInit {
     debugger;
     this.showAddDiv=true;
     this.Title="Edit Test";
-    this.onlineTestService.getOnlineTestById(OnlineTestID)
+    this.onlineTestService.getOnlineTestById(OnlineTestID.OnlineTestID)
     .subscribe(data => {
       if (data.Message === 'Success') {
         this.stream = data.Object.MasterData.Stream;
@@ -174,6 +174,10 @@ export class OnlineTestComponent implements OnInit {
         this.onlineTestModel = data.Object.OnlineTestData;
         this.course = data.Object.OnlineTestData.Course;
         this.batch = data.Object.OnlineTestData.Batch;
+       }
+       else
+       {
+         alert("Error: "+data.Message);
        }
      }, error => {
        alert('error');

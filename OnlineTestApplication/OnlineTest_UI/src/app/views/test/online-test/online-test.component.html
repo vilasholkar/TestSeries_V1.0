@@ -57,7 +57,7 @@
                             <mat-select [(ngModel)]="onlineTestModel.SessionID" name="SessionID" 
                              #SessionID="ngModel" placeholder="Session" required>
                               <mat-option *ngFor="let sessions of session" [value]="sessions.SessionID">
-                                {{sessions.SessionName}}
+                                {{sessions.Session}}
                               </mat-option>
                             </mat-select>
                             <mat-error *ngIf="SessionID.invalid && (SessionID.dirty || SessionID.touched)">
@@ -73,7 +73,7 @@
                              (ngModelChange)="onChangeStream($event)" [ngModelOptions]="{standalone: true}" 
                               #StreamID="ngModel" placeholder="Stream" multiple required>
                               <mat-option *ngFor="let stream of stream" [value]="stream.StreamID">
-                              {{stream.StreamName}}
+                              {{stream.Stream}}
                               </mat-option>
                             </mat-select>
                             <mat-error *ngIf="StreamID.invalid && (StreamID.dirty || StreamID.touched)">
@@ -89,7 +89,7 @@
                             (ngModelChange)="onChangeCourse($event)" [ngModelOptions]="{standalone: true}" 
                              multiple placeholder="Course">
                               <mat-option *ngFor="let course of course" [value]="course.CourseID">
-                                {{course.CourseName}}
+                                {{course.Course}}
                               </mat-option>
                             </mat-select>
                           </mat-form-field>
@@ -103,7 +103,7 @@
                             <mat-select [(ngModel)]="onlineTestModel.BatchID" name="BatchID" 
                              multiple placeholder="Batch">
                               <mat-option *ngFor="let batch of batch" [value]="batch.BatchID">
-                                {{batch.BatchName}}
+                                {{batch.Batch}}
                               </mat-option>
                             </mat-select>
                           </mat-form-field>
@@ -253,7 +253,7 @@
         </div>
       </div>
 
-  <div *ngIf="onlineTest.length" class="row">
+  <div  class="row">
     <div class="col-sm-12">
       <div class="card">
         <div class="card-header">
