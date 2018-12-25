@@ -2,6 +2,7 @@ import { QuizConfig } from './quiz-config';
 import { Question } from './question';
 
 export class Quiz {
+    StudentID:any;
     onlineTestID: number;
     testName: string;
     instructions: string;

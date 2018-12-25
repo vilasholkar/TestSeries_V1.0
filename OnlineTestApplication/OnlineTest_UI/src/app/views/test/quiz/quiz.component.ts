@@ -193,9 +193,11 @@ export class QuizComponent implements OnInit {
       });  
     }  
   onSubmit() {
+    debugger;
     this.spinner.show();
     const answers = [];
     this.quiz.questions.forEach(x => answers.push({ 'quizId': this.quiz.onlineTestID, 'questionId': x.questionID, 'answered': x.answered }));    
+    this.quiz.StudentID=sessionStorage.getItem("StudentID");
     console.log("res",this.quiz.questions)
       this.quizService.SubmitQuiz(this.quiz)
        .subscribe(data => {
