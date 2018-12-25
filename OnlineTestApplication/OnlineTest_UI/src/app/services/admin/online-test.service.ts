@@ -117,6 +117,7 @@ export class OnlineTestService {
         return Observable.throw(error);
       });
   }
+
   getMasterData(): Observable<any> {
     return this.http.get(HostName.API_StartPoint + APIUrl.GetMasterData)
       .map((response: Response) => {

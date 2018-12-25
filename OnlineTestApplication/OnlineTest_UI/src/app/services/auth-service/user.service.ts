@@ -9,7 +9,8 @@ import {APIUrl} from '../../shared/API-end-points';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
-
+import { HelperService } from '../../services/helper.service'
+import { map, catchError } from 'rxjs/operators';
 @Injectable()
 export class UserService {
   private headers: Headers;
@@ -17,17 +18,18 @@ export class UserService {
   public isAdmin = false;
   public isStudent = false;
   readonly rootUrl = 'http://localhost:35257';
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient,
+    private helperSvc: HelperService) { 
   }
-
+ 
   userAuthentication(userName, password,UserTypeID) {
     var data ="username=" + userName + "&password=" + password + "&grant_type=password&UserTypeID="+UserTypeID;
     var reqHeader = new HttpHeaders({ 'Content-Type': 'application//x-www-form-urlencoded','No-Auth':'True' });
     return this.http.post(HostName.API_StartPoint+ 'token', data, { headers: reqHeader })
-    .map((response: Response) => {
+   .pipe(map((response: Response) => {
       const data = response;
       return data;
-    })
+    }))
     .catch((error: any) => {
       return Observable.throw(error);
     });

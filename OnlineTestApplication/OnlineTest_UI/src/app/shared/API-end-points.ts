@@ -1,5 +1,5 @@
 export class APIUrl {
-    public static  GET_Token='api/GetToken'
+    public static GET_Token = 'api/GetToken'
     public static GET_TestTypes = 'api/GetTestType';
     public static AddUpdateTestTypes = 'api/AddUpdateTestType';
     public static DeleteTestTypes = 'api/DeleteTestType';
@@ -31,5 +31,6 @@ export class APIUrl {
     public static GetMasterData = 'api/GetMasterData';
     public static GenerateResultAnalysis = 'api/ResultAnalysis';
     public static GetOnlineTest_ForGenerateResult = 'api/GetOnlineTest_ForGenerateResult';
+     public static GetLoginInfo = 'api/GetLoginInfo';
 
 }
