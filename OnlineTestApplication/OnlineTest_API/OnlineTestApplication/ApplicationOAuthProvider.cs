@@ -109,8 +109,8 @@ namespace OnlineTestApplication
             }
             else
             context.SetError("invalid_grant", "The username or password is incorrect.");
-            context.Response.Headers.Add("AuthorizationResponse",new[]{"Failed"});
-           // return; 
+           // context.Response.Headers.Add("AuthorizationResponse",new[]{"Failed"});
+            return; 
         }
 
         public override Task TokenEndpoint(OAuthTokenEndpointContext context)

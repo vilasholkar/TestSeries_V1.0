@@ -57,7 +57,7 @@ namespace OnlineTestApplication.Controllers
         [Route("api/GetQuiz", Name = "GetQuiz")]
         public HttpResponseMessage GetQuiz(string testID)
         {
-            return Request.CreateResponse(_iBQuiz.GetQuiz(1));
+            return Request.CreateResponse(_iBQuiz.GetQuiz(Convert.ToInt32(testID)));
         }
         [HttpPost]
         [Route("api/SubmitQuiz", Name = "SubmitQuiz")]
