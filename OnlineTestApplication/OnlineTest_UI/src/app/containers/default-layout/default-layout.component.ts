@@ -22,7 +22,6 @@ export class DefaultLayoutComponent {
   public FirstName:string;
   public currentUserRole:string;
   constructor(private router : Router) {
-
     this.changes = new MutationObserver((mutations) => {
       this.sidebarMinimized = document.body.classList.contains('sidebar-minimized');
      this.userRole=sessionStorage.getItem("userRoles");
