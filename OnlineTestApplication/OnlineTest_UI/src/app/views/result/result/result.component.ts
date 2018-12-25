@@ -11,6 +11,7 @@ import { Student } from '../../../models/student';
 import { OnlineTest } from '../../../models/test';
 
 import { HelperService } from '../../../services/helper.service'
+import { UserService } from '../../../services/auth-service/user.service'
 import { APIUrl } from "../../../shared/API-end-points";
 @Component({
   selector: 'app-result',
@@ -32,9 +33,10 @@ export class ResultComponent implements OnInit {
   filteredStudentOptions: Observable<Student[]>;
 
   constructor(
-    private onlineTestService: OnlineTestService, 
+    private userService: UserService,
+    private onlineTestService: OnlineTestService,
     private studentService: StudentService,
-    private helperSvc: HelperService ) { }
+    private helperSvc: HelperService) { }
 
   ngOnInit() {
     this.getOnlineTest();
@@ -42,7 +44,6 @@ export class ResultComponent implements OnInit {
     this.tableTestResult = false;
     this.tableStudentResult = false;
   }
-  
   getOnlineTest() {
     this.helperSvc.getService(APIUrl.GET_OnlineTest)
       .subscribe(data => {
@@ -92,7 +93,7 @@ export class ResultComponent implements OnInit {
             map(name => name ? this._filterstudentList(name) : this.studentOptions.slice())
           );
       }, error => {
-        alert('error'+error.Message);
+        alert('error' + error.Message);
       })
   }
   studentSelected(value: any) {
@@ -105,14 +106,14 @@ export class ResultComponent implements OnInit {
   }
   private _filterstudentList(value: string): Student[] {
     const filterValue = value.toLowerCase();
-   // return this.studentOptions.filter(option => option.FirstName.toLowerCase().includes(filterValue));
+    // return this.studentOptions.filter(option => option.FirstName.toLowerCase().includes(filterValue));
     return this.studentOptions.filter(option => option.FirstName.toLowerCase().indexOf(filterValue) === 0);
 
   }
-  
+
   onTabLinkClick(event: MatTabChangeEvent) {
     this.tableTestResult = false;
     this.tableStudentResult = false;
   }
-  
+
 }

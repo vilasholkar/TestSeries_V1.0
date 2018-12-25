@@ -16,9 +16,17 @@
             <tbody>
               <tr>
                 <td colspan="2">
-                  <img src="../../../../assets/img/brand/logo.png" width="90px" height="45px">
-                  <h4>An institute dedicated for the excellence in the prepration of</h4>
-                  <br/><h2>AIIMS,NEET</h2>
+                  <table width="100%" style="background-color: white">
+                    <tr>
+                      <td width="15%" style=" border: none;">
+                        <img src="../../../../assets/img/brand/logo.png" width="120px" height="60px">
+                      </td>
+                      <td width="85%" style=" border: none;">
+                        <h4>An institute dedicated for the excellence in the prepration of</h4>
+                        <h2>AIIMS,NEET</h2>
+                      </td>
+                    </tr>
+                  </table>
                 </td>
               </tr>
               <tr style="font-size: 16px;font-weight: 600;">
@@ -27,7 +35,7 @@
               </tr>
               <tr>
                 <td>{{testName}}</td>
-                <td>{{testDate}}</td>
+                <td>{{testDate| date: 'dd/MM/yyyy'}}</td>
               </tr>
               <tr style="font-size: 16px;font-weight: 600;">
                 <td>Enrollment No</td>

@@ -34,8 +34,8 @@ export class ViewOnlineTestComponent implements OnInit {
     this.PaginationConfig=this.helperSvc.PaginationConfig;
     let sessionStudentID = sessionStorage.getItem("StudentID");
     if (!!sessionStudentID) {
-      this.getOnlineTestByStudentID1(34);
-      this.getOnlineTestByStudentID2(34);
+      this.getOnlineTestByStudentID1(sessionStudentID);
+      this.getOnlineTestByStudentID2(sessionStudentID);
     }
    // this.getOnlineTestByStudentID(34);
   }

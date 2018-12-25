@@ -29,12 +29,12 @@ export class ViewResultComponent implements OnInit {
     this.PaginationConfig=this.helperSvc.PaginationConfig;
     let sessionStudentID = sessionStorage.getItem("StudentID");
     if(!!this.StudentID){
-    //  this.GetOnlineTestResultByStudentID(this.StudentID);
-     this.GetOnlineTestResultByStudentID(5110);
+      this.GetOnlineTestResultByStudentID(this.StudentID);
+     //this.GetOnlineTestResultByStudentID(5110);
     }
     else if(!!sessionStudentID){
-    //  this.GetOnlineTestResultByStudentID(sessionStudentID);
-     this.GetOnlineTestResultByStudentID(5110);
+      this.GetOnlineTestResultByStudentID(sessionStudentID);
+     //this.GetOnlineTestResultByStudentID(5110);
     }
   }
   ngOnChanges() {
