@@ -54,7 +54,6 @@ export class LoginComponent {
      // this.userService.userAuthentication(userName,password,UserTypeID).subscribe((data : any)=>{
       debugger;
     this.helperSvc.getService(APIUrl.GetLoginInfo+data).subscribe((data : any)=>{
-     
       sessionStorage.setItem('userToken',data.access_token);
       sessionStorage.setItem('userRoles',data.Object.UserType);
       sessionStorage.setItem('FirstName',data.Object.FirstName);
