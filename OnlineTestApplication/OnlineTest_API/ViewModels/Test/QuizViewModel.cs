@@ -19,6 +19,6 @@ namespace ViewModels.Test
         public int TotalMarks { get; set; }
         public string PassingPercentage { get; set; }
         public List<QuestionViewModel> Questions { get; set; }
-        //public string ErrorMessage { get; set; }
+        public int StudentID { get; set; }
     }
 }
