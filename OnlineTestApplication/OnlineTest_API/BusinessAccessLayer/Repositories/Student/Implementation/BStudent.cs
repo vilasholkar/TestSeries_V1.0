@@ -18,34 +18,22 @@ namespace BusinessAccessLayer
         }
         public Response<List<StudentViewModel>> GetStudentDetails()
         {
-            try
+            var studentData = _iDStudent.GetStudentDetails();
+            if (studentData != null)
             {
-                var studentData = _iDStudent.GetStudentDetails();
-                if (studentData != null)
+                return new Response<List<StudentViewModel>>
                 {
-                    return new Response<List<StudentViewModel>>
-                    {
-                        IsSuccessful = true,
-                        Object = studentData,
-                        Message = "Success"
-                    };
-                }
-                else
-                {
-                    return new Response<List<StudentViewModel>>
-                    {
-                        IsSuccessful = false,
-                        Message = "error",
-                        Object = null
-                    };
-                }
+                    IsSuccessful = true,
+                    Object = studentData,
+                    Message = "Success"
+                };
             }
-            catch (Exception ex)
+            else
             {
                 return new Response<List<StudentViewModel>>
                 {
                     IsSuccessful = false,
-                    Message = ex.Message,
+                    Message = "error",
                     Object = null
                 };
             }

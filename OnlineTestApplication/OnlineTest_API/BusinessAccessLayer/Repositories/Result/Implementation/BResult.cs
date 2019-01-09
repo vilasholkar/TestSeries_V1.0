@@ -21,37 +21,24 @@ namespace BusinessAccessLayer
         {
             return _iDResult.ResultAnalysis(TestID);
         }
-       public Response<ResultAnalysisViewModel> GetResultAnalysis(int StudentID, int TestID)
+        public Response<ResultAnalysisViewModel> GetResultAnalysis(int StudentID, int TestID)
         {
-            
-            try
+            var resultAnalysisData = _iDResult.GetResultAnalysis(StudentID, TestID);
+            if (resultAnalysisData != null)
             {
-                var resultAnalysisData = _iDResult.GetResultAnalysis(StudentID, TestID);
-                if (resultAnalysisData != null)
+                return new Response<ResultAnalysisViewModel>
                 {
-                    return new Response<ResultAnalysisViewModel>
-                    {
-                        IsSuccessful = true,
-                        Object = resultAnalysisData,
-                        Message = "Success"
-                    };
-                }
-                else
-                {
-                    return new Response<ResultAnalysisViewModel>
-                    {
-                        IsSuccessful = false,
-                        Message = "error",
-                        Object = null
-                    };
-                }
+                    IsSuccessful = true,
+                    Object = resultAnalysisData,
+                    Message = "Success"
+                };
             }
-            catch (Exception ex)
+            else
             {
                 return new Response<ResultAnalysisViewModel>
                 {
                     IsSuccessful = false,
-                    Message = ex.Message,
+                    Message = "error",
                     Object = null
                 };
             }
@@ -64,36 +51,24 @@ namespace BusinessAccessLayer
         {
             return _iDResult.GetStudentAttempt(StudentID, TestID);
         }
-        public Response<List<OnlineTestResultViewModel>> GetOnlineTestResultByID(int StudentID, int TestID) 
+        public Response<List<OnlineTestResultViewModel>> GetOnlineTestResultByID(int StudentID, int TestID)
         {
-            try
+            var onlineTestResultData = _iDResult.GetOnlineTestResultByID(StudentID, TestID);
+            if (onlineTestResultData != null)
             {
-                var onlineTestResultData = _iDResult.GetOnlineTestResultByID(StudentID, TestID);
-                if (onlineTestResultData != null)
+                return new Response<List<OnlineTestResultViewModel>>
                 {
-                    return new Response<List<OnlineTestResultViewModel>>
-                    {
-                        IsSuccessful = true,
-                        Object = onlineTestResultData,
-                        Message = "Success"
-                    };
-                }
-                else
-                {
-                    return new Response<List<OnlineTestResultViewModel>>
-                    {
-                        IsSuccessful = false,
-                        Message = "error",
-                        Object = null
-                    };
-                }
+                    IsSuccessful = true,
+                    Object = onlineTestResultData,
+                    Message = "Success"
+                };
             }
-            catch (Exception ex)
+            else
             {
                 return new Response<List<OnlineTestResultViewModel>>
                 {
                     IsSuccessful = false,
-                    Message = ex.Message,
+                    Message = "error",
                     Object = null
                 };
             }

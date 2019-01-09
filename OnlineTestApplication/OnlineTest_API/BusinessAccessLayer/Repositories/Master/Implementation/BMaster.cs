@@ -18,34 +18,22 @@ namespace BusinessAccessLayer
         }
         public Response<List<StreamViewModel>> GetStream()
         {
-            try
+            var masterData = _iDMaster.GetStream();
+            if (masterData != null)
             {
-                var masterData = _iDMaster.GetStream();
-                if (masterData != null)
+                return new Response<List<StreamViewModel>>
                 {
-                    return new Response<List<StreamViewModel>>
-                    {
-                        IsSuccessful = true,
-                        Object = masterData,
-                        Message = "Success"
-                    };
-                }
-                else
-                {
-                    return new Response<List<StreamViewModel>>
-                    {
-                        IsSuccessful = false,
-                        Message = "error",
-                        Object = null
-                    };
-                }
+                    IsSuccessful = true,
+                    Object = masterData,
+                    Message = "Success"
+                };
             }
-            catch (Exception ex)
+            else
             {
                 return new Response<List<StreamViewModel>>
                 {
                     IsSuccessful = false,
-                    Message = ex.Message,
+                    Message = "error",
                     Object = null
                 };
             }
@@ -54,34 +42,22 @@ namespace BusinessAccessLayer
 
         public Response<List<CourseViewModel>> GetCourseByStream(string StreamId)
         {
-            try
+            var courseData = _iDMaster.GetCourseByStream(StreamId);
+            if (courseData != null)
             {
-                var courseData = _iDMaster.GetCourseByStream(StreamId);
-                if (courseData != null)
+                return new Response<List<CourseViewModel>>
                 {
-                    return new Response<List<CourseViewModel>>
-                    {
-                        IsSuccessful = true,
-                        Object = courseData,
-                        Message = "Success"
-                    };
-                }
-                else
-                {
-                    return new Response<List<CourseViewModel>>
-                    {
-                        IsSuccessful = false,
-                        Message = "error",
-                        Object = null
-                    };
-                }
+                    IsSuccessful = true,
+                    Object = courseData,
+                    Message = "Success"
+                };
             }
-            catch (Exception ex)
+            else
             {
                 return new Response<List<CourseViewModel>>
                 {
                     IsSuccessful = false,
-                    Message = ex.Message,
+                    Message = "error",
                     Object = null
                 };
             }
@@ -90,34 +66,22 @@ namespace BusinessAccessLayer
 
         public Response<List<BatchViewModel>> GetBatchByCourse(string CourseId)
         {
-            try
+            var batchData = _iDMaster.GetBatchByCourse(CourseId);
+            if (batchData != null)
             {
-                var batchData = _iDMaster.GetBatchByCourse(CourseId);
-                if (batchData != null)
+                return new Response<List<BatchViewModel>>
                 {
-                    return new Response<List<BatchViewModel>>
-                    {
-                        IsSuccessful = true,
-                        Object = batchData,
-                        Message = "Success"
-                    };
-                }
-                else
-                {
-                    return new Response<List<BatchViewModel>>
-                    {
-                        IsSuccessful = false,
-                        Message = "error",
-                        Object = null
-                    };
-                }
+                    IsSuccessful = true,
+                    Object = batchData,
+                    Message = "Success"
+                };
             }
-            catch (Exception ex)
+            else
             {
                 return new Response<List<BatchViewModel>>
                 {
                     IsSuccessful = false,
-                    Message = ex.Message,
+                    Message = "error",
                     Object = null
                 };
             }
@@ -126,34 +90,22 @@ namespace BusinessAccessLayer
 
         public Response<List<SessionViewModel>> GetSession()
         {
-            try
+            var sessionData = _iDMaster.GetSession();
+            if (sessionData != null)
             {
-                var sessionData = _iDMaster.GetSession();
-                if (sessionData != null)
+                return new Response<List<SessionViewModel>>
                 {
-                    return new Response<List<SessionViewModel>>
-                    {
-                        IsSuccessful = true,
-                        Object = sessionData,
-                        Message = "Success"
-                    };
-                }
-                else
-                {
-                    return new Response<List<SessionViewModel>>
-                    {
-                        IsSuccessful = false,
-                        Message = "error",
-                        Object = null
-                    };
-                }
+                    IsSuccessful = true,
+                    Object = sessionData,
+                    Message = "Success"
+                };
             }
-            catch (Exception ex)
+            else
             {
                 return new Response<List<SessionViewModel>>
                 {
                     IsSuccessful = false,
-                    Message = ex.Message,
+                    Message = "error",
                     Object = null
                 };
             }
@@ -162,34 +114,22 @@ namespace BusinessAccessLayer
 
         public Response<MasterViewModel> GetMasterData()
         {
-            try
+            var masterData = _iDMaster.GetMasterData();
+            if (masterData != null)
             {
-                var masterData = _iDMaster.GetMasterData();
-                if (masterData != null)
+                return new Response<MasterViewModel>
                 {
-                    return new Response<MasterViewModel>
-                    {
-                        IsSuccessful = true,
-                        Object = masterData,
-                        Message = CommonEnum.Status.Success.ToString()
-                    };
-                }
-                else
-                {
-                    return new Response<MasterViewModel>
-                    {
-                        IsSuccessful = false,
-                        Message = CommonEnum.Status.Failed.ToString(),
-                        Object = null
-                    };
-                }
+                    IsSuccessful = true,
+                    Object = masterData,
+                    Message = CommonEnum.Status.Success.ToString()
+                };
             }
-            catch (Exception ex)
+            else
             {
                 return new Response<MasterViewModel>
                 {
                     IsSuccessful = false,
-                    Message = ex.Message,
+                    Message = CommonEnum.Status.Failed.ToString(),
                     Object = null
                 };
             }

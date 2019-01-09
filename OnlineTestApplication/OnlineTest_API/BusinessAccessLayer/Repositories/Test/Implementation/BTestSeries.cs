@@ -18,31 +18,24 @@ namespace BusinessAccessLayer
         }
         public Response<List<TestSeriesViewModel>> GetTestSeries()
         {
-            try
+            var TestSeriesData = _iDTestSeries.GetTestSeries();
+            if (TestSeriesData != null)
             {
-                var TestSeriesData = _iDTestSeries.GetTestSeries();
-                if (TestSeriesData != null)
+                return new Response<List<TestSeriesViewModel>>
                 {
-                    return new Response<List<TestSeriesViewModel>>
-                    {
-                        IsSuccessful = true,
-                        Object = TestSeriesData,
-                        Message = "Success"
-                    };
-                }
-                else
-                {
-                    return new Response<List<TestSeriesViewModel>>
-                    {
-                        IsSuccessful = false,
-                        Message = "error",
-                        Object = null
-                    };
-                }
+                    IsSuccessful = true,
+                    Object = TestSeriesData,
+                    Message = "Success"
+                };
             }
-            catch (Exception ex)
+            else
             {
-                throw ex;
+                return new Response<List<TestSeriesViewModel>>
+                {
+                    IsSuccessful = false,
+                    Message = "error",
+                    Object = null
+                };
             }
         }
         public string AddUpdateTestSeries(TestSeriesViewModel objTestSeries)
