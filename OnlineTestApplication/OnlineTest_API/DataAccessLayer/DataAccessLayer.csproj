@@ -42,11 +42,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Repositories\Account\Implementation\DAccount.cs" />
+    <Compile Include="Repositories\Account\Interface\IDAccount.cs" />
+    <Compile Include="Repositories\ExceptionLogging\Implementation\DLog.cs" />
+    <Compile Include="Repositories\ExceptionLogging\Interface\IDLog.cs" />
     <Compile Include="Repositories\Generic\DGeneric.cs" />
     <Compile Include="Repositories\Master\Implementation\DMaster.cs" />
     <Compile Include="Repositories\Master\Interface\IDMaster.cs" />
     <Compile Include="Repositories\Quiz\Implementation\DQuiz.cs" />
     <Compile Include="Repositories\Quiz\Interface\IDQuiz.cs" />
+    <Compile Include="Repositories\Result\Implementation\DResult.cs" />
+    <Compile Include="Repositories\Result\Interface\IDResult.cs" />
     <Compile Include="Repositories\TestType\Implementation\DTestType.cs" />
     <Compile Include="Repositories\TestType\Interface\IDTestType.cs" />
     <Compile Include="Repositories\Student\Implementation\DStudent.cs" />
@@ -68,6 +74,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
