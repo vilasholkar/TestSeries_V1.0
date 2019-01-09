@@ -249,6 +249,8 @@
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\TestTypeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="CustomFilters\CustomAuthorizationFilter.cs" />
+    <Compile Include="CustomFilters\CustomExceptionFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
