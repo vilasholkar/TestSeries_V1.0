@@ -7,7 +7,7 @@ using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using System.Net.Http.Headers;
 using System.Web.Http.Cors;
-using OnlineTestApplication.Filters;
+using OnlineTestApplication.CustomFilters;
 
 namespace OnlineTestApplication
 {
