@@ -10,65 +10,57 @@ using ViewModels.Test;
 
 namespace DataAccessLayer
 {
-   public class DTestSeries : IDTestSeries
+    public class DTestSeries : IDTestSeries
     {
-       public List<TestSeriesViewModel> GetTestSeries()
+        public List<TestSeriesViewModel> GetTestSeries()
         {
-            try
+            List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+            List<DataTableMapping> dataTableMappingList = new List<DataTableMapping>();
+            dataTableMappingList.Add(new DataTableMapping("Table", "TestType"));
+            dataTableMappingList.Add(new DataTableMapping("Table1", "QuestionType"));
+            dataTableMappingList.Add(new DataTableMapping("Table2", "Subject"));
+            dataTableMappingList.Add(new DataTableMapping("Table3", "TestSeries"));
+            DataSet ds = DGeneric.RunSP_ReturnDataSet("sp_GetAllMasterData", sqlParameterList, dataTableMappingList);
+            List<TestSeriesViewModel> testTypeList = new List<TestSeriesViewModel>();
+            if (ds.Tables.Count > 0)
             {
-                List<SqlParameter> sqlParameterList = new List<SqlParameter>();
-                List<DataTableMapping> dataTableMappingList = new List<DataTableMapping>();
-                dataTableMappingList.Add(new DataTableMapping("Table", "TestType"));
-                dataTableMappingList.Add(new DataTableMapping("Table1", "QuestionType"));
-                dataTableMappingList.Add(new DataTableMapping("Table2", "Subject"));
-                dataTableMappingList.Add(new DataTableMapping("Table3", "TestSeries"));
-                DataSet ds = DGeneric.RunSP_ReturnDataSet("sp_GetAllMasterData", sqlParameterList, dataTableMappingList);
-                List<TestSeriesViewModel> testTypeList = new List<TestSeriesViewModel>();
-                if (ds.Tables.Count > 0)
+                foreach (DataTable dt in ds.Tables)
                 {
-                    foreach (DataTable dt in ds.Tables)
+                    if (dt.Rows.Count > 0)
                     {
-                        if (dt.Rows.Count > 0)
+                        string tableName = Convert.ToString(dt.Rows[0]["TableName"]);
+                        switch (tableName)
                         {
-                            string tableName = Convert.ToString(dt.Rows[0]["TableName"]);
-                            switch (tableName)
-                            {
-                                case "TestSeries":
-                                    testTypeList = DGeneric.BindDataList<TestSeriesViewModel>(dt);
-                                    break;
-                            }
+                            case "TestSeries":
+                                testTypeList = DGeneric.BindDataList<TestSeriesViewModel>(dt);
+                                break;
                         }
                     }
                 }
-
-                return ds.Tables["TestSeries"].AsEnumerable().Select(s => new TestSeriesViewModel()
-                {
-                    TestSeriesID = Convert.ToInt32(s["TestSeriesID"]),
-                    TestSeries = s["TestSeries"].ToString(),
-                    TotalTest = s["TotalTest"].ToString(),
-                    Description = s["Description"].ToString(),
-                }).ToList();
             }
-            catch (Exception ex)
+
+            return ds.Tables["TestSeries"].AsEnumerable().Select(s => new TestSeriesViewModel()
             {
-                throw;
-            }
+                TestSeriesID = Convert.ToInt32(s["TestSeriesID"]),
+                TestSeries = s["TestSeries"].ToString(),
+                TotalTest = s["TotalTest"].ToString(),
+                Description = s["Description"].ToString(),
+            }).ToList();
         }
-
-       public string AddUpdateTestSeries(TestSeriesViewModel objTestSeries)
-       {
-           List<SqlParameter> sqlParameterList = new List<SqlParameter>();
-           sqlParameterList.Add(new SqlParameter("TestSeriesID", objTestSeries.TestSeriesID));
-           sqlParameterList.Add(new SqlParameter("TestSeries", !string.IsNullOrEmpty(objTestSeries.TestSeries) ? objTestSeries.TestSeries : string.Empty));
-           sqlParameterList.Add(new SqlParameter("TotalTest", !string.IsNullOrEmpty(objTestSeries.TotalTest) ? objTestSeries.TotalTest : string.Empty));
-           sqlParameterList.Add(new SqlParameter("Description", !string.IsNullOrEmpty(objTestSeries.Description) ? objTestSeries.Description : string.Empty));
-           return DGeneric.RunSP_ExecuteNonQuery("sp_AddUpdateTestSeries", sqlParameterList);
-       }
-       public string DeleteTestSeries(TestSeriesViewModel objTestSeries)
-       {
-           List<SqlParameter> sqlParameterList = new List<SqlParameter>();
-           sqlParameterList.Add(new SqlParameter("TestSeriesID", objTestSeries.TestSeriesID));
-           return DGeneric.RunSP_ExecuteNonQuery("sp_DeleteTestSeries", sqlParameterList);
-       }
+        public string AddUpdateTestSeries(TestSeriesViewModel objTestSeries)
+        {
+            List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+            sqlParameterList.Add(new SqlParameter("TestSeriesID", objTestSeries.TestSeriesID));
+            sqlParameterList.Add(new SqlParameter("TestSeries", !string.IsNullOrEmpty(objTestSeries.TestSeries) ? objTestSeries.TestSeries : string.Empty));
+            sqlParameterList.Add(new SqlParameter("TotalTest", !string.IsNullOrEmpty(objTestSeries.TotalTest) ? objTestSeries.TotalTest : string.Empty));
+            sqlParameterList.Add(new SqlParameter("Description", !string.IsNullOrEmpty(objTestSeries.Description) ? objTestSeries.Description : string.Empty));
+            return DGeneric.RunSP_ExecuteNonQuery("sp_AddUpdateTestSeries", sqlParameterList);
+        }
+        public string DeleteTestSeries(TestSeriesViewModel objTestSeries)
+        {
+            List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+            sqlParameterList.Add(new SqlParameter("TestSeriesID", objTestSeries.TestSeriesID));
+            return DGeneric.RunSP_ExecuteNonQuery("sp_DeleteTestSeries", sqlParameterList);
+        }
     }
 }

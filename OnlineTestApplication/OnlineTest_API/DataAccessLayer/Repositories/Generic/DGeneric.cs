@@ -42,10 +42,10 @@ namespace DataAccessLayer
             {
                 using (var sqlConn = new SqlConnection(ConnectionString))
                 {
-                   sqlConn.Open();
+                    sqlConn.Open();
                     using (trans = sqlConn.BeginTransaction())
                     {
-                        using (var sqlCommand = new SqlCommand(procedureName, sqlConn,trans))
+                        using (var sqlCommand = new SqlCommand(procedureName, sqlConn, trans))
                         {
                             sqlCommand.CommandType = CommandType.StoredProcedure;
                             if (parameters != null)
@@ -123,7 +123,6 @@ namespace DataAccessLayer
         public static async Task<string> RunSP_ExecuteNonQueryAsync(string procedureName, List<SqlParameter> parameters)
         {
             SqlTransaction trans = null;
-            object storeCount = string.Empty;
             try
             {
                 using (var sqlConn = new SqlConnection(ConnectionString))
@@ -131,7 +130,7 @@ namespace DataAccessLayer
                     await sqlConn.OpenAsync();
                     using (trans = sqlConn.BeginTransaction())
                     {
-                        using (var sqlCommand = new SqlCommand(procedureName, sqlConn))
+                        using (var sqlCommand = new SqlCommand(procedureName, sqlConn, trans))
                         {
                             sqlCommand.CommandType = CommandType.StoredProcedure;
                             if (parameters != null)
