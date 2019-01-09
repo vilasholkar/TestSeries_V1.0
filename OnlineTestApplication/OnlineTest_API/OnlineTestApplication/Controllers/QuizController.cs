@@ -1,5 +1,6 @@
 ﻿using BusinessAccessLayer;
 using Newtonsoft.Json;
+using OnlineTestApplication.Filters;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,6 +12,7 @@ using ViewModels.Question;
 using ViewModels.Test;
 namespace OnlineTestApplication.Controllers
 {
+    [CustomExceptionFilter]
     public class QuizController : ApiController
     {
         private readonly IBQuiz _iBQuiz;

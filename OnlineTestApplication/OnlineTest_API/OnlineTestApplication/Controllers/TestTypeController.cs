@@ -1,5 +1,6 @@
 ﻿using BusinessAccessLayer;
 using Newtonsoft.Json;
+using OnlineTestApplication.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ using ViewModels.TestType;
 
 namespace OnlineTestApplication.Controllers
 {
+    [CustomExceptionFilter]
     public class TestTypeController : ApiController
     {
         private readonly IBTestType _iBTestType;

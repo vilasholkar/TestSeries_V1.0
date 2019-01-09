@@ -8,9 +8,11 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using System.IO;
+using OnlineTestApplication.Filters;
 
 namespace OnlineTestApplication.Controllers
 {
+    [CustomExceptionFilter]
     public class ResultController : ApiController
     {
         private readonly IBResult _iBResult;

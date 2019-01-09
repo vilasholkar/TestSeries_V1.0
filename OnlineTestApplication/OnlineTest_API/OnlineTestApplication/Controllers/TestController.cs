@@ -1,6 +1,7 @@
 ﻿using BusinessAccessLayer;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using OnlineTestApplication.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,12 @@ using ViewModels.Test;
 
 namespace OnlineTestApplication.Controllers
 {
+    [CustomExceptionFilter]
     public class TestController : ApiController
     {
         private readonly IBTestSeries _iBTestSeries;
         private readonly IBOnlineTest _iBOnlineTest;
         private readonly IBEligibleStudent _iBEligibleStudent;
-
         public TestController(IBTestSeries iBTestSeries, IBOnlineTest iBOnlineTest, IBEligibleStudent iBEligibleStudent)
         {
             _iBTestSeries = iBTestSeries;

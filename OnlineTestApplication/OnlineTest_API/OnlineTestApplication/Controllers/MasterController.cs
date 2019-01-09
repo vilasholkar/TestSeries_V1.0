@@ -1,4 +1,5 @@
 ﻿using BusinessAccessLayer;
+using OnlineTestApplication.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Web.Http;
 
 namespace OnlineTestApplication.Controllers
 {
+    [CustomExceptionFilter]
     public class MasterController : ApiController
     {
         private readonly IBMaster _iBMaster;
@@ -44,6 +46,13 @@ namespace OnlineTestApplication.Controllers
         [HttpGet]
         [Route("api/GetMasterData", Name = "GetMasterData")]
         public HttpResponseMessage GetMasterData()
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, _iBMaster.GetMasterData());
+        }
+
+        [HttpPost]
+        [Route("api/GetUserInfo", Name = "GetUserInfo")]
+        public HttpResponseMessage GetUserInfo(string data)
         {
             return Request.CreateResponse(HttpStatusCode.OK, _iBMaster.GetMasterData());
         }
