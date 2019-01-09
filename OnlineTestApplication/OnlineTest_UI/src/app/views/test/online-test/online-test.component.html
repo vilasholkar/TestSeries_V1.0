@@ -1,5 +1,5 @@
   <br>
-    <button id="btnAddNew" mat-raised-button color="basic" (click)="changeShowStatus()" style="outline: 0px;">
+  <button id="btnAddNew" mat-raised-button color="basic" (click)="changeShowStatus()" style="outline: 0px;">
         <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
         Add New
     </button>
@@ -253,7 +253,7 @@
         </div>
       </div>
 
-  <div  class="row">
+  <!-- <div class="row">
     <div class="col-sm-12">
       <div class="card">
         <div class="card-header">
@@ -299,11 +299,11 @@
                     {{onlineTestModel.TestMarks}}                    
                   </td>
                   <td>
-                    <a mat-icon-button color="primary" routerLink="../view-question/{{onlineTestModel.OnlineTestID}}"><mat-icon aria-label="icon">visibility</mat-icon></a>
+                    <a mat-icon-button matTooltip="View Question" color="primary" routerLink="../view-question/{{onlineTestModel.OnlineTestID}}"><mat-icon aria-label="icon">visibility</mat-icon></a>
                     <a mat-icon-button color="primary" routerLink="../eligible-student/{{onlineTestModel.OnlineTestID}}"><mat-icon aria-label="icon">person_add</mat-icon></a>
                   </td>
                   <td>
-                    <button mat-icon-button color="primary" (click)="getOnlineTestById(onlineTestModel)" aria-hidden="true" style="outline: 0px;">
+                    <button mat-icon-button color="primary" (click)="getOnlineTestById(onlineTestModel.OnlineTestID)" aria-hidden="true" style="outline: 0px;">
                         <mat-icon aria-label="icon">edit</mat-icon>
                       </button>
                   </td>
@@ -316,167 +316,78 @@
               </tbody>
             </table>
           </div>
-          <!-- <ul class="pagination">
-            <li class="page-item">
-              <a class="page-link" href="#">Prev</a>
-            </li>
-            <li class="page-item active">
-              <a class="page-link" href="#">1</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#">2</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#">3</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#">4</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#">Next</a>
-            </li>
-          </ul> -->
         </div>
-      </div>
-    </div>
-    <!--/.col-->
-    <!-- <div class="col-lg-6">
-            <div class="card">
-              <div class="card-header">
-                <i class="fa fa-align-justify"></i> Striped Table
-              </div>
-              <div class="card-body">
-                <table class="table table-striped">
-                  <thead>
-                    <tr>
-                      <th>Username</th>
-                      <th>Date registered</th>
-                      <th>Role</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Yiorgos Avraamu</td>
-                      <td>2012/01/01</td>
-                      <td>Member</td>
-                      <td>
-                        <span class="badge badge-success">Active</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Avram Tarasios</td>
-                      <td>2012/02/01</td>
-                      <td>Staff</td>
-                      <td>
-                        <span class="badge badge-danger">Banned</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Quintin Ed</td>
-                      <td>2012/02/01</td>
-                      <td>Admin</td>
-                      <td>
-                        <span class="badge badge-secondary">Inactive</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Enéas Kwadwo</td>
-                      <td>2012/03/01</td>
-                      <td>Member</td>
-                      <td>
-                        <span class="badge badge-warning">Pending</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Agapetus Tadeáš</td>
-                      <td>2012/01/21</td>
-                      <td>Staff</td>
-                      <td>
-                        <span class="badge badge-success">Active</span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <ul class="pagination">
-                  <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                  <li class="page-item active">
-                    <a class="page-link" href="#">1</a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item"><a class="page-link" href="#">4</a></li>
-                  <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
-              </div>
-            </div>
-          </div> -->
-    <!--/.col-->
-  </div>
-  <!-- <div class="row">
-    <div class="col-sm-12">
-      <div class="card">
-        <div class="card-header">
-          <strong>Test Series List</strong>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive"> 
-              <table class="table table-outline table-striped ">
-            <thead class="thead-light">
-                <th>Test No.</th>
-                <th>Test Name</th>
-                <th>Test Series</th>
-                <th>Test Type</th>
-                <th>Duration</th>
-                <th>Start Date</th>
-                <th>Test Marks</th>
-                <th>View</th>
-                <th>Edit</th>
-                <th>Delete</th>
-            </thead>
-            <tbody>
-              <tr *ngFor="let onlineTestModel of onlineTest">
-                  <td>
-                      {{onlineTestModel.OnlineTestNo}}
-                    </td>
-                    <td>
-                      {{onlineTestModel.TestName}}            
-                    </td>
-                    <td>
-                      {{onlineTestModel.TestSeriesName}}            
-                    </td>
-                    <td>
-                      {{onlineTestModel.TestTypeName}}            
-                    </td>
-                    <td>
-                      {{onlineTestModel.TestDuration}}                    
-                    </td>
-                    <td>
-                      {{onlineTestModel.StartDate | date: 'dd/MM/yyyy'}}                    
-                    </td>
-                  
-                    <td>
-                      {{onlineTestModel.TestMarks}}                    
-                    </td>
-                    <td>
-                      <a mat-icon-button color="primary" routerLink="../view-question/{{onlineTestModel.OnlineTestID}}"><mat-icon aria-label="icon">visibility</mat-icon></a>
-                      <a mat-icon-button color="primary" routerLink="../eligible-student/{{onlineTestModel.OnlineTestID}}"><mat-icon aria-label="icon">person_add</mat-icon></a>
-                    </td>
-                    <td>
-                      <button mat-icon-button color="primary" (click)="getOnlineTestById(onlineTestModel)" aria-hidden="true" style="outline: 0px;">
-                          <mat-icon aria-label="icon">edit</mat-icon>
-                        </button>
-                    </td>
-                    <td>
-                      <button mat-icon-button color="warn" (click)="deleteOnlineTest(onlineTestModel)" aria-hidden="true" style="outline: 0px;">
-                          <mat-icon aria-label="icon">delete</mat-icon>
-                        </button>
-                    </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
       </div>
     </div>
   </div> -->
+
+
+  <div class="animated fadeIn">
+    <div class="row" >
+        <div class="col-sm-9">
+            <h4>Test List</h4>
+        </div>
+        <div class="col-sm-3">
+            <mat-form-field>
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+            </mat-form-field>
+        </div>
+        <div class="col-sm-12">
+            <div class="mat-elevation-z8">
+                <!-- <perfect-scrollbar style="position: relative;width: 100%;overflow: auto;"> -->
+                    <table mat-table [dataSource]="dataSource" matSort>
+                        <ng-container matColumnDef="TestNo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Test No </th>
+                            <td mat-cell *matCellDef="let element"> {{element.OnlineTestNo}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="TestName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Name </th>
+                            <td mat-cell *matCellDef="let element"> {{element.TestName}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="TestSeries">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Series </th>
+                            <td mat-cell *matCellDef="let element"> {{element.TestSeriesName}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="TestType">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Type </th>
+                            <td mat-cell *matCellDef="let element"> {{element.TestTypeName}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Duration">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Duration </th>
+                            <td mat-cell *matCellDef="let element"> {{element.TestDuration}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="StartDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </th>
+                            <td mat-cell *matCellDef="let element"> {{element.StartDate | date: 'dd/MM/yyyy'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="TestMarks">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Marks </th>
+                          <td mat-cell *matCellDef="let element"> {{element.TestMarks}} </td>
+                        </ng-container>
+                        <!-- <ng-container matColumnDef="button">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+                            <td mat-cell *matCellDef="let element">
+                                <a mat-icon-button matTooltip="View Question" color="primary" routerLink="../view-question/{{element.OnlineTestID}}"><mat-icon aria-label="icon">visibility</mat-icon></a>
+                                <a mat-icon-button matTooltip="Add Eligible Student" color="primary" routerLink="../eligible-student/{{element.OnlineTestID}}"><mat-icon aria-label="icon">person_add</mat-icon></a>
+                                <button mat-icon-button matTooltip="Edit" color="primary" (click)="getOnlineTestById(element.OnlineTestID)" aria-hidden="true" style="outline: 0px;">
+                                  <mat-icon aria-label="icon">edit</mat-icon>
+                                </button>
+                                <button mat-icon-button matTooltip="Delete" color="warn" (click)="deleteOnlineTest(element)" aria-hidden="true" style="outline: 0px;">
+                                  <mat-icon aria-label="icon">delete</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container> -->
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+                        </tr>
+                        <!-- <tr *ngIf="dataSource.data.length === 0">Nol kjlfdsl kfbsd kfjb</tr> -->
+                        <!-- <tr mat-footer-row *matFooterRowDef="['disclaimer']" class="example-second-footer-row">dasdasasd</tr> -->
+                    </table>
+                <!-- </perfect-scrollbar> -->
+                <mat-paginator [pageSizeOptions]="PaginationConfig" showFirstLastButtons></mat-paginator>
+
+            </div>
+        </div>
+    </div>
+</div>
