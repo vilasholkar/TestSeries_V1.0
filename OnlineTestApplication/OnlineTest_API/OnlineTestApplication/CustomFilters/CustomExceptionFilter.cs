@@ -39,7 +39,7 @@ namespace OnlineTestApplication.CustomFilters
                 Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "Log/");
             }
             //Logging Error to a txt file
-            using (var w = new StreamWriter(File.Open(System.Web.Hosting.HostingEnvironment.MapPath("~/Log/" + "Error" + DateTime.Now.Date.ToString("ddMMyyyy") + ".txt"), FileMode.OpenOrCreate), Encoding.UTF8))
+            using (var w = new StreamWriter(File.Open(AppDomain.CurrentDomain.BaseDirectory + "Log/" + "Error" + DateTime.Now.Date.ToString("ddMMyyyy") + ".txt", FileMode.OpenOrCreate), Encoding.UTF8))
             {
                 w.WriteLine("\r\nLog Entry : ");
                 w.WriteLine("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString());
