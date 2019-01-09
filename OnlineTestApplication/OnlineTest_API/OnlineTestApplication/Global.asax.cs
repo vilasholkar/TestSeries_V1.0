@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Web;
 using System.Web.Http;
@@ -37,7 +38,11 @@ namespace OnlineTestApplication
         }
         protected void Application_Error(object sender, EventArgs e)
         {
-            using (StreamWriter w = File.AppendText("log.txt"))
+            if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "Log/"))
+            {
+                Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "Log/");
+            }
+            using (var w = new StreamWriter(File.Open(Server.MapPath("~/Log/" + "Error" + DateTime.Now.Date.ToString("ddMMyyyy") + ".txt"), FileMode.OpenOrCreate), Encoding.UTF8))
             {
                 w.WriteLine("\r\nLog Entry : ");
                 w.WriteLine("{0} {1}", DateTime.Now.ToLongTimeString(),
@@ -48,8 +53,8 @@ namespace OnlineTestApplication
                 w.WriteLine(err);
                 w.WriteLine("__________________________");
                 w.Flush();
+                w.Close();
             }
-
         }
     }
 }
