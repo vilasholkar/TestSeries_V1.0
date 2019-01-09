@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using System.IO;
-using OnlineTestApplication.Filters;
+using OnlineTestApplication.CustomFilters;
 
 namespace OnlineTestApplication.Controllers
 {
