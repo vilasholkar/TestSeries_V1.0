@@ -1,10 +1,13 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {OnlineTestService} from '../../../services/admin/online-test.service';
 import {TestSeriesService} from '../../../services/admin/test-series.service';
 import {TestTypeService} from '../../../services/admin/test-type.service';
 import {Stream,Course,Batch,TestType,Session} from '../../../models/master';
 import {OnlineTest,TestSeries} from '../../../models/test';
 import { MatSnackBar } from "@angular/material";
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { HelperService } from '../../../services/helper.service'
 
 @Component({
   selector: 'app-online-test',
@@ -30,14 +33,25 @@ export class OnlineTestComponent implements OnInit {
   public maxStartDate = new Date(2020, 3, 25);
   public minEndDate =new Date();
   public maxEndDate = new Date(2020, 3, 25);
+  dataSource: any = [];
+  displayedColumns = ['TestNo', 'TestName', 'TestSeries', 'TestType', 'Duration', 'StartDate', 'TestMarks'];
+  selection = new SelectionModel<OnlineTest>(true, []);
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  PaginationConfig:any;
+
   constructor(private onlineTestService: OnlineTestService, private testTypeService: TestTypeService,
-  private testSeriesService: TestSeriesService,public snackBar: MatSnackBar) { }
+  private testSeriesService: TestSeriesService,public snackBar: MatSnackBar,private helperSvc: HelperService) { }
 
   ngOnInit() {
     debugger;
     this.getOnlineTest();
+    this.PaginationConfig=this.helperSvc.PaginationConfig;
   }
  
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
   changeShowStatus() {
     debugger;
     this.onlineTestModel = {};
@@ -119,6 +133,9 @@ export class OnlineTestComponent implements OnInit {
     this.onlineTestService.getOnlineTest()
     .subscribe(data => {
       if(data.Message === 'Success')
+        this.dataSource = new MatTableDataSource(data.Object as OnlineTest[]);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
         this.onlineTest = data.Object;
     },error => {
       alert('error');
@@ -145,6 +162,7 @@ export class OnlineTestComponent implements OnInit {
   }
   deleteOnlineTest(OnlineTestModel){
     //this.onlineTest = model;
+    debugger;
     if (confirm("Are you sure to delete " + OnlineTestModel.TestName)) {
     this.onlineTestService.deleteOnlineTest(OnlineTestModel.OnlineTestID)
     .subscribe(data => {
@@ -164,7 +182,7 @@ export class OnlineTestComponent implements OnInit {
     debugger;
     this.showAddDiv=true;
     this.Title="Edit Test";
-    this.onlineTestService.getOnlineTestById(OnlineTestID.OnlineTestID)
+    this.onlineTestService.getOnlineTestById(OnlineTestID)
     .subscribe(data => {
       if (data.Message === 'Success') {
         this.stream = data.Object.MasterData.Stream;
@@ -189,4 +207,16 @@ export class OnlineTestComponent implements OnInit {
       duration: 2000,
     });
   }
+  onSubmit(){
+    debugger;
+    this.onlineTestService.userInfo()
+   .subscribe(data => {
+     if(data === 'Success')
+         alert('Data Saved Successfully');
+         //this.eligibleStudentArray.length = 0;
+         //this.router.navigate(['/test/online-test']); 
+   },error => {
+     alert(error);
+   });    
+} 
 }
