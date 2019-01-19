@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ViewModels;
 using ViewModels.Test;
 
 namespace BusinessAccessLayer
@@ -15,9 +16,27 @@ namespace BusinessAccessLayer
        {
            _iDQuiz = iDQuiz;
        }
-       public QuizViewModel GetQuiz(int OnlineTestID)
+       public Response<QuizViewModel> GetQuiz(int OnlineTestID,int StudentID)
         {
-            return _iDQuiz.GetQuiz(OnlineTestID);
+            var quizData = _iDQuiz.GetQuiz(OnlineTestID, StudentID);
+            if (quizData != null)
+            {
+                return new Response<QuizViewModel>
+                {
+                    IsSuccessful = true,
+                    Object = quizData,
+                    Message = "Success"
+                };
+            }
+            else
+            {
+                return new Response<QuizViewModel>
+                {
+                    IsSuccessful = false,
+                    Message = "error",
+                    Object = null
+                };
+            }
         }
        public string SubmitQuiz(QuizViewModel QuizViewModel)
        {

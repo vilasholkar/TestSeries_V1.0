@@ -13,5 +13,9 @@ namespace BusinessAccessLayer
         Response<List<EligibleStudentViewModel>> GetEligibleStudent(int OnlineTestID);
 
         string AddEligibleStudent(List<EligibleStudentViewModel> EligibleStudentData);
+
+        Response<List<EligibleStudentViewModel>> GetEligibleStudentByTestID(int OnlineTestID);
+        string UpdateEligibleStudentTestStatus(List<EligibleStudentViewModel> EligibleStudentData);
+
     }
 }

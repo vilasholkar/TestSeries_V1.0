@@ -43,5 +43,31 @@ namespace BusinessAccessLayer
         {
             return _iDEligibleStudent.AddEligibleStudent(EligibleStudentData);
         }
+        public Response<List<EligibleStudentViewModel>> GetEligibleStudentByTestID(int OnlineTestID)
+        {
+            var eligibleStudentData = _iDEligibleStudent.GetEligibleStudentByTestID(OnlineTestID);
+            if (eligibleStudentData != null)
+            {
+                return new Response<List<EligibleStudentViewModel>>
+                {
+                    IsSuccessful = true,
+                    Object = eligibleStudentData,
+                    Message = "Success"
+                };
+            }
+            else
+            {
+                return new Response<List<EligibleStudentViewModel>>
+                {
+                    IsSuccessful = false,
+                    Message = "error",
+                    Object = null
+                };
+            }
+        }
+        public string UpdateEligibleStudentTestStatus(List<EligibleStudentViewModel> EligibleStudentData)
+        {
+            return _iDEligibleStudent.UpdateEligibleStudentTestStatus(EligibleStudentData);
+        }
     }
 }
