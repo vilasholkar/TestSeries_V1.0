@@ -9,7 +9,8 @@ namespace ViewModels.Test
    public class StudentOnlineTestViewModel
     {
        public int EligibleStudentID { get; set; }
-        public int StudentID { get; set; }
+       public int StudentID { get; set; }
+       public int TestStatusID { get; set; } 
         public int OnlineTestID { get; set; }
         public string OnlineTestNo { get; set; }
         public int TestSeriesID { get; set; }
