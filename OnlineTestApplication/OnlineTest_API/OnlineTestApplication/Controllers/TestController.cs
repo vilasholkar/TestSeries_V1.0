@@ -118,6 +118,18 @@ namespace OnlineTestApplication.Controllers
         {
             return Request.CreateResponse(HttpStatusCode.OK,_iBEligibleStudent.AddEligibleStudent(EligibleStudentData));
         }
+        [HttpGet]
+        [Route("api/GetEligibleStudentByTestID", Name = "GetEligibleStudentByTestID")]
+        public HttpResponseMessage GetEligibleStudentByTestID(int OnlineTestID)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, _iBEligibleStudent.GetEligibleStudentByTestID(OnlineTestID));
+        }
+        [HttpPost]
+        [Route("api/UpdateEligibleStudentTestStatus", Name = "UpdateEligibleStudentTestStatus")]
+        public HttpResponseMessage UpdateEligibleStudentTestStatus(List<EligibleStudentViewModel> EligibleStudentData)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, _iBEligibleStudent.UpdateEligibleStudentTestStatus(EligibleStudentData));
+        }
         #endregion
     }
 }
