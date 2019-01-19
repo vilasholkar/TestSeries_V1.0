@@ -22,8 +22,10 @@ export class QuizComponent implements OnInit {
   showQuiz:boolean=false;
   testDuration:any;
   correctCount=0;
+  totalMarks:number=0;
   totalQuestions:number;
   noOfQuestionAttempted:number=0;
+  noOfQuestionNotAttempted:number=0;
   countOfCorrectQues:number=0;
   countOfIncorrectQues:number=0;
   today=new Date();
@@ -159,7 +161,7 @@ export class QuizComponent implements OnInit {
         if (x.questionID !== option.questionID) 
         x.selected = false;
       });
-       this.noOfQuestionAttempted += 1;
+      // this.noOfQuestionAttempted += 1;
     }
     if (this.config.autoMove) {
       this.goTo(this.pager.index + 1);
@@ -175,10 +177,10 @@ export class QuizComponent implements OnInit {
     return question.options.find(x => x.selected) ? 'Answered' : 'Not Answered';
   }
   isCorrect(question: Question) {
-     var status= question.options.every(x => x.selected == x.isAnswer) ? 'correct' : 'wrong'
-     if(status==='correct'){
-       this.countOfCorrectQues++;
-     }
+    //  var status= question.options.every(x => x.selected == x.isAnswer) ? 'correct' : 'wrong'
+    //  if(status==='correct'){
+    //    this.countOfCorrectQues++;
+    //  }
     return question.options.every(x => x.selected == x.isAnswer) ? 'correct' : 'wrong';
    
   }
@@ -209,7 +211,6 @@ export class QuizComponent implements OnInit {
         const contentDataURL = canvas.toDataURL('image/png')  
         let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
         var position = 0;  
-//        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight) 
         pdf.addImage(contentDataURL, 'JPEG',0, position, imgWidth, imgHeight) 
         
         pdf.save(this.quiz.testName+'_'+this.today+'.pdf'); // Generated PDF   
@@ -225,7 +226,25 @@ export class QuizComponent implements OnInit {
     const answers = [];
     this.quiz.questions.forEach(x => answers.push({ 'quizId': this.quiz.onlineTestID, 'questionId': x.questionID, 'answered': x.answered }));    
     this.quiz.StudentID=sessionStorage.getItem("StudentID");
+    for(let i=0;i<this.quiz.questions.length;i++)
+      {
+         var status=this.quiz.questions[i].options.every(x => x.selected == x.isAnswer) ? 'correct' : 'wrong'
+         if(status=='correct')
+          {
+            this.countOfCorrectQues++;
+          }
+          for(let j=0;j<this.quiz.questions[i].options.length;j++)
+            {
+              if(this.quiz.questions[i].options[j].selected)
+                this.noOfQuestionAttempted++;
+            }
+
+      }
+          this.noOfQuestionNotAttempted=this.totalQuestions-this.noOfQuestionAttempted;
+    this.countOfIncorrectQues=this.noOfQuestionAttempted-this.countOfCorrectQues;
+    this.totalMarks=(this.countOfCorrectQues*4)-this.countOfIncorrectQues;
     console.log("res",this.quiz.questions)
+
       this.quizService.SubmitQuiz(this.quiz)
        .subscribe(data => {
         if (data === 'Success') {
