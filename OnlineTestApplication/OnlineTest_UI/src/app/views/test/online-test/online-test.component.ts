@@ -34,7 +34,7 @@ export class OnlineTestComponent implements OnInit {
   public minEndDate =new Date();
   public maxEndDate = new Date(2020, 3, 25);
   dataSource: any = [];
-  displayedColumns = ['TestNo', 'TestName', 'TestSeries', 'TestType', 'Duration', 'StartDate', 'TestMarks'];
+  displayedColumns = ['TestNo', 'TestName', 'TestSeries', 'TestType', 'Duration', 'StartDate', 'TestMarks','button'];
   selection = new SelectionModel<OnlineTest>(true, []);
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -207,16 +207,4 @@ export class OnlineTestComponent implements OnInit {
       duration: 2000,
     });
   }
-  onSubmit(){
-    debugger;
-    this.onlineTestService.userInfo()
-   .subscribe(data => {
-     if(data === 'Success')
-         alert('Data Saved Successfully');
-         //this.eligibleStudentArray.length = 0;
-         //this.router.navigate(['/test/online-test']); 
-   },error => {
-     alert(error);
-   });    
-} 
 }

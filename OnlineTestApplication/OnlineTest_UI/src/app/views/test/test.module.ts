@@ -1,6 +1,6 @@
 // Angular
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { CustomMaterialModule } from "../../custommaterial.module";
@@ -22,11 +22,13 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { EligibleStudentComponent } from './eligible-student/eligible-student.component';
+import { TestStatusComponent } from './test-status/test-status.component';
 
 @NgModule({
     imports: [
       CommonModule,
       FormsModule,
+      ReactiveFormsModule,
       TestRoutingModule,
       CustomMaterialModule,PerfectScrollbarModule,
       TabsModule,
@@ -39,7 +41,8 @@ import { EligibleStudentComponent } from './eligible-student/eligible-student.co
       OnlineTestComponent,
       ViewQuestionComponent,
       QuizComponent,
-      EligibleStudentComponent
+      EligibleStudentComponent,
+      TestStatusComponent
     ],
     providers: [HttpClientModule,TestSeriesService,TestTypeService]
   })

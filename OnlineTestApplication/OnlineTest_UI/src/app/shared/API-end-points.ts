@@ -31,6 +31,8 @@ export class APIUrl {
     public static GetMasterData = 'api/GetMasterData';
     public static GenerateResultAnalysis = 'api/ResultAnalysis';
     public static GetOnlineTest_ForGenerateResult = 'api/GetOnlineTest_ForGenerateResult';
-     public static GetLoginInfo = 'api/GetLoginInfo';
+    public static GetLoginInfo = 'api/GetLoginInfo';
+    public static GetEligibleStudentByTestID = 'api/GetEligibleStudentByTestID';
+    public static UpdateEligibleStudentTestStatus = 'api/UpdateEligibleStudentTestStatus';
 
 }

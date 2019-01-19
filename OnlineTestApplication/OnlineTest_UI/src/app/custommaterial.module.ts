@@ -12,8 +12,8 @@ import {
   MatDividerModule,
   MatFormFieldModule,
   MatSelectModule,
-  MatTableModule, 
-  MatPaginatorModule, 
+  MatTableModule,
+  MatPaginatorModule,
   MatSortModule,
   MatDatepickerModule,
   MatNativeDateModule,
@@ -22,8 +22,9 @@ import {
   MatTooltipModule,
   MatTabsModule,
   MatAutocompleteModule,
-  MatDialogModule
-  
+  MatDialogModule,
+  MatSidenavModule
+
 } from '@angular/material';
 
 const Modules = [
@@ -36,8 +37,8 @@ const Modules = [
   MatDividerModule,
   MatFormFieldModule,
   MatSelectModule,
-  MatTableModule, 
-  MatPaginatorModule, 
+  MatTableModule,
+  MatPaginatorModule,
   MatSortModule,
   MatDatepickerModule,
   MatNativeDateModule,
@@ -46,7 +47,8 @@ const Modules = [
   MatTooltipModule,
   MatTabsModule,
   MatAutocompleteModule,
-MatDialogModule
+  MatDialogModule,
+  MatSidenavModule
 ];
 
 @NgModule({

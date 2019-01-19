@@ -6,6 +6,7 @@ import { TestSeriesComponent } from './test-series/test-series.component';
 import { OnlineTestComponent } from './online-test/online-test.component';
 import { ViewQuestionComponent } from './view-question/view-question.component';
 import {EligibleStudentComponent} from './eligible-student/eligible-student.component';
+import {TestStatusComponent} from './test-status/test-status.component';
 
 const routes: Routes = [
   {
@@ -48,7 +49,14 @@ const routes: Routes = [
         data: {
           title: 'Eligible Student'
         }
-      }
+      },
+      {
+       path: 'test-status',
+       component: TestStatusComponent,
+       data: {
+         title: 'Test Status'
+       }
+     }
     ]
   }
 ];

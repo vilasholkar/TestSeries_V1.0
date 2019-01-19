@@ -50,10 +50,13 @@ export class LoginComponent {
   // }
   OnSubmit(userName,password,UserTypeID){
     this.spinner.show();
+    debugger;
     var data ="?username=" + userName + "&password=" + password + "&UserTypeID="+UserTypeID;
      // this.userService.userAuthentication(userName,password,UserTypeID).subscribe((data : any)=>{
-      debugger;
+      
     this.helperSvc.getService(APIUrl.GetLoginInfo+data).subscribe((data : any)=>{
+     if(data.Object.UserID > 0)
+     {
       sessionStorage.setItem('userToken',data.access_token);
       sessionStorage.setItem('userRoles',data.Object.UserType);
       sessionStorage.setItem('FirstName',data.Object.FirstName);
@@ -66,12 +69,19 @@ export class LoginComponent {
       sessionStorage.setItem('StudentID',data.Object.UserID);
       }
       this.router.navigate(['/dashboard']);
-    this.spinner.hide();
+      this.spinner.hide();
       this.helperSvc.notifySuccess(' Welcome ' + data.Object.FirstName + ' ' + data.Object.LastName);
+    }
+    else{
+      this.router.navigate(['/login']);
+      this.spinner.hide();
+      this.helperSvc.notifyError("Error: Incorrect username or password");
+    }
     },
     (err : HttpErrorResponse)=>{
      // this.isLoginError = true;
-       this.openSnackBar("Error: Incorrect username or password", "Close");
+      // this.openSnackBar("Error: Incorrect username or password", "Close");
+      this.helperSvc.notifyError("Error: Incorrect username or password");
        this.spinner.hide();
 
     });

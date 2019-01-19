@@ -55,8 +55,11 @@
             <ng-container matColumnDef="button">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
               <td mat-cell *matCellDef="let element">
-                <a mat-raised-button color="primary" click="window.open(document.URL, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes')"
-                  routerLink="/test/quiz/{{element.OnlineTestID}}">Start
+                  <a mat-raised-button color="primary" target="_blank" (click)="redirectToTest(element.OnlineTestID)">Start
+                    </a>
+                   <!-- click="window.open(document.URL, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes')" -->
+                <a mat-raised-button color="primary" 
+                  routerLink="/test/quiz/{{element.OnlineTestID}}">Start same
                 </a>
               </td>
             </ng-container>
@@ -115,14 +118,14 @@
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Marks </th>
               <td mat-cell *matCellDef="let element"> {{element.TestMarks}} </td>
             </ng-container>
-            <ng-container matColumnDef="button">
+            <!-- <ng-container matColumnDef="button">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
               <td mat-cell *matCellDef="let element">
                 <a mat-raised-button color="primary" click="window.open(document.URL, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes')"
                   routerLink="/test/quiz/{{element.OnlineTestID}}">Start
                 </a>
               </td>
-            </ng-container>
+            </ng-container> -->
             <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns1;">
             </tr>

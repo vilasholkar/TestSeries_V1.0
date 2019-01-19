@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable,Renderer2 } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Observer } from 'rxjs';
@@ -8,12 +8,24 @@ import { HostName } from '../shared/app-setting';
 @Injectable()
 export class HelperService {
   public PaginationConfig:any[] = [50, 100, 500];
+  public ShowSidebar:boolean;
+  public sidebarToggler:any;
   constructor(
     private http: HttpClient,
     private toasterSvc: ToastrService,
     private ngxSpinnerSvc: NgxSpinnerService
-  ) { }
+   
+  ) { this.ShowSidebar = true;
+    this.sidebarToggler='lg';
+  }
   
+  hide_Sidebar() { 
+    this.ShowSidebar = false; 
+    this.sidebarToggler=false; }
+
+  show_Sidebar() { this.ShowSidebar = true;
+    this.sidebarToggler='lg'; }
+
   static toBool(val) {
     if (val === 'undefined' || val == null || val === '' || val === 'false' || val === 'False') {
         return false;

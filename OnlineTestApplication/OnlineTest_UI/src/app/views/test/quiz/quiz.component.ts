@@ -1,4 +1,4 @@
-import { Component, OnInit ,TemplateRef, ViewChild} from '@angular/core';
+import { Component, OnInit ,TemplateRef, ViewChild,Renderer2} from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
@@ -18,6 +18,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
   providers: [QuizService]
 })
 export class QuizComponent implements OnInit {
+  IsTestSubmit:boolean=false;
   showQuiz:boolean=false;
   testDuration:any;
   correctCount=0;
@@ -62,9 +63,15 @@ export class QuizComponent implements OnInit {
   testID:any;
 
   constructor(private router : Router,private route: ActivatedRoute
-    ,private spinner: NgxSpinnerService,private quizService: QuizService,private dialog: MatDialog) {
+    ,private spinner: NgxSpinnerService
+    ,private quizService: QuizService
+    ,private dialog: MatDialog
+    ,private helperSvc: HelperService
+    ,private renderer: Renderer2 ) {
    }
   ngOnInit() {
+    this.helperSvc.hide_Sidebar();
+    this.renderer.removeClass(document.body, 'sidebar-lg-show');
     this.testID= +this.route.snapshot.paramMap.get('testID');
   }
   onNavigate(URL:String)
@@ -74,6 +81,7 @@ export class QuizComponent implements OnInit {
   }
   OpenQuiz()
   {
+    debugger;
     // window.open(document.URL, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes')
     this.showQuiz=true;
     this.loadQuiz(this.testID);
@@ -95,29 +103,44 @@ export class QuizComponent implements OnInit {
   }
   loadQuiz(testID: any) {
       this.spinner.show();
-      this.quizService.getQuiz(testID).subscribe(res => {
-      this.quiz = new Quiz(res);
-      this.spinner.hide();
-      this.testDuration=res.TestDuration;
-      res.Questions.forEach(x=>x.QuestionTypeId===1 ? this.QuestionTypeIsSingleChoice = true : this.QuestionTypeIsSingleChoice = false )
-      this.pager.count = this.quiz.questions.length;
-      this.totalQuestions=this.quiz.questions.length;
-      this.startTime = new Date();
-      this.timer = setInterval(() => { this.tick(); }, 1000);
-      this.duration = this.parseTime(this.testDuration);
-     
+      let sessionStudentID = sessionStorage.getItem("StudentID")
+      this.quizService.getQuiz(testID,sessionStudentID).subscribe(res => {
+        if(res.Message==="Success")
+        {
+          var data=res.Object;
+          this.quiz = new Quiz(data);
+          this.spinner.hide();
+          this.testDuration=data.TestDuration;
+          data.Questions.forEach(x=>x.QuestionTypeId===1 ? this.QuestionTypeIsSingleChoice = true : this.QuestionTypeIsSingleChoice = false )
+          this.pager.count = this.quiz.questions.length;
+          this.totalQuestions=this.quiz.questions.length;
+          this.startTime = new Date();
+          this.timer = setInterval(() => { this.tick(); }, 1000);
+          this.duration = this.parseTime(this.testDuration);
+    
+        }
+        else
+        {
+          this.helperSvc.notifyError("Already Given Test");
+          window.close();
+        }
+           
     });
     //$('.navbar-toggler-icon').click()
 
     this.mode = 'quiz';
   }
   tick() {
+    if(this.IsTestSubmit==false)
+    {
     const now = new Date();
     const diff = (now.getTime() - this.startTime.getTime()) / 1000;
     if (diff >= this.testDuration) {
       this.onSubmit();
+      this.IsTestSubmit=true;
     }
     this.ellapsedTime = this.parseTime(diff);
+    }
   }
   parseTime(totalSeconds: number) {
     let mins: string | number = Math.floor(totalSeconds / 60);
@@ -154,7 +177,7 @@ export class QuizComponent implements OnInit {
   isCorrect(question: Question) {
      var status= question.options.every(x => x.selected == x.isAnswer) ? 'correct' : 'wrong'
      if(status==='correct'){
-       //this.countOfCorrectQues++;
+       this.countOfCorrectQues++;
      }
     return question.options.every(x => x.selected == x.isAnswer) ? 'correct' : 'wrong';
    
@@ -186,15 +209,19 @@ export class QuizComponent implements OnInit {
         const contentDataURL = canvas.toDataURL('image/png')  
         let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
         var position = 0;  
-        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
+//        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight) 
+        pdf.addImage(contentDataURL, 'JPEG',0, position, imgWidth, imgHeight) 
+        
         pdf.save(this.quiz.testName+'_'+this.today+'.pdf'); // Generated PDF   
         this.router.navigate(['/dashboard']);
         this.spinner.hide();
-      });  
+      });
+     
     }  
   onSubmit() {
     debugger;
     this.spinner.show();
+    this.helperSvc.show_Sidebar();
     const answers = [];
     this.quiz.questions.forEach(x => answers.push({ 'quizId': this.quiz.onlineTestID, 'questionId': x.questionID, 'answered': x.answered }));    
     this.quiz.StudentID=sessionStorage.getItem("StudentID");

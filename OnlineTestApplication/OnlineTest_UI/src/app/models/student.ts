@@ -2,6 +2,7 @@ export class StudentOnlineTest {
 
     EligibleStudentID: any;
     StudentID: any;
+    TestStatusID:any;
     OnlineTestID: any;
     OnlineTestNo: any;
     TestSeriesID: any;
@@ -34,6 +35,7 @@ export class StudentOnlineTest {
         data = data || {};
         this.EligibleStudentID = data.EligibleStudentID;
         this.StudentID = data.StudentID;
+        this.TestStatusID=data.TestStatusID;
         this.OnlineTestID = data.OnlineTestID;
         this.OnlineTestNo = data.OnlineTestNo;
         this.TestSeriesID = data.TestSeriesID;

@@ -61,4 +61,6 @@ export interface EligibleStudent{
     MobileNumber: string;
     FatherMobileNo: string;
     IsEligible: boolean;
+    TestStatusID:Int32Array;
+    TestStatus:any;
 }

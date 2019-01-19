@@ -36,11 +36,11 @@ export const navItems = [
     url: '/test/online-test',
     icon: 'icon-drop'
   },
-//   {
-//    name: 'Start Quiz',
-//    url: '/test/quiz/1',
-//    icon: 'icon-pencil'
-//  },
+  {
+    name: 'Test Status',
+    url: '/test/test-status',
+    icon: 'icon-pencil'
+  },
   {
     title: true,
     name: 'Result'
