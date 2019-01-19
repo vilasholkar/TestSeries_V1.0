@@ -358,5 +358,28 @@ namespace DataAccessLayer
             }
 
         }
+        public static bool ExecQuery(string query)
+        {
+           using( SqlConnection cnn = new SqlConnection(DGeneric.ConnectionString))
+           { 
+            SqlCommand sqlCommand = new SqlCommand();
+            sqlCommand.CommandText = query;
+            cnn.Open();
+            sqlCommand.Connection = cnn;
+            //try
+            //{
+            sqlCommand.ExecuteNonQuery();
+            cnn.Close();
+            sqlCommand.Dispose();
+            return true;
+            //}
+            //catch (Exception ex)
+            //{
+            //    cnn.Close();
+            //    sqlCommand.Dispose();
+            //    throw new Exception("cls_ScrapedData::Insert::Error occured.", ex.InnerException);
+            //}
+           }
+        }
     }
 }

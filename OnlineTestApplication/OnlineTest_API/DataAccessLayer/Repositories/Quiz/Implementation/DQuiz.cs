@@ -12,88 +12,99 @@ namespace DataAccessLayer
 {
     public class DQuiz : IDQuiz
     {
-        public QuizViewModel GetQuiz(int OnlineTestID)
+        public QuizViewModel GetQuiz(int OnlineTestID,int StudentID)
         {
-            Dictionary<int, string> optionList = new Dictionary<int, string>();
-            optionList.Add(1, "A");
-            optionList.Add(2, "B");
-            optionList.Add(3, "C");
-            optionList.Add(4, "D");
-            List<SqlParameter> paramerterList = new List<SqlParameter>();
-            paramerterList.Add(new SqlParameter("@OnlineTestID", OnlineTestID));
-            DataTable dt = DGeneric.RunSP_ReturnDataSet("sp_GetQuiz", paramerterList, null).Tables[0];
-            QuizViewModel quizViewModel = new QuizViewModel();
-            quizViewModel.Questions = new List<QuestionViewModel>();
-            List<string> answerList = new List<string>();
-            if (dt.Rows.Count > 0)
+            string strQuery = string.Format("select TestStatusID from EligibleStudent where OnlineTestID={0} and StudentID={1}",OnlineTestID,StudentID);
+            int TestStatusID = Convert.ToInt32(DGeneric.GetValue(strQuery));
+            if (TestStatusID == 1)
             {
-                foreach (DataRow dr in dt.Rows)
+                string strQry = string.Format("update EligibleStudent set TestStatusID=2 where OnlineTestID={0} and StudentID={1};", OnlineTestID, StudentID);
+                DGeneric.ExecQuery(strQry);
+
+                Dictionary<int, string> optionList = new Dictionary<int, string>();
+                optionList.Add(1, "A");
+                optionList.Add(2, "B");
+                optionList.Add(3, "C");
+                optionList.Add(4, "D");
+                List<SqlParameter> paramerterList = new List<SqlParameter>();
+                paramerterList.Add(new SqlParameter("@OnlineTestID", OnlineTestID));
+                DataTable dt = DGeneric.RunSP_ReturnDataSet("sp_GetQuiz", paramerterList, null).Tables[0];
+                QuizViewModel quizViewModel = new QuizViewModel();
+                quizViewModel.Questions = new List<QuestionViewModel>();
+                List<string> answerList = new List<string>();
+                if (dt.Rows.Count > 0)
                 {
-                    if (Convert.ToInt32(dr["OnlineTestID"]) != quizViewModel.OnlineTestID)
+                    foreach (DataRow dr in dt.Rows)
                     {
-                        quizViewModel.OnlineTestID = Convert.ToInt32(dr["OnlineTestID"]);
-                        quizViewModel.TestName = dr["TestName"].ToString();
-                        quizViewModel.TestDuration = dr["TestDuration"].ToString();
-                        quizViewModel.Instructions = dr["Instructions"].ToString();
-                        QuestionViewModel questionViewModel = new QuestionViewModel();
-                        questionViewModel.QuestionID = Convert.ToInt32(dr["QuestionId"]);
-                        questionViewModel.SubjectID = Convert.ToInt32(dr["SubjectID"]);
-                        questionViewModel.Image_English = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_English"];
-                        questionViewModel.Image_Hindi = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_Hindi"];
-                        questionViewModel.QuestionTypeID = Convert.ToInt32(dr["QuestionTypeId"]);
-                        answerList = dr["Answer"].ToString().Split(',').Select(s => s.ToString()).ToList();
-                        questionViewModel.Options = new List<OptionViewModel>();
-                        foreach (var optionItem in optionList)
+                        if (Convert.ToInt32(dr["OnlineTestID"]) != quizViewModel.OnlineTestID)
                         {
-                            OptionViewModel optionViewModel = new OptionViewModel();
-                            optionViewModel.QuestionID = Convert.ToInt32(dr["QuestionId"]);
-                            optionViewModel.OptionID = optionItem.Key;
-                            optionViewModel.Option = optionItem.Value;
-                            if (answerList.Any(a => a == optionItem.Value))
-                                optionViewModel.IsAnswer = true;
-                            else
-                                optionViewModel.IsAnswer = false;
-                            questionViewModel.Options.Add(optionViewModel);
+                            quizViewModel.OnlineTestID = Convert.ToInt32(dr["OnlineTestID"]);
+                            quizViewModel.TestName = dr["TestName"].ToString();
+                            quizViewModel.TestDuration = dr["TestDuration"].ToString();
+                            quizViewModel.Instructions = dr["Instructions"].ToString();
+                            QuestionViewModel questionViewModel = new QuestionViewModel();
+                            questionViewModel.QuestionID = Convert.ToInt32(dr["QuestionId"]);
+                            questionViewModel.SubjectID = Convert.ToInt32(dr["SubjectID"]);
+                            questionViewModel.Image_English = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_English"];
+                            questionViewModel.Image_Hindi = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_Hindi"];
+                            questionViewModel.QuestionTypeID = Convert.ToInt32(dr["QuestionTypeId"]);
+                            answerList = dr["Answer"].ToString().Split(',').Select(s => s.ToString()).ToList();
+                            questionViewModel.Options = new List<OptionViewModel>();
+                            foreach (var optionItem in optionList)
+                            {
+                                OptionViewModel optionViewModel = new OptionViewModel();
+                                optionViewModel.QuestionID = Convert.ToInt32(dr["QuestionId"]);
+                                optionViewModel.OptionID = optionItem.Key;
+                                optionViewModel.Option = optionItem.Value;
+                                if (answerList.Any(a => a == optionItem.Value))
+                                    optionViewModel.IsAnswer = true;
+                                else
+                                    optionViewModel.IsAnswer = false;
+                                questionViewModel.Options.Add(optionViewModel);
+                            }
+                            questionViewModel.QuestionType = new QuestionTypeViewModel()
+                            {
+                                QuestionTypeID = Convert.ToInt32(dr["QuestionTypeId"]),
+                                QuestionType = dr["QuestionType"].ToString()
+                            };
+                            quizViewModel.Questions.Add(questionViewModel);
                         }
-                        questionViewModel.QuestionType = new QuestionTypeViewModel()
+                        else
                         {
-                            QuestionTypeID = Convert.ToInt32(dr["QuestionTypeId"]),
-                            QuestionType = dr["QuestionType"].ToString()
-                        };
-                        quizViewModel.Questions.Add(questionViewModel);
-                    }
-                    else
-                    {
-                        QuestionViewModel questionViewModel = new QuestionViewModel();
-                        questionViewModel.QuestionID = Convert.ToInt32(dr["QuestionId"]);
-                        questionViewModel.SubjectID = Convert.ToInt32(dr["SubjectID"]);
-                        questionViewModel.Image_English = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_English"];
-                        questionViewModel.Image_Hindi = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_Hindi"];
-                        questionViewModel.QuestionTypeID = Convert.ToInt32(dr["QuestionTypeId"]);
-                        answerList = dr["Answer"].ToString().Split(',').Select(s => s.ToString()).ToList();
-                        questionViewModel.Options = new List<OptionViewModel>();
-                        foreach (var optionItem in optionList)
-                        {
-                            OptionViewModel optionViewModel = new OptionViewModel();
-                            optionViewModel.QuestionID = Convert.ToInt32(dr["QuestionId"]);
-                            optionViewModel.OptionID = optionItem.Key;
-                            optionViewModel.Option = optionItem.Value;
-                            if (answerList.Any(a => a == optionItem.Value))
-                                optionViewModel.IsAnswer = true;
-                            else
-                                optionViewModel.IsAnswer = false;
-                            questionViewModel.Options.Add(optionViewModel);
+                            QuestionViewModel questionViewModel = new QuestionViewModel();
+                            questionViewModel.QuestionID = Convert.ToInt32(dr["QuestionId"]);
+                            questionViewModel.SubjectID = Convert.ToInt32(dr["SubjectID"]);
+                            questionViewModel.Image_English = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_English"];
+                            questionViewModel.Image_Hindi = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_Hindi"];
+                            questionViewModel.QuestionTypeID = Convert.ToInt32(dr["QuestionTypeId"]);
+                            answerList = dr["Answer"].ToString().Split(',').Select(s => s.ToString()).ToList();
+                            questionViewModel.Options = new List<OptionViewModel>();
+                            foreach (var optionItem in optionList)
+                            {
+                                OptionViewModel optionViewModel = new OptionViewModel();
+                                optionViewModel.QuestionID = Convert.ToInt32(dr["QuestionId"]);
+                                optionViewModel.OptionID = optionItem.Key;
+                                optionViewModel.Option = optionItem.Value;
+                                if (answerList.Any(a => a == optionItem.Value))
+                                    optionViewModel.IsAnswer = true;
+                                else
+                                    optionViewModel.IsAnswer = false;
+                                questionViewModel.Options.Add(optionViewModel);
+                            }
+                            questionViewModel.QuestionType = new QuestionTypeViewModel()
+                            {
+                                QuestionTypeID = Convert.ToInt32(dr["QuestionTypeId"]),
+                                QuestionType = dr["QuestionType"].ToString()
+                            };
+                            quizViewModel.Questions.Add(questionViewModel);
                         }
-                        questionViewModel.QuestionType = new QuestionTypeViewModel()
-                        {
-                            QuestionTypeID = Convert.ToInt32(dr["QuestionTypeId"]),
-                            QuestionType = dr["QuestionType"].ToString()
-                        };
-                        quizViewModel.Questions.Add(questionViewModel);
                     }
                 }
+                return quizViewModel;
             }
-            return quizViewModel;
+            else {
+                return null;
+            }
         }
 
         public string SubmitQuiz(QuizViewModel QuizViewModel)
@@ -188,7 +199,11 @@ namespace DataAccessLayer
 
             List<SqlParameter> sqlParameterList = new List<SqlParameter>();
             sqlParameterList.Add(new SqlParameter("@StudentResponseDetails", dtStudentResponse));
-            return DGeneric.RunSP_ExecuteNonQuery("sp_AddStudentResponse", sqlParameterList);
+            DGeneric.RunSP_ExecuteNonQuery("sp_AddStudentResponse", sqlParameterList);
+
+            string strquery = string.Format(@"UPDATE EligibleStudent SET TestStatusID = {2} WHERE OnlineTestID={0} and StudentID in ({1});", QuizViewModel.OnlineTestID, QuizViewModel.StudentID, '3');
+            DGeneric.ExecQuery(strquery);
+            return "Success";
         }
     }
 }
