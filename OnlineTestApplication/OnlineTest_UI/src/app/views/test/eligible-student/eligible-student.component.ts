@@ -24,10 +24,12 @@ export class EligibleStudentComponent implements OnInit {
   //eligibleStudentArray=[];
   eligibleStudentArray: any = [];
   buttonState: any;
+  selectedCount:number=0;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private helperSvc: HelperService 
+    private helperSvc: HelperService
   ) { }
 
   ngOnInit() {
@@ -46,13 +48,16 @@ export class EligibleStudentComponent implements OnInit {
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
           this.eligibleStudentModel.filter(f => f.IsEligible).forEach(element => {
+          this.selectedCount += 1; 
                 this.eligibleStudentArray.push({
                   OnlineTestID: element.OnlineTestID,
                   StudentID: element.StudentID, EnrollmentNo: element.EnrollmentNo, StudentName: element.StudentName,
                   Gender: element.Gender, MobileNumber: element.MobileNumber, FatherMobileNo: element.FatherMobileNo,
-                  IsEligible: element.IsEligible
+                  IsEligible: element.IsEligible,TestStatusID: element.TestStatusID
                 });
               });
+              this.selection.selected.length = this.selectedCount;
+              this.isAllSelected();
         }
       }, error => {
        // alert('error');
@@ -79,10 +84,11 @@ export class EligibleStudentComponent implements OnInit {
   }
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
+    debugger;
+    //const numSelected = this.selection.selected.length;
+    //const numRows = this.dataSource.data.length;
 
-    return numSelected === numRows;
+    return this.selection.selected.length === this.dataSource.data.length ? true : false;
   }
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
@@ -91,11 +97,12 @@ export class EligibleStudentComponent implements OnInit {
     if (!this.isAllSelected()) {
       this.eligibleStudentArray.length = 0;
       this.dataSource.data.forEach(row => {
+        row.TestStatusID=1;
         this.eligibleStudentArray.push({
           OnlineTestID: row.OnlineTestID,
           StudentID: row.StudentID, EnrollmentNo: row.EnrollmentNo, StudentName: row.StudentName,
           Gender: row.Gender, MobileNumber: row.MobileNumber, FatherMobileNo: row.FatherMobileNo,
-          IsEligible: row.IsEligible
+          IsEligible: row.IsEligible,TestStatusID: row.TestStatusID
         });
       });
     }
@@ -112,14 +119,23 @@ export class EligibleStudentComponent implements OnInit {
   pushEligibleStudent(data, isChecked) {
     debugger;
     if (isChecked.checked) {
+      data.TestStatusID = 1;
+     if(this.eligibleStudentArray.filter(f=>f.StudentID === data.StudentID).length > 0){
+      this.eligibleStudentArray[this.eligibleStudentArray.findIndex(f=>f.StudentID===data.StudentID)] = data;
+     }
+     else{
       this.eligibleStudentArray.push({
         StudentID: data.StudentID, OnlineTestID: data.OnlineTestID
-        , EnrollmentNo: data.EnrollmentNo, StudentName: data.StudentName,
-        Gender: data.Gender, MobileNumber: data.MobileNumber, FatherMobileNo: data.FatherMobileNo
+        ,EnrollmentNo: data.EnrollmentNo, StudentName: data.StudentName,
+        Gender: data.Gender, MobileNumber: data.MobileNumber, FatherMobileNo: data.FatherMobileNo,
+        IsEligible: data.IsEligible,TestStatusID: data.TestStatusID
       });
     }
+    }
     else {
-      this.eligibleStudentArray = this.eligibleStudentArray.filter(f => f.StudentID !== data.StudentID);
+      data.TestStatusID = 0;
+      //this.eligibleStudentArray = this.eligibleStudentArray.filter(f => f.StudentID !== data.StudentID);
+      this.eligibleStudentArray[this.eligibleStudentArray.findIndex(f=>f.StudentID===data.StudentID)] = data;
     }
     this.buttonState = this.eligibleStudentArray.length > 0 ? false : true;
   }
