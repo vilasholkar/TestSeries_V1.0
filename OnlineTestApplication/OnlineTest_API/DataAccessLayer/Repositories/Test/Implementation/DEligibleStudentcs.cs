@@ -17,18 +17,19 @@ namespace DataAccessLayer
             sqlParameterList.Add(new SqlParameter("@OnlineTestID", OnlineTestID));
             DataTable dt = DGeneric.RunSP_ReturnDataSet("sp_GetEligibleStudent", sqlParameterList, null).Tables[0];
             if (dt.Rows.Count > 0)
-                //return DGeneric.BindDataList<EligibleStudentViewModel>(dt);
-                return dt.AsEnumerable().Select(s => new EligibleStudentViewModel()
-                {
-                    StudentID = Convert.ToInt32(s["StudentID"]),
-                    OnlineTestID = Convert.ToInt32(s["OnlineTestID"]),
-                    EnrollmentNo = (s["EnrollmentNo"]).ToString(),
-                    StudentName = (s["StudentName"]).ToString(),
-                    Gender = (s["Gender"]).ToString(),
-                    MobileNumber = (s["MobileNumber"]).ToString(),
-                    FatherMobileNo = (s["FatherMobileNo"]).ToString(),
-                    IsEligible = Convert.ToBoolean((s["IsEligible"])),
-                }).ToList();
+                return DGeneric.BindDataList<EligibleStudentViewModel>(dt);
+                //return dt.AsEnumerable().Select(s => new EligibleStudentViewModel()
+                //{
+                //    StudentID = Convert.ToInt32(s["StudentID"]),
+                //    OnlineTestID = Convert.ToInt32(s["OnlineTestID"]),
+                //    EnrollmentNo = (s["EnrollmentNo"]).ToString(),
+                //    StudentName = (s["StudentName"]).ToString(),
+                //    Gender = (s["Gender"]).ToString(),
+                //    MobileNumber = (s["MobileNumber"]).ToString(),
+                //    FatherMobileNo = (s["FatherMobileNo"]).ToString(),
+                //    IsEligible = Convert.ToBoolean((s["IsEligible"])),
+                //    TestStatusID = Convert.ToInt32(s["TestStatusID"])
+                //}).ToList();
             else
                 return new List<EligibleStudentViewModel>();
            
@@ -42,7 +43,7 @@ namespace DataAccessLayer
             dt.Columns.Add("TestStatusID", typeof(int));
             foreach (var item in EligibleStudentData)
             {
-                dt.Rows.Add(item.OnlineTestID, item.StudentID, Convert.ToInt32(item.IsEligible));
+                dt.Rows.Add(item.OnlineTestID, item.StudentID, item.TestStatusID);
             }
             List<SqlParameter> sqlParameterList = new List<SqlParameter>();
             sqlParameterList.Add(new SqlParameter("@EligibleStudentDetails", dt));
