@@ -1,5 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { DatePipe } from "@angular/common";
 import { StudentOnlineTestService } from '../../../services/student/student-online-test.service';
 import { StudentOnlineTest } from '../../../models/student';
 import { Router } from '@angular/router';
@@ -8,12 +9,15 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { HelperService } from "../../../services/helper.service";
 import { APIUrl } from "../../../shared/API-end-points";
 import {FormBuilder, FormGroup} from '@angular/forms';
+import * as moment from 'moment';
+
 @Component({
   selector: 'app-view-online-test',
   templateUrl: './view-online-test.component.html',
   styleUrls: ['./view-online-test.component.scss']
 })
 export class ViewOnlineTestComponent implements OnInit {
+  newdate:Date=new Date();
   RedirectToURL:string;
   studentOnlineTest: StudentOnlineTest;
   studentOnlineTest1: StudentOnlineTest[] = null;
@@ -67,15 +71,16 @@ export class ViewOnlineTestComponent implements OnInit {
         alert('error');
         console.log(error);
       });
-
   }
   getOnlineTestByStudentID1(StudentID: any) {
+    debugger;
     this.helperSvc.getService(APIUrl.GetOnlineTestByStudentID+"?StudentID="+StudentID)
       .subscribe(res => {
         if (res.Message === 'Success') {
           // var data=res.Object as StudentOnlineTest[];
-          // data.filter(f=>f.TestStatus==1)
-          this.dataSource = new MatTableDataSource(res.Object.filter(f=>f.TestStatusID==1) as StudentOnlineTest[]);
+          console.log(moment('21/01/2019').format('DD/MM/YYYY') >=moment().format('DD/MM/YYYY'));
+          var data= res.Object.filter(f=>f.TestStatusID==1 && moment(f.StartDate).format('DD/MM/YYYY') <=moment().format('DD/MM/YYYY') && moment(f.EndDate).format('DD/MM/YYYY') >=moment().format('DD/MM/YYYY')) as StudentOnlineTest[]
+          this.dataSource = new MatTableDataSource(data);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
         }
