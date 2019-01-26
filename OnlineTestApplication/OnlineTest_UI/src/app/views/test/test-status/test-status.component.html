@@ -92,7 +92,7 @@
     </div>
     <br>
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-4" *ngIf="false">
             <mat-form-field>
                 <mat-select placeholder="Test Status" name="TestStatus" [(ngModel)]="selectedValue">
                     <mat-option *ngFor="let ts of TestStatus" [value]="ts.TestStatusID">
@@ -102,7 +102,6 @@
             </mat-form-field>
         </div>
         <div class="col-sm-4">
-
             <button mat-raised-button color="primary" [disabled]="buttonState" (click)="addEligibleStudent()" style="outline: 0px;">
                 <mat-icon aria-label="Example icon-button with a heart icon">save</mat-icon>
                 Save

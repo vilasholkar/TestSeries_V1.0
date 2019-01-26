@@ -8,7 +8,7 @@ import { MatSnackBar } from "@angular/material";
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { HelperService } from '../../../services/helper.service'
-
+import * as moment from 'moment';
 @Component({
   selector: 'app-online-test',
   templateUrl: './online-test.component.html',
@@ -29,9 +29,9 @@ export class OnlineTestComponent implements OnInit {
   onlineTestModel: any = {};
   dropdownSettings = {};
   Title:any;
-  public minStartDate = new Date();
+  public minStartDate = moment().format('DD/MM/YYYY');
   public maxStartDate = new Date(2020, 3, 25);
-  public minEndDate =new Date();
+  public minEndDate =moment().format('DD/MM/YYYY');
   public maxEndDate = new Date(2020, 3, 25);
   dataSource: any = [];
   displayedColumns = ['TestNo', 'TestName', 'TestSeries', 'TestType', 'Duration', 'StartDate', 'TestMarks','button'];
