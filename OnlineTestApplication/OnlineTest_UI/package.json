@@ -49,7 +49,7 @@
     "font-awesome": "^4.7.0",
     "html2canvas": "^1.0.0-alpha.12",
     "jspdf": "^1.4.1",
-    "moment": "^2.22.2",
+    "moment": "^2.23.0",
     "mutationobserver-shim": "^0.3.2",
     "ng-pick-datetime": "6.0.16",
     "ng-pick-datetime-moment": "1.0.7",
