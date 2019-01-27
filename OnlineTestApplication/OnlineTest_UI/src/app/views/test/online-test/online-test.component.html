@@ -145,7 +145,7 @@
                             <input  matInput placeholder="Start Date"name="StartDate" [min]="minStartDate" [max]="maxStartDate"
                              autocomplete="off"required    #StartDate="ngModel"   [(ngModel)]="onlineTestModel.StartDate "
                             [owlDateTimeTrigger]="dt1" [owlDateTime]="dt1">
-                            <owl-date-time #dt1 [pickerType]="'calendar'" ></owl-date-time>
+                            <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
                             <mat-error *ngIf="StartDate.invalid && (StartDate.dirty || StartDate.touched)">
                               <mat-error *ngIf="StartDate.errors.required">Start Date is required.</mat-error>
                             </mat-error>
@@ -346,11 +346,11 @@
                         </ng-container>
                         <ng-container matColumnDef="TestSeries">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Series </th>
-                            <td mat-cell *matCellDef="let element"> {{element.TestSeriesName}} </td>
+                            <td mat-cell *matCellDef="let element"> {{element.TestSeries}} </td>
                         </ng-container>
                         <ng-container matColumnDef="TestType">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Type </th>
-                            <td mat-cell *matCellDef="let element"> {{element.TestTypeName}} </td>
+                            <td mat-cell *matCellDef="let element"> {{element.TestType}} </td>
                         </ng-container>
                         <ng-container matColumnDef="Duration">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Duration </th>
