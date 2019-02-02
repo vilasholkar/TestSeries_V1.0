@@ -50,7 +50,7 @@ export class ViewOnlineTestComponent implements OnInit {
   redirectToTest(TestId:any)
   {
     this.RedirectToURL="/#/test/quiz/"+TestId;
-    window.open(this.RedirectToURL, '_blank', 'location=yes,height=700,width=1200,scrollbars=yes,status=yes');
+    window.open(this.RedirectToURL, '_blank', 'location=no,addressbar=no,height=700,width=1200,scrollbars=yes,status=yes');
     this.router.navigate(['/dashboard']);
   }
   applyFilter(filterValue: string) {
