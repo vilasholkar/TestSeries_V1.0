@@ -93,7 +93,7 @@
                                 <!-- <a mat-button routerLink="/result/result-analysis/{{element.StudentID}}/{{element.TestID}}" color="primary">Detail
                                     Analysis
                                 </a> -->
-                                <a mat-icon-button color="warn" routerLink="/result/result-analysis/{{element.StudentID}}/{{element.TestID}}">
+                                <a mat-icon-button color="warn"  (click)="goto(element.StudentID,element.TestID)">
                                     <mat-icon aria-label="icon">insert_chart_outlined</mat-icon>
                                 </a>
                             </td>

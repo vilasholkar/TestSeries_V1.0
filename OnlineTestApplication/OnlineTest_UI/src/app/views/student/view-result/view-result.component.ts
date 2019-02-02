@@ -4,6 +4,7 @@ import { OT_Result } from '../../../models/result';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { HelperService } from '../../../services/helper.service'
 import { APIUrl } from "../../../shared/API-end-points";
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-view-result',
   templateUrl: './view-result.component.html',
@@ -22,7 +23,8 @@ export class ViewResultComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   constructor(
-    private helperSvc: HelperService 
+    private helperSvc: HelperService ,
+    private router : Router
   ) { }
 
   ngOnInit() {
@@ -36,6 +38,14 @@ export class ViewResultComponent implements OnInit {
       this.GetOnlineTestResultByStudentID(sessionStudentID);
      //this.GetOnlineTestResultByStudentID(5110);
     }
+  }
+
+  goto(StudentID,TestID)
+  {
+    ///result/result-analysis/
+    debugger
+    this.router.navigate(['/result/result-analysis/'+StudentID+'/'+TestID], { queryParams: {StudentID:StudentID, TestID:TestID} , skipLocationChange: true});
+
   }
   ngOnChanges() {
     if(!!this.StudentID){
