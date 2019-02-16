@@ -21,3 +21,18 @@ table {
 .mat-column-select {
   overflow: initial;
 }
+.no-results {
+  display: flex;
+  justify-content: center;
+  padding: 14px;
+  font-size: 14px;
+  font-style: italic;
+ 
+}
+html
+{
+  top: 0px !important;
+}
+.cdk-overlay-container {
+  z-index: 10001 !important;
+  }
