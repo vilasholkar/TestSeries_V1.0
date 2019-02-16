@@ -1,7 +1,7 @@
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule, HttpClient,HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
@@ -12,6 +12,7 @@ import { AuthInterceptor } from './shared/auth-guard/auth.interceptors'
 // Import Services
 import { UserService } from './services/auth-service/user.service'
 import { HelperService } from './services/helper.service'
+import { ImageDialogComponent } from './views/master/image-dialog/image-dialog.component'
 
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -28,7 +29,7 @@ import { RegisterComponent } from './views/register/register.component';
 const APP_CONTAINERS = [
   DefaultLayoutComponent
 ];
-import { AppAsideModule,AppBreadcrumbModule,AppHeaderModule,AppFooterModule,AppSidebarModule,} from '@coreui/angular';
+import { AppAsideModule, AppBreadcrumbModule, AppHeaderModule, AppFooterModule, AppSidebarModule, } from '@coreui/angular';
 
 // Import routing module
 import { AppRoutingModule } from './app.routing';
@@ -48,7 +49,7 @@ import { CustomMaterialModule } from "./custommaterial.module";
     AppRoutingModule,
     AppAsideModule,
     AppBreadcrumbModule.forRoot(),
-    AppFooterModule,  
+    AppFooterModule,
     AppHeaderModule,
     AppSidebarModule,
     PerfectScrollbarModule,
@@ -58,32 +59,39 @@ import { CustomMaterialModule } from "./custommaterial.module";
     HttpClientModule,
     NgxSpinnerModule,
     ToastrModule.forRoot({
-      timeOut: 1250,
+      timeOut: 5000,
+      positionClass: 'toast-top-center',
+      preventDuplicates: true,
     }),
     CustomMaterialModule
-   // AmazingTimePickerModule
-    ],
+    // AmazingTimePickerModule
+  ],
   declarations: [
     AppComponent,
     ...APP_CONTAINERS,
     P404Component,
     P500Component,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ImageDialogComponent
   ],
-   providers: [
-     UserService,HelperService,
-    //  AuthGuard,
+  entryComponents: [
+    ImageDialogComponent
+  ],
+  providers: [
+    UserService, HelperService,
+    AuthGuard,
     // {
     //   provide : HTTP_INTERCEPTORS,
     //   useClass : AuthInterceptor,
     //   multi : true
     // },
-  {
-     provide: LocationStrategy,
-     useClass: HashLocationStrategy
-   },HttpClientModule],
-    
+    {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy
+    }, HttpClientModule
+  ],
+
   bootstrap: [AppComponent],
   // providers: [{
   //   provide: LocationStrategy,

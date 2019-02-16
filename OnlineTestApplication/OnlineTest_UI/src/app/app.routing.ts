@@ -45,26 +45,26 @@ export const routes: Routes = [
   },
   {
     path: '',
-    component: DefaultLayoutComponent,
+    component: DefaultLayoutComponent,canActivate:[AuthGuard],
     data: {  
       title: 'Home'
     },
     children: [
       {
         path: 'student',
-        loadChildren: './views/student/student.module#StudentModule',
+        loadChildren: './views/student/student.module#StudentModule',canActivate:[AuthGuard]
       },
       {
         path: 'test',
-        loadChildren: './views/test/test.module#TestModule',
+        loadChildren: './views/test/test.module#TestModule',canActivate:[AuthGuard]
       },
       {
         path: 'result',
-        loadChildren: './views/result/result.module#ResultModule',
+        loadChildren: './views/result/result.module#ResultModule',canActivate:[AuthGuard]
       },
       {
         path: 'master',
-        loadChildren: './views/master/master.module#MasterModule',
+        loadChildren: './views/master/master.module#MasterModule',canActivate:[AuthGuard]
       },
       {
         path: 'base',
