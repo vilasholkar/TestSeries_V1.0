@@ -18,5 +18,9 @@ namespace ViewModels.Test
         public bool IsEligible { get; set; }
         public int TestStatusID { get; set; }
         public string TestStatus { get; set; }
+        public string Stream { get; set; }
+        public string Course { get; set; }
+        public string Batch { get; set; }
+        public string Session { get; set; }
     }
 }
