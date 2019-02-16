@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./view-result.component.scss']
 })
 export class ViewResultComponent implements OnInit {
+  IsEmpty: boolean = false;
   PaginationConfig:any;
   @Input() StudentID: any;
   //Element For Material
@@ -59,6 +60,7 @@ export class ViewResultComponent implements OnInit {
           this.dataSource = new MatTableDataSource(res.Object as OT_Result[]);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
+          !this.dataSource.filteredData.length ? this.IsEmpty = true : this.IsEmpty = false;
         }
       }, error => {
         alert('error');
@@ -74,5 +76,6 @@ export class ViewResultComponent implements OnInit {
   }
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    !this.dataSource.filteredData.length ? this.IsEmpty = true : this.IsEmpty = false;
   }
 }

@@ -30,15 +30,15 @@
             </ng-container>
             <ng-container matColumnDef="TestSeriesName">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Series </th>
-              <td mat-cell *matCellDef="let element"> {{element.TestSeriesName}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.TestSeries}} </td>
             </ng-container>
             <ng-container matColumnDef="TestTypeName">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Type </th>
-              <td mat-cell *matCellDef="let element"> {{element.TestTypeName}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.TestType}} </td>
             </ng-container>
             <ng-container matColumnDef="TestDuration">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Duration </th>
-              <td mat-cell *matCellDef="let element"> {{element.TestDuration}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.TestDuration/60}} Min </td>
             </ng-container>
             <ng-container matColumnDef="StartDate">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> StartDate </th>
@@ -68,6 +68,9 @@
             </tr>
           </table>
         </perfect-scrollbar>
+        <div class="no-results" *ngIf="IsEmpty">
+          No results
+        </div>
         <mat-paginator [pageSizeOptions]="PaginationConfig" showFirstLastButtons #paginator="matPaginator"></mat-paginator>
       </div>
     </div>
@@ -96,15 +99,15 @@
             </ng-container>
             <ng-container matColumnDef="TestSeriesName">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Series </th>
-              <td mat-cell *matCellDef="let element"> {{element.TestSeriesName}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.TestSeries}} </td>
             </ng-container>
             <ng-container matColumnDef="TestTypeName">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Type </th>
-              <td mat-cell *matCellDef="let element"> {{element.TestTypeName}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.TestType}} </td>
             </ng-container>
             <ng-container matColumnDef="TestDuration">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Duration </th>
-              <td mat-cell *matCellDef="let element"> {{element.TestDuration}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.TestDuration/60}} Min </td>
             </ng-container>
             <ng-container matColumnDef="StartDate">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> StartDate </th>
@@ -131,6 +134,9 @@
             </tr>
           </table>
         </perfect-scrollbar>
+        <div class="no-results" *ngIf="IsEmpty1">
+          No results
+        </div>
         <mat-paginator [pageSizeOptions]=PaginationConfig showFirstLastButtons #paginator1="matPaginator"></mat-paginator>
       </div>
     </div>
