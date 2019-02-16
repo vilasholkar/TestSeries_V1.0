@@ -6,9 +6,9 @@ export class StudentOnlineTest {
     OnlineTestID: any;
     OnlineTestNo: any;
     TestSeriesID: any;
-    TestSeriesName: any;
+    TestSeries: any;
     TestTypeID: any;
-    TestTypeName: any;
+    TestType: any;
     TestName: any;
     TestDuration: any;
     SessionID: any;
@@ -39,9 +39,9 @@ export class StudentOnlineTest {
         this.OnlineTestID = data.OnlineTestID;
         this.OnlineTestNo = data.OnlineTestNo;
         this.TestSeriesID = data.TestSeriesID;
-        this.TestSeriesName = data.TestSeriesName;
+        this.TestSeries = data.TestSeries;
         this.TestTypeID = data.TestTypeID;
-        this.TestTypeName = data.TestTypeName;
+        this.TestType = data.TestType;
         this.TestName = data.TestName;
         this.TestDuration = data.TestDuration;
         this.SessionID = data.SessionID;

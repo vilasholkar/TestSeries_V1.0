@@ -9,21 +9,31 @@ export class AuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot):  boolean {
-      if (sessionStorage.getItem('userToken') != null)
+      if (sessionStorage.getItem('UserID'))
       {
-        let roles = next.data["roles"] as Array<string>;
-        if (roles) {
-          var match = this.userService.roleMatch(roles);
-          if (match) return true;
-          else {
-            this.router.navigate(['/404']);
-            return false;
-          }
-        }
-        else
-          return true;
+        return true;
       }
+     else if (sessionStorage.getItem('StudentID'))
+      {
+        return true;
+      }
+      // if (sessionStorage.getItem('userToken') != null)
+      // {
+      //   let roles = next.data["roles"] as Array<string>;
+      //   if (roles) {
+      //     var match = this.userService.roleMatch(roles);
+      //     if (match) return true;
+      //     else {
+      //       this.router.navigate(['/404']);
+      //       return false;
+      //     }
+      //   }
+      //   else
+      //     return true;
+      // }
+      else{
       this.router.navigate(['/login']);
       return false;
+    }
   }
 }

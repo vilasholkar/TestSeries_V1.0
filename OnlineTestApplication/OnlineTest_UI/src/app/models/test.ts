@@ -39,6 +39,7 @@ export interface Question {
     TestQuestionNo: any;
     QuestionTypeID: any;
     SubjectID: any;
+    Subject: any;
     IsImage: any;
     Text_English: any;
     Image_English: any;

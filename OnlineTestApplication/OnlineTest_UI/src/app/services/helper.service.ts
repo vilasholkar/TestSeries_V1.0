@@ -64,8 +64,8 @@ export class HelperService {
   }
   public notifySuccess(msg: string = null) {
     this.toasterSvc.success(msg,null,{
-      timeOut: 3000,
-      positionClass: 'toast-top-right'
+      // timeOut: 3000,
+      // positionClass: 'toast-top-right'
     });
   }
   public notifyError(msg: string = null) {
@@ -83,7 +83,7 @@ export class HelperService {
             this.ngxSpinnerSvc.hide();
           },
           err => {
-            this.errorHandler(err.error);
+            this.errorHandler(err);
             observer.error(err);
             observer.complete();
             this.ngxSpinnerSvc.hide();
@@ -101,7 +101,7 @@ export class HelperService {
         this.ngxSpinnerSvc.hide();
       },
         (err) => {
-          this.errorHandler(err.error);
+          this.errorHandler(err);
           observer.complete();
           this.ngxSpinnerSvc.hide();
         }
@@ -110,24 +110,24 @@ export class HelperService {
 
   }
   public errorHandler(error) {
-    switch (error.code) {
+    switch (error.status) {
       case 400:
-        this.notifyError(error.detailedMessage);
+        this.notifyError(error.error.ExceptionMessage);
         break;
       case 401:
-        this.notifyError(error.detailedMessage);
+        this.notifyError(error.error.ExceptionMessage);
         break;
       case 402:
-        this.notifyError(error.detailedMessage);
+        this.notifyError(error.error.ExceptionMessage);
         break;
       case 403:
-        this.notifyError(error.detailedMessage);
+        this.notifyError(error.error.ExceptionMessage);
         break;
       case 404:
-        this.notifyError(error.detailedMessage);
+        this.notifyError(error.error.ExceptionMessage);
         break;
       case 500:
-        this.notifyError('Some Error Occured.');
+        this.notifyError(error.error.ExceptionMessage);
         break;
       default:
         this.notifyError('Some Error Occured.');
