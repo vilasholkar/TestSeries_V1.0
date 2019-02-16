@@ -62,17 +62,17 @@ namespace DataAccessLayer
             sqlParameterList.Add(new SqlParameter("TestDuration", !string.IsNullOrEmpty(objOnlineTest.TestDuration) ? objOnlineTest.TestDuration : string.Empty));
             sqlParameterList.Add(new SqlParameter("SessionID", objOnlineTest.SessionID));
             sqlParameterList.Add(new SqlParameter("StreamID", string.Join(",", objOnlineTest.StreamID)));
-            sqlParameterList.Add(new SqlParameter("CourseID", string.Join(",", objOnlineTest.CourseID)));
-            sqlParameterList.Add(new SqlParameter("BatchID", string.Join(",", objOnlineTest.BatchID)));
+            sqlParameterList.Add(new SqlParameter("CourseID", objOnlineTest.CourseID != null ? objOnlineTest.CourseID.Length > 0 ? string.Join(",", objOnlineTest.CourseID) : string.Empty : string.Empty));
+            sqlParameterList.Add(new SqlParameter("BatchID", objOnlineTest.BatchID != null ? objOnlineTest.BatchID.Length > 0 ? string.Join(",", objOnlineTest.BatchID) : string.Empty : string.Empty));
             sqlParameterList.Add(new SqlParameter("SubjectID", objOnlineTest.SubjectID));
             sqlParameterList.Add(new SqlParameter("Topic", !string.IsNullOrEmpty(objOnlineTest.Topic) ? objOnlineTest.Topic : string.Empty));
             sqlParameterList.Add(new SqlParameter("Instructions", !string.IsNullOrEmpty(objOnlineTest.Instructions) ? objOnlineTest.Instructions : string.Empty));
             sqlParameterList.Add(new SqlParameter("TestMarks", !string.IsNullOrEmpty(objOnlineTest.TestMarks) ? objOnlineTest.TestMarks : string.Empty));
             sqlParameterList.Add(new SqlParameter("PassingPercentage", !string.IsNullOrEmpty(objOnlineTest.PassingPercentage) ? objOnlineTest.PassingPercentage : string.Empty));
             sqlParameterList.Add(new SqlParameter("IsNegativeMarking", objOnlineTest.IsNegativeMarking));
-            sqlParameterList.Add(new SqlParameter("StartDate", objOnlineTest.StartDate));
+            sqlParameterList.Add(new SqlParameter("StartDate", objOnlineTest.StartDate.AddDays(1).Date));
             sqlParameterList.Add(new SqlParameter("StartTime", !string.IsNullOrEmpty(objOnlineTest.StartTime) ? objOnlineTest.StartTime : string.Empty));
-            sqlParameterList.Add(new SqlParameter("EndDate", objOnlineTest.EndDate));
+            sqlParameterList.Add(new SqlParameter("EndDate", objOnlineTest.EndDate.AddDays(1).Date));
             sqlParameterList.Add(new SqlParameter("EndTime", !string.IsNullOrEmpty(objOnlineTest.EndTime) ? objOnlineTest.EndTime : string.Empty));
             sqlParameterList.Add(new SqlParameter("IsVisible", objOnlineTest.IsVisible));
             sqlParameterList.Add(new SqlParameter("IsActive", true));
@@ -196,7 +196,7 @@ namespace DataAccessLayer
             DataTable dt = DGeneric.RunSP_ReturnDataSet("sp_GetQuiz", paramerterList, null).Tables[0];
             QuizViewModel quizViewModel = new QuizViewModel();
             quizViewModel.Questions = new List<QuestionViewModel>();
-            if (dt.Rows.Count > 0)
+            if (dt.Rows.Count > 1)
             {
                 foreach (DataRow dr in dt.Rows)
                 {
@@ -213,6 +213,8 @@ namespace DataAccessLayer
 
                         QuestionViewModel questionViewModel = new QuestionViewModel();
                         questionViewModel.QuestionID = Convert.ToInt32(dr["QuestionId"]);
+                        questionViewModel.TestQuestionNo = dr["TestQuestionNo"].ToString();
+                        questionViewModel.Subject = dr["Subject"].ToString();
                         questionViewModel.Image_English = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_English"];
                         questionViewModel.Image_Hindi = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_Hindi"];
                         questionViewModel.CorrectAnswer = dr["Answer"].ToString();
@@ -222,14 +224,18 @@ namespace DataAccessLayer
                     {
                         QuestionViewModel questionViewModel = new QuestionViewModel();
                         questionViewModel.QuestionID = Convert.ToInt32(dr["QuestionId"]);
+                        questionViewModel.TestQuestionNo = dr["TestQuestionNo"].ToString();
+                        questionViewModel.Subject = dr["Subject"].ToString();
                         questionViewModel.Image_English = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_English"];
                         questionViewModel.Image_Hindi = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_Hindi"];
                         questionViewModel.CorrectAnswer = dr["Answer"].ToString();
                         quizViewModel.Questions.Add(questionViewModel);
                     }
                 }
+                return quizViewModel;
             }
-            return quizViewModel;
+            else
+                return quizViewModel = null;
         }
         public List<StudentOnlineTestViewModel> GetOnlineTestByStudentID(int StudentID)
         {

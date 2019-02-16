@@ -44,6 +44,8 @@ namespace DataAccessLayer
                             quizViewModel.Instructions = dr["Instructions"].ToString();
                             QuestionViewModel questionViewModel = new QuestionViewModel();
                             questionViewModel.QuestionID = Convert.ToInt32(dr["QuestionId"]);
+                            questionViewModel.TestQuestionNo = dr["TestQuestionNo"].ToString();
+                            questionViewModel.Subject = dr["Subject"].ToString();
                             questionViewModel.SubjectID = Convert.ToInt32(dr["SubjectID"]);
                             questionViewModel.Image_English = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_English"];
                             questionViewModel.Image_Hindi = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_Hindi"];
