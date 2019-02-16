@@ -6,7 +6,17 @@
     <p style="padding-top:5px; font-size: 15px; color: black">Please Wait...</p>
   </ngx-spinner> 
 <div class="animated fadeIn">
-    <button mat-raised-button color="primary"id="downloadButton" type="button" value="Download Result" (click)="ConvertToPDF()">Download</button>
+    <div class="button-row">
+    <!-- <a mat-stroked-button color="primary" matTooltip="back to result"  routerLink="../../../../result/result">
+      <mat-icon aria-label="icon" color="primary">keyboard_backspace</mat-icon>
+    </a> -->
+    <button mat-stroked-button color="primary" id="downloadButton" type="button" value="Download Result" (click)="ConvertToPDF()">
+      Download
+      <mat-icon aria-label="icon" color="primary">cloud_download</mat-icon>
+    </button>
+    </div>
+  <hr/>
+    
   <div id="contentToConvert">
   <div class="row">
     <div class="col-sm-12">

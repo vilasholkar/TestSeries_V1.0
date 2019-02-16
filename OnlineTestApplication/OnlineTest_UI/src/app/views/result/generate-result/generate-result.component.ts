@@ -9,7 +9,7 @@ import { APIUrl } from "../../../shared/API-end-points";
   styleUrls: ['./generate-result.component.scss']
 })
 export class GenerateResultComponent implements OnInit {
-  IsEmpty:boolean=false;
+  IsEmpty: boolean = false;
   PaginationConfig: any;
   data: OnlineTest[];
   displayedColumns: string[] = ['OnlineTestNo', 'TestName', 'TestSeriesName', 'TestTypeName', 'TestDuration', 'StartDate', 'EndDate', 'TestMarks', 'button'];
@@ -32,33 +32,34 @@ export class GenerateResultComponent implements OnInit {
           this.dataSource = new MatTableDataSource(res.Object as OnlineTest[]);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
-          !this.dataSource.data.length ?this.IsEmpty=true:this.IsEmpty=false;
+          !this.dataSource.data.length ? this.IsEmpty = true : this.IsEmpty = false;
         }
       }, error => {
         alert('error');
         console.log(error);
       });
   }
-  generateResultAnalysis(data:any)
-  {
+  generateResultAnalysis(data: any) {
     debugger;
-    this.helperSvc.getService(APIUrl.GenerateResultAnalysis+"?TestID="+data.OnlineTestID)
-      .subscribe(res => {
-        
+    if (confirm("Are you sure want to generate " + data.TestName+ " Result")) {
+      this.helperSvc.getService(APIUrl.GenerateResultAnalysis + "?TestID=" + data.OnlineTestID)
+        .subscribe(res => {
+
           // this.data = res.Object as OnlineTest[];
           // this.data= this.data.filter(option => option.EndDate.toLowerCase().indexOf("2018-08-24") === 0)
           // this.dataSource = new MatTableDataSource(res.Object as OnlineTest[]);
           // this.dataSource.paginator = this.paginator;
           // this.dataSource.sort = this.sort;
-        this.helperSvc.notifySuccess(res);
+          this.helperSvc.notifySuccess(res);
 
-      }, error => {
-        alert('error');
-        console.log(error);
-      });
+        }, error => {
+          alert('error');
+          console.log(error);
+        });
+    }
   }
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
-    !this.dataSource.filteredData.length ?this.IsEmpty=true:this.IsEmpty=false;
+    !this.dataSource.filteredData.length ? this.IsEmpty = true : this.IsEmpty = false;
   }
 }
