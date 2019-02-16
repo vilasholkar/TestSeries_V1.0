@@ -1,158 +1,173 @@
-  <br>
-  <button id="btnAddNew" mat-raised-button color="basic" (click)="changeShowStatus()" style="outline: 0px;">
-        <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
-        Add New
-    </button>
-      <hr>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="#fff" type="ball-spin-clockwise-fade">
+  <p style="padding-top:5px; font-size: 15px; color: black">Please Wait...</p>
+</ngx-spinner>
 
-      <div class="row" *ngIf="showAddDiv">
-        <div class="col-sm-12">
-          <div class="card">
-            <div class="card-header">
-              <strong class="card-title">{{Title}}</strong>
+<button mat-stroked-button id="btnAddNew" *ngIf="btnAddNew" color="primary" (click)="changeShowStatus()" style="outline: 0px;">
+  Add New
+</button>
+<hr>
+<div class="row" *ngIf="showAddDiv">
+  <div class="col-sm-12">
+    <div class="mat-elevation-z8">
+      <div class="card card-accent-primary">
+        <div class="card-header">
+          <strong class="card-title" style="line-height:40px;font-size: 18px;font-weight: 500">{{Title}}</strong>
+          <a mat-icon-button color="primary" class="float-right" (click)="this.showAddDiv=false;this.btnAddNew=true;">
+            <mat-icon aria-label="icon">cancel</mat-icon>
+          </a>
+        </div>
+        <div class="card-body">
+          <form id="OnlineTestForm" name="Form" (ngSubmit)="addOnlineTest()" #onlineTestForm="ngForm">
+            <div class="row">
+              <div class="col-sm-4">
+                <mat-form-field class="example-full-width">
+                  <input [(ngModel)]="onlineTestModel.TestName" name="TestName" autocomplete="off" #TestName="ngModel"
+                    required matInput placeholder="Test Name" type="text" maxlength="20">
+                  <mat-error *ngIf="TestName.invalid && (TestName.dirty || TestName.touched)">
+                    <mat-error *ngIf="TestName.errors.required">Test Name is required.</mat-error>
+                    <mat-error *ngIf="TestName.errors.maxlength">Reaches maximum limit.</mat-error>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <mat-form-field>
+                    <mat-select [(ngModel)]="onlineTestModel.TestSeriesID" name="TestSeriesID" #TestSeriesID="ngModel"
+                      placeholder="Test Series" required>
+                      <mat-option *ngFor="let testseries of testSeries" [value]="testseries.TestSeriesID">
+                        {{testseries.TestSeries}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="TestSeriesID.invalid && (TestSeriesID.dirty || TestSeriesID.touched)">
+                      <mat-error *ngIf="TestSeriesID.errors.required">Test Series is required.</mat-error>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <mat-form-field>
+                    <mat-select [(ngModel)]="onlineTestModel.TestTypeID" name="TestTypeID" placeholder="Test Type">
+                      <mat-option *ngFor="let testtype of testType" [value]="testtype.TestTypeID">
+                        {{testtype.TestType}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
             </div>
-            <div class="card-body">
-              <form id="OnlineTestForm" name="Form" (ngSubmit)="addOnlineTest()" #onlineTestForm="ngForm">
-                  <div class="row">
-                      <div class="col-sm-4">
-                          <mat-form-field class="example-full-width">
-                              <input [(ngModel)]="onlineTestModel.TestName" name="TestName" autocomplete="off"
-                               #TestName="ngModel" required matInput placeholder="Test Name" type="text">
-                               <mat-error *ngIf="TestName.invalid && (TestName.dirty || TestName.touched)">
-                                  <mat-error *ngIf="TestName.errors.required">Test Name is required.</mat-error>
-                                </mat-error>
-                            </mat-form-field>
-                      </div>
-                      <div class="col-sm-4">
-                        <div class="form-group">
-                          <mat-form-field>
-                              <mat-select [(ngModel)]="onlineTestModel.TestSeriesID" name="TestSeriesID" 
-                               #TestSeriesID="ngModel" placeholder="Test Series" required>
-                                  <mat-option *ngFor="let testseries of testSeries" [value]="testseries.TestSeriesID">
-                                      {{testseries.TestSeries}}
-                                  </mat-option>
-                              </mat-select>
-                              <mat-error *ngIf="TestSeriesID.invalid && (TestSeriesID.dirty || TestSeriesID.touched)">
-                                  <mat-error *ngIf="TestSeriesID.errors.required">Test Series is required.</mat-error>
-                                </mat-error>
-                            </mat-form-field>
-                        </div>
-                      </div>
-                      <div class="col-sm-4">
-                        <div class="form-group">
-                            <mat-form-field>
-                                <mat-select [(ngModel)]="onlineTestModel.TestTypeID" name="TestTypeID" placeholder="Test Type">
-                                    <mat-option *ngFor="let testtype of testType" [value]="testtype.TestTypeID">
-                                        {{testtype.TestType}}
-                                    </mat-option>
-                                </mat-select>
-                              </mat-form-field>
-                        </div>
-                      </div>
-                    </div>
-                <div class="row">
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                        <mat-form-field>
-                            <mat-select [(ngModel)]="onlineTestModel.SessionID" name="SessionID" 
-                             #SessionID="ngModel" placeholder="Session" required>
-                              <mat-option *ngFor="let sessions of session" [value]="sessions.SessionID">
-                                {{sessions.Session}}
-                              </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="SessionID.invalid && (SessionID.dirty || SessionID.touched)">
-                              <mat-error *ngIf="SessionID.errors.required">Session is required.</mat-error>
-                            </mat-error>
-                          </mat-form-field>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                        <mat-form-field>
-                            <mat-select [(ngModel)]="onlineTestModel.StreamID" name="StreamID"
-                             (ngModelChange)="onChangeStream($event)" [ngModelOptions]="{standalone: true}" 
-                              #StreamID="ngModel" placeholder="Stream" multiple required>
-                              <mat-option *ngFor="let stream of stream" [value]="stream.StreamID">
-                              {{stream.Stream}}
-                              </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="StreamID.invalid && (StreamID.dirty || StreamID.touched)">
-                              <mat-error *ngIf="StreamID.errors.required">Stream is required.</mat-error>
-                            </mat-error>
-                          </mat-form-field>
-                    </div>
-                  </div> 
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                        <mat-form-field>
-                            <mat-select [(ngModel)]="onlineTestModel.CourseID" name="CourseID" 
-                            (ngModelChange)="onChangeCourse($event)" [ngModelOptions]="{standalone: true}" 
-                             multiple placeholder="Course">
-                              <mat-option *ngFor="let course of course" [value]="course.CourseID">
-                                {{course.Course}}
-                              </mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                    </div>
-                  </div>
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <mat-form-field>
+                    <mat-select [(ngModel)]="onlineTestModel.SessionID" name="SessionID" #SessionID="ngModel"
+                      placeholder="Session" required>
+                      <mat-option *ngFor="let sessions of session" [value]="sessions.SessionID">
+                        {{sessions.Session}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="SessionID.invalid && (SessionID.dirty || SessionID.touched)">
+                      <mat-error *ngIf="SessionID.errors.required">Session is required.</mat-error>
+                    </mat-error>
+                  </mat-form-field>
                 </div>
-                <div class="row">
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                        <mat-form-field>
-                            <mat-select [(ngModel)]="onlineTestModel.BatchID" name="BatchID" 
-                             multiple placeholder="Batch">
-                              <mat-option *ngFor="let batch of batch" [value]="batch.BatchID">
-                                {{batch.Batch}}
-                              </mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                        <mat-form-field class="example-full-width">
-                            <input matInput placeholder="Subject">
-                          </mat-form-field>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                        <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="onlineTestModel.Topic" name="Topic" autocomplete="off" matInput placeholder="Topic" type="text">
-                          </mat-form-field>
-                    </div>
-                  </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <mat-form-field>
+                    <mat-select [(ngModel)]="onlineTestModel.StreamID" name="StreamID" (ngModelChange)="onChangeStream($event)"
+                      [ngModelOptions]="{standalone: true}" #StreamID="ngModel" placeholder="Stream" multiple required>
+                      <mat-option *ngFor="let stream of stream" [value]="stream.StreamID">
+                        {{stream.Stream}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="StreamID.invalid && (StreamID.dirty || StreamID.touched)">
+                      <mat-error *ngIf="StreamID.errors.required">Stream is required.</mat-error>
+                    </mat-error>
+                  </mat-form-field>
                 </div>
-                <div class="row">
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                        <mat-form-field class="example-full-width">
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <mat-form-field>
+                    <mat-select [(ngModel)]="onlineTestModel.CourseID" name="CourseID" (ngModelChange)="onChangeCourse($event)"
+                      [ngModelOptions]="{standalone: true}" multiple placeholder="Course">
+                      <mat-option *ngFor="let course of course" [value]="course.CourseID">
+                        {{course.Course}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <mat-form-field>
+                    <mat-select [(ngModel)]="onlineTestModel.BatchID" name="BatchID" multiple placeholder="Batch">
+                      <mat-option *ngFor="let batch of batch" [value]="batch.BatchID">
+                        {{batch.Batch}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Subject">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="onlineTestModel.Topic" name="Topic" autocomplete="off" matInput placeholder="Topic"
+                      type="text">
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <!-- <mat-form-field class="example-full-width">
                             <input [(ngModel)]="onlineTestModel.TestDuration" name="TestDuration" 
                              #TestDuration="ngModel" required autocomplete="off" type="text" 
                              matInput placeholder="Test Duration">
                              <mat-error *ngIf="TestDuration.invalid && (TestDuration.dirty || TestDuration.touched)">
                               <mat-error *ngIf="TestDuration.errors.required">Test Duration is required.</mat-error>
                             </mat-error>
-                          </mat-form-field>
-                    </div>
-                  </div>
-               
-                   <div class="col-sm-2">
-                    <div class="form-group">
-                        <mat-form-field class="example-full-width">
-                           
-                            <input  matInput placeholder="Start Date"name="StartDate" [min]="minStartDate" [max]="maxStartDate"
-                             autocomplete="off"required    #StartDate="ngModel"   [(ngModel)]="onlineTestModel.StartDate "
-                            [owlDateTimeTrigger]="dt1" [owlDateTime]="dt1">
-                            <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
-                            <mat-error *ngIf="StartDate.invalid && (StartDate.dirty || StartDate.touched)">
-                              <mat-error *ngIf="StartDate.errors.required">Start Date is required.</mat-error>
-                            </mat-error>
-                          </mat-form-field>
-                    </div>
-                  </div>  
-                  <div class="col-sm-2">
+                          </mat-form-field> -->
+                  <mat-form-field>
+                    <mat-select placeholder="Test Duration" name="TestDuration" #TestDuration="ngModel" [(ngModel)]="onlineTestModel.TestDuration"
+                      required>
+                      <mat-option *ngFor="let td of testDuration" [value]="td.TestDuration">
+                        {{td.TestDurationText}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="TestDuration.invalid && (TestDuration.dirty || TestDuration.touched)">
+                      <mat-error *ngIf="TestDuration.errors.required">TestDuration is required.</mat-error>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Start Date" name="StartDate" [min]="minStartDate" [max]="maxStartDate"
+                       (click)="picker.open()" autocomplete="off" required #StartDate="ngModel" [(ngModel)]="onlineTestModel.StartDate"
+                      [matDatepicker]="picker" (blur)="compareTwoDates()">
+                    <!-- <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle> -->
+                    <mat-datepicker #picker></mat-datepicker>
+                    <!-- <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time> -->
+                    <mat-error *ngIf="StartDate.invalid && (StartDate.dirty || StartDate.touched)">
+                      <mat-error *ngIf="StartDate.errors.required">Start Date is required.</mat-error>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <!-- <div class="col-sm-2">
                       <div class="form-group example-wrapper">
                           <mat-form-field class="example-full-width">
                                     <input matInput placeholder="Start Time"name="StartTime" autocomplete="off"required
@@ -164,26 +179,28 @@
                             </mat-error>
                             </mat-form-field>
                       </div>
-                    </div>
-                  <div class="col-sm-2">
-                  
-                         <div class="form-group">
-                        <mat-form-field class="example-full-width">
-                            <input  matInput placeholder="End Date"name="EndDate" autocomplete="off"
-                                   required  [min]="minEndDate" [max]="maxEndDate"   #EndDate="ngModel"  
-                                   [(ngModel)]="onlineTestModel.EndDate"
-                                          [owlDateTimeTrigger]="dt3" [owlDateTime]="dt3">
-                            <owl-date-time [pickerType]="'calendar'" #dt3></owl-date-time>
-                            <mat-error *ngIf="EndDate.invalid && (EndDate.dirty || EndDate.touched)">
-                              <mat-error *ngIf="EndDate.errors.required">End Date is required.</mat-error>
-                            </mat-error>
-                            <mat-error *ngIf="error.isError" >
-                              <mat-error>{{errorMessage}}</mat-error>
-                            </mat-error>
-                          </mat-form-field>
-                    </div>
-                  </div>
-                  <div class="col-sm-2">
+                    </div> -->
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="End Date" name="EndDate" autocomplete="off" required [min]="minEndDate"
+                       (click)="picker1.open()" [max]="maxEndDate" #EndDate="ngModel" [(ngModel)]="onlineTestModel.EndDate"
+                      (blur)="compareTwoDates()" [matDatepicker]="picker1">
+                    <!-- <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle> -->
+                    <mat-datepicker #picker1></mat-datepicker>
+                    <mat-error *ngIf="EndDate.invalid && (EndDate.dirty || EndDate.touched)">
+                      <mat-error *ngIf="EndDate.errors.required">End Date is required.</mat-error>
+                    </mat-error>
+                    <mat-error *ngIf="error.isError">
+                      <mat-error>{{ error.errorMessage }}</mat-error>
+                    </mat-error>
+                  </mat-form-field>
+                  <p class="text-danger" style="margin-top: -18px; font-size: 12px;" *ngIf="error.isError">
+                    {{ error.errorMessage }}
+                  </p>
+                </div>
+              </div>
+              <!-- <div class="col-sm-2">
                             <div class="form-group example-wrapper">
                           <mat-form-field class="example-full-width">
                                     <input matInput placeholder="End Time"name="EndTime" autocomplete="off"required
@@ -195,65 +212,64 @@
                             </mat-error>
                             </mat-form-field>
                       </div>
-                    </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                        <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="onlineTestModel.TestMarks" name="TestMarks"
-                             #TestMarks="ngModel" required autocomplete="off" type="text" 
-                             matInput placeholder="Test Marks">
-                             <mat-error *ngIf="TestMarks.invalid && (TestMarks.dirty || TestMarks.touched)">
-                              <mat-error *ngIf="TestMarks.errors.required">Test Marks is required.</mat-error>
-                            </mat-error>
-                          </mat-form-field>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                        <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="onlineTestModel.PassingPercentage" name="PassingPercentage" 
-                             #PassingPercentage="ngModel" required autocomplete="off"
-                              matInput placeholder="Passing Percentage">
-                              <mat-error *ngIf="PassingPercentage.invalid && (PassingPercentage.dirty || PassingPercentage.touched)">
-                                <mat-error *ngIf="PassingPercentage.errors.required">Test Marks is required.</mat-error>
-                              </mat-error>
-                          </mat-form-field>
-                    </div>
-                  </div>
-                  <div class="col-sm-2">
-                    <br>
-                      <mat-checkbox [(ngModel)]="onlineTestModel.IsNegativeMarking" 
-                      #IsNegativeMarking="ngModel" name="IsNegativeMarking">Is Negative Marking
-                    </mat-checkbox>
-                          </div>
-                <div class="col-sm-2">
-                  <br>  
-                  <mat-checkbox [(ngModel)]="onlineTestModel.IsVisible" 
-                   #IsVisible="ngModel" name="IsVisible">Is Visible
-                  </mat-checkbox>
+                    </div> -->
             </div>
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="onlineTestModel.TestMarks" name="TestMarks" #TestMarks="ngModel" required
+                      autocomplete="off" type="text" matInput placeholder="Test Marks" maxlength="5">
+                    <mat-error *ngIf="TestMarks.invalid && (TestMarks.dirty || TestMarks.touched)">
+                      <mat-error *ngIf="TestMarks.errors.required">Test Marks is required.</mat-error>
+                      <mat-error *ngIf="TestMarks.errors.maxlength">Reaches maximum limit.</mat-error>
+                    </mat-error>
+                  </mat-form-field>
                 </div>
-                <div class="row">
-                  <div class="col-sm-12">
-                    <div class="form-group">
-                        <mat-form-field class="example-full-width">
-                            <textarea [(ngModel)]="onlineTestModel.Instructions" name="Instructions" autocomplete="off" matInput placeholder="Instruction"></textarea>
-                          </mat-form-field>
-                          <!-- <input name="OnlineTestID" hidden [(ngModel)]="onlineTestModel.OnlineTestID" id="OnlineTestID" 
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="onlineTestModel.PassingPercentage" name="PassingPercentage" #PassingPercentage="ngModel"
+                      required autocomplete="off" matInput placeholder="Passing Percentage">
+                    <mat-error *ngIf="PassingPercentage.invalid && (PassingPercentage.dirty || PassingPercentage.touched)">
+                      <mat-error *ngIf="PassingPercentage.errors.required">Test Marks is required.</mat-error>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <!-- <div class="col-sm-2">
+                <br>
+                <mat-checkbox [(ngModel)]="onlineTestModel.IsNegativeMarking" #IsNegativeMarking="ngModel" name="IsNegativeMarking">Is
+                  Negative Marking
+                </mat-checkbox>
+              </div>
+              <div class="col-sm-2">
+                <br>
+                <mat-checkbox [(ngModel)]="onlineTestModel.IsVisible" #IsVisible="ngModel" name="IsVisible">Is Visible
+                </mat-checkbox>
+              </div> -->
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <mat-form-field class="example-full-width">
+                    <textarea [(ngModel)]="onlineTestModel.Instructions" name="Instructions" autocomplete="off"
+                      matInput placeholder="Instruction"></textarea>
+                  </mat-form-field>
+                  <!-- <input name="OnlineTestID" hidden [(ngModel)]="onlineTestModel.OnlineTestID" id="OnlineTestID" 
                           OnlineTestID="ngModel"  class="form-control" type="text"> -->
-                    </div>
-                  </div>
                 </div>
-                <button mat-raised-button color="primary" [disabled]="!onlineTestForm.form.valid">Save</button>
-              </form>
+              </div>
             </div>
-          </div>
+            <button mat-raised-button color="primary" [disabled]="!onlineTestForm.form.valid">Save</button>
+          </form>
         </div>
       </div>
-
-  <!-- <div class="row">
+    </div>
+  </div>
+</div>
+<!-- <div class="row">
     <div class="col-sm-12">
       <div class="card">
         <div class="card-header">
@@ -320,74 +336,118 @@
       </div>
     </div>
   </div> -->
-
-
-  <div class="animated fadeIn">
-    <div class="row" >
-        <div class="col-sm-9">
-            <h4>Test List</h4>
-        </div>
-        <div class="col-sm-3">
-            <mat-form-field>
-                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-            </mat-form-field>
-        </div>
-        <div class="col-sm-12">
-            <div class="mat-elevation-z8">
-                <!-- <perfect-scrollbar style="position: relative;width: 100%;overflow: auto;"> -->
-                    <table mat-table [dataSource]="dataSource" matSort>
-                        <ng-container matColumnDef="TestNo">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Test No </th>
-                            <td mat-cell *matCellDef="let element"> {{element.OnlineTestNo}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="TestName">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Name </th>
-                            <td mat-cell *matCellDef="let element"> {{element.TestName}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="TestSeries">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Series </th>
-                            <td mat-cell *matCellDef="let element"> {{element.TestSeries}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="TestType">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Type </th>
-                            <td mat-cell *matCellDef="let element"> {{element.TestType}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="Duration">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Duration </th>
-                            <td mat-cell *matCellDef="let element"> {{element.TestDuration}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="StartDate">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </th>
-                            <td mat-cell *matCellDef="let element"> {{element.StartDate | date: 'dd/MM/yyyy'}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="TestMarks">
-                          <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Marks </th>
-                          <td mat-cell *matCellDef="let element"> {{element.TestMarks}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="button">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
-                            <td mat-cell *matCellDef="let element">
-                                <a mat-icon-button matTooltip="View Question" color="primary" routerLink="../view-question/{{element.OnlineTestID}}"><mat-icon aria-label="icon">visibility</mat-icon></a>
-                                <a mat-icon-button matTooltip="Add Eligible Student" color="primary" routerLink="../eligible-student/{{element.OnlineTestID}}"><mat-icon aria-label="icon">person_add</mat-icon></a>
-                                <button mat-icon-button matTooltip="Edit" color="primary" (click)="getOnlineTestById(element.OnlineTestID)" aria-hidden="true" style="outline: 0px;">
-                                  <mat-icon aria-label="icon">edit</mat-icon>
-                                </button>
-                                <button mat-icon-button matTooltip="Delete" color="warn" (click)="deleteOnlineTest(element)" aria-hidden="true" style="outline: 0px;">
-                                  <mat-icon aria-label="icon">delete</mat-icon>
-                                </button>
-                            </td>
-                        </ng-container>
-
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
-                        </tr>
-                        <!-- <tr *ngIf="dataSource.data.length === 0">Nol kjlfdsl kfbsd kfjb</tr> -->
-                        <!-- <tr mat-footer-row *matFooterRowDef="['disclaimer']" class="example-second-footer-row">dasdasasd</tr> -->
-                    </table>
-                <!-- </perfect-scrollbar> -->
-                <mat-paginator [pageSizeOptions]="PaginationConfig" showFirstLastButtons></mat-paginator>
-
-            </div>
-        </div>
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-9">
+      <h4>Test List</h4>
     </div>
+    <div class="col-sm-3">
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+      </mat-form-field>
+    </div>
+    <div class="col-sm-12">
+      <div class="mat-elevation-z8">
+        <perfect-scrollbar style="position: relative;width: 100%;overflow: auto;">
+          <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="TestNo">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Test No </th>
+              <td mat-cell *matCellDef="let element"> {{element.OnlineTestNo}} </td>
+            </ng-container>
+            <ng-container matColumnDef="TestName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.TestName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="TestSeries">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Series </th>
+              <td mat-cell *matCellDef="let element"> {{element.TestSeries}} </td>
+            </ng-container>
+            <ng-container matColumnDef="TestType">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Type </th>
+              <td mat-cell *matCellDef="let element"> {{element.TestType}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Duration">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Duration </th>
+              <td mat-cell *matCellDef="let element"> {{element.TestDuration/60}} Min</td>
+            </ng-container>
+            <ng-container matColumnDef="StartDate">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </th>
+              <td mat-cell *matCellDef="let element"> {{element.StartDate | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="EndDate">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> End Date </th>
+              <td mat-cell *matCellDef="let element"> {{element.EndDate | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="TestMarks">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Marks </th>
+              <td mat-cell *matCellDef="let element"> {{element.TestMarks}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="ViewQuestion">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>View</th>
+              <td mat-cell *matCellDef="let element">
+                <a mat-icon-button matTooltip="View Question" color="primary" routerLink="../view-question/{{element.OnlineTestID}}">
+                  <mat-icon aria-label="icon">visibility</mat-icon>
+                </a>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="EligibleStudent">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Eligible</th>
+              <td mat-cell *matCellDef="let element">
+                <a mat-icon-button matTooltip="Add Eligible Student" color="primary" routerLink="../eligible-student/{{element.OnlineTestID}}">
+                  <mat-icon aria-label="icon">person_add</mat-icon>
+                </a>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Edit">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Edit </th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button matTooltip="Edit" color="primary" (click)="getOnlineTestById(element.OnlineTestID)"
+                  aria-hidden="true" style="outline: 0px;">
+                  <mat-icon aria-label="icon">edit</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Delete">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Delete </th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button matTooltip="Delete" color="warn" (click)="deleteOnlineTest(element)"
+                  aria-hidden="true" style="outline: 0px;">
+                  <mat-icon aria-label="icon">delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <!-- <ng-container matColumnDef="button">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+              <td mat-cell *matCellDef="let element">
+                <a mat-icon-button matTooltip="View Question" color="primary" routerLink="../view-question/{{element.OnlineTestID}}">
+                  <mat-icon aria-label="icon">visibility</mat-icon>
+                </a>
+                <a mat-icon-button matTooltip="Add Eligible Student" color="primary" routerLink="../eligible-student/{{element.OnlineTestID}}">
+                  <mat-icon aria-label="icon">person_add</mat-icon>
+                </a>
+                <button mat-icon-button matTooltip="Edit" color="primary" (click)="getOnlineTestById(element.OnlineTestID)"
+                  aria-hidden="true" style="outline: 0px;">
+                  <mat-icon aria-label="icon">edit</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Delete" color="warn" (click)="deleteOnlineTest(element)"
+                  aria-hidden="true" style="outline: 0px;">
+                  <mat-icon aria-label="icon">delete</mat-icon>
+                </button>
+              </td>
+            </ng-container> -->
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+            </tr>
+          </table>
+        </perfect-scrollbar>
+        <div class="no-results" *ngIf="IsEmpty">
+          No results
+        </div>
+        <mat-paginator [pageSizeOptions]="PaginationConfig" showFirstLastButtons></mat-paginator>
+
+      </div>
+    </div>
+  </div>
 </div>

@@ -11,7 +11,7 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Student } from '../../../models/student';
 import { OnlineTest } from '../../../models/test';
 import { EligibleStudent } from '../../../models/test';
-
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-test-status',
   templateUrl: './test-status.component.html',
@@ -19,6 +19,7 @@ import { EligibleStudent } from '../../../models/test';
 })
 export class TestStatusComponent implements OnInit {
  //Test Wise Search
+ IsEmpty: boolean = false;
  testList = new FormControl();
  testOptions: OnlineTest[] = [];
  filteredTestOptions: Observable<OnlineTest[]>;
@@ -34,7 +35,7 @@ export class TestStatusComponent implements OnInit {
   //eligibleStudentArray=[];
   eligibleStudentArray: any = [];
   buttonState: any;
-  constructor(private helperSvc:HelperService ) { }
+  constructor(private helperSvc:HelperService, private router: Router ) { }
 
   ngOnInit() {
     this.getOnlineTest();
@@ -83,6 +84,7 @@ export class TestStatusComponent implements OnInit {
           this.dataSource = new MatTableDataSource(this.eligibleStudentModel);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
+          !this.dataSource.filteredData.length ? this.IsEmpty = true : this.IsEmpty = false;
           // this.eligibleStudentModel.filter(f => f.IsEligible).forEach(element => {
           //   this.eligibleStudentArray.push({
           //     OnlineTestID: element.OnlineTestID,
@@ -101,6 +103,7 @@ export class TestStatusComponent implements OnInit {
   }
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    !this.dataSource.filteredData.length ? this.IsEmpty = true : this.IsEmpty = false;
   }
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
@@ -150,17 +153,15 @@ export class TestStatusComponent implements OnInit {
     { TestStatusID : '3', TestStatus: 'Completed'}
   ];
   addEligibleStudent() {
-    debugger;
-   
+    debugger
     if (this.eligibleStudentArray.length > 0) {
       this.selectedValue;
     // this.eligibleStudentService.addEligibleStudent(this.eligibleStudentArray)
     this.helperSvc.postService(APIUrl.UpdateEligibleStudentTestStatus,this.eligibleStudentArray)
         .subscribe(data => {
           if (data === 'Success')
-            alert('Data Saved Successfully');
           this.eligibleStudentArray.length = 0;
-          // this.router.navigate(['/test/online-test']);
+          this.helperSvc.notifySuccess('Test Status Changed Successfully');
         }, error => {
           //alert(error);
           this.helperSvc.errorHandler(error.error);

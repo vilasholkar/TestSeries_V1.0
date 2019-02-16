@@ -13,18 +13,19 @@ import { APIUrl } from "../../../shared/API-end-points";
   styleUrls: ['./eligible-student.component.scss']
 })
 export class EligibleStudentComponent implements OnInit {
-  PaginationConfig:any;
+  IsEmpty: boolean = false;
+  PaginationConfig: any;
   eligibleStudentModel: EligibleStudent[];
   id: any;
   dataSource: any = [];
-  displayedColumns = ['select', 'EnrollmentNo', 'StudentName', 'Gender', 'MobileNumber', 'FatherMobileNo'];
+  displayedColumns = ['select', 'EnrollmentNo', 'StudentName', 'Stream', 'Course', 'Batch'];
   selection = new SelectionModel<EligibleStudent>(true, []);
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   //eligibleStudentArray=[];
   eligibleStudentArray: any = [];
   buttonState: any;
-  selectedCount:number=0;
+  selectedCount: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,54 +34,43 @@ export class EligibleStudentComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.PaginationConfig=this.helperSvc.PaginationConfig;
+    this.PaginationConfig = this.helperSvc.PaginationConfig;
     this.id = +this.route.snapshot.paramMap.get('id');
     localStorage.setItem("OnlineTestID", this.id);
     this.getEligibleStudent(this.id);
   }
 
   getEligibleStudent(OnlineTestID: any) {
-    this.helperSvc.getService(APIUrl.GetEligibleStudent+"?OnlineTestID="+OnlineTestID)
+    this.helperSvc.getService(APIUrl.GetEligibleStudent + "?OnlineTestID=" + OnlineTestID)
       .subscribe(res => {
         if (res.Message === 'Success') {
-          this.eligibleStudentModel=res.Object as EligibleStudent[];
+          this.eligibleStudentModel = res.Object as EligibleStudent[];
           this.dataSource = new MatTableDataSource(this.eligibleStudentModel);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
           this.eligibleStudentModel.filter(f => f.IsEligible).forEach(element => {
-          this.selectedCount += 1; 
-                this.eligibleStudentArray.push({
-                  OnlineTestID: element.OnlineTestID,
-                  StudentID: element.StudentID, EnrollmentNo: element.EnrollmentNo, StudentName: element.StudentName,
-                  Gender: element.Gender, MobileNumber: element.MobileNumber, FatherMobileNo: element.FatherMobileNo,
-                  IsEligible: element.IsEligible,TestStatusID: element.TestStatusID
-                });
-              });
-              this.selection.selected.length = this.selectedCount;
-              this.isAllSelected();
+            this.selectedCount += 1;
+            this.eligibleStudentArray.push({
+              OnlineTestID: element.OnlineTestID,
+              StudentID: element.StudentID, EnrollmentNo: element.EnrollmentNo, StudentName: element.StudentName,
+              Gender: element.Gender, MobileNumber: element.MobileNumber, FatherMobileNo: element.FatherMobileNo,
+              IsEligible: element.IsEligible, TestStatusID: element.TestStatusID
+            });
+          });
+          this.selection.selected.length = this.selectedCount;
+          this.isAllSelected();
+          !this.dataSource.filteredData.length ? this.IsEmpty = true : this.IsEmpty = false;
         }
       }, error => {
-       // alert('error');
-         this.helperSvc.errorHandler(error.error);
+        // alert('error');
+        this.helperSvc.errorHandler(error.error);
         console.log(error.error);
       });
-    // this.eligibleStudentService.getEligibleStudent(parseInt(this.id)).subscribe(res => {
-    //   this.dataSource = new MatTableDataSource(res);
-    //   this.dataSource.paginator = this.paginator;
-    //   this.dataSource.sort = this.sort;
-    //   res.filter(f => f.IsEligible).forEach(element => {
-    //     this.eligibleStudentArray.push({
-    //       OnlineTestID: element.OnlineTestID,
-    //       StudentID: element.StudentID, EnrollmentNo: element.EnrollmentNo, StudentName: element.StudentName,
-    //       Gender: element.Gender, MobileNumber: element.MobileNumber, FatherMobileNo: element.FatherMobileNo,
-    //       IsEligible: element.IsEligible
-    //     });
-    //   });
-    // });
-     this.buttonState = this.eligibleStudentArray.length > 0 ? false : true;
+    this.buttonState = this.eligibleStudentArray.length > 0 ? false : true;
   }
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    !this.dataSource.filteredData.length ? this.IsEmpty = true : this.IsEmpty = false;
   }
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
@@ -97,12 +87,12 @@ export class EligibleStudentComponent implements OnInit {
     if (!this.isAllSelected()) {
       this.eligibleStudentArray.length = 0;
       this.dataSource.data.forEach(row => {
-        row.TestStatusID=1;
+        row.TestStatusID = 1;
         this.eligibleStudentArray.push({
           OnlineTestID: row.OnlineTestID,
           StudentID: row.StudentID, EnrollmentNo: row.EnrollmentNo, StudentName: row.StudentName,
           Gender: row.Gender, MobileNumber: row.MobileNumber, FatherMobileNo: row.FatherMobileNo,
-          IsEligible: row.IsEligible,TestStatusID: row.TestStatusID
+          IsEligible: row.IsEligible, TestStatusID: row.TestStatusID
         });
       });
     }
@@ -120,22 +110,22 @@ export class EligibleStudentComponent implements OnInit {
     debugger;
     if (isChecked.checked) {
       data.TestStatusID = 1;
-     if(this.eligibleStudentArray.filter(f=>f.StudentID === data.StudentID).length > 0){
-      this.eligibleStudentArray[this.eligibleStudentArray.findIndex(f=>f.StudentID===data.StudentID)] = data;
-     }
-     else{
-      this.eligibleStudentArray.push({
-        StudentID: data.StudentID, OnlineTestID: data.OnlineTestID
-        ,EnrollmentNo: data.EnrollmentNo, StudentName: data.StudentName,
-        Gender: data.Gender, MobileNumber: data.MobileNumber, FatherMobileNo: data.FatherMobileNo,
-        IsEligible: data.IsEligible,TestStatusID: data.TestStatusID
-      });
-    }
+      if (this.eligibleStudentArray.filter(f => f.StudentID === data.StudentID).length > 0) {
+        this.eligibleStudentArray[this.eligibleStudentArray.findIndex(f => f.StudentID === data.StudentID)] = data;
+      }
+      else {
+        this.eligibleStudentArray.push({
+          StudentID: data.StudentID, OnlineTestID: data.OnlineTestID
+          , EnrollmentNo: data.EnrollmentNo, StudentName: data.StudentName,
+          Gender: data.Gender, MobileNumber: data.MobileNumber, FatherMobileNo: data.FatherMobileNo,
+          IsEligible: data.IsEligible, TestStatusID: data.TestStatusID
+        });
+      }
     }
     else {
       data.TestStatusID = 0;
       //this.eligibleStudentArray = this.eligibleStudentArray.filter(f => f.StudentID !== data.StudentID);
-      this.eligibleStudentArray[this.eligibleStudentArray.findIndex(f=>f.StudentID===data.StudentID)] = data;
+      this.eligibleStudentArray[this.eligibleStudentArray.findIndex(f => f.StudentID === data.StudentID)] = data;
     }
     this.buttonState = this.eligibleStudentArray.length > 0 ? false : true;
   }
@@ -143,11 +133,12 @@ export class EligibleStudentComponent implements OnInit {
   addEligibleStudent() {
     debugger;
     if (this.eligibleStudentArray.length > 0) {
-    //  this.eligibleStudentService.addEligibleStudent(this.eligibleStudentArray)
-    this.helperSvc.postService(APIUrl.AddEligibleStudent,this.eligibleStudentArray)
+      //  this.eligibleStudentService.addEligibleStudent(this.eligibleStudentArray)
+      this.helperSvc.postService(APIUrl.AddEligibleStudent, this.eligibleStudentArray)
         .subscribe(data => {
           if (data === 'Success')
-            alert('Data Saved Successfully');
+            // alert('Data Saved Successfully');
+            this.helperSvc.notifySuccess('Data Saved Successfully');
           this.eligibleStudentArray.length = 0;
           this.router.navigate(['/test/online-test']);
         }, error => {

@@ -1,4 +1,8 @@
 <div class="animated fadeIn">
+    <a mat-stroked-button color="primary" matTooltip="back to Online Test"  routerLink="../../../test/online-test">
+      <mat-icon aria-label="icon" color="primary">keyboard_backspace</mat-icon>
+    </a>
+    <hr/>
   <div class="row">
     <div class="col-sm-12">
       <div class="card">
@@ -12,9 +16,9 @@
                 <td width="33%">Test No.</td>
                 <td width="33%">Test Name</td>
                 <td width="34%">Test Series</td>
-              </tr> 
+              </tr>
               <tr>
-                <td>{{id}}</td>
+                <td>{{quizModel.OnlineTestID}}</td>
                 <td>{{quizModel.TestName}}</td>
                 <td>{{quizModel.TestSeries}}</td>
               </tr>
@@ -41,39 +45,42 @@
           <strong class="card-title">Test Details</strong>
         </div>
         <div class="card-body">
-            <div class="tab-pane box active amit" style="overflow-x:auto;">
-              <!-- <div style="color: #707070; font-size: 15px;padding:8px 0 8px 0px;font-weight: 600;">Subject Name&nbsp;:-Physics</div> -->
-              <table cellspacing="0" cellpadding="0" border="0" class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th width="10%">
-                      <div>Question No.</div>
-                    </th>
-                    <th width="10%">
-                      <div>Correct Ans</div>
-                    </th>
-                    <th width="40%">
-                      <div>English Image</div>
-                    </th>
-                    <th width="40%">
-                        <div>Hindi Image</div>
-                      </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let questionData of quizModel.Questions">
-                    <td valign="top">{{questionData.QuestionID}}</td>
-                    <td valign="top">{{questionData.CorrectAnswer}}</td>
-                    <td>
-                        <img [src]="questionData.Image_English" style="max-height: 100px;width: 100%;" />
-                    </td>
-                    <td>
-                        <img [src]="questionData.Image_Hindi" style="max-height: 100px;width: 100%;" />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <div class="tab-pane box active amit" style="overflow-x:auto;">
+            <!-- <div style="color: #707070; font-size: 15px;padding:8px 0 8px 0px;font-weight: 600;">Subject Name&nbsp;:-Physics</div> -->
+            <table cellspacing="0" cellpadding="0" border="0" class="table table-bordered">
+              <thead>
+                <tr>
+                  <th width="10%">
+                    <div>Question No.</div>
+                  </th>
+                  <th width="10%">
+                    <div>Correct Ans</div>
+                  </th>
+                  <th width="40%">
+                    <div>English Image</div>
+                  </th>
+                  <th width="40%">
+                    <div>Hindi Image</div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let questionData of quizModel.Questions">
+                  <td valign="top">{{questionData.TestQuestionNo}}</td>
+                  <td valign="top">{{questionData.CorrectAnswer}}</td>
+                  <td>
+                      <!-- <img [src]="questionData.Image_English" style="max-height: 100px;width: 100%;" /> -->
+                    <a (click)="openDialog(questionData.Image_English)"><img [src]="questionData.Image_English" style="max-height: 100px;width: 100%;" /></a>
+                  </td>
+                  <td>
+                    <!-- <img [src]="questionData.Image_Hindi" style="max-height: 100px;width: 100%;" /> -->
+                    <a (click)="openDialog(questionData.Image_Hindi)"><img [src]="questionData.Image_Hindi" style="max-height: 100px;width: 100%;" /></a>
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

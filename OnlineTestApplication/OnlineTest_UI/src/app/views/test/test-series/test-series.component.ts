@@ -3,130 +3,132 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { TestSeriesService } from '../../../services/admin/test-series.service';
 import { TestSeries } from '../../../models/test';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-import { MatSnackBar } from '@angular/material';
-
+import { HelperService } from '../../../services/helper.service'
+import { APIUrl } from "../../../shared/API-end-points";
 @Component({
   selector: 'app-test-series',
   templateUrl: './test-series.component.html',
   styleUrls: ['./test-series.component.scss']
 })
 export class TestSeriesComponent implements OnInit {
+  IsEmpty: boolean = false;
+  Title: any;
+  btnAddNew: boolean = true;
+  PaginationConfig: any;
   showAddDiv: any;
   testSeries: TestSeries;
   testSeriesModel: any = {};
-  rootNode: any;
   isTestSeriesReadonly: any = true;
   //Element For Material
-  displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
-  // displayedColumns: string[] = ['select','testseriesid', 'testseries', 'totaltest', 'description'];
-  // dataSource = new MatTableDataSource<TestSeries>(ELEMENT_DATA);
-  // selection = new SelectionModel<TestSeries>(true, []);
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-  selection = new SelectionModel<PeriodicElement>(true, []);
+  displayedColumns: string[] = ['TestSeries', 'button', 'button1'];
+  dataSource: any = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  ///////////////////////
 
-  constructor(private testSeriesService: TestSeriesService, rootNode: ElementRef, public snackBar: MatSnackBar) {
+  constructor(private testSeriesService: TestSeriesService, private helperSvc: HelperService) {
     this.showAddDiv = false;
   }
 
   ngOnInit() {
-    // this.dataSource.paginator = this.paginator;
-    // this.dataSource.sort = this.sort;
+    this.PaginationConfig = this.helperSvc.PaginationConfig;
     this.getTestSeries();
-  }
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-  /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-  }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  masterToggle() {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
-  }
-
-
-  Edit(model: TestSeries) {
-    this.isTestSeriesReadonly = false;
   }
   changeShowStatus() {
     this.showAddDiv = !this.showAddDiv;
+    this.testSeriesModel = {};
+    this.Title = "Add Test Series";
   }
   getTestSeries() {
-    this.testSeriesService.getTestSeries()
-      .subscribe(data => {
-        if (data.Message === 'Success') {
-          this.testSeries = data.Object;
+    this.helperSvc.getService(APIUrl.GET_TestSeries)
+      .subscribe(res => {
+        if (res.Message === 'Success') {
+          this.dataSource = new MatTableDataSource(res.Object as TestSeries[]);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+          !this.dataSource.data.length ? this.IsEmpty = true : this.IsEmpty = false;
         }
       }, error => {
-        this.openSnackBar("Error.", "Close");
+        this.helperSvc.errorHandler(error.error);
         console.log(error);
       });
+    // this.testSeriesService.getTestSeries()
+    //   .subscribe(data => {
+    //     if (data.Message === 'Success') {
+    //       this.testSeries = data.Object;
+    //     }
+    //   }, error => {
+    //     this.openSnackBar("Error.", "Close");
+    //     console.log(error);
+    //   });
   }
-  UpdateTestSeries(model: TestSeries) {
-    this.testSeries = model;
-    this.testSeriesService.addUpdateTestSeries(this.testSeries)
-      .subscribe(data => {
-        if (data === 'Success') {
-          this.testSeriesModel = {};
-          this.getTestSeries();
-          this.showAddDiv = false;
-          this.isTestSeriesReadonly = true;
-          this.openSnackBar("Record Saved Successfully.", "Close");
-        }
-      }, error => {
-        this.openSnackBar("Error.", "Close");
-        console.log(error);
-      });
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    !this.dataSource.filteredData.length ? this.IsEmpty = true : this.IsEmpty = false;
   }
+  getTestSeriesByID(model: TestSeries) {
+    this.btnAddNew = false;
+    this.showAddDiv = true;
+    this.Title = "Edit Test Type";
+    this.testSeriesModel = model;
+  }
+  
   AddTestSeries() {
     this.testSeries = this.testSeriesModel;
-    this.testSeriesService.addUpdateTestSeries(this.testSeries)
+  //  this.testSeriesService.addUpdateTestSeries(this.testSeries)
+    this.helperSvc.postService(APIUrl.AddUpdateTestSeries, this.testSeries)
       .subscribe(data => {
         if (data === 'Success') {
           this.testSeriesModel = {};
           this.getTestSeries();
           this.showAddDiv = false;
-          this.openSnackBar("Record Added Successfully.", "Close");
-          this.isTestSeriesReadonly = true;
+          this.btnAddNew=true;
+          this.helperSvc.notifySuccess("Record Added Successfully.");
         }
       }, error => {
-        this.openSnackBar("Error.", "Close");
+        this.helperSvc.errorHandler(error);
         console.log(error);
       });
   }
+  
   DeleteTestSeries(model: TestSeries) {
     if (confirm("Are you sure to delete " + model.TestSeries)) {
       this.testSeries = model;
-      this.testSeriesService.deleteTestSeriesById(this.testSeries)
+      // this.testSeriesService.deleteTestSeriesById(this.testSeries)
+      this.helperSvc.postService(APIUrl.DeleteTestSeries, this.testSeries)
         .subscribe(data => {
           if (data === 'Success') {
             this.getTestSeries();
             this.showAddDiv = false;
-            this.openSnackBar("Record Deleted Successfully.", "Close");
+            this.helperSvc.notifySuccess("Record Deleted Successfully.");
             this.isTestSeriesReadonly = true;
           }
         }, error => {
-          this.openSnackBar("Error.", "Close");
+          this.helperSvc.errorHandler(error);
           console.log(error);
         });
     }
-
-
   }
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 2000,
-    });
-  }
+  // UpdateTestSeries(model: TestSeries) {
+  //   this.testSeries = model;
+  //   this.testSeriesService.addUpdateTestSeries(this.testSeries)
+  //     .subscribe(data => {
+  //       if (data === 'Success') {
+  //         this.testSeriesModel = {};
+  //         this.getTestSeries();
+  //         this.showAddDiv = false;
+  //         this.isTestSeriesReadonly = true;
+  //         this.openSnackBar("Record Saved Successfully.", "Close");
+  //       }
+  //     }, error => {
+  //       this.openSnackBar("Error.", "Close");
+  //       console.log(error);
+  //     });
+  // }
+  // openSnackBar(message: string, action: string) {
+  //   this.snackBar.open(message, action, {
+  //     duration: 2000,
+  //   });
+  // }
 }
 
 export interface PeriodicElement {

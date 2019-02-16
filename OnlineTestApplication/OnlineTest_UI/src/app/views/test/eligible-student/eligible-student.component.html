@@ -2,6 +2,10 @@
   <p style="padding-top:5px; font-size: 15px; color: black">Please Wait...</p>
 </ngx-spinner>
 <div class="animated fadeIn">
+    <a mat-stroked-button color="primary" matTooltip="back to Online Test"  routerLink="../../../test/online-test">
+      <mat-icon aria-label="icon" color="primary">keyboard_backspace</mat-icon>
+    </a>
+  <hr/>
   <div class="row">
     <div class="col-sm-9">
       <h4>Eligible Student</h4>
@@ -13,49 +17,48 @@
     </div>
     <div class="col-sm-12">
       <div class="mat-elevation-z8">
-        <table mat-table [dataSource]="dataSource" matSort>
-          <ng-container matColumnDef="select">
-            <th mat-header-cell *matHeaderCellDef>
-              <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
-              </mat-checkbox>
-            </th>
-            <td mat-cell *matCellDef="let row">
-              <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? pushEligibleStudent(row,$event) : null" [(ngModel)]="row.IsEligible"
-                [checked]="selection.isSelected(row)">
-              </mat-checkbox>
-            </td>
-          </ng-container>
+        <perfect-scrollbar style="position: relative;width: 100%;overflow: auto;">
+          <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="select">
+              <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                </mat-checkbox>
+              </th>
+              <td mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? pushEligibleStudent(row,$event) : null"
+                  [(ngModel)]="row.IsEligible" [checked]="selection.isSelected(row)">
+                </mat-checkbox>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="EnrollmentNo">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> EnrollmentNo </th>
+              <td mat-cell *matCellDef="let element"> {{element.EnrollmentNo}} </td>
+            </ng-container>
 
-          <ng-container matColumnDef="EnrollmentNo">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> EnrollmentNo </th>
-            <td mat-cell *matCellDef="let element"> {{element.EnrollmentNo}} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="StudentName">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> StudentName </th>
-            <td mat-cell *matCellDef="let element"> {{element.StudentName}} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="Gender">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Gender </th>
-            <td mat-cell *matCellDef="let element"> {{element.Gender}} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="MobileNumber">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> MobileNumber </th>
-            <td mat-cell *matCellDef="let element"> {{element.MobileNumber}} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="FatherMobileNo">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> FatherMobileNo </th>
-            <td mat-cell *matCellDef="let element"> {{element.FatherMobileNo}} </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
-          </tr>
-        </table>
-
+            <ng-container matColumnDef="StudentName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> StudentName </th>
+              <td mat-cell *matCellDef="let element"> {{element.StudentName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Stream">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Stream </th>
+              <td mat-cell *matCellDef="let element"> {{element.Stream}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Course">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Course </th>
+              <td mat-cell *matCellDef="let element"> {{element.Course}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Batch">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Batch </th>
+              <td mat-cell *matCellDef="let element"> {{element.Batch}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" >
+            </tr>
+          </table>
+        </perfect-scrollbar>
+        <div class="no-results" *ngIf="IsEmpty">
+          No results
+        </div>
         <mat-paginator [pageSizeOptions]="PaginationConfig" showFirstLastButtons></mat-paginator>
       </div>
     </div>
@@ -63,5 +66,6 @@
   <br>
   <button mat-raised-button color="primary" [disabled]="buttonState" (click)="addEligibleStudent()" style="outline: 0px;">
     <mat-icon aria-label="Example icon-button with a heart icon">save</mat-icon>
-    Save</button>
+    Save
+  </button>
 </div>
