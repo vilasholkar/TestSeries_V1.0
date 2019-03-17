@@ -20,5 +20,8 @@ namespace ViewModels.Test
         public string PassingPercentage { get; set; }
         public List<QuestionViewModel> Questions { get; set; }
         public int StudentID { get; set; }
+        public int PhysicsQuestionCount { get; set; }
+        public int ChemistryQuestionCount { get; set; }
+        public int BiologyQuestionCount { get; set; }
     }
 }

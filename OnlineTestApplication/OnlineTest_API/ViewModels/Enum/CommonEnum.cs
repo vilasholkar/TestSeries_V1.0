@@ -19,5 +19,11 @@ namespace ViewModels
             Started = 2,
             Completed = 3
         }
+        public enum Subject
+        {
+            Physics,
+            Chemistry,
+            Biology
+        }
     }
 }

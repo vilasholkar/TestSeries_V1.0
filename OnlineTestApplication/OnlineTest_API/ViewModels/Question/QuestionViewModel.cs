@@ -18,5 +18,7 @@ namespace ViewModels.Question
         public QuestionTypeViewModel QuestionType { get; set; }
         public int SubjectID { get; set; }
         public string Subject { get; set; }
+
+        public bool IsDefaultQuestion { get; set; }
     }
 }
