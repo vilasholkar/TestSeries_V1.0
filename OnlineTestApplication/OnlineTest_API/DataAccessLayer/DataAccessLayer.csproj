@@ -44,9 +44,12 @@
     <Compile Include="Class1.cs" />
     <Compile Include="Repositories\Account\Implementation\DAccount.cs" />
     <Compile Include="Repositories\Account\Interface\IDAccount.cs" />
+    <Compile Include="Repositories\Dashboard\Implementation\DStudentDashboard.cs" />
+    <Compile Include="Repositories\Dashboard\Interface\IDStudentDashboard.cs" />
     <Compile Include="Repositories\ExceptionLogging\Implementation\DLog.cs" />
     <Compile Include="Repositories\ExceptionLogging\Interface\IDLog.cs" />
     <Compile Include="Repositories\Generic\DGeneric.cs" />
+    <Compile Include="Repositories\Generic\DSMSGeneric.cs" />
     <Compile Include="Repositories\Master\Implementation\DMaster.cs" />
     <Compile Include="Repositories\Master\Interface\IDMaster.cs" />
     <Compile Include="Repositories\Quiz\Implementation\DQuiz.cs" />
