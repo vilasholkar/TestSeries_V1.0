@@ -167,18 +167,18 @@ namespace DataAccessLayer
                 {
                     foreach (var Options in Questions.Options)
                     {
-                        if (Options.IsAnswer && Options.Selected)
+                        if (Options.IsAnswer && Options.Selected)   //Correct Answer
                         {
                             OptionID = Options.OptionID;
                             AnswerID = Options.OptionID;
                             IsCorrect = true;
                         }
-                        else if (Options.IsAnswer && !Options.Selected)
+                        else if (Options.IsAnswer && !Options.Selected) //Correct Not Attempt
                         {
                             OptionID = Options.OptionID;
                             IsCorrect = false;
                         }
-                        else if (!Options.IsAnswer && Options.Selected)
+                        else if (!Options.IsAnswer && Options.Selected) //Incorrect Answer
                         {
                             AnswerID = Options.OptionID;
                             IsCorrect = false;

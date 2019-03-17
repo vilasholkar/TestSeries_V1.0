@@ -23,7 +23,7 @@ namespace DataAccessLayer
             objResultAnalysis.StudentAttempt = GetStudentAttempt(StudentID, TestID);
             objResultAnalysis.OnlineTestResult = GetOnlineTestResultByID(StudentID, TestID);
             objResultAnalysis.Topper_Average = GetTopper_Average(TestID);
-            objResultAnalysis.StudentRank = StudentRank(Convert.ToInt32( objResultAnalysis.OnlineTestResult[0].TotalMarksObtained),Convert.ToString( objResultAnalysis.OnlineTestResult[0].StudentCaste));
+            objResultAnalysis.StudentRank = StudentRank(Convert.ToInt32(objResultAnalysis.OnlineTestResult[0].TotalMarksObtained), Convert.ToString(objResultAnalysis.OnlineTestResult[0].StudentCaste));
             return objResultAnalysis;
         }
         public PaperAnalysisViewModel GetPaperAnalysis(int TestID)
@@ -82,7 +82,7 @@ namespace DataAccessLayer
                       dbo.OnlineTestResult.Chemistry_Wrong, dbo.OnlineTestResult.Biology_Total, dbo.OnlineTestResult.Biology_Right, dbo.OnlineTestResult.Biology_Wrong, 
                       dbo.OnlineTestResult.TotalCorrect, dbo.OnlineTestResult.TotalWrong, dbo.OnlineTestResult.TotalAttempt, dbo.OnlineTestResult.TotalMarksObtained, 
                       dbo.OnlineTestResult.Percentage, dbo.OnlineTestResult.Rank, dbo.OnlineTestResult.TotalMarks, dbo.OnlineTestResult.QualifyingMarks, 
-                      dbo.OnlineTestResult.CreatedOnDate, dbo.OnlineTestResult.IsActive, dbo.Student.EnrollmentNo, dbo.Student.FirstName, dbo.Student.LastName, 
+                      dbo.OnlineTestResult.CreatedOnDate, dbo.OnlineTestResult.IsActive,dbo.OnlineTestResult.IsPresent, dbo.Student.EnrollmentNo, dbo.Student.FirstName, dbo.Student.LastName, 
                       dbo.Student.MobileNumber,dbo.Student.Cast, dbo.OnlineTest.OnlineTestNo, dbo.OnlineTest.TestSeriesID, dbo.OnlineTest.TestTypeID, dbo.OnlineTest.TestName,  dbo.OnlineTest.StartDate,
                       dbo.OnlineTest.TestDuration, dbo.TestSeries.TestSeries, dbo.TestType.TestType
                         FROM dbo.OnlineTestResult LEFT OUTER JOIN
@@ -135,7 +135,8 @@ namespace DataAccessLayer
                 TotalMarks = Convert.ToString(s["TotalMarks"]),
                 QualifyingMarks = Convert.ToString(s["QualifyingMarks"]),
                 CreatedOnDate = Convert.ToDateTime(s["CreatedOnDate"]),
-                IsActive = Convert.ToBoolean(s["IsActive"])
+                IsActive = Convert.ToBoolean(s["IsActive"]),
+                IsPresent = Convert.ToBoolean(s["IsPresent"])
             }).ToList();
         }
         public List<Topper_AverageViewModel> GetTopper_Average(int TestID)
@@ -169,7 +170,7 @@ namespace DataAccessLayer
 
             //int StudentMarks = 360;
             //Model.MarksReviewList.Find(x => x.RollNo == data.RollNo).TotalMarks;
-           // string StudentCategory = "OBC";
+            // string StudentCategory = "OBC";
             //Model.StudentList.Find(x => x.RollNo == data.RollNo).Category;
             int AIR_UR = 0, SR_UR = 0, AIR_CAT_RANK = 0, SR_CAT_RANK = 0;
             AIR_UR = objRankList.OrderBy(item => Math.Abs(StudentMarks - item.AIR_UR_S)).First().AIR_UR;
@@ -205,6 +206,18 @@ namespace DataAccessLayer
             return objRank;
         }
 
+        public List<StudentResponseViewModel> GetStudentResponse(int StudentID, int TestID)
+        {
+            List<SqlParameter> paramerterList = new List<SqlParameter>();
+            paramerterList.Add(new SqlParameter("@StudentID", StudentID));
+            paramerterList.Add(new SqlParameter("@TestID", TestID));
+            DataTable dt = DGeneric.RunSP_ReturnDataSet("sp_GetStudentResponse", paramerterList, null).Tables[0];
+            if (dt.Rows.Count > 0)
+                return DGeneric.BindDataList<StudentResponseViewModel>(dt);
+
+            else
+                return new List<StudentResponseViewModel>();
+        }
 
         #region Generate Result Analysis
 
@@ -222,7 +235,7 @@ namespace DataAccessLayer
                 string EasyQuestionList = string.Empty, MediumQuestionList = string.Empty, DifficultQuestionList = string.Empty;
                 DataTable dtPaperAnalysis = PaperAnalysis(dtStudentResponse, out TotalEasy, out TotalMedium, out TotalDifficult, out EasyQuestionList, out MediumQuestionList, out DifficultQuestionList);
                 DataTable dtStudentAttempt = StudentAttempt(dtStudentResponse, dtPaperAnalysis);
-                DataTable dtStudentMarksReview = MarksReview(dtStudentResponse, dtPaperAnalysis);
+                DataTable dtStudentMarksReview = MarksReview(GetAbsentStudentByTestID(TestID), dtStudentResponse, dtPaperAnalysis);
                 DataTable dtTopper_Average = Topper_Average(dtStudentMarksReview);
                 List<SqlParameter> sqlParameterList = new List<SqlParameter>();
                 sqlParameterList.Add(new SqlParameter("@TestID", TestID));
@@ -232,26 +245,42 @@ namespace DataAccessLayer
                 sqlParameterList.Add(new SqlParameter("@EasyQuestionList", EasyQuestionList));
                 sqlParameterList.Add(new SqlParameter("@MediumQuestionList", MediumQuestionList));
                 sqlParameterList.Add(new SqlParameter("@DifficultQuestionList", DifficultQuestionList));
-                string temp = DGeneric.RunSP_ExecuteNonQuery("sp_AddPaperAnalysis", sqlParameterList);
-
-                List<SqlParameter> sqlParameterList1 = new List<SqlParameter>();
-                sqlParameterList1.Add(new SqlParameter("@StudentAttempt", dtStudentAttempt));
-                string temp1 = DGeneric.RunSP_ExecuteNonQuery("sp_AddStudentAttempt", sqlParameterList1);
-
-                List<SqlParameter> sqlParameterList2 = new List<SqlParameter>();
-                sqlParameterList2.Add(new SqlParameter("@OnlineTestResult", dtStudentMarksReview));
-                string temp2 = DGeneric.RunSP_ExecuteNonQuery("sp_AddOnlineTestResult", sqlParameterList2);
-
-                List<SqlParameter> sqlParameterList3 = new List<SqlParameter>();
-                sqlParameterList3.Add(new SqlParameter("@Topper_Average", dtTopper_Average));
-                string temp3 = DGeneric.RunSP_ExecuteNonQuery("sp_AddTopper_Average", sqlParameterList3);
-
-                return "Result Generated Sucessfully.";
+                string response = DGeneric.RunSP_ExecuteNonQuery("sp_AddPaperAnalysis", sqlParameterList);
+                if (response == "Success")
+                {
+                    List<SqlParameter> sqlParameterList1 = new List<SqlParameter>();
+                    sqlParameterList1.Add(new SqlParameter("@StudentAttempt", dtStudentAttempt));
+                    response = DGeneric.RunSP_ExecuteNonQuery("sp_AddStudentAttempt", sqlParameterList1);
+                    if (response == "Success")
+                    {
+                        List<SqlParameter> sqlParameterList2 = new List<SqlParameter>();
+                        sqlParameterList2.Add(new SqlParameter("@OnlineTestResult", dtStudentMarksReview));
+                        DataTable dt = DGeneric.RunSP_ReturnDataSet("sp_AddOnlineTestResult", sqlParameterList2, null).Tables[0];
+                        if (dt.Rows.Count > 0)
+                        {
+                            dtTopper_Average.Columns.Remove("IsPresent");
+                            List<SqlParameter> sqlParameterList3 = new List<SqlParameter>();
+                            sqlParameterList3.Add(new SqlParameter("@Topper_Average", dtTopper_Average));
+                            response = DGeneric.RunSP_ExecuteNonQuery("sp_AddTopper_Average", sqlParameterList3);
+                            if (response == "Success")
+                            {
+                              response = ResultSMS(dt);
+                              if (response == "OK")
+                              {
+                                  response = "Result Generated Sucessfully.";
+                              }
+                            }
+                        }
+                    }
+                }
+                
+                return response;
             }
-            else {
+            else
+            {
                 return "No student had given test.";
             }
-            
+
         }
         public DataRow GetOnlineTestByID(int TestID)
         {
@@ -261,10 +290,22 @@ namespace DataAccessLayer
         }
         public DataTable GetEligibleStudentByTestID(int TestID)
         {
-            string query = string.Format("select * from EligibleStudent where OnlineTestID={0} ", TestID);
-            DataTable dt = DGeneric.GetData(query).Tables[0];
+            //string query = string.Format("select * from EligibleStudent where OnlineTestID={0} ", TestID);
+            //DataTable dt = DGeneric.GetData(query).Tables[0];
+            //return dt;
+            DataTable dt = DGeneric.GetData(string.Format("select * from EligibleStudent where OnlineTestID = {0} and TestStatusID > 0", TestID)).Tables[0];
             return dt;
         }
+
+        public DataTable GetAbsentStudentByTestID(int TestID)
+        {
+            //string query = string.Format("select * from EligibleStudent where OnlineTestID={0} ", TestID);
+            //DataTable dt = DGeneric.GetData(query).Tables[0];
+            //return dt;
+            DataTable dt = DGeneric.GetData(string.Format("select * from EligibleStudent where OnlineTestID = {0} and TestStatusID in (1,2)", TestID)).Tables[0];
+            return dt;
+        }
+
         public DataTable GetStudentResponseByTestID(int TestID)
         {
             string query = string.Format("select * from StudentResponse where TestID={0} ", TestID);
@@ -435,7 +476,7 @@ namespace DataAccessLayer
             return dt;
         }
 
-        public DataTable MarksReview(DataTable dtStudentResponse, DataTable dtPaper)
+        public DataTable MarksReview(DataTable dtAbsentStudent, DataTable dtStudentResponse, DataTable dtPaper)
         {
             DataTable dtDistinctStudent = dtStudentResponse.AsDataView().ToTable(true, "StudentID");
 
@@ -521,13 +562,46 @@ namespace DataAccessLayer
                 dr["TotalMarksObtained"] = ((PR + CR + BR) * 4) - (PW + CW + BW);
                 dr["Percentage"] = Convert.ToInt32(dr["TotalMarksObtained"]) > 0 ? Math.Round((Convert.ToDouble(dr["TotalMarksObtained"]) / TotalMarks) * 100, 4) : 0;
                 dr["Rank"] = 0;
-                dr["TotalMArks"] = TotalMarks;
+                dr["TotalMarks"] = TotalMarks;
                 dr["QualifyingMarks"] = QualifyingMarks;
                 dr["CreatedOnDate"] = DGeneric.SystemDateTime;
                 dr["IsActive"] = true;
+                dr["IsPresent"] = true;
 
                 dtTestResult.Rows.Add(dr);
             }
+
+            if (dtAbsentStudent.Rows.Count > 0)
+            {
+                foreach (DataRow drAbsentStudent in dtAbsentStudent.Rows)
+                {
+                    dr = dtTestResult.NewRow();
+                    dr["StudentID"] = drAbsentStudent["StudentID"];
+                    dr["TestID"] = drAbsentStudent["OnlineTestID"];
+                    dr["Physics_Total"] = 0;
+                    dr["Physics_Right"] = 0;
+                    dr["Physics_Wrong"] = 0;
+                    dr["Chemistry_Total"] = 0;
+                    dr["Chemistry_Right"] = 0;
+                    dr["Chemistry_Wrong"] = 0;
+                    dr["Biology_Total"] = 0;
+                    dr["Biology_Right"] = 0;
+                    dr["Biology_Wrong"] = 0;
+                    dr["TotalCorrect"] = 0;
+                    dr["TotalWrong"] = 0;
+                    dr["TotalAttempt"] = 0;
+                    dr["TotalMarksObtained"] = 0;
+                    dr["Percentage"] = 0;
+                    dr["Rank"] = 0;
+                    dr["TotalMarks"] = TotalMarks;
+                    dr["QualifyingMarks"] = QualifyingMarks;
+                    dr["CreatedOnDate"] = DGeneric.SystemDateTime;
+                    dr["IsActive"] = true;
+                    dr["IsPresent"] = false;
+                    dtTestResult.Rows.Add(dr);
+                }
+            }
+
             return dtTestResult;
         }
 
@@ -608,7 +682,51 @@ namespace DataAccessLayer
             return dtTA;
         }
 
-      
+        public string ResultSMS(DataTable dt)
+        {
+            string SMSResponse = string.Empty;
+            foreach (DataRow dr in  dt.Rows)
+            {
+                //var names = dr.StudentName.Trim().Split(' ');
+                //string FirstName = names[0];
+                if (Convert.ToBoolean(dr["IsPresent"]) == true)
+                {
+                    if (dr["MobileNumber"].ToString() != string.Empty)
+                    {
+                        string MobileNo = dr["MobileNumber"].ToString();
+                        string Message = string.Format(@"Dear {0},you got {1}/{2} ({3}) in {4} of {5} attempts in phy,chem,bio(corr./incorr) are ({6}/{7}),({8}/{9}),({10}/{11}) respectively.",
+                                                    dr["FirstName"], dr["TotalMarksObtained"], dr["TotalMarks"], dr["Percentage"], dr["TestName"], dr["StartDate"].ToString().ConvertDateTimeToString(),
+                                                    dr["Physics_Right"], dr["Physics_Wrong"], dr["Chemistry_Right"], dr["Chemistry_Wrong"], dr["Biology_Right"], dr["Biology_Wrong"]);
+                        SMSResponse = DSMSGeneric.SendSingleSMS(MobileNo, Message);
+                    }
+                    if (dr["FatherMobile"].ToString() != string.Empty)
+                    {
+                        string MobileNo = dr["FatherMobile"].ToString();
+                        string Message = string.Format(@"Dear Parents,{0} got {1}/{2} ({3}) in {4} of {5} attempts in phy,chem,bio(corr./incorr) are ({6}/{7}),({8}/{9}),({10}/{11}) respectively.",
+                                                    dr["FirstName"], dr["TotalMarksObtained"], dr["TotalMarks"], dr["Percentage"], dr["TestName"], dr["StartDate"].ToString().ConvertDateTimeToString(),
+                                                    dr["Physics_Right"], dr["Physics_Wrong"], dr["Chemistry_Right"], dr["Chemistry_Wrong"], dr["Biology_Right"], dr["Biology_Wrong"]);
+                         SMSResponse = DSMSGeneric.SendSingleSMS(MobileNo, Message);
+                    }
+                }
+                else if (Convert.ToBoolean(dr["IsPresent"]) == false)
+                {
+                    if (dr["MobileNumber"].ToString() != string.Empty)
+                    {
+                        string MobileNo = dr["MobileNumber"].ToString();
+                        string Message = string.Format(@"Dear {0},you was absent in {1} of {2}", dr["FirstName"], dr["TestName"], dr["StartDate"].ToString().ConvertDateTimeToString());
+                         SMSResponse = DSMSGeneric.SendSingleSMS(MobileNo, Message);
+                    }
+                    if (dr["FatherMobile"].ToString() != string.Empty)
+                    {
+                        string MobileNo = dr["FatherMobile"].ToString();
+                        string Message = string.Format(@"Dear Parents,{0} was absent in {1} of {2}", dr["FirstName"], dr["TestName"], dr["StartDate"].ToString().ConvertDateTimeToString());
+                         SMSResponse = DSMSGeneric.SendSingleSMS(MobileNo, Message);
+                    }
+                }
+
+            }
+            return SMSResponse;
+        }
         //public DataTable TopTen(DataTable dt1)
         //{
         //    //DataTable dtTA = virtualTable();
@@ -651,6 +769,7 @@ namespace DataAccessLayer
             dt.Columns.Add("QualifyingMarks", typeof(string));
             dt.Columns.Add("CreatedOnDate", typeof(DateTime));
             dt.Columns.Add("IsActive", typeof(bool));
+            dt.Columns.Add("IsPresent", typeof(bool));
             return dt;
         }
         private static List<T> ConvertDataTable<T>(DataTable dt)
@@ -680,551 +799,6 @@ namespace DataAccessLayer
             }
             return obj;
         }
-        #endregion
-        #region Old Analysis
-        //public DataTable RankList(HttpPostedFileBase RankFile)
-        //{
-        //    var fileName = Path.GetFileName(RankFile.FileName);
-        //    var path = Path.Combine(Server.MapPath("~/Uploads"), fileName);
-        //    RankFile.SaveAs(path);
-        //    //ExcelDataReader works on binary excel file
-        //    Stream stream = RankFile.InputStream;
-        //    //We need to written the Interface.
-        //    IExcelDataReader reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
-        //    reader.IsFirstRowAsColumnNames = true;
-        //    DataTable dtRank = reader.AsDataSet().Tables[0];
-
-        //    DataTable dtClone = dtRank.Clone();
-        //    for (int i = 0; i < dtClone.Columns.Count; i++)
-        //    {
-        //        dtClone.Columns[i].DataType = typeof(int);
-        //    }
-        //    foreach (DataRow dr in dtRank.Rows)
-        //    {
-        //        dtClone.ImportRow(dr);
-        //    }
-        //    //  dtClone = reader.AsDataSet().Tables[0];
-        //    return dtClone;
-        //}
-        //public DataTable StudentList(IExcelDataReader reader1)
-        //{
-        //    IExcelDataReader reader = reader1;
-        //    reader.IsFirstRowAsColumnNames = true;
-        //    DataTable dtExcel = reader.AsDataSet().Tables[0];
-        //    dtExcel.Rows.RemoveAt(0);
-        //    dtExcel.Columns["NAME"].ColumnName = "Name";
-        //    dtExcel.Columns["Roll NO"].ColumnName = "RollNo";
-        //    dtExcel.Columns["Cat"].ColumnName = "Category";
-        //    for (int index = dtExcel.Columns.Count - 1; index >= 3; index--)
-        //    {
-        //        dtExcel.Columns.RemoveAt(index);
-        //    }
-        //    DataTable dtCloned = dtExcel.Clone();
-        //    dtCloned.Columns["Name"].DataType = typeof(string);
-        //    dtCloned.Columns["RollNo"].DataType = typeof(int);
-        //    dtCloned.Columns["Category"].DataType = typeof(string);
-        //    foreach (DataRow row in dtExcel.Rows)
-        //    {
-        //        dtCloned.ImportRow(row);
-        //    }
-        //    //DataView view = dtCloned.DefaultView;
-        //    //view.Sort = "RollNo ASC";
-        //    //dtCloned = view.ToTable();
-        //    return dtCloned;
-        //}
-        //public DataTable PaperAnalysis(IExcelDataReader reader1, out int TotalEasy, out int TotalMedium, out int TotalDifficult, out string EasyQuestionList, out string MediumQuestionList, out string DifficultQuestionList)
-        //{
-        //    IExcelDataReader reader = reader1;
-        //    reader.IsFirstRowAsColumnNames = true;
-        //    DataTable dtExcel = reader.AsDataSet().Tables[0];
-        //    // reader.Close();
-
-        //    DataTable dtCorrectCount = new DataTable();
-        //    DataRow drCorrectCount;
-        //    dtCorrectCount.Columns.Add("Subject", typeof(string));
-        //    dtCorrectCount.Columns.Add("QuestionNo", typeof(string));
-        //    dtCorrectCount.Columns.Add("CorrectCount", typeof(string));
-        //    dtCorrectCount.Columns.Add("CorrectAnswer", typeof(string));
-        //    dtCorrectCount.Columns.Add("Level", typeof(string));
-
-
-
-        //    int TotalQuestion = dtExcel.Columns.Count - 2;
-        //    int TotalStudents = dtExcel.Rows.Count;
-        //    int Easy = Convert.ToInt32(Math.Round((double)dtExcel.Rows.Count / 2));
-        //    int Medium = Convert.ToInt32(Math.Round((double)dtExcel.Rows.Count / 3));
-        //    int Difficult = Convert.ToInt32(Math.Round((double)dtExcel.Rows.Count / 5));
-        //    int Count = 0;
-        //    // dtExcel.Columns.RemoveAt(0);    //Removing Stundent Name
-        //    dtExcel.Columns.Remove("NAME");    //Removing Stundent RollNo.
-        //    dtExcel.Columns.Remove("Cat");    //Removing Stundent RollNo.
-        //    DataRow drCorrect = dtExcel.Rows[0];    //First Row Will be correct Answer.
-        //    // dtExcel.Rows.RemoveAt(0);
-        //    for (int i = 1; i < dtExcel.Columns.Count; i++)
-        //    {
-        //        foreach (DataRow dr in dtExcel.Rows)
-        //        {
-        //            if (dr[i].ToString() == drCorrect[i].ToString())
-        //            {
-        //                Count++;    //To count the Correct Answer.
-        //            }
-        //        }
-        //        if (i <= 45)    //Physics Question
-        //        {
-        //            drCorrectCount = dtCorrectCount.NewRow();
-        //            drCorrectCount["Subject"] = "Physics";
-        //            drCorrectCount["QuestionNo"] = i;
-        //            drCorrectCount["CorrectCount"] = Count - 1; // (-1) is done to remove the result count.
-        //            drCorrectCount["CorrectAnswer"] = drCorrect[i].ToString();
-        //            drCorrectCount["Level"] = Count > Easy ? "Easy" : Count > Medium ? "Medium" : "Difficult";
-        //            dtCorrectCount.Rows.Add(drCorrectCount);
-        //            Count = 0;
-        //        }
-        //        if (i > 45 && i <= 90)  //Chemistry Question
-        //        {
-        //            drCorrectCount = dtCorrectCount.NewRow();
-        //            drCorrectCount["Subject"] = "Chemistry";
-        //            drCorrectCount["QuestionNo"] = i;
-        //            drCorrectCount["CorrectCount"] = Count - 1;
-        //            drCorrectCount["CorrectAnswer"] = drCorrect[i].ToString();
-        //            drCorrectCount["Level"] = Count > Easy ? "Easy" : Count > Medium ? "Medium" : "Difficult";
-        //            dtCorrectCount.Rows.Add(drCorrectCount);
-        //            Count = 0;
-        //        }
-
-        //        else if (i > 90)    //Biology Question
-        //        {
-        //            drCorrectCount = dtCorrectCount.NewRow();
-        //            drCorrectCount["Subject"] = "Biology";
-        //            drCorrectCount["QuestionNo"] = i;
-        //            drCorrectCount["CorrectCount"] = Count - 1;
-        //            drCorrectCount["CorrectAnswer"] = drCorrect[i].ToString();
-        //            drCorrectCount["Level"] = Count > Easy ? "Easy" : Count > Medium ? "Medium" : "Difficult";
-        //            dtCorrectCount.Rows.Add(drCorrectCount);
-        //            Count = 0;
-        //        }
-        //    }
-        //    TotalEasy = 0; TotalMedium = 0; TotalDifficult = 0;
-        //    // string EasyQuestionList, MediumQuestionList, DifficultQuestionList;
-        //    StringBuilder builderEasy = new StringBuilder();
-        //    StringBuilder builderMedium = new StringBuilder();
-        //    StringBuilder builderDifficult = new StringBuilder();
-        //    for (int i = 0; i < dtCorrectCount.Rows.Count; i++)
-        //    {
-        //        if (dtCorrectCount.Rows[i]["Level"].Equals("Easy"))
-        //        {
-        //            TotalEasy++;
-        //            builderEasy.Append(dtCorrectCount.Rows[i]["QuestionNo"]).Append(",");
-
-        //        }
-        //        else if (dtCorrectCount.Rows[i]["Level"].Equals("Medium"))
-        //        {
-        //            TotalMedium++;
-        //            builderMedium.Append(dtCorrectCount.Rows[i]["QuestionNo"]).Append(",");
-
-        //        }
-        //        else if (dtCorrectCount.Rows[i]["Level"].Equals("Difficult"))
-        //        {
-        //            TotalDifficult++;
-        //            builderDifficult.Append(dtCorrectCount.Rows[i]["QuestionNo"]).Append(",");
-
-        //        }
-        //    }
-        //    EasyQuestionList = builderEasy.Remove(builderEasy.Length - 1, 1).ToString();
-        //    MediumQuestionList = builderMedium.Remove(builderMedium.Length - 1, 1).ToString();
-        //    DifficultQuestionList = builderDifficult.Remove(builderDifficult.Length - 1, 1).ToString();
-        //    string TotalList = EasyQuestionList + "," + MediumQuestionList + "," + DifficultQuestionList;
-        //    int TotalQuestion1 = TotalEasy + TotalMedium + TotalDifficult;
-
-        //    return dtCorrectCount;
-        //}
-        //public DataTable StudentAttempt(IExcelDataReader reader1, DataTable dtPaper)
-        //{
-        //    IExcelDataReader reader = reader1;
-        //    reader.IsFirstRowAsColumnNames = true;
-        //    DataTable dtStudent = reader1.AsDataSet().Tables[0];
-        //    //reader.Close();
-        //    //int j = 90;
-        //    //for (int i = 1; i <= 90; i++)
-        //    //{
-        //    //    dtStudent.Columns[i + "_1"].ColumnName = Convert.ToString(j + i);   //CHange the Column Name
-        //    //}
-        //    DataTable dt = new DataTable();
-        //    dt.Columns.Add("RollNo", typeof(string));
-        //    dt.Columns.Add("EasyCorrect", typeof(string));
-        //    dt.Columns.Add("EasyInCorrect", typeof(string));
-        //    dt.Columns.Add("MediumCorrect", typeof(string));
-        //    dt.Columns.Add("MediumInCorrect", typeof(string));
-        //    dt.Columns.Add("DifficultCorrect", typeof(string));
-        //    dt.Columns.Add("DifficultInCorrect", typeof(string));
-        //    dt.Columns.Add("NotAttempt", typeof(string));
-        //    DataRow dr;
-
-        //    foreach (DataRow drStudent in dtStudent.Rows)
-        //    {
-        //        int EC = 0, EIC = 0, MC = 0, MIC = 0, DC = 0, DIC = 0;
-        //        int NotAttempt = 0;
-        //        string RollNo = drStudent["Roll No"].ToString();
-        //        // dtStudent.Columns.Remove("NAME");
-        //        // dtStudent.Columns.Remove("Roll No");
-        //        foreach (DataRow drPaper in dtPaper.Rows)
-        //        {
-        //            for (int i = 0; i < 183; i++)
-        //            {
-
-        //                if (drPaper["QuestionNo"].ToString() == dtStudent.Columns[i].ColumnName.ToString())//Checking the QuestionNo
-        //                {
-        //                    if (drPaper["Level"].ToString() == "Easy")
-        //                    {
-        //                        if (drPaper["CorrectAnswer"] == drStudent[dtStudent.Columns[i].ColumnName])
-        //                        {
-        //                            EC++;
-        //                        }
-        //                        else if (drStudent[dtStudent.Columns[i].ColumnName].ToString() != "")
-        //                        {
-        //                            EIC++;
-        //                        }
-        //                        else
-        //                        {
-        //                            NotAttempt++;
-        //                        }
-        //                    }
-        //                    else if (drPaper["Level"].ToString() == "Medium")
-        //                    {
-        //                        if (drPaper["CorrectAnswer"] == drStudent[dtStudent.Columns[i].ColumnName])
-        //                        {
-        //                            MC++;
-        //                        }
-        //                        else if (drStudent[dtStudent.Columns[i].ColumnName].ToString() != "")
-        //                        {
-        //                            MIC++;
-        //                        }
-        //                        else
-        //                        {
-        //                            NotAttempt++;
-        //                        }
-        //                    }
-        //                    else if (drPaper["Level"].ToString() == "Difficult")
-        //                    {
-        //                        if (drPaper["CorrectAnswer"] == drStudent[dtStudent.Columns[i].ColumnName])
-        //                        {
-        //                            DC++;
-        //                        }
-        //                        else if (drStudent[dtStudent.Columns[i].ColumnName].ToString() != "")
-        //                        {
-        //                            DIC++;
-        //                        }
-        //                        else
-        //                        {
-        //                            NotAttempt++;
-        //                        }
-        //                    }
-        //                    break;
-        //                }
-        //            }
-
-        //        }
-        //        dr = dt.NewRow();
-        //        dr["RollNo"] = RollNo;
-        //        dr["EasyCorrect"] = EC;
-        //        dr["EasyInCorrect"] = EIC;
-        //        dr["MediumCorrect"] = MC;
-        //        dr["MediumInCorrect"] = MIC;
-        //        dr["DifficultCorrect"] = DC;
-        //        dr["DifficultInCorrect"] = DIC;
-        //        dr["NotAttempt"] = NotAttempt;
-        //        dt.Rows.Add(dr);
-        //    }
-
-        //    #region marks Review
-        //    //DataTable dtFinal = virtualTable();
-        //    //int Attempt = 0, NotAttempt = 0, CorrectCount = 0, IncorrectCount = 0;
-        //    //foreach (DataRow drStudent in dtStudent.Rows)
-        //    //{
-        //    //    foreach (DataRow drPaper in dtPaper.Rows)
-        //    //    {
-        //    //        for (int i = 1; i <= 180; i++)
-        //    //        {
-        //    //            if (drStudent[i] != string.Empty)
-        //    //            {
-        //    //                Attempt++;
-        //    //                if (drStudent[i] == drPaper[i])
-        //    //                {
-        //    //                    CorrectCount++;
-        //    //                }
-        //    //                else
-        //    //                {
-        //    //                    IncorrectCount++;
-        //    //                }
-        //    //            }
-        //    //            else
-        //    //            {
-        //    //                NotAttempt++;
-        //    //            }
-        //    //        }
-        //    //    }
-        //    //}
-        //    #endregion
-
-        //    return dt;
-        //}
-        //public DataTable MarksReview(IExcelDataReader reader1, DataTable dtPaper)
-        //{
-        //    IExcelDataReader reader = reader1;
-        //    reader.IsFirstRowAsColumnNames = true;
-        //    DataTable dtStudent = reader1.AsDataSet().Tables[0];
-        //    reader.Close();
-        //    //int j = 90;
-        //    //for (int i = 1; i <= 90; i++)
-        //    //{
-        //    //    dtStudent.Columns[i + "_1"].ColumnName = Convert.ToString(j + i);   //CHange the Column Name
-        //    //}
-
-        //    DataTable dt = virtualTable();
-        //    DataRow dr;
-        //    foreach (DataRow drStudent in dtStudent.Rows)
-        //    {
-        //        int PR = 0, PW = 0, CR = 0, CW = 0, BR = 0, BW = 0;
-        //        int TotalRight = 0, TotalWrong = 0, Attempt = 0, NotAttempt = 0;
-        //        string RollNo = drStudent["Roll No"].ToString();
-        //        // dtStudent.Columns.Remove("NAME");
-        //        // dtStudent.Columns.Remove("Roll No");
-        //        foreach (DataRow drPaper in dtPaper.Rows)
-        //        {
-        //            for (int i = 0; i < 183; i++)
-        //            {
-        //                if (drPaper["QuestionNo"].ToString() == dtStudent.Columns[i].ColumnName.ToString())//Checking the QuestionNo
-        //                {
-        //                    if (drPaper["Subject"].ToString() == "Physics")
-        //                    {
-        //                        if (drPaper["CorrectAnswer"] == drStudent[dtStudent.Columns[i].ColumnName])
-        //                        {
-        //                            PR++;
-        //                        }
-        //                        else if (drStudent[dtStudent.Columns[i].ColumnName].ToString() != "")
-        //                        {
-        //                            PW++;
-        //                        }
-        //                        else
-        //                        {
-        //                            NotAttempt++;
-        //                        }
-        //                    }
-        //                    else if (drPaper["Subject"].ToString() == "Chemistry")
-        //                    {
-        //                        if (drPaper["CorrectAnswer"] == drStudent[dtStudent.Columns[i].ColumnName])
-        //                        {
-        //                            CR++;
-        //                        }
-        //                        else if (drStudent[dtStudent.Columns[i].ColumnName].ToString() != "")
-        //                        {
-        //                            CW++;
-        //                        }
-        //                        else
-        //                        {
-        //                            NotAttempt++;
-        //                        }
-        //                    }
-        //                    else if (drPaper["Subject"].ToString() == "Biology")
-        //                    {
-        //                        if (drPaper["CorrectAnswer"] == drStudent[dtStudent.Columns[i].ColumnName])
-        //                        {
-        //                            BR++;
-        //                        }
-        //                        else if (drStudent[dtStudent.Columns[i].ColumnName].ToString() != "")
-        //                        {
-        //                            BW++;
-        //                        }
-        //                        else
-        //                        {
-        //                            NotAttempt++;
-        //                        }
-        //                    }
-        //                    break;
-        //                }
-        //            }
-        //        }
-        //        dr = dt.NewRow();
-        //        dr["Name"] = "Student";
-        //        dr["RollNo"] = !string.IsNullOrEmpty(RollNo) ? Convert.ToInt32(RollNo) : 0;
-        //        dr["Physics_Right"] = PR;
-        //        dr["Physics_Wrong"] = PW;
-        //        dr["Chemistry_Right"] = CR;
-        //        dr["Chemistry_Wrong"] = CW;
-        //        dr["Biology_Right"] = BR;
-        //        dr["Biology_Wrong"] = BW;
-        //        dr["Total_Right"] = PR + CR + BR;
-        //        dr["Total_Wrong"] = PW + CW + BW;
-        //        dr["TotalAttempt"] = PR + CR + BR + PW + CW + BW;
-        //        dr["TotalMarks"] = ((PR + CR + BR) * 4) - (PW + CW + BW);
-        //        dr["Percentage"] = Math.Round((Convert.ToDouble(dr["TotalMarks"]) / 720) * 100, 4);
-        //        //dr["Percentage"] = Convert.ToInt32(Math.Round((Convert.ToDouble(dr["TotalMarks"]) / 720) * 100, 2));
-        //        dt.Rows.Add(dr);
-        //    }
-
-        //    return dt;
-
-        //}
-        //public DataTable Topper_Averge(DataTable dt1)
-        //{
-        //    DataTable dtTA = virtualTable();
-        //    DataTable dt = dt1.Copy();
-        //    dt.Rows.RemoveAt(0);
-        //    DataView view = dt.DefaultView;
-        //    view.Sort = "TotalMarks DESC";
-        //    dt = view.ToTable();
-
-        //    DataRow drTopper = dtTA.NewRow();
-        //    int maxTotalMarks = Convert.ToInt32(dt.AsEnumerable().Max(x => x["TotalMarks"]));
-        //    var SameTopperList = dt.AsEnumerable().Where(x => Convert.ToInt32(x["TotalMarks"]) == maxTotalMarks).ToList();
-        //    if (SameTopperList.Count > 0)
-        //    {
-        //        int maxBiologyMarks = Convert.ToInt32(SameTopperList.AsEnumerable().Max(x => x["Biology_Right"]));
-        //        var BiologyMarksList = SameTopperList.Where(x => Convert.ToInt32(x["Biology_Right"]) == maxBiologyMarks).ToList();
-        //        if (BiologyMarksList.Count > 1)
-        //        {
-        //            int maxChemistryMarks = Convert.ToInt32(BiologyMarksList.AsEnumerable().Max(x => x["Chemistry_Right"]));
-        //            var ChemistryMarksList = BiologyMarksList.Where(x => Convert.ToInt32(x["Chemistry_Right"]) == maxChemistryMarks).ToList();
-        //            if (ChemistryMarksList.Count > 1)
-        //            {
-        //                int maxPhysicsMarks = Convert.ToInt32(ChemistryMarksList.Max(x => x["Physics_Right"]));
-        //                var PhysicsMarksList = ChemistryMarksList.Where(x => Convert.ToInt32(x["Physics_Right"]) == maxPhysicsMarks).ToList();
-        //                if (PhysicsMarksList.Count >= 1)
-        //                {
-        //                    drTopper = PhysicsMarksList.FirstOrDefault();
-        //                }
-        //            }
-        //            else
-        //            {
-        //                drTopper = ChemistryMarksList.FirstOrDefault();
-        //            }
-        //        }
-        //        else
-        //        {
-        //            drTopper = BiologyMarksList.FirstOrDefault();
-        //        }
-        //    }
-        //    dtTA.Rows.Add(drTopper.ItemArray);
-        //    dtTA.Rows[0]["Name"] = "Topper";
-        //    int TotalStudents = dt.Rows.Count;
-        //    DataRow drAverage = dtTA.NewRow();
-        //    drAverage["Name"] = "Average";
-        //    drAverage["Physics_Right"] = Convert.ToInt32(Convert.ToInt32(dt.Compute("Sum(Physics_Right)", string.Empty)) / TotalStudents);
-        //    drAverage["Physics_Wrong"] = Convert.ToInt32(Convert.ToInt32(dt.Compute("Sum(Physics_Wrong)", string.Empty)) / TotalStudents);
-        //    drAverage["Chemistry_Right"] = Convert.ToInt32(Convert.ToInt32(dt.Compute("Sum(Chemistry_Right)", string.Empty)) / TotalStudents);
-        //    drAverage["Chemistry_Wrong"] = Convert.ToInt32(Convert.ToInt32(dt.Compute("Sum(Chemistry_Wrong)", string.Empty)) / TotalStudents);
-        //    drAverage["Biology_Right"] = Convert.ToInt32(Convert.ToInt32(dt.Compute("Sum(Biology_Right)", string.Empty)) / TotalStudents);
-        //    drAverage["Biology_Wrong"] = Convert.ToInt32(Convert.ToInt32(dt.Compute("Sum(Biology_Wrong)", string.Empty)) / TotalStudents);
-        //    drAverage["Total_Right"] = Convert.ToInt32(Convert.ToInt32(dt.Compute("Sum(Total_Right)", string.Empty)) / TotalStudents);
-        //    drAverage["Total_Wrong"] = Convert.ToInt32(Convert.ToInt32(dt.Compute("Sum(Total_Wrong)", string.Empty)) / TotalStudents);
-        //    drAverage["TotalAttempt"] = Convert.ToInt32(Convert.ToInt32(dt.Compute("Sum(TotalAttempt)", string.Empty)) / TotalStudents);
-        //    drAverage["TotalMarks"] = Convert.ToInt32(Convert.ToInt32(dt.Compute("Sum(TotalMarks)", string.Empty)) / TotalStudents);
-        //    drAverage["Percentage"] = Convert.ToInt32(Convert.ToInt32(dt.Compute("Sum(Percentage)", string.Empty)) / TotalStudents);
-        //    dtTA.Rows.Add(drAverage);
-        //    dtTA.Rows[1]["RollNo"] = 0;
-        //    //string searchExpression = string.Format("RollNo = {0}", Convert.ToString(246));
-        //    //dtTA.Rows.Add(dt.Select(searchExpression)[0].ItemArray);
-
-        //    return dtTA;
-        //}
-        //public DataTable TopTen(DataTable dt1)
-        //{
-        //    //DataTable dtTA = virtualTable();
-        //    DataTable dt = dt1.Copy();
-        //    dt.Rows.RemoveAt(0);
-        //    //DataView view = dt.DefaultView;
-        //    //view.Sort = "TotalMarks DESC";
-        //    //dt = view.ToTable();
-
-        //    DataTable dt2 = dt.Clone();
-        //    //get only the rows you want
-        //    DataRow[] results = dt.Select("", "TotalMarks DESC");
-
-        //    //populate new destination table
-        //    for (var i = 0; i < 10; i++)
-        //        dt2.ImportRow(results[i]);
-        //    return dt2;
-        //}
-        //public DataTable virtualTable()
-        //{
-        //    DataTable dt = new DataTable();
-        //    dt.Columns.Add("Name", typeof(string));
-        //    dt.Columns.Add("RollNo", typeof(int));
-        //    dt.Columns.Add("Physics_Right", typeof(int));
-        //    dt.Columns.Add("Physics_Wrong", typeof(int));
-        //    dt.Columns.Add("Chemistry_Right", typeof(int));
-        //    dt.Columns.Add("Chemistry_Wrong", typeof(int));
-        //    dt.Columns.Add("Biology_Right", typeof(int));
-        //    dt.Columns.Add("Biology_Wrong", typeof(int));
-        //    dt.Columns.Add("Total_Right", typeof(int));
-        //    dt.Columns.Add("Total_Wrong", typeof(int));
-        //    dt.Columns.Add("TotalAttempt", typeof(int));
-        //    dt.Columns.Add("TotalMarks", typeof(int));
-        //    dt.Columns.Add("Percentage", typeof(double));
-        //    return dt;
-        //}
-        //public DataTable AppendData(DataTable dtSource, DataTable dtDestination)
-        //{
-        //    foreach (DataRow dr in dtDestination.Rows)
-        //    {
-        //        dr["Name"] = dtSource.AsEnumerable().Select(row => row["RollNo"] = Convert.ToInt32(dr["RollNo"]));
-        //        DataRow[] r1 = dtSource.Select("RollNo =" + Convert.ToString(dr["RollNo"]));
-        //        dr["Name"] = r1[0]["Name"];
-        //        var dValue = from row in dtSource.AsEnumerable() where row.Field<int>("Roll No") == Convert.ToInt32(dr["RollNo"]) select row.Field<string>("Name");
-        //        //  dr["Name"] = dValue;
-
-        //    }
-        //    return dtDestination;
-        //}
-        //private static List<T> ConvertDataTable<T>(DataTable dt)
-        //{
-        //    List<T> data = new List<T>();
-        //    foreach (DataRow row in dt.Rows)
-        //    {
-        //        T item = GetItem<T>(row);
-        //        data.Add(item);
-        //    }
-        //    return data;
-        //}
-        //private static T GetItem<T>(DataRow dr)
-        //{
-        //    Type temp = typeof(T);
-        //    T obj = Activator.CreateInstance<T>();
-
-        //    foreach (DataColumn column in dr.Table.Columns)
-        //    {
-        //        foreach (PropertyInfo pro in temp.GetProperties())
-        //        {
-        //            if (pro.Name == column.ColumnName)
-        //                pro.SetValue(obj, dr[column.ColumnName], null);
-        //            else
-        //                continue;
-        //        }
-        //    }
-        //    return obj;
-        //}
-        //private List<T> ConvertToList<T>(DataTable dt)
-        //{
-        //    var columnNames = dt.Columns.Cast<DataColumn>()
-        //        .Select(c => c.ColumnName)
-        //        .ToList();
-
-        //    var properties = typeof(T).GetProperties();
-
-        //    return dt.AsEnumerable().Select(row =>
-        //    {
-        //        var objT = Activator.CreateInstance<T>();
-
-        //        foreach (var pro in properties)
-        //        {
-        //            if (columnNames.Contains(pro.Name))
-        //                pro.SetValue(objT, row[pro.Name]);
-        //        }
-
-        //        return objT;
-        //    }).ToList();
-
-        //}
         #endregion
     }
 }
