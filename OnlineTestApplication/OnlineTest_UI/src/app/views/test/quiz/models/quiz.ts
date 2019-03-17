@@ -8,6 +8,9 @@ export class Quiz {
     instructions: string;
     testDuration:string;
     config: QuizConfig;
+    PhysicsQuestionCount:number
+    ChemistryQuestionCount:number
+    BiologyQuestionCount:number
     questions: Question[];
     constructor(data: any) {
         if (data) {
@@ -19,6 +22,9 @@ export class Quiz {
             data.Questions.forEach(q => {
                 this.questions.push(new Question(q));
             });
+            this.PhysicsQuestionCount = data.PhysicsQuestionCount
+            this.ChemistryQuestionCount = data.ChemistryQuestionCount
+            this.BiologyQuestionCount = data.BiologyQuestionCount
         }
     }
 }

@@ -34,3 +34,6 @@ margin: 5px;
 .mat-raised-button:focus {
     outline: 0px auto;
     }
+.mat-fab.mat-accent, .mat-flat-button.mat-accent, .mat-mini-fab.mat-accent, .mat-raised-button.mat-accent{
+  background-color: green !important;
+    }

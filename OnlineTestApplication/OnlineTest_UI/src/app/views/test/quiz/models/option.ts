@@ -4,7 +4,7 @@ export class Option {
     option: string;
     isAnswer: boolean;
     selected: boolean;
-
+    status:string;   
     constructor(data: any) {
         data = data || {};
         this.optionID = data.OptionID;

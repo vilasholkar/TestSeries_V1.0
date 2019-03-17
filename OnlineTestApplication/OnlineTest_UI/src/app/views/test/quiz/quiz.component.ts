@@ -19,11 +19,13 @@ import { ImageDialogComponent } from '../../master/image-dialog/image-dialog.com
   providers: [QuizService]
 })
 export class QuizComponent implements OnInit {
+  buttonColor:any="basic"
   IsTestSubmit: boolean = false;
   showQuiz: boolean = false;
   testDuration: any;
   correctCount = 0;
   totalMarks: number = 0;
+  percentage:number=0;
   totalQuestions: number;
   noOfQuestionAttempted: number = 0;
   noOfQuestionNotAttempted: number = 0;
@@ -33,6 +35,7 @@ export class QuizComponent implements OnInit {
   QuestionTypeIsSingleChoice: any;
   quizes: any[];
   question: Question;
+  dynamicQuestionArray: Question[];
   quiz: Quiz = new Quiz(null);
   mode = 'quiz';
   quizName: string;
@@ -52,7 +55,7 @@ export class QuizComponent implements OnInit {
     'theme': 'none'
   };
   pager = {
-    index: 0,
+    index: 1,
     size: 1,
     count: 1
   };
@@ -64,6 +67,10 @@ export class QuizComponent implements OnInit {
   IsEnglish: any;
   languageName: any;
   testID: any;
+  chemistryCount:number=0;
+  physicsCount:number=0;
+  biologyCount:number=0;
+  subjectName:string='Physics';
 
   constructor(private router: Router, private route: ActivatedRoute
     , private spinner: NgxSpinnerService
@@ -116,7 +123,7 @@ export class QuizComponent implements OnInit {
         this.startTime = new Date();
         this.timer = setInterval(() => { this.tick(); }, 1000);
         this.duration = this.parseTime(this.testDuration);
-
+        this.dynamicQuestionArray = this.quiz.questions.filter(f=>f.subject=='Physics');
       }
       else {
         this.helperSvc.notifyError("Already Given Test");
@@ -147,70 +154,123 @@ export class QuizComponent implements OnInit {
     return `${mins}:${secs}`;
   }
   get filteredQuestions() {
-    return (this.quiz.questions) ? this.quiz.questions.slice(this.pager.index, this.pager.index + this.pager.size) : [];
+    return (this.quiz.questions) ? this.quiz.questions.slice(this.pager.index-1, this.pager.index-1 + this.pager.size) : [];
   }
-  onSelect(question: Question, option: Option) {
+    onSelect(question: Question, option: Option,isChecked) {
+      debugger;
+    if(isChecked.checked){
+      question.buttonColor='accent';
+    }
+    else
+    question.buttonColor='warn';     
     if (question.questionTypeID === 1) {
       question.options.forEach((x) => {
         if (x.questionID !== option.questionID)
-          x.selected = false;
+          x.selected = false;                   
       });
-      // this.noOfQuestionAttempted += 1;
     }
     if (this.config.autoMove) {
       this.goTo(this.pager.index + 1);
     }
+    
+    if(isChecked.checked){
+      if(question.subject === 'Physics')
+      this.physicsCount = this.physicsCount+1;
+      else if(question.subject === 'Chemistry')
+      this.chemistryCount = this.chemistryCount+1;
+      else if(question.subject === 'Biology')
+      this.biologyCount = this.biologyCount+1;
+    }
+    else{
+      if(question.subject === 'Physics')
+      this.physicsCount = this.physicsCount-1;
+      else if(question.subject === 'Chemistry')
+      this.chemistryCount = this.chemistryCount-1;
+      else if(question.subject === 'Biology')
+      this.biologyCount = this.biologyCount-1;
+    }
   }
   goTo(index: number) {
-    if (index >= 0 && index < this.pager.count) {
-      this.pager.index = index;
+    if (parseInt(index.toString()) >= 0 && parseInt(index.toString()) < this.pager.count) {
+      this.pager.index = parseInt(index.toString());
       this.mode = 'quiz';
     }
   }
+  goToSave(index:number) {
+    let data = this.quiz.questions.filter(f=>f.TestQuestionNo==index);
+    for(var i = 0; i < data.length; i++) {
+      for (let index = 0; index < data[i].options.length; index++) {
+          if(!data[i].options[index].selected)
+          data[i].buttonColor='warn';
+          else {
+            data[i].buttonColor='accent';
+            break;
+        }
+      }
+    }
+
+    this.goTo(index); 
+} 
+  NavigateToSubject(index: number,subjectValue){
+    this.subjectName = subjectValue;
+    if(subjectValue === 'Physics')
+    this.dynamicQuestionArray = this.quiz.questions.filter(f=>f.subject==="Physics");
+
+    else if(subjectValue == 'Chemistry')
+    this.dynamicQuestionArray = this.quiz.questions.filter(f=>f.subject==="Chemistry");
+
+    else
+    this.dynamicQuestionArray = this.quiz.questions.filter(f=>f.subject==="Biology");
+
+    this.goTo(index+1);
+  }
+  
   isAnswered(question: Question) {
-    return question.options.find(x => x.selected) ? 'Answered' : 'Not Answered';
+    return question.options.find(x => x.selected) ? 'Answered' : question.isDefaultQuestion ? 'Default' : 'Not Answered';
   }
-  isCorrect(question: Question) {
-    //  var status= question.options.every(x => x.selected == x.isAnswer) ? 'correct' : 'wrong'
-    //  if(status==='correct'){
-    //    this.countOfCorrectQues++;
-    //  }
-    return question.options.every(x => x.selected == x.isAnswer) ? 'correct' : 'wrong';
+  isCorrect(question: Question) {    
+    return question.options.every(x => x.selected == x.isAnswer) ? 'Correct' : question.options.every(e=>!e.selected) ? 'NotAttempted' : 'Wrong';
+  }
 
-  }
-  markForReview(question) {
+  // markForReview(question) {
+  //   $('question.questionID').prop('checked', true);
+  // }
 
-    $('question.questionID').prop('checked', true);
-  }
-  getStyle(question) {
-    var isanswered = this.isAnswered(question);
-    if (isanswered == "Answered") {
-      return 'primary';
+  getStyle(index:number,question) {
+    let data = this.quiz.questions.filter(f=>f.TestQuestionNo==question.TestQuestionNo);
+    for(var i = 0; i < data.length; i++) {
+      for (let index = 0; index < data[i].options.length; index++) {
+          if(!data[i].options[index].selected)
+          data[i].buttonColor='warn';
+          else {
+            data[i].buttonColor='accent';
+            break;
+        }
+      }      
     }
-    if (isanswered == "Not Answered") {
-      return 'basic';
-    }
-  }
-  public ConvertToPDF() {
-    this.spinner.show();
-    var data = document.getElementById('contentToConvert');
-    html2canvas(data).then(canvas => {
-      // Few necessary setting options  
-      var imgWidth = 208;
-      var pageHeight = 295;
-      var imgHeight = canvas.height * imgWidth / canvas.width;
-      var heightLeft = imgHeight;
 
-      const contentDataURL = canvas.toDataURL('image/png')
-      let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
-      var position = 0;
-      pdf.addImage(contentDataURL, 'JPEG', 0, position, imgWidth, imgHeight)
-
-      pdf.save(this.quiz.testName + '_' + this.today + '.pdf'); // Generated PDF   
-      this.router.navigate(['/dashboard']);
-      this.spinner.hide();
-    });
+    this.goTo(index);
   }
+  // public ConvertToPDF() {
+  //   this.spinner.show();
+  //   var data = document.getElementById('contentToConvert');
+  //   html2canvas(data).then(canvas => {
+  //     // Few necessary setting options  
+  //     var imgWidth = 208;
+  //     var pageHeight = 295;
+  //     var imgHeight = canvas.height * imgWidth / canvas.width;
+  //     var heightLeft = imgHeight;
+
+  //     const contentDataURL = canvas.toDataURL('image/png')
+  //     let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
+  //     var position = 0;
+  //     pdf.addImage(contentDataURL, 'JPEG', 0, position, imgWidth, imgHeight)
+
+  //     pdf.save(this.quiz.testName + '_' + this.today + '.pdf'); // Generated PDF   
+  //     this.router.navigate(['/dashboard']);
+  //     this.spinner.hide();
+  //   });
+  // }
  
   onSubmit() {
     debugger;
@@ -228,12 +288,16 @@ export class QuizComponent implements OnInit {
         if (this.quiz.questions[i].options[j].selected)
           this.noOfQuestionAttempted++;
       }
-
     }
+    // this.quiz.questions.forEach(element => {
+    //   element.options.forEach(data => {
+    //     data.status = !data.selected ? data.isAnswer ? 'correct' : '' : data.selected === data.isAnswer ? 'correct' : '';
+    //   });
+    // });
     this.noOfQuestionNotAttempted = this.totalQuestions - this.noOfQuestionAttempted;
     this.countOfIncorrectQues = this.noOfQuestionAttempted - this.countOfCorrectQues;
     this.totalMarks = (this.countOfCorrectQues * 4) - this.countOfIncorrectQues;
-    console.log("res", this.quiz.questions)
+    this.percentage=this.totalMarks/7.2;
 
     this.quizService.SubmitQuiz(this.quiz)
       .subscribe(data => {
