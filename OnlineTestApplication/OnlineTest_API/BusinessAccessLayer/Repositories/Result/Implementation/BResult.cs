@@ -17,9 +17,27 @@ namespace BusinessAccessLayer
         {
             _iDResult = iDResult;
         }
-        public string ResultAnalysis(int TestID)
+        public Response<string> ResultAnalysis(int TestID)
         {
-            return _iDResult.ResultAnalysis(TestID);
+            var resultData = _iDResult.ResultAnalysis(TestID);
+            if (!string.IsNullOrEmpty(resultData))
+            {
+               return new Response<string>
+                {
+                    IsSuccessful = true,
+                    Object = resultData,
+                    Message = "Success"
+                };
+            }
+            else
+            {
+                return new Response<string>
+                {
+                    IsSuccessful = false,
+                    Object = null,
+                    Message = "error"
+                };
+            }
         }
         public Response<ResultAnalysisViewModel> GetResultAnalysis(int StudentID, int TestID)
         {
@@ -77,6 +95,29 @@ namespace BusinessAccessLayer
         public List<Topper_AverageViewModel> GetTopper_Average(int TestID)
         {
             return _iDResult.GetTopper_Average(TestID);
+        }
+
+        public Response<List<StudentResponseViewModel>> GetStudentResponse(int StudentID, int TestID)
+        {
+            var studentResponseData = _iDResult.GetStudentResponse(StudentID, TestID);
+            if (studentResponseData != null)
+            {
+                return new Response<List<StudentResponseViewModel>>
+                {
+                    IsSuccessful = true,
+                    Object = studentResponseData,
+                    Message = "Success"
+                };
+            }
+            else
+            {
+                return new Response<List<StudentResponseViewModel>>
+                {
+                    IsSuccessful = false,
+                    Message = "error",
+                    Object = null
+                };
+            }
         }
     }
 }

@@ -11,7 +11,7 @@ namespace BusinessAccessLayer
 {
     public interface IBResult
     {
-        string ResultAnalysis(int TestID);
+        Response<string> ResultAnalysis(int TestID);
         //DataTable GetOnlineTestResultByTestID(int TestID);
         //DataTable GetOnlineTestResultByStudentID(int StudentID);
         //DataRow GetStudentMarksReview(int StudentID, int TestID);
@@ -20,6 +20,6 @@ namespace BusinessAccessLayer
         StudentAttemptViewModel GetStudentAttempt(int StudentID, int TestID);
         Response<List<OnlineTestResultViewModel>> GetOnlineTestResultByID(int StudentID, int TestID);
         List<Topper_AverageViewModel> GetTopper_Average(int TestID);
-
+        Response<List<StudentResponseViewModel>> GetStudentResponse(int StudentID, int TestID);
     }
 }
