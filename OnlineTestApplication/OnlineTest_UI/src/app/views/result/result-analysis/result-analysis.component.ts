@@ -15,6 +15,7 @@ import { APIUrl } from "../../../shared/API-end-points";
   styleUrls: ['./result-analysis.component.scss']
 })
 export class ResultAnalysisComponent implements OnInit {
+  IsBackButton:boolean;
   StudentID: any;
   TestID: any;
   testName: any;
@@ -97,6 +98,7 @@ export class ResultAnalysisComponent implements OnInit {
   public barChartData: any[] = [];
 
   ngOnInit() {
+    sessionStorage.getItem("userRoles")==='Admin'?this.IsBackButton=true:this.IsBackButton=false;
     this.StudentID = +this.route.snapshot.paramMap.get('StudentID');
     this.TestID = +this.route.snapshot.paramMap.get('TestID');
     this.GetResultAnalysis(this.StudentID, this.TestID);
@@ -163,7 +165,7 @@ export class ResultAnalysisComponent implements OnInit {
       var position = 0;
       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
       pdf.save('resultanalysis.pdf'); // Generated PDF   
-      this.router.navigate(['/dashboard']);
+     // this.router.navigate(['/dashboard']);
     });
   }
   // Pie

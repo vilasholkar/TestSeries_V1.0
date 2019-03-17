@@ -4,6 +4,7 @@ import { OT_Result } from '../../../models/result';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { HelperService } from '../../../services/helper.service'
 import { APIUrl } from "../../../shared/API-end-points";
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-test-result',
   templateUrl: './test-result.component.html',
@@ -15,13 +16,13 @@ export class TestResultComponent implements OnInit {
   displayedColumns: string[] = ['Rank', 'StudentName', 
   'TotalAttempt','TotalCorrect', 'TotalWrong', 'TotalMarks', 'TotalMarksObtained', 'Percentage', 
   'Physics_Right', 'Physics_Wrong', 'Chemistry_Right', 'Chemistry_Wrong', 'Biology_Right', 'Biology_Wrong',
-  'button'];
+  'button', 'button1'];
   dataSource: any = [];
   selection = new SelectionModel<OT_Result>(true, []);
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   constructor( 
-    private helperSvc:HelperService 
+    private helperSvc:HelperService ,private router : Router
     ) { }
   ngOnInit() {
     this.PaginationConfig=this.helperSvc.PaginationConfig;
@@ -30,6 +31,16 @@ export class TestResultComponent implements OnInit {
     if(!!this.OnlineTestID){
       this.GetOnlineTestResultByTestID(this.OnlineTestID);
     }
+  }
+  NavigateToResponse(StudentID,TestID)
+  {
+    ///result/result-analysis/
+    this.router.navigate(['/result/student-response/'+StudentID+'/'+TestID], { queryParams: {StudentID:StudentID, TestID:TestID} , skipLocationChange: true});
+  }
+  NavigateToAnalysis(StudentID,TestID)
+  {
+    ///result/result-analysis/
+    this.router.navigate(['/result/result-analysis/'+StudentID+'/'+TestID], { queryParams: {StudentID:StudentID, TestID:TestID} , skipLocationChange: true});
   }
   GetOnlineTestResultByTestID(TestID:any) {
     debugger;

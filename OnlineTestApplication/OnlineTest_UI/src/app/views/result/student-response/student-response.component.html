@@ -1,0 +1,216 @@
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="#fff" type="ball-spin-clockwise-fade">
+  <p style="padding-top:5px; font-size: 15px; color: black">Please Wait...</p>
+</ngx-spinner>
+<div class="animated fadeIn">
+  <div class="button-row">
+    <a mat-stroked-button color="primary" matTooltip="back to result" *ngIf="IsBackButton"
+      routerLink="../../../../result/result">
+      <mat-icon aria-label="icon" color="primary">keyboard_backspace</mat-icon>
+    </a>
+    <a mat-stroked-button color="primary" matTooltip="back to result" *ngIf="!IsBackButton"
+      routerLink="../../../../student/view-result">
+      <mat-icon aria-label="icon" color="primary">keyboard_backspace</mat-icon>
+    </a>
+    <div class=" float-right">
+      <b class="col-sm-6 " style="padding-top: 15px">Select Language : </b>
+      <mat-form-field class="col-sm-6">
+        <mat-select [(ngModel)]="languageName" (selectionChange)="changeLanguage(languageName)">
+          <mat-option value="english">English</mat-option>
+          <mat-option value="hindi">Hindi</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <hr />
+  <mat-accordion *ngIf="false">
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+      *ngFor="let SR of studentResponse;">
+      <mat-expansion-panel-header
+        class="mat-expansion-panel-header {{ SR.IsCorrect == true? 'bg-success': SR.AnswerID == 0? 'bg-warning': 'bg-danger'}}">
+        <mat-panel-title>
+          Ques. {{SR.TestQuestionNo}}
+        </mat-panel-title>
+        <mat-panel-description>
+          <strong>
+            {{ SR.IsCorrect == true? 'Your answer is Correct': SR.AnswerID == 0? 'Your have not Attempted': 'Your answer is Wrong'}}</strong>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <a *ngIf="IsEnglish"><img [src]="SR.Image_English" *ngIf="IsEnglish" style="max-height: 300px;" /></a>
+      <a *ngIf="!IsEnglish"><img [src]="SR.Image_Hindi" *ngIf="!IsEnglish" style="max-height: 300px;" /></a>
+      <div class="row col-sm-12">
+          <!-- <div class="col-6" *ngFor="let Option of question.options">
+                <mat-checkbox color="primary" id="{{Option.id}}" type="checkbox" disabled="disabled"
+                  [(ngModel)]="Option.selected">
+                  {{Option.option}}</mat-checkbox>
+              </div> -->
+          <div
+            class="col-sm-5 alert {{ SR.IsCorrect == true? 'alert-success': SR.AnswerID == 0? 'alert-warning': 'alert-danger'}}">
+            <strong>{{ SR.IsCorrect == true? 'Your answer is Correct : ': SR.AnswerID == 0? 'Your have not Attempted': 'Your answer is Wrong : '}}{{SR.AnswerID}}</strong>
+          </div>
+          <div class="col-sm-2"></div>
+          <div class="col-sm-5 alert alert-info">
+            <strong>Correct answer is : {{SR.OptionID}}</strong>
+          </div>
+
+        </div>
+    </mat-expansion-panel>
+    <br />
+  </mat-accordion>
+  <!-- <div class="row">
+    <div class="col-md-5">
+      <div class="row">
+        <div class="col-sm-6 col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <div class="h4 mb-0">{{totalQuestions}}</div>
+              <small class="text-muted text-uppercase font-weight-bold">Total Questions</small>
+              <div class="progress progress-xs mt-3 mb-0">
+                <div class="progress-bar bg-info" role="progressbar" style="width: 25%" aria-valuenow="25"
+                  aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <div class="h4 mb-0">{{noOfQuestionAttempted}}</div>
+              <small class="text-muted text-uppercase font-weight-bold">Attempted</small>
+              <div class="progress progress-xs mt-3 mb-0">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25"
+                  aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <div class="h4 mb-0">{{noOfQuestionNotAttempted}}</div>
+              <small class="text-muted text-uppercase font-weight-bold">Not Attempted</small>
+              <div class="progress progress-xs mt-3 mb-0">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 25%" aria-valuenow="25"
+                  aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-7">
+      <div class="row">
+        <div class="col-sm-6 col-md-3">
+          <div class="card">
+            <div class="card-body">
+              <div class="h4 mb-0">{{countOfCorrectQues}}</div>
+              <small class="text-muted text-uppercase font-weight-bold">Correct</small>
+              <div class="progress progress-xs mt-3 mb-0">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25"
+                  aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <div class="card">
+            <div class="card-body">
+              <div class="h4 mb-0">{{countOfIncorrectQues}}</div>
+              <small class="text-muted text-uppercase font-weight-bold">Incorrect</small>
+              <div class="progress progress-xs mt-3 mb-0">
+                <div class="progress-bar bg-danger" role="progressbar" style="width: 25%" aria-valuenow="25"
+                  aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <div class="card">
+            <div class="card-body">
+              <div class="h4 mb-0">{{totalMarks}}</div>
+              <small class="text-muted text-uppercase font-weight-bold">Total Marks</small>
+              <div class="progress progress-xs mt-3 mb-0">
+                <div class="progress-bar bg-info" role="progressbar" style="width: 25%" aria-valuenow="25"
+                  aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <div class="card">
+            <div class="card-body">
+              <div class="h4 mb-0">{{(percentage).toFixed(2)}}</div>
+              <small class="text-muted text-uppercase font-weight-bold">Percentage</small>
+              <div class="progress progress-xs mt-3 mb-0">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25"
+                  aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <div class="card" *ngIf="false">
+    <div class="card-header">
+      <strong class="card-title" style="line-height:40px;font-size: 18px;font-weight: 500">Paper Response</strong>
+      <div class=" float-right">
+        <b class="col-sm-6 " style="padding-top: 15px">Select Language : </b>
+        <mat-form-field class="col-sm-6">
+          <mat-select [(ngModel)]="languageName" (selectionChange)="changeLanguage(languageName)">
+            <mat-option value="english">English</mat-option>
+            <mat-option value="hindi">Hindi</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row" *ngFor="let SR of studentResponse;">
+       <div class="col-sm-1"><p class="alert alert-primary">QNo. {{SR.TestQuestionNo}}</p></div>
+        <div  class="col-sm-10">
+            
+            <a *ngIf="IsEnglish"><img [src]="SR.Image_English" *ngIf="IsEnglish" style="max-height: 300px;" /></a>
+            <a *ngIf="!IsEnglish"><img [src]="SR.Image_Hindi" *ngIf="!IsEnglish" style="max-height: 300px;" /></a>
+            <div class="row col-sm-12">
+              <!-- <div class="col-6" *ngFor="let Option of question.options">
+                    <mat-checkbox color="primary" id="{{Option.id}}" type="checkbox" disabled="disabled"
+                      [(ngModel)]="Option.selected">
+                      {{Option.option}}</mat-checkbox>
+                  </div> -->
+              <div
+                class="col-sm-5 alert {{ SR.IsCorrect == true? 'alert-success': SR.AnswerID == 0? 'alert-warning': 'alert-danger'}}">
+                <strong>{{ SR.IsCorrect == true? 'Your answer is Correct : ': SR.AnswerID == 0? 'Your have not Attempted': 'Your answer is Wrong : '}}{{SR.AnswerID}}</strong>
+              </div>
+              <div class="col-sm-2"></div>
+              <div class="col-sm-5 alert alert-info">
+                <strong>Correct answer is : {{SR.OptionID}}</strong>
+              </div>
+
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card" *ngFor="let SR of studentResponse;">
+    <div class="card-body">
+      <div class="alert alert-info"><strong>Ques. {{SR.TestQuestionNo}}</strong></div>
+      <a *ngIf="IsEnglish"><img [src]="SR.Image_English" *ngIf="IsEnglish" style="max-height: 300px;" /></a>
+      <a *ngIf="!IsEnglish"><img [src]="SR.Image_Hindi" *ngIf="!IsEnglish" style="max-height: 300px;" /></a>
+      <div class="row col-sm-12">
+          <!-- <div class="col-6" *ngFor="let Option of question.options">
+                <mat-checkbox color="primary" id="{{Option.id}}" type="checkbox" disabled="disabled"
+                  [(ngModel)]="Option.selected">
+                  {{Option.option}}</mat-checkbox>
+              </div> -->
+          <div
+            class="col-sm-5 alert {{ SR.IsCorrect == true? 'alert-success': SR.AnswerID == 0? 'alert-warning': 'alert-danger'}}">
+            <strong>{{ SR.IsCorrect == true? 'Your answer is Correct : ': SR.AnswerID == 0? 'Your have not Attempted': 'Your answer is Wrong : '}}{{SR.AnswerID==0?'':SR.AnswerID}}</strong>
+          </div>
+          <div class="col-sm-2"></div>
+          <div class="col-sm-5 alert alert-dark">
+            <strong>Correct answer is : {{SR.OptionID}}</strong>
+          </div>
+
+        </div>
+    </div>
+  </div>
+</div>

@@ -7,9 +7,12 @@
   </ngx-spinner> 
 <div class="animated fadeIn">
     <div class="button-row">
-    <!-- <a mat-stroked-button color="primary" matTooltip="back to result"  routerLink="../../../../result/result">
+    <a mat-stroked-button color="primary" matTooltip="back to result" *ngIf="IsBackButton"  routerLink="../../../../result/result">
       <mat-icon aria-label="icon" color="primary">keyboard_backspace</mat-icon>
-    </a> -->
+    </a>
+    <a mat-stroked-button color="primary" matTooltip="back to result" *ngIf="!IsBackButton"  routerLink="../../../../student/view-result">
+      <mat-icon aria-label="icon" color="primary">keyboard_backspace</mat-icon>
+    </a>
     <button mat-stroked-button color="primary" id="downloadButton" type="button" value="Download Result" (click)="ConvertToPDF()">
       Download
       <mat-icon aria-label="icon" color="primary">cloud_download</mat-icon>

@@ -13,6 +13,7 @@ import { ResultAnalysisComponent } from './result-analysis/result-analysis.compo
 import { TestResultComponent } from './test-result/test-result.component';
 import { ResultComponent } from './result/result.component';
 import { GenerateResultComponent } from './generate-result/generate-result.component';
+import { StudentResponseComponent } from './student-response/student-response.component';
 
 @NgModule({
     imports: [
@@ -30,7 +31,8 @@ import { GenerateResultComponent } from './generate-result/generate-result.compo
        ResultAnalysisComponent,
        TestResultComponent,
        ResultComponent,
-       GenerateResultComponent
+       GenerateResultComponent,
+       StudentResponseComponent
     ],
     providers: [HttpClientModule]
   })

@@ -4,6 +4,7 @@ import { ResultAnalysisComponent } from './result-analysis/result-analysis.compo
 import { TestResultComponent } from './test-result/test-result.component';
 import { ResultComponent } from './result/result.component';
 import { GenerateResultComponent } from './generate-result/generate-result.component';
+import { StudentResponseComponent } from './student-response/student-response.component';
 const routes: Routes = [
   {
     path: '',
@@ -37,6 +38,13 @@ const routes: Routes = [
         component: GenerateResultComponent,
         data: {
           title: 'Generate Result'
+        }
+      },
+      {
+        path: 'student-response/:StudentID/:TestID',
+        component: StudentResponseComponent,
+        data: {
+          title: 'Student Response'
         }
       }
     ]

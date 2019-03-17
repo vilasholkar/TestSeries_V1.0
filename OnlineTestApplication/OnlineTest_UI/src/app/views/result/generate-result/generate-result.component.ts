@@ -19,6 +19,10 @@ export class GenerateResultComponent implements OnInit {
   constructor(private helperSvc: HelperService) { }
 
   ngOnInit() {
+    this.OnLoad();  
+  }
+  OnLoad()
+  {
     this.PaginationConfig = this.helperSvc.PaginationConfig;
     this.getOnlineTest()
   }
@@ -44,13 +48,10 @@ export class GenerateResultComponent implements OnInit {
     if (confirm("Are you sure want to generate " + data.TestName+ " Result")) {
       this.helperSvc.getService(APIUrl.GenerateResultAnalysis + "?TestID=" + data.OnlineTestID)
         .subscribe(res => {
-
-          // this.data = res.Object as OnlineTest[];
-          // this.data= this.data.filter(option => option.EndDate.toLowerCase().indexOf("2018-08-24") === 0)
-          // this.dataSource = new MatTableDataSource(res.Object as OnlineTest[]);
-          // this.dataSource.paginator = this.paginator;
-          // this.dataSource.sort = this.sort;
-          this.helperSvc.notifySuccess(res);
+          if (res.Message === 'Success') {
+            this.helperSvc.notifySuccess(res.Object);
+            this.OnLoad();
+          }          
 
         }, error => {
           alert('error');
