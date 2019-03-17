@@ -28,6 +28,7 @@ namespace OnlineTestApplication
         {
             Session.Add("UserID", 0);
             Session.Add("StudentID", 0);
+            Session.Add("SMSService", "Start");
         }
         protected void Application_BeginRequest(Object sender, EventArgs e)
         {

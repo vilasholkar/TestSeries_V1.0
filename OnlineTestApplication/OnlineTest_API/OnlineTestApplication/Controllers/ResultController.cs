@@ -77,8 +77,6 @@ namespace OnlineTestApplication.Controllers
         public HttpResponseMessage GetOnlineTestResultByID(int StudentID, int TestID)
         {
             return Request.CreateResponse(HttpStatusCode.OK, _iBResult.GetOnlineTestResultByID(StudentID, TestID));
-
-            
         }
         //[HttpGet]
         //[Route("api/GetStudentMarksReview", Name = "GetStudentMarksReview")]
@@ -93,6 +91,12 @@ namespace OnlineTestApplication.Controllers
         {
             return Request.CreateResponse(HttpStatusCode.OK, _iBResult.GetTopper_Average(TestID));
         }
-
+        
+        [HttpGet]
+        [Route("api/GetStudentResponse", Name = "GetStudentResponse")]
+        public HttpResponseMessage GetStudentResponse(int StudentID, int TestID)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, _iBResult.GetStudentResponse(StudentID, TestID));
+        }
     }
 }

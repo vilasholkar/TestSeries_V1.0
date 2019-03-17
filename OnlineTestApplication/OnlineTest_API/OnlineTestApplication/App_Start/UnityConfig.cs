@@ -44,6 +44,9 @@ namespace OnlineTestApplication
             container.RegisterType<IDAccount, DAccount>();
             container.RegisterType<IBAccount, BAccount>();
 
+            container.RegisterType<IDStudentDashboard, DStudentDashboard>();
+            container.RegisterType<IBStudentDashboard, BStudentDashboard>();
+
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }
     }
