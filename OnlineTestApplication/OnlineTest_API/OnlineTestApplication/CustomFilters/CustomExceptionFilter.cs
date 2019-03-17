@@ -32,7 +32,7 @@ namespace OnlineTestApplication.CustomFilters
             }
 
             //Logging Error to Database
-            _iDLog.LogException(context.ActionContext.ControllerContext.ControllerDescriptor.ControllerType.Name, ex.Message, ex.StackTrace, string.Empty);
+            _iDLog.LogException(context.ActionContext.ControllerContext.ControllerDescriptor.ControllerType.Name, ex.Message, ex.StackTrace, HttpContext.Current.User.Identity.Name.ToString());
 
             if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "Log/"))
             {
@@ -42,8 +42,8 @@ namespace OnlineTestApplication.CustomFilters
             using (var w = new StreamWriter(File.Open(AppDomain.CurrentDomain.BaseDirectory + "Log/" + "Error" + DateTime.Now.Date.ToString("ddMMyyyy") + ".txt", FileMode.OpenOrCreate), Encoding.UTF8))
             {
                 w.WriteLine("\r\nLog Entry : ");
-                w.WriteLine("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString());
-                string err = "Error Occured: " + ex.StackTrace + ". Error Message:" + ex.Message;
+                w.WriteLine("{0} {1} UserName: {2}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString(),HttpContext.Current.User.Identity.Name.ToString());
+                string err = "Error Message:" + ex.Message;
                 w.WriteLine(err);
                 w.WriteLine("__________________________");
                 w.Flush();
