@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using ViewModels;
 using ViewModels.Question;
 using ViewModels.Test;
 
@@ -12,9 +13,9 @@ namespace DataAccessLayer
 {
     public class DQuiz : IDQuiz
     {
-        public QuizViewModel GetQuiz(int OnlineTestID,int StudentID)
+        public QuizViewModel GetQuiz(int OnlineTestID, int StudentID)
         {
-            string strQuery = string.Format("select TestStatusID from EligibleStudent where OnlineTestID={0} and StudentID={1}",OnlineTestID,StudentID);
+            string strQuery = string.Format("select TestStatusID from EligibleStudent where OnlineTestID={0} and StudentID={1}", OnlineTestID, StudentID);
             int TestStatusID = Convert.ToInt32(DGeneric.GetValue(strQuery));
             if (TestStatusID == 1)
             {
@@ -45,6 +46,21 @@ namespace DataAccessLayer
                             QuestionViewModel questionViewModel = new QuestionViewModel();
                             questionViewModel.QuestionID = Convert.ToInt32(dr["QuestionId"]);
                             questionViewModel.TestQuestionNo = dr["TestQuestionNo"].ToString();
+                            switch (dr["Subject"].ToString())
+                            {
+                                case "Physics":
+                                    quizViewModel.PhysicsQuestionCount += 1;
+                                    questionViewModel.IsDefaultQuestion = true;
+                                    break;
+                                case "Chemistry":
+                                    quizViewModel.ChemistryQuestionCount += 1;
+                                    break;
+                                case "Biology":
+                                    quizViewModel.BiologyQuestionCount += 1;
+                                    break;
+                                default:
+                                    break;
+                            }
                             questionViewModel.Subject = dr["Subject"].ToString();
                             questionViewModel.SubjectID = Convert.ToInt32(dr["SubjectID"]);
                             questionViewModel.Image_English = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_English"];
@@ -75,7 +91,24 @@ namespace DataAccessLayer
                         {
                             QuestionViewModel questionViewModel = new QuestionViewModel();
                             questionViewModel.QuestionID = Convert.ToInt32(dr["QuestionId"]);
+                            switch (dr["Subject"].ToString())
+                            {
+                                case "Physics":
+                                    quizViewModel.PhysicsQuestionCount += 1;
+                                    break;
+                                case "Chemistry":
+                                    quizViewModel.ChemistryQuestionCount += 1;
+                                    break;
+                                case "Biology":
+                                    quizViewModel.BiologyQuestionCount += 1;
+                                    break;
+                                default:
+                                    break;
+                            }
                             questionViewModel.SubjectID = Convert.ToInt32(dr["SubjectID"]);
+                            questionViewModel.IsDefaultQuestion = false;
+                            questionViewModel.TestQuestionNo = dr["TestQuestionNo"].ToString();
+                            questionViewModel.Subject = dr["Subject"].ToString();
                             questionViewModel.Image_English = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_English"];
                             questionViewModel.Image_Hindi = ConfigurationManager.AppSettings["BaseURL"].ToString() + "/" + dr["Image_Hindi"];
                             questionViewModel.QuestionTypeID = Convert.ToInt32(dr["QuestionTypeId"]);
@@ -104,7 +137,8 @@ namespace DataAccessLayer
                 }
                 return quizViewModel;
             }
-            else {
+            else
+            {
                 return null;
             }
         }
