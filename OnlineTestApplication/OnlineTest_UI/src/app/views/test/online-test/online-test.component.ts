@@ -230,7 +230,8 @@ export class OnlineTestComponent implements OnInit {
     this.btnAddNew=false;
     this.showAddDiv = true;
     this.Title = "Edit Test";
-    this.onlineTestService.getOnlineTestById(OnlineTestID)
+   // this.onlineTestService.getOnlineTestById(OnlineTestID)
+    this.helperSvc.getService(APIUrl.GetOnlineTestById+"?OnlineTestId="+OnlineTestID)
       .subscribe(data => {
         if (data.Message === 'Success') {
           this.stream = data.Object.MasterData.Stream;
@@ -241,12 +242,8 @@ export class OnlineTestComponent implements OnInit {
           this.course = data.Object.OnlineTestData.Course;
           this.batch = data.Object.OnlineTestData.Batch;
         }
-        else {
-          alert("Error: " + data.Message);
-        }
       }, error => {
-        alert('error');
-        console.log(error);
+        this.helperSvc.errorHandler(error);
       });
   }
   // openSnackBar(message: string, action: string) {

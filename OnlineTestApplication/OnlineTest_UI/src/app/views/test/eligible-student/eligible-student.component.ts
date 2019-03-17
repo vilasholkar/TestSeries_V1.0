@@ -41,6 +41,7 @@ export class EligibleStudentComponent implements OnInit {
   }
 
   getEligibleStudent(OnlineTestID: any) {
+    debugger;
     this.helperSvc.getService(APIUrl.GetEligibleStudent + "?OnlineTestID=" + OnlineTestID)
       .subscribe(res => {
         if (res.Message === 'Success') {
@@ -51,7 +52,7 @@ export class EligibleStudentComponent implements OnInit {
           this.eligibleStudentModel.filter(f => f.IsEligible).forEach(element => {
             this.selectedCount += 1;
             this.eligibleStudentArray.push({
-              OnlineTestID: element.OnlineTestID,
+              OnlineTestID: element.OnlineTestID,TestName: element.TestName,StartDate: element.StartDate,EndDate: element.EndDate,
               StudentID: element.StudentID, EnrollmentNo: element.EnrollmentNo, StudentName: element.StudentName,
               Gender: element.Gender, MobileNumber: element.MobileNumber, FatherMobileNo: element.FatherMobileNo,
               IsEligible: element.IsEligible, TestStatusID: element.TestStatusID
@@ -74,10 +75,8 @@ export class EligibleStudentComponent implements OnInit {
   }
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
-    debugger;
     //const numSelected = this.selection.selected.length;
     //const numRows = this.dataSource.data.length;
-
     return this.selection.selected.length === this.dataSource.data.length ? true : false;
   }
 
@@ -89,7 +88,7 @@ export class EligibleStudentComponent implements OnInit {
       this.dataSource.data.forEach(row => {
         row.TestStatusID = 1;
         this.eligibleStudentArray.push({
-          OnlineTestID: row.OnlineTestID,
+          OnlineTestID: row.OnlineTestID,TestName: row.TestName,StartDate: row.StartDate,EndDate: row.EndDate,
           StudentID: row.StudentID, EnrollmentNo: row.EnrollmentNo, StudentName: row.StudentName,
           Gender: row.Gender, MobileNumber: row.MobileNumber, FatherMobileNo: row.FatherMobileNo,
           IsEligible: row.IsEligible, TestStatusID: row.TestStatusID
@@ -115,8 +114,8 @@ export class EligibleStudentComponent implements OnInit {
       }
       else {
         this.eligibleStudentArray.push({
-          StudentID: data.StudentID, OnlineTestID: data.OnlineTestID
-          , EnrollmentNo: data.EnrollmentNo, StudentName: data.StudentName,
+          StudentID: data.StudentID, OnlineTestID: data.OnlineTestID,TestName: data.TestName,StartDate: data.StartDate,EndDate: data.EndDate,
+           EnrollmentNo: data.EnrollmentNo, StudentName: data.StudentName,
           Gender: data.Gender, MobileNumber: data.MobileNumber, FatherMobileNo: data.FatherMobileNo,
           IsEligible: data.IsEligible, TestStatusID: data.TestStatusID
         });

@@ -156,12 +156,14 @@ export class TestStatusComponent implements OnInit {
     debugger
     if (this.eligibleStudentArray.length > 0) {
       this.selectedValue;
+      let temp=this.eligibleStudentArray[0].OnlineTestID
     // this.eligibleStudentService.addEligibleStudent(this.eligibleStudentArray)
     this.helperSvc.postService(APIUrl.UpdateEligibleStudentTestStatus,this.eligibleStudentArray)
         .subscribe(data => {
           if (data === 'Success')
           this.eligibleStudentArray.length = 0;
           this.helperSvc.notifySuccess('Test Status Changed Successfully');
+          this.getEligibleStudent(temp);
         }, error => {
           //alert(error);
           this.helperSvc.errorHandler(error.error);

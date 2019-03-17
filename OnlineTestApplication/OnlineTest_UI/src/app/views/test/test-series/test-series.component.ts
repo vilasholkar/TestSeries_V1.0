@@ -20,7 +20,7 @@ export class TestSeriesComponent implements OnInit {
   testSeriesModel: any = {};
   isTestSeriesReadonly: any = true;
   //Element For Material
-  displayedColumns: string[] = ['TestSeries', 'button', 'button1'];
+  displayedColumns: string[] = ['TestSeries', 'button'];
   dataSource: any = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
