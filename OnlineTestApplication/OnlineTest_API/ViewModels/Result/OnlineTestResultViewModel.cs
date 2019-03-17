@@ -37,5 +37,6 @@ namespace ViewModels.Result
         public string QualifyingMarks { get; set; }
         public DateTime CreatedOnDate { get; set; }
         public bool IsActive { get; set; }
+        public bool IsPresent { get; set; }
     }
 }

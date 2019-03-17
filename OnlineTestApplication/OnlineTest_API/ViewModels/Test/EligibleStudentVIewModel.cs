@@ -10,6 +10,9 @@ namespace ViewModels.Test
     {
         public int StudentID { get; set; }
         public int OnlineTestID { get; set; }
+        public string TestName { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public string EnrollmentNo { get; set; }
         public string StudentName { get; set; }
         public string Gender { get; set; }
@@ -22,5 +25,6 @@ namespace ViewModels.Test
         public string Course { get; set; }
         public string Batch { get; set; }
         public string Session { get; set; }
+        public bool IsMessageSend { get; set; }
     }
 }

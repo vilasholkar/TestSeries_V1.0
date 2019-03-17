@@ -38,5 +38,7 @@ namespace ViewModels.Test
         public bool IsActive { get; set; }
         public int CreatedByUserID { get; set; }
         public DateTime CreatedOnDate { get; set; }
+        public string TestStatus { get; set; } 
+
     }
 }
