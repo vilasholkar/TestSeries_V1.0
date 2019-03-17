@@ -21,12 +21,14 @@ export class DefaultLayoutComponent {
   public element: HTMLElement = document.body;
   public userRole: string;
   public FirstName: string;
+  public PhotoUrl: string;
   public currentUserRole: string;
   constructor(private router: Router, private helperSvc: HelperService) {
     this.changes = new MutationObserver((mutations) => {
       this.sidebarMinimized = document.body.classList.contains('sidebar-minimized');
       this.userRole = sessionStorage.getItem("userRoles");
       this.FirstName = sessionStorage.getItem("FirstName");
+      this.PhotoUrl = sessionStorage.getItem("PhotoUrl");
 
       if (this.userRole === "Admin") {
         this.isAdmin = true;
@@ -44,7 +46,7 @@ export class DefaultLayoutComponent {
 
   }
   ngOnInit() {
-    debugger;
+    // debugger;
    // this.ShowSidebar = this.helperSvc.ShowSidebar;
   }
   

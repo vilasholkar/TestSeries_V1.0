@@ -1,7 +1,7 @@
 export const navItemsAdmin= [
   {
     name: 'Dashboard',
-    url: '/dashboard',
+    url: '/dashboard/admin-dashboard',
     icon: 'icon-speedometer',
     badge: {
       variant: 'info',

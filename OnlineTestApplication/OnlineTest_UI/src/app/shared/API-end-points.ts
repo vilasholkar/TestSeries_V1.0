@@ -34,5 +34,9 @@ export class APIUrl {
     public static GetLoginInfo = 'api/GetLoginInfo';
     public static GetEligibleStudentByTestID = 'api/GetEligibleStudentByTestID';
     public static UpdateEligibleStudentTestStatus = 'api/UpdateEligibleStudentTestStatus';
+    public static GetStudentDashboardDetail = 'api/GetStudentDashboardDetail';
+    public static GetStudentResponse = 'api/GetStudentResponse';
 
+    public static PhotoBaseURL="http://aayamcareerinstitute.co.in";
+    public static QuestionImageBaseURL="http://test.aayamcareerinstitute.co.in/Uploads/";
 }

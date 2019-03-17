@@ -23,7 +23,8 @@ import {
   MatTabsModule,
   MatAutocompleteModule,
   MatDialogModule,
-  MatSidenavModule
+  MatSidenavModule,
+  MatExpansionModule
 
 } from '@angular/material';
 
@@ -48,7 +49,8 @@ const Modules = [
   MatTabsModule,
   MatAutocompleteModule,
   MatDialogModule,
-  MatSidenavModule
+  MatSidenavModule,
+  MatExpansionModule
 ];
 
 @NgModule({

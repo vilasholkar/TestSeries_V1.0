@@ -29,6 +29,7 @@ export class StudentOnlineTest {
     IsActive: any;
     CreatedByUserID: any;
     CreatedOnDate: any;
+    TestStatus:any;
    
     constructor(data:any)
     {
@@ -63,6 +64,7 @@ export class StudentOnlineTest {
         this.IsActive = data.IsActive;
         this.CreatedByUserID = data.CreatedByUserID;
         this.CreatedOnDate = data.CreatedOnDate;
+        this.TestStatus = data.TestStatus;
     }
 }
 

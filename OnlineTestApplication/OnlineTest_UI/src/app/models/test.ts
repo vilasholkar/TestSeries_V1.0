@@ -56,6 +56,9 @@ export interface Question {
 export interface EligibleStudent{
     StudentID: Int32Array;
     OnlineTestID: Int32Array;
+    TestName: any;
+    StartDate: any;
+    EndDate: any;
     EnrollmentNo: string;
     StudentName: string;
     Gender: string;
