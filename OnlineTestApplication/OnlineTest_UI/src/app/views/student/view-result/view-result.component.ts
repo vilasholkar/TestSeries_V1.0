@@ -18,7 +18,7 @@ export class ViewResultComponent implements OnInit {
   displayedColumns: string[] = ['Rank', 'TestName', 
   //'TestSeriesName', 'TestTypeName', 'TestDate', 
   'TotalAttempt','TotalCorrect', 'TotalWrong', 'TotalMarks', 'TotalMarksObtained','Percentage',  
-  'Physics_Right', 'Physics_Wrong', 'Chemistry_Right', 'Chemistry_Wrong', 'Biology_Right', 'Biology_Wrong', 'button'];
+  'Physics_Right', 'Physics_Wrong', 'Chemistry_Right', 'Chemistry_Wrong', 'Biology_Right', 'Biology_Wrong', 'button', 'button1'];
   dataSource: any = [];
   selection = new SelectionModel<OT_Result>(true, []);
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -40,8 +40,12 @@ export class ViewResultComponent implements OnInit {
      //this.GetOnlineTestResultByStudentID(5110);
     }
   }
-
-  goto(StudentID,TestID)
+  NavigateToResponse(StudentID,TestID)
+  {
+    ///result/result-analysis/
+    this.router.navigate(['/result/student-response/'+StudentID+'/'+TestID], { queryParams: {StudentID:StudentID, TestID:TestID} , skipLocationChange: false});
+  }
+  NavigateToAnalysis(StudentID,TestID)
   {
     ///result/result-analysis/
     debugger
@@ -54,6 +58,7 @@ export class ViewResultComponent implements OnInit {
     }
   }
   GetOnlineTestResultByStudentID(StudentID: any) {
+    debugger;
     this.helperSvc.getService(APIUrl.GetOnlineTestResultByID+"?StudentID="+StudentID+"&TestID="+0)
       .subscribe(res => {
         if (res.Message === 'Success') {

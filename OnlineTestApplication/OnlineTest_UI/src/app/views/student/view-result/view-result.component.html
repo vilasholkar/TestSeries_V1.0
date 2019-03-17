@@ -84,12 +84,22 @@
                             <td mat-cell *matCellDef="let element"> {{element.Biology_Wrong}} </td>
                         </ng-container>
                         <ng-container matColumnDef="button">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Paper Analysis </th>
+                            <td mat-cell *matCellDef="let element">
+                                <!-- <a mat-icon-button
+                                    routerLink="/result/student-response/{{element.StudentID}}/{{element.TestID}}"
+                                    color="primary">
+                                    <mat-icon aria-label="icon">assignment</mat-icon>
+                                </a> -->
+                                <a  mat-icon-button color="primary" *ngIf="element.IsPresent"  (click)="NavigateToResponse(element.StudentID,element.TestID)">
+                                    <mat-icon aria-label="icon">assignment</mat-icon>
+                                </a>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="button1">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
                             <td mat-cell *matCellDef="let element">
-                                <!-- <a mat-button routerLink="/result/result-analysis/{{element.StudentID}}/{{element.TestID}}" color="primary">Detail
-                                    Analysis
-                                </a> -->
-                                <a mat-icon-button color="warn"  (click)="goto(element.StudentID,element.TestID)">
+                                <a  mat-icon-button color="warn" *ngIf="element.IsPresent"  (click)="NavigateToAnalysis(element.StudentID,element.TestID)">
                                     <mat-icon aria-label="icon">insert_chart_outlined</mat-icon>
                                 </a>
                             </td>

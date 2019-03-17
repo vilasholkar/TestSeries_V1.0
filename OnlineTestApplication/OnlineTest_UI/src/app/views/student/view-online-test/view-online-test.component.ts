@@ -26,7 +26,7 @@ export class ViewOnlineTestComponent implements OnInit {
   PaginationConfig: any;
   //Element For Material
   displayedColumns: string[] = ['OnlineTestNo', 'TestName', 'TestSeriesName', 'TestTypeName', 'TestDuration', 'StartDate', 'EndDate', 'TestMarks', 'button'];
-  displayedColumns1: string[] = ['OnlineTestNo', 'TestName', 'TestSeriesName', 'TestTypeName', 'TestDuration', 'StartDate', 'EndDate', 'TestMarks'];
+  displayedColumns1: string[] = ['OnlineTestNo', 'TestName', 'TestSeriesName', 'TestTypeName', 'TestDuration', 'StartDate', 'EndDate', 'TestMarks','TestStatus'];
   dataSource: any = [];
   dataSource1: any = [];
   @ViewChild('paginator') paginator: MatPaginator;
@@ -44,14 +44,16 @@ export class ViewOnlineTestComponent implements OnInit {
     let sessionStudentID = sessionStorage.getItem("StudentID");
     if (!!sessionStudentID) {
       this.getOnlineTestByStudentID(sessionStudentID);
-      this.getOnlineTestByStudentID1(sessionStudentID);
+      // this.getOnlineTestByStudentID(sessionStudentID);
+      // this.getOnlineTestByStudentID1(sessionStudentID);
     }
     // this.getOnlineTestByStudentID(34);
+
   }
   redirectToTest(TestId: any) {
     this.RedirectToURL = "/#/test/quiz/" + TestId;
     window.open(this.RedirectToURL, '_blank', 'location=no,addressbar=no,height=700,width=1200,scrollbars=yes,status=yes');
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/dashboard/student-dashboard']);
   }
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -61,57 +63,18 @@ export class ViewOnlineTestComponent implements OnInit {
     this.dataSource1.filter = filterValue.trim().toLowerCase();
     !this.dataSource1.filteredData.length ? this.IsEmpty1 = true : this.IsEmpty1 = false;
   }
-  // getOnlineTestByStudentID(StudentID: any) {
-  //   this.spinner.show();
-  //   this.studentOnlineTestService.getOnlineTestByStudentID(StudentID)
-  //     .subscribe(res => {
-  //       if (res.Message === 'Success') {
-  //         this.studentOnlineTest = res.Object;
-  //         this.spinner.hide();
-  //       }
-  //     }, error => {
-  //       alert('error');
-  //       console.log(error);
-  //     });
-  // }
   getOnlineTestByStudentID(StudentID: any) {
     debugger;
     this.helperSvc.getService(APIUrl.GetOnlineTestByStudentID + "?StudentID=" + StudentID)
       .subscribe(res => {
         if (res.Message === 'Success') {
-          // var data=res.Object as StudentOnlineTest[];
-          console.log(moment());
-          var data = res.Object.filter(f => f.TestStatusID == 1 && moment(f.StartDate) <= moment() && moment(f.EndDate) >= moment()) as StudentOnlineTest[]
-          this.dataSource = new MatTableDataSource(data);
+          //For Active Test
+          this.dataSource = new MatTableDataSource(res.Object.filter(f => f.TestStatusID == 1 && moment(f.StartDate) <= moment() && moment(f.EndDate).add(1,'days') >= moment()) as StudentOnlineTest[]);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
           !this.dataSource.filteredData.length ? this.IsEmpty = true : this.IsEmpty = false;
-        }
-      }, error => {
-        alert('error');
-        console.log(error);
-      });
-    // this.studentOnlineTestService.getOnlineTestByStudentID(StudentID)
-    // .subscribe(data => {
-    //   if (data.Message === 'Success') {
-    //     //this.studentOnlineTest1 = data.Object as StudentOnlineTest[];
-    //     this.dataSource = new MatTableDataSource(data.Object as StudentOnlineTest[]);
-    //     this.dataSource.paginator = this.paginator;
-    //     this.dataSource.sort = this.sort;
-
-    //   }
-    // }, error => {
-    //   alert('error');
-    //   console.log(error);
-    // });
-
-  }
-  getOnlineTestByStudentID1(StudentID: any) {
-    this.helperSvc.getService(APIUrl.GetOnlineTestByStudentID + "?StudentID=" + StudentID)
-      .subscribe(data => {
-        if (data.Message === 'Success') {
-          //this.studentOnlineTest1 = data.Object as StudentOnlineTest[];
-          this.dataSource1 = new MatTableDataSource(data.Object.filter(f => f.TestStatusID == 3) as StudentOnlineTest[]);
+          // For History Test
+          this.dataSource1 = new MatTableDataSource(res.Object as StudentOnlineTest[]);
           this.dataSource1.paginator = this.paginator1;
           this.dataSource1.sort = this.sort1;
           !this.dataSource1.filteredData.length ? this.IsEmpty1 = true : this.IsEmpty1 = false;
@@ -121,5 +84,38 @@ export class ViewOnlineTestComponent implements OnInit {
         console.log(error);
       });
   }
+
+  // getOnlineTestByStudentID(StudentID: any) {
+  //   debugger;
+  //   this.helperSvc.getService(APIUrl.GetOnlineTestByStudentID + "?StudentID=" + StudentID)
+  //     .subscribe(res => {
+  //       if (res.Message === 'Success') {
+  //         // var data=res.Object as StudentOnlineTest[];
+  //         console.log(moment());
+  //         var data = res.Object.filter(f => f.TestStatusID == 1 && moment(f.StartDate) <= moment() && moment(f.EndDate) >= moment()) as StudentOnlineTest[]
+  //         this.dataSource = new MatTableDataSource(data);
+  //         this.dataSource.paginator = this.paginator;
+  //         this.dataSource.sort = this.sort;
+  //         !this.dataSource.filteredData.length ? this.IsEmpty = true : this.IsEmpty = false;
+  //       }
+  //     }, error => {
+  //       alert('error');
+  //       console.log(error);
+  //     });
+  // }
+  // getOnlineTestByStudentID1(StudentID: any) {
+  //   this.helperSvc.getService(APIUrl.GetOnlineTestByStudentID + "?StudentID=" + StudentID)
+  //     .subscribe(data => {
+  //       if (data.Message === 'Success') {
+  //         this.dataSource1 = new MatTableDataSource(data.Object.filter(f => f.TestStatusID == 3) as StudentOnlineTest[]);
+  //         this.dataSource1.paginator = this.paginator1;
+  //         this.dataSource1.sort = this.sort1;
+  //         !this.dataSource1.filteredData.length ? this.IsEmpty1 = true : this.IsEmpty1 = false;
+  //       }
+  //     }, error => {
+  //       alert('error');
+  //       console.log(error);
+  //     });
+  // }
 
 }
