@@ -63,7 +63,7 @@ namespace DataAccessLayer
             sqlParameterList.Add(new SqlParameter("SessionID", objOnlineTest.SessionID));
             sqlParameterList.Add(new SqlParameter("StreamID", string.Join(",", objOnlineTest.StreamID)));
             sqlParameterList.Add(new SqlParameter("CourseID", objOnlineTest.CourseID != null ? objOnlineTest.CourseID.Length > 0 ? string.Join(",", objOnlineTest.CourseID) : string.Empty : string.Empty));
-            sqlParameterList.Add(new SqlParameter("BatchID", objOnlineTest.BatchID != null ? objOnlineTest.BatchID.Length > 0 ? string.Join(",", objOnlineTest.BatchID) : string.Empty : string.Empty));
+            sqlParameterList.Add(new SqlParameter("BatchID", objOnlineTest.BatchID != null & objOnlineTest.CourseID != null ? objOnlineTest.BatchID.Length > 0 & objOnlineTest.CourseID.Length > 0 ? string.Join(",", objOnlineTest.BatchID) : string.Empty : string.Empty));
             sqlParameterList.Add(new SqlParameter("SubjectID", objOnlineTest.SubjectID));
             sqlParameterList.Add(new SqlParameter("Topic", !string.IsNullOrEmpty(objOnlineTest.Topic) ? objOnlineTest.Topic : string.Empty));
             sqlParameterList.Add(new SqlParameter("Instructions", !string.IsNullOrEmpty(objOnlineTest.Instructions) ? objOnlineTest.Instructions : string.Empty));

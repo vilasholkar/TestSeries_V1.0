@@ -58,14 +58,17 @@ namespace DataAccessLayer
                                 trans.Commit();
                                 return returnValue.ToString();
                             }
-                            catch (Exception)
+                            catch (Exception ex)
                             {
                                 trans.Rollback();
-                                throw;
+                                return ex.Message;
                             }
                             finally
                             {
                                 sqlConn.Close();
+                                sqlCommand.Dispose();
+                                sqlConn.Dispose();
+                                trans.Dispose();
                             }
                         }
                     }
@@ -109,6 +112,9 @@ namespace DataAccessLayer
                             finally
                             {
                                 sqlConn.Close();
+                                sqlCommand.Dispose();
+                                sqlConn.Dispose();
+                                trans.Dispose();
                             }
                         }
                     }
@@ -185,9 +191,6 @@ namespace DataAccessLayer
                                     using (SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand))
                                     {
                                         // Create a DataTableMapping object
-                                        //List<DataTableMapping> dataTableMappingList = new List<DataTableMapping>();
-                                        //dataTableMappingList.Add(new DataTableMapping("Table1", "TestType"));
-                                        //dataTableMappingList.Add(new DataTableMapping("Table2", "Batch"));
                                         DataTableMapping[] dataTableMappingArray = dataTableMappingList.ToArray();
                                         // Call DataAdapter's TableMappings.Add method                       
                                         sqlDataAdapter.TableMappings.AddRange(dataTableMappingArray);
@@ -195,7 +198,7 @@ namespace DataAccessLayer
                                         trans.Commit();
                                     }
                                 }
-                                catch (Exception ex)
+                                catch (Exception)
                                 {
                                     trans.Rollback();
                                     throw;
@@ -209,7 +212,7 @@ namespace DataAccessLayer
                     }
                     return dsData;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     throw;
                 }
@@ -237,6 +240,8 @@ namespace DataAccessLayer
                         }
                         sqlDataAdapter.Fill(dtData);
                     }
+                    sqlCommand.Dispose();
+                    sqlConn.Dispose();
                 }
             }
             return dtData;
@@ -256,7 +261,7 @@ namespace DataAccessLayer
                         {
                             pro.SetValue(objT, row[pro.Name]);
                         }
-                        catch (Exception ex) { }
+                        catch (Exception) { throw; }
                     }
                 }
                 return objT;
@@ -321,15 +326,17 @@ namespace DataAccessLayer
             try
             {
                 object obj = sqlCommand.ExecuteScalar();
-                cnn.Close();
-                sqlCommand.Dispose();
                 return obj;
             }
             catch (Exception ex)
             {
+                throw;
+            }
+            finally
+            {
                 cnn.Close();
                 sqlCommand.Dispose();
-                throw new Exception("DGeneric::GetValue::Error occured." + ex.Message.ToString(), ex.InnerException);
+                cnn.Dispose();
             }
 
         }
@@ -338,48 +345,48 @@ namespace DataAccessLayer
             SqlConnection cnn = new SqlConnection(DGeneric.ConnectionString);
             SqlCommand sqlCommand = new SqlCommand();
             sqlCommand.CommandText = query;
-            //sqlCommand.CommandType = CommandType.StoredProcedure;
-            //cnn.Open();
             sqlCommand.Connection = cnn;
             try
             {
                 SqlDataAdapter objDa = new SqlDataAdapter(sqlCommand);
                 DataSet ds = new DataSet();
                 objDa.Fill(ds);
-                //cnn.Close();
-                sqlCommand.Dispose();
                 return ds;
             }
-            catch (Exception ex)
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
             {
                 cnn.Close();
                 sqlCommand.Dispose();
-                throw new Exception("DGeneric::GetData::Error occured." + ex.Message.ToString(), ex.InnerException);
+                cnn.Dispose();
             }
-
         }
         public static bool ExecQuery(string query)
         {
-           using( SqlConnection cnn = new SqlConnection(DGeneric.ConnectionString))
-           { 
-            SqlCommand sqlCommand = new SqlCommand();
-            sqlCommand.CommandText = query;
-            cnn.Open();
-            sqlCommand.Connection = cnn;
-            //try
-            //{
-            sqlCommand.ExecuteNonQuery();
-            cnn.Close();
-            sqlCommand.Dispose();
-            return true;
-            //}
-            //catch (Exception ex)
-            //{
-            //    cnn.Close();
-            //    sqlCommand.Dispose();
-            //    throw new Exception("cls_ScrapedData::Insert::Error occured.", ex.InnerException);
-            //}
-           }
+            using (SqlConnection cnn = new SqlConnection(DGeneric.ConnectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand();
+                sqlCommand.CommandText = query;
+                cnn.Open();
+                sqlCommand.Connection = cnn;
+                try
+                {
+                    sqlCommand.ExecuteNonQuery();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                finally
+                {
+                    cnn.Close();
+                    sqlCommand.Dispose();
+                }
+            }
         }
     }
 }
