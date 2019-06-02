@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using ViewModels.Master;
 
 namespace OnlineTestApplication.Controllers
 {
@@ -55,6 +56,53 @@ namespace OnlineTestApplication.Controllers
         public HttpResponseMessage GetUserInfo(string data)
         {
             return Request.CreateResponse(HttpStatusCode.OK, _iBMaster.GetMasterData());
+        }
+
+        [HttpGet]
+        [Route("api/GetSubject", Name = "GetSubject")]
+        public HttpResponseMessage GetSubject()
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, _iBMaster.GetSubject());
+        }
+
+        [HttpGet]
+        [Route("api/GetTopic", Name = "GetTopic")]
+        public HttpResponseMessage GetTopic()
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, _iBMaster.GetTopic());
+        }
+
+        [HttpPost]
+        [Route("api/AddUpdateTopic", Name = "AddUpdateTopic")]
+        public HttpResponseMessage AddUpdateTopic(TopicViewModel objTopic)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, _iBMaster.AddUpdateTopic(objTopic));
+        }
+
+        [HttpPost]
+        [Route("api/DeleteTopic", Name = "DeleteTopic")]
+        public HttpResponseMessage DeleteTopic(TopicViewModel objTopic)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, _iBMaster.DeleteTopic(objTopic));
+        }
+        [HttpGet]
+        [Route("api/GetSubTopic", Name = "GetSubTopic")]
+        public HttpResponseMessage GetSubTopic()
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, _iBMaster.GetSubTopic());
+        }
+
+        [HttpPost]
+        [Route("api/AddUpdateSubTopic", Name = "AddUpdateSubTopic")]
+        public HttpResponseMessage GetSubTopic(SubTopicViewModel objSubTopic)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, _iBMaster.AddUpdateSubTopic(objSubTopic));
+        }
+        [HttpPost]
+        [Route("api/DeleteSubTopic", Name = "DeleteSubTopic")]
+        public HttpResponseMessage DeleteTestType(SubTopicViewModel objSubTopic)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, _iBMaster.DeleteSubTopic(objSubTopic));
         }
     }
 }

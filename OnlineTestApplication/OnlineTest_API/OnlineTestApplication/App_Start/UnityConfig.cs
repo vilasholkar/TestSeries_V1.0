@@ -47,6 +47,11 @@ namespace OnlineTestApplication
             container.RegisterType<IDStudentDashboard, DStudentDashboard>();
             container.RegisterType<IBStudentDashboard, BStudentDashboard>();
 
+            container.RegisterType<IDGeneralSettings, DGeneralSettings>();
+            container.RegisterType<IBGeneralSettings, BGeneralSettings>();
+
+            container.RegisterType<IDStudyMaterial, DStudyMaterial>();
+            container.RegisterType<IBStudyMaterial, BStudyMaterial>();
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }
     }
