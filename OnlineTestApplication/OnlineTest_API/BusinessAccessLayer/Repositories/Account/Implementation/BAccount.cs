@@ -38,5 +38,28 @@ namespace BusinessAccessLayer
                 };
             }
         }
+       public Response<ForgetPassword> ForgetPassword(ForgetPassword objForgetPassword)
+        {
+            var forgetPasswordData = _iDAccount.ForgetPassword(objForgetPassword);
+            if (forgetPasswordData != null)
+            {
+                return new Response<ForgetPassword>
+                {
+                    IsSuccessful = true,
+                    Object = forgetPasswordData,
+                    Message = "Success"
+                };
+            }
+            else
+            {
+                return new Response<ForgetPassword>
+                {
+                    IsSuccessful = false,
+                    Message = "error",
+                    Object = null
+                };
+            }
+        }
+
     }
 }

@@ -42,6 +42,8 @@
     <Compile Include="Repositories\Account\Implementation\BAccount.cs" />
     <Compile Include="Repositories\Account\Interface\IBAccount.cs" />
     <Compile Include="Repositories\Dashboard\Implementation\BStudentDashboard.cs" />
+    <Compile Include="Repositories\Settings\Implementation\BGeneralSettings.cs" />
+    <Compile Include="Repositories\Settings\Interface\IBGeneralSettings.cs" />
     <Compile Include="Repositories\Dashboard\Interface\IBStudentDashboard.cs" />
     <Compile Include="Repositories\Master\Implementation\BMaster.cs" />
     <Compile Include="Repositories\Master\Interface\IBMaster.cs" />
@@ -49,6 +51,8 @@
     <Compile Include="Repositories\Quiz\Interface\IBQuiz.cs" />
     <Compile Include="Repositories\Result\Implementation\BResult.cs" />
     <Compile Include="Repositories\Result\Interface\IBResult.cs" />
+    <Compile Include="Repositories\StudyMaterial\Implementation\BStudyMaterial.cs" />
+    <Compile Include="Repositories\StudyMaterial\Interface\IBStudyMaterial.cs" />
     <Compile Include="Repositories\TestType\Implementation\BTestType.cs" />
     <Compile Include="Repositories\TestType\Interface\IBTestType.cs" />
     <Compile Include="Repositories\Student\Implementation\BStudent.cs" />

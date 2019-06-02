@@ -134,5 +134,112 @@ namespace BusinessAccessLayer
                 };
             }
         }
+
+        public Response<List<SubjectViewModel>> GetSubject()
+        {
+            var topicData = _iDMaster.GetSubject();
+            if (topicData != null)
+            {
+                return new Response<List<SubjectViewModel>>
+                {
+                    IsSuccessful = true,
+                    Object = topicData,
+                    Message = "Success"
+                };
+            }
+            else
+            {
+                return new Response<List<SubjectViewModel>>
+                {
+                    IsSuccessful = false,
+                    Message = "error",
+                    Object = null
+                };
+            }
+        }
+
+        #region Topic
+        public Response<List<TopicViewModel>> GetTopic()
+        {
+            var topicData = _iDMaster.GetTopic();
+            if (topicData != null)
+            {
+                return new Response<List<TopicViewModel>>
+                {
+                    IsSuccessful = true,
+                    Object = topicData,
+                    Message = "Success"
+                };
+            }
+            else
+            {
+                return new Response<List<TopicViewModel>>
+                {
+                    IsSuccessful = false,
+                    Message = "error",
+                    Object = null
+                };
+            }
+        }
+        public string AddUpdateTopic(TopicViewModel objTopic)
+        {
+            var topicData = _iDMaster.AddUpdateTopic(objTopic);
+            if (!string.IsNullOrEmpty(topicData))
+            {
+                return topicData;
+            }
+            else
+            {
+                return topicData;
+            }
+        }
+
+        public string DeleteTopic(TopicViewModel objTopic)
+        {
+            return _iDMaster.DeleteTopic(objTopic);
+        }
+        #endregion
+
+        #region SubTopic
+        public Response<List<SubTopicViewModel>> GetSubTopic()
+        {
+            var subTopicData = _iDMaster.GetSubTopic();
+            if (subTopicData != null)
+            {
+                return new Response<List<SubTopicViewModel>>
+                {
+                    IsSuccessful = true,
+                    Object = subTopicData,
+                    Message = "Success"
+                };
+            }
+            else
+            {
+                return new Response<List<SubTopicViewModel>>
+                {
+                    IsSuccessful = false,
+                    Message = "error",
+                    Object = null
+                };
+            }
+        }
+       public string AddUpdateSubTopic(SubTopicViewModel objSubTopic)
+        {
+            var subTopicData = _iDMaster.AddUpdateSubTopic(objSubTopic);
+            if (!string.IsNullOrEmpty(subTopicData))
+            {
+                return subTopicData;
+            }
+            else
+            {
+                return subTopicData;
+            }
+        }
+
+       public string DeleteSubTopic(SubTopicViewModel objSubTopic)
+       {
+           return _iDMaster.DeleteSubTopic(objSubTopic);
+       }
+        #endregion
     }
 }
