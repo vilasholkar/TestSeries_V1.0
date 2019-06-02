@@ -41,8 +41,14 @@ namespace DataAccessLayer
                         {
                             quizViewModel.OnlineTestID = Convert.ToInt32(dr["OnlineTestID"]);
                             quizViewModel.TestName = dr["TestName"].ToString();
+                            quizViewModel.TestSeriesID = Convert.ToInt32(dr["TestSeriesID"]);
+                            quizViewModel.TestSeries = dr["TestSeries"].ToString();
+                            quizViewModel.TestTypeID = Convert.ToInt32(dr["TestTypeID"]);
+                            quizViewModel.TestType = dr["TestType"].ToString();
                             quizViewModel.TestDuration = dr["TestDuration"].ToString();
                             quizViewModel.Instructions = dr["Instructions"].ToString();
+                            quizViewModel.TotalMarks = dr["TotalMarks"].ToString();
+                            quizViewModel.PassingPercentage = dr["PassingPercentage"].ToString();
                             QuestionViewModel questionViewModel = new QuestionViewModel();
                             questionViewModel.QuestionID = Convert.ToInt32(dr["QuestionId"]);
                             questionViewModel.TestQuestionNo = dr["TestQuestionNo"].ToString();
@@ -57,6 +63,9 @@ namespace DataAccessLayer
                                     break;
                                 case "Biology":
                                     quizViewModel.BiologyQuestionCount += 1;
+                                    break;
+                                case "Aptitude":
+                                    quizViewModel.AptitudeQuestionCount += 1;
                                     break;
                                 default:
                                     break;
@@ -101,6 +110,9 @@ namespace DataAccessLayer
                                     break;
                                 case "Biology":
                                     quizViewModel.BiologyQuestionCount += 1;
+                                    break;
+                                case "Aptitude":
+                                    quizViewModel.AptitudeQuestionCount += 1;
                                     break;
                                 default:
                                     break;
@@ -208,6 +220,28 @@ namespace DataAccessLayer
                     }
                 }
                 if (Questions.SubjectID == 3)//Biology
+                {
+                    foreach (var Options in Questions.Options)
+                    {
+                        if (Options.IsAnswer && Options.Selected)
+                        {
+                            OptionID = Options.OptionID;
+                            AnswerID = Options.OptionID;
+                            IsCorrect = true;
+                        }
+                        else if (Options.IsAnswer && !Options.Selected)
+                        {
+                            OptionID = Options.OptionID;
+                            IsCorrect = false;
+                        }
+                        else if (!Options.IsAnswer && Options.Selected)
+                        {
+                            AnswerID = Options.OptionID;
+                            IsCorrect = false;
+                        }
+                    }
+                }
+                if (Questions.SubjectID == 4)//Aptitude
                 {
                     foreach (var Options in Questions.Options)
                     {

@@ -56,6 +56,10 @@
     <Compile Include="Repositories\Quiz\Interface\IDQuiz.cs" />
     <Compile Include="Repositories\Result\Implementation\DResult.cs" />
     <Compile Include="Repositories\Result\Interface\IDResult.cs" />
+    <Compile Include="Repositories\settings\Implementation\DGeneralSettings.cs" />
+    <Compile Include="Repositories\settings\Interface\IDGeneralSettings.cs" />
+    <Compile Include="Repositories\StudyMaterial\Implementation\DStudyMaterial.cs" />
+    <Compile Include="Repositories\StudyMaterial\Interface\IDStudyMaterial.cs" />
     <Compile Include="Repositories\TestType\Implementation\DTestType.cs" />
     <Compile Include="Repositories\TestType\Interface\IDTestType.cs" />
     <Compile Include="Repositories\Student\Implementation\DStudent.cs" />

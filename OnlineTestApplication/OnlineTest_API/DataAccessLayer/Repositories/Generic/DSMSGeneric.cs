@@ -18,8 +18,10 @@ namespace DataAccessLayer
             {
                 string APIKey = "fc0e7fdc-2766-485b-800d-dcdce1ad6728";
                 string SenderID = "AAYAMC";
-                //string MobileNo = strNumber;
+                string MobileNo = strNumber;
+#if debug
                 string MobileNo = "8871171445";
+#endif
                 string Message = strMessage;
                 string Route = "1";
                 string url = string.Format("http://login.smsgatewayhub.com/api/mt/SendSMS?APIKey={0}&senderid={1}&channel=2&DCS=0&flashsms=0&number={2}&text={3}&route={4}", APIKey, SenderID, MobileNo, Message, Route);

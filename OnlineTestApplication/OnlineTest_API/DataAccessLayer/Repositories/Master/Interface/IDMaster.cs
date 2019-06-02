@@ -13,5 +13,18 @@ namespace DataAccessLayer
        List<BatchViewModel> GetBatchByCourse(string CourseId);
        List<SessionViewModel> GetSession();
        MasterViewModel GetMasterData();
+       List<SubjectViewModel> GetSubject();
+
+       #region Topic
+       List<TopicViewModel> GetTopic();
+       string AddUpdateTopic(TopicViewModel objTopic);
+       string DeleteTopic(TopicViewModel objTopic);
+       #endregion
+
+       #region SubTopic
+       List<SubTopicViewModel> GetSubTopic();
+       string AddUpdateSubTopic(SubTopicViewModel objSubTopic);
+       string DeleteSubTopic(SubTopicViewModel objSubTopic);
+       #endregion
     }
 }

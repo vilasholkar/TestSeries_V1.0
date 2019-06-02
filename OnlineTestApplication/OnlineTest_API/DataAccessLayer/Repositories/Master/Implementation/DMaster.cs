@@ -99,6 +99,15 @@ namespace DataAccessLayer
                             case "Session":
                                 masterData.Session = DGeneric.BindDataList<SessionViewModel>(dt);
                                 break;
+                            case "Subject":
+                                masterData.Subject = DGeneric.BindDataList<SubjectViewModel>(dt);
+                                break;
+                            case "Topic":
+                                masterData.Topic = DGeneric.BindDataList<TopicViewModel>(dt);
+                                break;
+                            case "SubTopic":
+                                masterData.SubTopic = DGeneric.BindDataList<SubTopicViewModel>(dt);
+                                break;
                         }
                     }
                 }
@@ -106,5 +115,132 @@ namespace DataAccessLayer
 
             return masterData;
         }
+
+        public List<SubjectViewModel> GetSubject()
+        {
+            List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+            List<DataTableMapping> dataTableMappingList = new List<DataTableMapping>();
+            dataTableMappingList.Add(new DataTableMapping("Table2", "Subject"));
+            DataSet ds = DGeneric.RunSP_ReturnDataSet("sp_GetAllMasterData", sqlParameterList, dataTableMappingList);
+            List<SubjectViewModel> subjectViewModelList = new List<SubjectViewModel>();
+            if (ds.Tables.Count > 0)
+            {
+                foreach (DataTable dt in ds.Tables)
+                {
+                    if (dt.Rows.Count > 0)
+                    {
+                        string tableName = Convert.ToString(dt.Rows[0]["TableName"]);
+                        switch (tableName)
+                        {
+                            case "Subject":
+                                subjectViewModelList = DGeneric.BindDataList<SubjectViewModel>(dt);
+                                break;
+                        }
+                    }
+                }
+            }
+
+            return subjectViewModelList;
+        }
+        
+        #region Topic
+        public List<TopicViewModel> GetTopic()
+        {
+            List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+            List<DataTableMapping> dataTableMappingList = new List<DataTableMapping>();
+            dataTableMappingList.Add(new DataTableMapping("Table6", "Topic"));
+            DataSet ds = DGeneric.RunSP_ReturnDataSet("sp_GetAllMasterData", sqlParameterList, dataTableMappingList);
+            List<TopicViewModel> testTypeList = new List<TopicViewModel>();
+            if (ds.Tables.Count > 0)
+            {
+                foreach (DataTable dt in ds.Tables)
+                {
+                    if (dt.Rows.Count > 0)
+                    {
+                        string tableName = Convert.ToString(dt.Rows[0]["TableName"]);
+                        switch (tableName)
+                        {
+                            case "Topic":
+                                testTypeList = DGeneric.BindDataList<TopicViewModel>(dt);
+                                break;
+                        }
+                    }
+                }
+            }
+
+            return testTypeList;
+        }
+        public string AddUpdateTopic(TopicViewModel objTopic)
+        {
+            List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+            sqlParameterList.Add(new SqlParameter("TopicID", objTopic.TopicID));
+            sqlParameterList.Add(new SqlParameter("Topic", objTopic.Topic));
+            sqlParameterList.Add(new SqlParameter("Description", !string.IsNullOrEmpty(objTopic.Description) ? objTopic.Description : string.Empty));
+            sqlParameterList.Add(new SqlParameter("SubjectID", objTopic.SubjectID));
+            sqlParameterList.Add(new SqlParameter("IsActive", objTopic.IsActive));
+            string temp=DGeneric.RunSP_ExecuteNonQuery("sp_AddUpdateTopic", sqlParameterList);
+            return temp;
+        }
+
+        public string DeleteTopic(TopicViewModel objTopic)
+        {
+            List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+            sqlParameterList.Add(new SqlParameter("TopicID", objTopic.TopicID));
+            return DGeneric.RunSP_ExecuteNonQuery("sp_DeleteTopic", sqlParameterList);
+        }
+        #endregion
+     
+        #region SubTopic
+        public List<SubTopicViewModel> GetSubTopic()
+        {
+            List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+            List<DataTableMapping> dataTableMappingList = new List<DataTableMapping>();
+            dataTableMappingList.Add(new DataTableMapping("Table7", "SubTopic"));
+            DataSet ds = DGeneric.RunSP_ReturnDataSet("sp_GetAllMasterData", sqlParameterList, dataTableMappingList);
+            List<SubTopicViewModel> testTypeList = new List<SubTopicViewModel>();
+            if (ds.Tables.Count > 0)
+            {
+                foreach (DataTable dt in ds.Tables)
+                {
+                    if (dt.Rows.Count > 0)
+                    {
+                        string tableName = Convert.ToString(dt.Rows[0]["TableName"]);
+                        switch (tableName)
+                        {
+                            case "SubTopic":
+                                testTypeList = DGeneric.BindDataList<SubTopicViewModel>(dt);
+                                break;
+                        }
+                    }
+                }
+            }
+            return testTypeList;
+            //return ds.Tables["SubTopic"].AsEnumerable().Select(s => new SubTopicViewModel()
+            //{
+            //    SubTopicID = Convert.ToInt32(s["SubTopicID"]),
+            //    SubTopic = s["SubTopic"].ToString(),
+            //    Description = s["Description"].ToString(),
+            //    TopicID = Convert.ToInt32(s["TopicID"]),
+            //    IsActive = Convert.ToBoolean(s["IsActive"]),
+            //}).ToList();
+        }
+        public string AddUpdateSubTopic(SubTopicViewModel objSubTopic)
+        {
+            List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+            sqlParameterList.Add(new SqlParameter("SubTopicID", objSubTopic.SubTopicID));
+            sqlParameterList.Add(new SqlParameter("SubTopic", objSubTopic.SubTopic));
+            sqlParameterList.Add(new SqlParameter("Description", !string.IsNullOrEmpty(objSubTopic.Description) ? objSubTopic.Description : string.Empty));
+            sqlParameterList.Add(new SqlParameter("TopicID", objSubTopic.TopicID));
+            sqlParameterList.Add(new SqlParameter("IsActive", objSubTopic.IsActive));
+            return DGeneric.RunSP_ExecuteNonQuery("sp_AddUpdateSubTopic", sqlParameterList);
+        }
+
+        public string DeleteSubTopic(SubTopicViewModel objSubTopic)
+        {
+            List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+            sqlParameterList.Add(new SqlParameter("TopicID", objSubTopic.SubTopicID));
+            return DGeneric.RunSP_ExecuteNonQuery("sp_DeleteSubTopic", sqlParameterList);
+        }
+        #endregion
     }
 }

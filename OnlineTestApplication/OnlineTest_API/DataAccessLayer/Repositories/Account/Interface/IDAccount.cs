@@ -10,5 +10,6 @@ namespace DataAccessLayer
     public interface IDAccount
     {
         Login GetUserDetails(Login user);
+        ForgetPassword ForgetPassword(ForgetPassword objForgetPassword);
     }
 }

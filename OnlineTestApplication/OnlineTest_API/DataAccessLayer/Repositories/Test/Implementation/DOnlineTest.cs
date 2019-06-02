@@ -208,7 +208,7 @@ namespace DataAccessLayer
                         quizViewModel.OnlineTestNo = Convert.ToInt32(dr["OnlineTestNo"]);
                         quizViewModel.TestSeries = dr["TestSeries"].ToString();
                         quizViewModel.TestType = dr["TestType"].ToString();
-                        quizViewModel.TotalMarks = Convert.ToInt32(dr["TotalMarks"]);
+                        quizViewModel.TotalMarks = dr["TotalMarks"].ToString().Replace(" ", "");
                         quizViewModel.PassingPercentage = dr["PassingPercentage"].ToString().Replace(" ", "");
 
                         QuestionViewModel questionViewModel = new QuestionViewModel();

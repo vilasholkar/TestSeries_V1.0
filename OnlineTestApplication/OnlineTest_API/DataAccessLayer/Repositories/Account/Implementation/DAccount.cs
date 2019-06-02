@@ -72,5 +72,63 @@ namespace DataAccessLayer
             //}
             //return Userlist;
         }
+        public ForgetPassword ForgetPassword(ForgetPassword objForgetPassword)
+        {
+            string MobileNo;
+            if (objForgetPassword.Action == "SendOTP")
+            {
+                string strQuery = string.Format("Select MobileNumber from Student where EnrollmentNo='{0}'", objForgetPassword.UserName);
+                MobileNo = Convert.ToString(DGeneric.GetValue(strQuery));
+                
+
+                if (string.IsNullOrEmpty(MobileNo))
+                {
+                    MobileNo = Convert.ToString(DGeneric.GetValue(String.Format("select Mobile from Users where UserName='{0}'", objForgetPassword.UserName)));
+                    if (string.IsNullOrEmpty(MobileNo))
+                    {
+                        objForgetPassword.ConfirmOTP = "0";
+
+                    }
+                    else
+                    {
+                        Random rand = new Random();
+                        objForgetPassword.ConfirmOTP = rand.Next(0, 999999).ToString("D6");
+                        string strMessage = "Your OTP is: " + objForgetPassword.ConfirmOTP;
+                        string response = DSMSGeneric.SendSingleSMS("8871171445", strMessage);
+                        objForgetPassword.UserTypeID = 1;
+                    }
+                }
+                else
+                {
+                    Random rand = new Random();
+                    objForgetPassword.ConfirmOTP = rand.Next(0, 999999).ToString("D6");
+                    string strMessage = "Your OTP is: " + objForgetPassword.ConfirmOTP;
+                    string response = DSMSGeneric.SendSingleSMS("8871171445", strMessage);
+                    objForgetPassword.UserTypeID = 2;
+                }
+
+
+            }
+            else if (objForgetPassword.Action == "UpdatePassword")
+            {
+                if(objForgetPassword.UserTypeID==1)
+                {
+                    string strQuery = string.Format("update users set UserPassword='{0}' where UserName='{1}'", objForgetPassword.NewPassword, objForgetPassword.UserName);
+                    DGeneric.ExecQuery(strQuery);
+                    objForgetPassword.Status = "Success";
+                    
+                }
+                else if (objForgetPassword.UserTypeID == 2) {
+                    int StudentID = Convert.ToInt32(DGeneric.GetValue(String.Format("select StudentID from Student where EnrollmentNo='{0}'", objForgetPassword.UserName)));
+                    string strQuery = string.Format("update StudentAccount set Password='{0}' where StudentID='{1}'", objForgetPassword.NewPassword, StudentID);
+                    DGeneric.ExecQuery(strQuery);
+                    objForgetPassword.Status = "Success";
+
+                }
+                
+            }
+            return objForgetPassword;
+        }
+
     }
 }

@@ -79,7 +79,8 @@ namespace DataAccessLayer
         {
             string basicquery = @"SELECT     dbo.OnlineTestResult.ResultID, dbo.OnlineTestResult.StudentID, dbo.OnlineTestResult.TestID, dbo.OnlineTestResult.Physics_Total, 
                       dbo.OnlineTestResult.Physics_Right, dbo.OnlineTestResult.Physics_Wrong, dbo.OnlineTestResult.Chemistry_Total, dbo.OnlineTestResult.Chemistry_Right, 
-                      dbo.OnlineTestResult.Chemistry_Wrong, dbo.OnlineTestResult.Biology_Total, dbo.OnlineTestResult.Biology_Right, dbo.OnlineTestResult.Biology_Wrong, 
+                      dbo.OnlineTestResult.Chemistry_Wrong, dbo.OnlineTestResult.Biology_Total, dbo.OnlineTestResult.Biology_Right, dbo.OnlineTestResult.Biology_Wrong,
+                      dbo.OnlineTestResult.Aptitude_Total, dbo.OnlineTestResult.Aptitude_Right, dbo.OnlineTestResult.Aptitude_Wrong, 
                       dbo.OnlineTestResult.TotalCorrect, dbo.OnlineTestResult.TotalWrong, dbo.OnlineTestResult.TotalAttempt, dbo.OnlineTestResult.TotalMarksObtained, 
                       dbo.OnlineTestResult.Percentage, dbo.OnlineTestResult.Rank, dbo.OnlineTestResult.TotalMarks, dbo.OnlineTestResult.QualifyingMarks, 
                       dbo.OnlineTestResult.CreatedOnDate, dbo.OnlineTestResult.IsActive,dbo.OnlineTestResult.IsPresent, dbo.Student.EnrollmentNo, dbo.Student.FirstName, dbo.Student.LastName, 
@@ -126,6 +127,9 @@ namespace DataAccessLayer
                 Biology_Total = Convert.ToString(s["Biology_Total"]),
                 Biology_Right = Convert.ToString(s["Biology_Right"]),
                 Biology_Wrong = Convert.ToString(s["Biology_Wrong"]),
+                Aptitude_Total = Convert.ToString(s["Aptitude_Total"]),
+                Aptitude_Right = Convert.ToString(s["Aptitude_Right"]),
+                Aptitude_Wrong = Convert.ToString(s["Aptitude_Wrong"]),
                 TotalCorrect = Convert.ToString(s["TotalCorrect"]),
                 TotalWrong = Convert.ToString(s["TotalWrong"]),
                 TotalAttempt = Convert.ToString(s["TotalAttempt"]),
@@ -154,6 +158,8 @@ namespace DataAccessLayer
                 Chemistry_Wrong = Convert.ToString(s["Chemistry_Wrong"]),
                 Biology_Right = Convert.ToString(s["Biology_Right"]),
                 Biology_Wrong = Convert.ToString(s["Biology_Wrong"]),
+                Aptitude_Right = Convert.ToString(s["Aptitude_Right"]),
+                Aptitude_Wrong = Convert.ToString(s["Aptitude_Wrong"]),
                 TotalCorrect = Convert.ToString(s["TotalCorrect"]),
                 TotalWrong = Convert.ToString(s["TotalWrong"]),
                 TotalAttempt = Convert.ToString(s["TotalAttempt"]),
@@ -264,16 +270,16 @@ namespace DataAccessLayer
                             response = DGeneric.RunSP_ExecuteNonQuery("sp_AddTopper_Average", sqlParameterList3);
                             if (response == "Success")
                             {
-                              response = ResultSMS(dt);
-                              if (response == "OK")
-                              {
-                                  response = "Result Generated Sucessfully.";
-                              }
+                                response = ResultSMS(dt);
+                                if (response == "OK")
+                                {
+                                    response = "Result Generated Sucessfully.";
+                                }
                             }
                         }
                     }
                 }
-                
+
                 return response;
             }
             else
@@ -485,7 +491,7 @@ namespace DataAccessLayer
 
             foreach (DataRow drDistinctStudent in dtDistinctStudent.Rows)
             {
-                int PR = 0, PW = 0, PNA = 0, CR = 0, CW = 0, CNA = 0, BR = 0, BW = 0, BNA = 0;
+                int PR = 0, PW = 0, PNA = 0, CR = 0, CW = 0, CNA = 0, BR = 0, BW = 0, BNA = 0, AR = 0, AW = 0, ANA = 0;
                 // int TotalRight = 0, TotalWrong = 0, Attempt = 0, NotAttempt = 0;
                 string StudentID = drDistinctStudent["StudentID"].ToString();
 
@@ -540,6 +546,21 @@ namespace DataAccessLayer
                                     BNA++;
                                 }
                             }
+                            if (drPaper["SubjectID"].ToString().Equals("4"))
+                            {
+                                if (Convert.ToBoolean(drStudentResponse["IsCorrect"]))
+                                {
+                                    AR++;
+                                }
+                                else if (!(Convert.ToBoolean(drStudentResponse["IsCorrect"])) && Convert.ToInt32(drStudentResponse["AnswerID"]) != 0)
+                                {
+                                    AW++;
+                                }
+                                else
+                                {
+                                    ANA++;
+                                }
+                            }
                             break;
                         }
                     }
@@ -556,10 +577,13 @@ namespace DataAccessLayer
                 dr["Biology_Total"] = BR + BW + BNA;
                 dr["Biology_Right"] = BR;
                 dr["Biology_Wrong"] = BW;
-                dr["TotalCorrect"] = PR + CR + BR;
-                dr["TotalWrong"] = PW + CW + BW;
-                dr["TotalAttempt"] = PR + CR + BR + PW + CW + BW;
-                dr["TotalMarksObtained"] = ((PR + CR + BR) * 4) - (PW + CW + BW);
+                dr["Aptitude_Total"] = AR + AW + ANA;
+                dr["Aptitude_Right"] = AR;
+                dr["Aptitude_Wrong"] = AW;
+                dr["TotalCorrect"] = PR + CR + BR + AR;
+                dr["TotalWrong"] = PW + CW + BW + AR;
+                dr["TotalAttempt"] = PR + CR + BR + AR + PW + CW + BW + AW;
+                dr["TotalMarksObtained"] = ((PR + CR + BR + AR) * 4) - (PW + CW + BW + AW);
                 dr["Percentage"] = Convert.ToInt32(dr["TotalMarksObtained"]) > 0 ? Math.Round((Convert.ToDouble(dr["TotalMarksObtained"]) / TotalMarks) * 100, 4) : 0;
                 dr["Rank"] = 0;
                 dr["TotalMarks"] = TotalMarks;
@@ -587,6 +611,9 @@ namespace DataAccessLayer
                     dr["Biology_Total"] = 0;
                     dr["Biology_Right"] = 0;
                     dr["Biology_Wrong"] = 0;
+                    dr["Aptitude_Total"] = 0;
+                    dr["Aptitude_Right"] = 0;
+                    dr["Aptitude_Wrong"] = 0;
                     dr["TotalCorrect"] = 0;
                     dr["TotalWrong"] = 0;
                     dr["TotalAttempt"] = 0;
@@ -652,12 +679,15 @@ namespace DataAccessLayer
             //Convert.ToInt32(Convert.ToInt32(dtTestResult.Compute("Sum(Physics_Right)", string.Empty)) / TotalStudents);
             drAverage["Physics_Right"] = Convert.ToInt32(Convert.ToInt32(dtTestResult.Compute("Sum(Physics_Right)", string.Empty)) / TotalStudents);
             drAverage["Physics_Wrong"] = Convert.ToInt32(Convert.ToInt32(dtTestResult.Compute("Sum(Physics_Wrong)", string.Empty)) / TotalStudents);
-            drAverage["Chemistry_Total"] = Convert.ToInt32(dtTestResult.Rows[0]["Physics_Total"]);
+            drAverage["Chemistry_Total"] = Convert.ToInt32(dtTestResult.Rows[0]["Chemistry_Total"]);
             drAverage["Chemistry_Right"] = Convert.ToInt32(Convert.ToInt32(dtTestResult.Compute("Sum(Chemistry_Right)", string.Empty)) / TotalStudents);
             drAverage["Chemistry_Wrong"] = Convert.ToInt32(Convert.ToInt32(dtTestResult.Compute("Sum(Chemistry_Wrong)", string.Empty)) / TotalStudents);
-            drAverage["Biology_Total"] = Convert.ToInt32(dtTestResult.Rows[0]["Physics_Total"]);
+            drAverage["Biology_Total"] = Convert.ToInt32(dtTestResult.Rows[0]["Biology_Total"]);
             drAverage["Biology_Right"] = Convert.ToInt32(Convert.ToInt32(dtTestResult.Compute("Sum(Biology_Right)", string.Empty)) / TotalStudents);
             drAverage["Biology_Wrong"] = Convert.ToInt32(Convert.ToInt32(dtTestResult.Compute("Sum(Biology_Wrong)", string.Empty)) / TotalStudents);
+            drAverage["Aptitude_Total"] = Convert.ToInt32(dtTestResult.Rows[0]["Aptitude_Total"]);
+            drAverage["Aptitude_Right"] = Convert.ToInt32(Convert.ToInt32(dtTestResult.Compute("Sum(Aptitude_Right)", string.Empty)) / TotalStudents);
+            drAverage["Aptitude_Wrong"] = Convert.ToInt32(Convert.ToInt32(dtTestResult.Compute("Sum(Aptitude_Wrong)", string.Empty)) / TotalStudents);
             drAverage["TotalCorrect"] = Convert.ToInt32(Convert.ToInt32(dtTestResult.Compute("Sum(TotalCorrect)", string.Empty)) / TotalStudents);
             drAverage["TotalWrong"] = Convert.ToInt32(Convert.ToInt32(dtTestResult.Compute("Sum(TotalWrong)", string.Empty)) / TotalStudents);
             drAverage["TotalAttempt"] = Convert.ToInt32(Convert.ToInt32(dtTestResult.Compute("Sum(TotalAttempt)", string.Empty)) / TotalStudents);
@@ -674,6 +704,7 @@ namespace DataAccessLayer
             dtTA.Columns.Remove("Physics_Total");
             dtTA.Columns.Remove("Chemistry_Total");
             dtTA.Columns.Remove("Biology_Total");
+            dtTA.Columns.Remove("Aptitude_Total");
             dtTA.Columns.Remove("Rank");
             dtTA.Columns.Remove("TotalMarks");
             dtTA.Columns.Remove("QualifyingMarks");
@@ -685,7 +716,7 @@ namespace DataAccessLayer
         public string ResultSMS(DataTable dt)
         {
             string SMSResponse = string.Empty;
-            foreach (DataRow dr in  dt.Rows)
+            foreach (DataRow dr in dt.Rows)
             {
                 //var names = dr.StudentName.Trim().Split(' ');
                 //string FirstName = names[0];
@@ -705,7 +736,7 @@ namespace DataAccessLayer
                         string Message = string.Format(@"Dear Parents,{0} got {1}/{2} ({3}) in {4} of {5} attempts in phy,chem,bio(corr./incorr) are ({6}/{7}),({8}/{9}),({10}/{11}) respectively.",
                                                     dr["FirstName"], dr["TotalMarksObtained"], dr["TotalMarks"], dr["Percentage"], dr["TestName"], dr["StartDate"].ToString().ConvertDateTimeToString(),
                                                     dr["Physics_Right"], dr["Physics_Wrong"], dr["Chemistry_Right"], dr["Chemistry_Wrong"], dr["Biology_Right"], dr["Biology_Wrong"]);
-                         SMSResponse = DSMSGeneric.SendSingleSMS(MobileNo, Message);
+                        SMSResponse = DSMSGeneric.SendSingleSMS(MobileNo, Message);
                     }
                 }
                 else if (Convert.ToBoolean(dr["IsPresent"]) == false)
@@ -714,13 +745,13 @@ namespace DataAccessLayer
                     {
                         string MobileNo = dr["MobileNumber"].ToString();
                         string Message = string.Format(@"Dear {0},you was absent in {1} of {2}", dr["FirstName"], dr["TestName"], dr["StartDate"].ToString().ConvertDateTimeToString());
-                         SMSResponse = DSMSGeneric.SendSingleSMS(MobileNo, Message);
+                        SMSResponse = DSMSGeneric.SendSingleSMS(MobileNo, Message);
                     }
                     if (dr["FatherMobile"].ToString() != string.Empty)
                     {
                         string MobileNo = dr["FatherMobile"].ToString();
                         string Message = string.Format(@"Dear Parents,{0} was absent in {1} of {2}", dr["FirstName"], dr["TestName"], dr["StartDate"].ToString().ConvertDateTimeToString());
-                         SMSResponse = DSMSGeneric.SendSingleSMS(MobileNo, Message);
+                        SMSResponse = DSMSGeneric.SendSingleSMS(MobileNo, Message);
                     }
                 }
 
@@ -759,6 +790,9 @@ namespace DataAccessLayer
             dt.Columns.Add("Biology_Total", typeof(int));
             dt.Columns.Add("Biology_Right", typeof(int));
             dt.Columns.Add("Biology_Wrong", typeof(int));
+            dt.Columns.Add("Aptitude_Total", typeof(int));
+            dt.Columns.Add("Aptitude_Right", typeof(int));
+            dt.Columns.Add("Aptitude_Wrong", typeof(int));
             dt.Columns.Add("TotalCorrect", typeof(int));
             dt.Columns.Add("TotalWrong", typeof(int));
             dt.Columns.Add("TotalAttempt", typeof(int));
