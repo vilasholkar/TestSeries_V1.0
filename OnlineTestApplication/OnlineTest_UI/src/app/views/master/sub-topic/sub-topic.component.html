@@ -1,0 +1,133 @@
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="#fff" type="ball-spin-clockwise-fade">
+  <p style="padding-top:5px; font-size: 15px; color: black">Please Wait...</p>
+</ngx-spinner>
+<div class="animated fadeIn">
+  <button mat-stroked-button id="btnAddNew" *ngIf="btnAddNew" color="primary" (click)="changeShowStatus()"
+    style="outline: 0px;">
+    Add New
+  </button>
+  <hr>
+  <div *ngIf="showAddDiv" class="row">
+    <div class="col-md-12">
+      <div class="mat-elevation-z8">
+        <div class="card card-accent-primary">
+          <div class="card-header">
+            <strong class="card-title" style="line-height:40px;font-size: 18px;font-weight: 500">{{Title}}</strong>
+            <a mat-icon-button color="primary" class="float-right" (click)="this.showAddDiv=false;this.btnAddNew=true;">
+              <mat-icon aria-label="icon">cancel</mat-icon>
+            </a>
+          </div>
+          <div class="card-body">
+            <form id="SubTopicForm" name="Form1" (ngSubmit)="AddSubTopic()" #subTopicForm="ngForm">
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="SubTopic" autocomplete="off" name="SubTopic"
+                        [(ngModel)]="subTopicModel.SubTopic" #SubTopic="ngModel" required minlength="3" maxlength="20"
+                        type="text">
+                      <mat-error *ngIf="SubTopic.invalid && (SubTopic.dirty || SubTopic.touched)">
+                        <mat-error *ngIf="SubTopic.errors.required">SubTopic is required.</mat-error>
+                        <mat-error *ngIf="SubTopic.errors.minlength">This must be at least 3 characters long.
+                        </mat-error>
+                        <mat-error *ngIf="SubTopic.errors.maxlength">Reaches maximum limit.</mat-error>
+                      </mat-error>
+                    </mat-form-field>
+                    <input name="SubTopicID" hidden [(ngModel)]="subTopicModel.SubTopicID" SubTopicID="ngModel"
+                      id="SubTopicID" type="text" class="form-control">
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <mat-form-field>
+                      <mat-select [(ngModel)]="subTopicModel.TopicID" name="TopicID" #TopicID="ngModel" 
+                        placeholder="Topic" required>
+                        <mat-option *ngFor="let topic of topicModel" [value]="topic.TopicID">
+                          {{topic.Topic}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="TopicID.invalid && (TopicID.dirty || TopicID.touched)">
+                        <mat-error *ngIf="TopicID.errors.required">Topic is required.</mat-error>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-sm-2">
+                  <br>
+                  <mat-checkbox [(ngModel)]="subTopicModel.IsActive"  #IsActive="ngModel" name="IsActive">Is Visible
+                  </mat-checkbox>
+                </div>
+              </div>
+              <button mat-raised-button color="primary" [disabled]="!subTopicForm.form.valid">Save</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-9">
+      <h4>SubTopic List</h4>
+    </div>
+    <div class="col-sm-3 text-right">
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+      </mat-form-field>
+    </div>
+    <div class="col-sm-12">
+      <div class="mat-elevation-z8">
+        <perfect-scrollbar style="position: relative;width: 100%;overflow: auto;">
+          <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="SubTopic">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> SubTopic </th>
+              <td mat-cell *matCellDef="let element"> {{element.SubTopic}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Topic">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Topic </th>
+              <td mat-cell *matCellDef="let element"> {{element.Topic}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Visible">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Visible </th>
+              <td mat-cell *matCellDef="let element"> 
+              <mat-checkbox  [checked]="element.IsActive" style="pointer-events: none">
+            </mat-checkbox>
+            </td>
+            </ng-container>
+            <ng-container matColumnDef="button">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Edit </th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button color="primary" (click)="getSubTopicByID(element)" aria-hidden="true"  style="outline: 0px;">
+                  <mat-icon aria-label="icon">edit</mat-icon>
+                </button>
+                <button mat-icon-button color="primary" (click)="DeleteSubaTopic(element)" aria-hidden="true"  style="outline: 0px;">
+                  <mat-icon aria-label="icon">delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="button1">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Delete </th>
+              <td mat-cell *matCellDef="let element">
+                
+              </td>
+            </ng-container>
+            <!-- <ng-container matColumnDef="button1">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Delete </th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button color="warn" (click)="DeleteTopic(element)" aria-hidden="true" style="outline: 0px;">
+                  <mat-icon aria-label="icon">delete</mat-icon>
+                </button>
+              </td>
+            </ng-container> -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+            </tr>
+          </table>
+        </perfect-scrollbar>
+        <div class="no-results" *ngIf="IsEmpty">
+          No results
+        </div>
+        <mat-paginator [pageSizeOptions]="PaginationConfig" showFirstLastButtons></mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

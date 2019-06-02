@@ -1,66 +1,118 @@
-<ngx-spinner 
-    bdColor = "rgba(51, 51, 51, 0.8)"
-    size = "large"
-    color = "#fff"
-    type = "ball-spin-clockwise-fade">
-    <p style="padding-top:5px; font-size: 15px; color: black">Please Wait...</p>
-  </ngx-spinner>  
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="#fff" type="ball-spin-clockwise-fade">
+  <p style="padding-top:5px; font-size: 15px; color: black">Please Wait...</p>
+</ngx-spinner>
 <div style="margin-top: 60px">
   <main class="">
     <div class="container">
       <div class="row">
-        <div class="col-md-5 mx-auto">
+        <div *ngIf="false" class="col-md-5 mx-auto">
           <div class="mat-elevation-z8">
-          <div class="card-group">
-            <div class="card p-4">
-              <div class="card-head text-center">
-                  <img src="../../../assets/img/brand/logo.png" title="Aayam Career Institute" style="width: 180px; height: 90px; margin-top: 10px;">
+            <div class="card-group">
+              <div class="card p-4">
+                <div class="card-head text-center">
+                  <img [src]="helperSvc.LoginLogoPath" title="Aayam Career Institute"
+                    style="width: 180px; height: 90px; margin-top: 10px;">
                   <h1>Login</h1>
                   <p class="text-muted">Sign In to your account</p>
                 </div>
-              <div class="card-body">
-                <!-- <h1>Login</h1>
-                <p class="text-muted">Sign In to your account</p>
-                <div class="input-group mb-3">
-              </div> -->
-              <!-- <div *ngIf="isLoginError" class="red-text center error-message">
-                <i class="material-icons">error</i> 
-                <strong> Incorrect username or password</strong>
-            </div> -->
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="icon-user"></i></span>
+                <div class="card-body">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="icon-user"></i></span>
+                    </div>
+                    <input #UserName ngModel name="UserName" required type="text" class="form-control"
+                      placeholder="Username">
                   </div>
-                  <input #UserName ngModel name="UserName" required type="text" class="form-control" placeholder="Username">
+                  <div class="input-group mb-4">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fa fa-asterisk"></i></span>
+                    </div>
+                    <input type="password" #Password ngModel name="Password" class="form-control"
+                      placeholder="Password">
+                  </div>
+                  <div class="input-group mb-4">
+                    <select #UserTypeID ngModel class="form-control" id="UserTypeID" name="UserTypeID">
+                      <!-- <option value="0" ng-reflect-value="0">Please select</option> -->
+                      <option value="1" ng-reflect-value="1">Admin</option>
+                      <option value="2" ng-reflect-value="2" selected>Student</option>
+                    </select>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                      <button (click)="OnSubmit(UserName.value,Password.value,UserTypeID.value)" type="button"
+                        class="btn btn-primary px-4">Login</button>
+                    </div>
+                    <div class="col-6 text-right">
+                      <a href="/#/forget-password" class="btn btn-link px-0">Forgot password?</a>
+                    </div>
+                  </div>
                 </div>
-                <div class="input-group mb-4">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-asterisk"></i></span>
-                  </div>
-                  <input type="password" #Password ngModel name="Password" class="form-control" placeholder="Password">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5 mx-auto">
+          <div class="mat-elevation-z8">
+            <div class="card-group">
+              <div class="card p-4">
+                <div class="card-head text-center">
+                  <img [src]="helperSvc.LoginLogoPath" title="Aayam Career Institute"
+                    style="width: 180px; height: 90px; margin-top: 10px;">
+                  <h1>Login</h1>
+                  <p class="text-muted">Sign In to your account</p>
                 </div>
-                <div class="input-group mb-4">
-                  <select #UserTypeID ngModel class="form-control" id="UserTypeID" name="UserTypeID">
-                    <!-- <option value="0" ng-reflect-value="0">Please select</option> -->
-                    <option value="1" ng-reflect-value="1">Admin</option>
-                    <option value="2" ng-reflect-value="2" selected>Student</option>
-                  </select>
-                </div>
-                <div class="row">
-                  <div class="col-6">
-                    <button (click)="OnSubmit(UserName.value,Password.value,UserTypeID.value)" type="button" class="btn btn-primary px-4">Login</button>
-                  </div>
-                  <div class="col-6 text-right">
-                    <button type="button" class="btn btn-link px-0">Forgot password?</button>
-                  </div>
-                  
+                <div class="card-body">
+                  <form id="LoginForm" name="Form1" (ngSubmit)="OnSubmit()" #loginForm="ngForm">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="form-group">
+                          <mat-form-field class="example-full-width">
+                            <input matInput placeholder="UserName" autocomplete="off" name="UserName"
+                              [(ngModel)]="loginViewModel.UserName" #UserName="ngModel" required maxlength="20"
+                              type="text">
+                            <mat-error *ngIf="UserName.invalid && (UserName.dirty || UserName.touched)">
+                              <mat-error *ngIf="UserName.errors.required">UserName is required.</mat-error>
+                              <mat-error *ngIf="UserName.errors.maxlength">Reaches maximum limit.</mat-error>
+                            </mat-error>
+                          </mat-form-field>
+                          <mat-form-field class="example-full-width">
+                            <input matInput placeholder="Password" autocomplete="off" name="Password"
+                              [(ngModel)]="loginViewModel.Password" #Password="ngModel" required maxlength="20"
+                              type="password">
+                            <mat-error *ngIf="Password.invalid && (Password.dirty || Password.touched)">
+                              <mat-error *ngIf="Password.errors.required">Password is required.</mat-error>
+                              <mat-error *ngIf="Password.errors.maxlength">Reaches maximum limit.</mat-error>
+                            </mat-error>
+                          </mat-form-field>
+                          <mat-form-field>
+                              <mat-label>User Type</mat-label>
+                            <mat-select required name="UserTypeID" [(ngModel)]="loginViewModel.UserTypeID"
+                              #UserTypeID="ngModel">
+                              <mat-option value="1"> Admin </mat-option>
+                              <mat-option value="2"> Student </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="UserTypeID.invalid && (UserTypeID.dirty || UserTypeID.touched)">
+                              <mat-error *ngIf="UserTypeID.errors.required">User Type is required.</mat-error>
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button class="col-sm-12" mat-raised-button color="primary" [disabled]="!loginForm.form.valid">Login</button>
+                        </div>
+                        <div class="col-12 ">
+                          <a href="/#/forget-password" class="btn btn-link px-0 primary">Forgot password?</a>
+                        </div>
+                      </div>
+                  </form>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      </div>
     </div>
   </main>
-</div> 
+</div>

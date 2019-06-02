@@ -13,6 +13,8 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { NgxSpinnerModule } from 'ngx-spinner';
 // Components Routing
 import { MasterRoutingModule } from './master-routing.module';
+import { TopicComponent } from './topic/topic.component';
+import { SubTopicComponent } from './sub-topic/sub-topic.component';
 
 @NgModule({
     imports: [
@@ -25,7 +27,9 @@ import { MasterRoutingModule } from './master-routing.module';
     ],
     declarations: [
       TestTypeComponent,
-      TestSeriesComponent
+      TestSeriesComponent,
+      TopicComponent,
+      SubTopicComponent
     ],
     providers: [TestTypeService]
   })

@@ -28,3 +28,19 @@ export interface Session {
     SessionID: any;
     SessionName: any;    
 }
+export interface Topic {
+    TopicID: any;
+    Topic: any;    
+    Description: any;    
+    SubjectID: any;    
+    Subject: any;    
+    IsActive: any;    
+}
+export interface SubTopic {
+    SubTopicID: any;
+    SubTopic: any;    
+    Description: any;    
+    TopicID: any;    
+    Topic: any;    
+    IsActive: any;    
+}

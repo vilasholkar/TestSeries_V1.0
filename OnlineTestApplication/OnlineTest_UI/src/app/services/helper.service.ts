@@ -4,12 +4,15 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, Observer } from 'rxjs';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HostName } from '../shared/app-setting';
+import { APIUrl } from "../shared/API-end-points";
 
 @Injectable()
 export class HelperService {
   public PaginationConfig:any[] = [50, 100, 500];
   public ShowSidebar:boolean;
   public sidebarToggler:any;
+  public LoginLogoPath:any;
+  public MainLogoPath:any;
   constructor(
     private http: HttpClient,
     private toasterSvc: ToastrService,
@@ -17,8 +20,19 @@ export class HelperService {
    
   ) { this.ShowSidebar = true;
     this.sidebarToggler='lg';
+    this.onPageLoad();
   }
   
+  onPageLoad()
+  {
+    this.getService(APIUrl.GetGeneralSettings).subscribe((data: any) => {
+      if (data.Message === 'Success')
+      {
+       this.LoginLogoPath=data.Object.filter(option => option.Key === 'Login_Logo')[0].Value;
+      this.MainLogoPath = data.Object.filter(option => option.Key === 'Main_Logo')[0].Value;
+      }
+    });
+  }
   hide_Sidebar() { 
     this.ShowSidebar = false; 
     this.sidebarToggler=false; }

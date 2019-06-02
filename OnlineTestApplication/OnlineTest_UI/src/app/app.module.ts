@@ -1,6 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule }   from '@angular/forms';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
@@ -25,6 +26,8 @@ import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
+import { PlayerComponent } from './views/video/player/player.component';
+import { ForgetPasswordComponent } from './views/account/forget-password/forget-password.component';
 
 const APP_CONTAINERS = [
   DefaultLayoutComponent
@@ -63,7 +66,7 @@ import { CustomMaterialModule } from "./custommaterial.module";
       positionClass: 'toast-top-center',
       preventDuplicates: true,
     }),
-    CustomMaterialModule
+    CustomMaterialModule,FormsModule
     // AmazingTimePickerModule
   ],
   declarations: [
@@ -73,7 +76,8 @@ import { CustomMaterialModule } from "./custommaterial.module";
     P500Component,
     LoginComponent,
     RegisterComponent,
-    ImageDialogComponent
+    ImageDialogComponent,
+    PlayerComponent,ForgetPasswordComponent
   ],
   entryComponents: [
     ImageDialogComponent

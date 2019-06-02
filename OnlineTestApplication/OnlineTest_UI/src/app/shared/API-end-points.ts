@@ -36,7 +36,15 @@ export class APIUrl {
     public static UpdateEligibleStudentTestStatus = 'api/UpdateEligibleStudentTestStatus';
     public static GetStudentDashboardDetail = 'api/GetStudentDashboardDetail';
     public static GetStudentResponse = 'api/GetStudentResponse';
-
+    public static GetGeneralSettings = 'api/GetGeneralSettings';
+    public static ChangePassword = 'api/ChangePassword';
+    public static ForgetPassword = 'api/ForgetPassword';
+    public static GetTopic = 'api/GetTopic';
+    public static AddUpdateTopic = 'api/AddUpdateTopic';
+    public static DeleteTopic = 'api/DeleteTopic';
+    public static GetSubTopic = 'api/GetSubTopic';
+    public static AddUpdateSubTopic = 'api/AddUpdateSubTopic';
+    public static DeleteSubTopic = 'api/DeleteSubTopic';
     public static PhotoBaseURL="http://aayamcareerinstitute.co.in";
     public static QuestionImageBaseURL="http://test.aayamcareerinstitute.co.in/Uploads/";
 }

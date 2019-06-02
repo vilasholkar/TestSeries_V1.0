@@ -1,25 +1,26 @@
-import { Component, OnInit, ViewChild, TemplateRef, ElementRef } from '@angular/core';
-import { TestType } from '../../../models/master';
+import { Component, OnInit, ViewChild, TemplateRef, ElementRef, Input } from '@angular/core';
+import { Topic,Subject } from '../../../models/master';
 import { MatPaginator, MatSort, MatTableDataSource, MatDialog } from '@angular/material';
 import { HelperService } from '../../../services/helper.service'
 import { APIUrl } from "../../../shared/API-end-points";
 @Component({
-  selector: 'app-test-type',
-  templateUrl: './test-type.component.html',
-  styleUrls: ['./test-type.component.scss'
+  selector: 'app-topic',
+  templateUrl: './topic.component.html',
+  styleUrls: ['./topic.component.scss'
   ]
 })
-export class TestTypeComponent implements OnInit {
+export class TopicComponent implements OnInit {
   IsEmpty: boolean = false;
   Title: any;
   btnAddNew:boolean=true;
   PaginationConfig: any;
   showAddDiv: any;
-  testType: TestType;
-  testTypeModel: any = {};
+  topic: Topic;
+  topicModel: any={} ;
+  subjectModel: Subject;
   rootNode: any;
-  isTestTypeReadonly: any = true;
-  displayedColumns: string[] = ['TestType', 'button'];
+  isTopicReadonly: any = true;
+  displayedColumns: string[] = ['Topic','Subject','Visible', 'button'];
   dataSource: any = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -29,21 +30,24 @@ export class TestTypeComponent implements OnInit {
   }
   ngOnInit() {
     this.PaginationConfig = this.helperSvc.PaginationConfig;
-    this.getTestType();
+    this.getTopic();
+    this.getSubject();
+   
   }
   changeShowStatus() {
     this.showAddDiv = !this.showAddDiv;
-    this.testTypeModel = {};
-    this.Title = "Add Test Type";
+    this.topicModel = {};
+    this.Title = "Add Topic";
+    this.topicModel.IsActive=true;
   }
-  getTestType() {
-    this.helperSvc.getService(APIUrl.GET_TestTypes)
+  getTopic() {
+    debugger;
+    this.helperSvc.getService(APIUrl.GetTopic)
       .subscribe(res => {
         if (res.Message === 'Success') {
-          this.dataSource = new MatTableDataSource(res.Object as TestType[]);
+          this.dataSource = new MatTableDataSource(res.Object as Topic[]);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
-          // this.testType = data.Object;
           !this.dataSource.data.length ? this.IsEmpty = true : this.IsEmpty = false;
         }
       }, error => {
@@ -55,42 +59,45 @@ export class TestTypeComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
     !this.dataSource.filteredData.length ? this.IsEmpty = true : this.IsEmpty = false;
   }
-  getTestTypeByID(model: TestType) {
+  getTopicByID(model: Topic) {
     this.btnAddNew=false;
     this.showAddDiv = true;
-    this.Title = "Edit Test Type";
-    this.testTypeModel = model;
+    this.Title = "Edit Topic";
+    this.topicModel = model;
   }
  
-  AddTestType() {
-   // this.testType = this.testTypeModel;
-    //  this.testTypeService.addUpdateTestTypes(this.testType)
-    this.helperSvc.postService(APIUrl.AddUpdateTestTypes, this.testTypeModel)
+  AddTopic() {
+   // this.topic = this.topicModel;
+    //  this.topicService.addUpdateTopics(this.topic)
+    this.helperSvc.postService(APIUrl.AddUpdateTopic, this.topicModel)
       .subscribe(data => {
         if (data === 'Success') {
-          this.testTypeModel = {};
-          this.getTestType();
+          this.topicModel = {};
+          this.getTopic();
           this.showAddDiv = !this.showAddDiv;
           this.btnAddNew=true;
           this.helperSvc.notifySuccess("Record Saved Successfully.");
-          // this.isTestTypeReadonly = true;
+          // this.isTopicReadonly = true;
+        }else{
+          this.helperSvc.notifyError(data);
+
         }
       }, error => {
         this.helperSvc.errorHandler(error.error);
         console.log(error);
       });
   }
-  DeleteTestType(model: TestType) {
-    if (confirm("Are you sure to delete " + model.TestTypeName)) {
-      this.testType = model;
-      //  this.testTypeService.deleteTestTypeById(this.testType)
-      this.helperSvc.postService(APIUrl.DeleteTestTypes, this.testType)
+  DeleteTopic(model: Topic) {
+    if (confirm("Are you sure to delete " + model.Topic)) {
+      this.topic = model;
+      //  this.topicService.deleteTopicById(this.topic)
+      this.helperSvc.postService(APIUrl.DeleteTopic, this.topic)
         .subscribe(data => {
           if (data === 'Success') {
-            this.getTestType();
+            this.getTopic();
             this.showAddDiv = false;
             this.helperSvc.notifySuccess("Record Deleted Successfully.");
-            // this.isTestTypeReadonly = true;
+            // this.isTopicReadonly = true;
           }
         }, error => {
           this.helperSvc.errorHandler(error.error);
@@ -99,16 +106,29 @@ export class TestTypeComponent implements OnInit {
 
     }
   }
-  // UpdateTestType(model: TestType) {
-  //   this.testType = model;
-  //   // this.testTypeService.addUpdateTestTypes(this.testType)
-  //   this.helperSvc.postService(APIUrl.AddUpdateTestTypes, this.testType)
+
+  getSubject() {
+    debugger;
+    this.helperSvc.getService(APIUrl.GetMasterData)
+      .subscribe(data => {
+        if (data.Message === 'Success') {
+          this.subjectModel = data.Object.Subject;
+        }
+      }, error => {
+        alert('error');
+        console.log(error);
+      });
+  }
+  // UpdateTopic(model: Topic) {
+  //   this.topic = model;
+  //   // this.topicService.addUpdateTopics(this.topic)
+  //   this.helperSvc.postService(APIUrl.AddUpdateTopics, this.topic)
   //     .subscribe(data => {
   //       if (data === 'Success') {
-  //         this.testTypeModel = {};
-  //         this.getTestType();
+  //         this.topicModel = {};
+  //         this.getTopic();
   //         this.showAddDiv = false;
-  //         this.isTestTypeReadonly = true;
+  //         this.isTopicReadonly = true;
   //         this.helperSvc.notifySuccess("Record Saved Successfully.");
   //       }
   //     }, error => {

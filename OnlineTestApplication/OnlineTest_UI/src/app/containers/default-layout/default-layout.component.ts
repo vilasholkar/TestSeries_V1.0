@@ -1,8 +1,9 @@
-import { Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { navItemsAdmin } from '../../_navAdmin';
 import { navItemsStudent } from '../../_navStudent';
 import { navItems } from '../../_nav';
 import { HelperService } from '../../services/helper.service';
+import { APIUrl } from "../../shared/API-end-points";
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-dashboard',
@@ -47,16 +48,35 @@ export class DefaultLayoutComponent {
   }
   ngOnInit() {
     // debugger;
-   // this.ShowSidebar = this.helperSvc.ShowSidebar;
+    // this.ShowSidebar = this.helperSvc.ShowSidebar;
   }
-  
+  // onPageLoad()
+  // {
+  //   debugger;
+  //   this.helperSvc.getService(APIUrl.GetGeneralSettings).subscribe((data: any) => {
+  //     if (data.Message === 'Success')
+  //     {
+  //      let temp = data.Object.filter(option => option.Key === 'Login_Logo');
+  //      this.LogoPath=temp[0].Value;
+  //     }
+  //   });
+  // }
   logout() {
-    sessionStorage.removeItem('userToken');
-    sessionStorage.removeItem('userRoles');
-    sessionStorage.removeItem('FirstName');
-    sessionStorage.removeItem('UserID');
-    sessionStorage.removeItem('StudentID');
-    
-    this.router.navigate(['/login']);
+    debugger;
+    if (sessionStorage.getItem('IsTestStarted') === 'false') {
+      sessionStorage.removeItem('userToken');
+      sessionStorage.removeItem('userRoles');
+      sessionStorage.removeItem('FirstName');
+      sessionStorage.removeItem('UserID');
+      sessionStorage.removeItem('StudentID');
+      sessionStorage.removeItem('PhotoUrl');
+      sessionStorage.removeItem('IsTestStarted');
+
+      this.router.navigate(['/login']);
+    }
+    else {
+      this.helperSvc.notifyError("Submit test before logout.");
+    }
+
   }
 }

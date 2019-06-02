@@ -19,13 +19,13 @@ import { ImageDialogComponent } from '../../master/image-dialog/image-dialog.com
   providers: [QuizService]
 })
 export class QuizComponent implements OnInit {
-  buttonColor:any="basic"
+  buttonColor: any = "basic"
   IsTestSubmit: boolean = false;
   showQuiz: boolean = false;
   testDuration: any;
   correctCount = 0;
-  totalMarks: number = 0;
-  percentage:number=0;
+  totalMarksObtained: number = 0;
+  percentage: number = 0;
   totalQuestions: number;
   noOfQuestionAttempted: number = 0;
   noOfQuestionNotAttempted: number = 0;
@@ -67,10 +67,11 @@ export class QuizComponent implements OnInit {
   IsEnglish: any;
   languageName: any;
   testID: any;
-  chemistryCount:number=0;
-  physicsCount:number=0;
-  biologyCount:number=0;
-  subjectName:string='Physics';
+  chemistryCount: number = 0;
+  physicsCount: number = 0;
+  biologyCount: number = 0;
+  aptitudeCount: number = 0;
+  subjectName: string = 'Physics';
 
   constructor(private router: Router, private route: ActivatedRoute
     , private spinner: NgxSpinnerService
@@ -123,7 +124,8 @@ export class QuizComponent implements OnInit {
         this.startTime = new Date();
         this.timer = setInterval(() => { this.tick(); }, 1000);
         this.duration = this.parseTime(this.testDuration);
-        this.dynamicQuestionArray = this.quiz.questions.filter(f=>f.subject=='Physics');
+        this.dynamicQuestionArray = this.quiz.questions.filter(f => f.subject == 'Physics');
+        sessionStorage.setItem('IsTestStarted', 'true');
       }
       else {
         this.helperSvc.notifyError("Already Given Test");
@@ -154,99 +156,106 @@ export class QuizComponent implements OnInit {
     return `${mins}:${secs}`;
   }
   get filteredQuestions() {
-    return (this.quiz.questions) ? this.quiz.questions.slice(this.pager.index-1, this.pager.index-1 + this.pager.size) : [];
+    return (this.quiz.questions) ? this.quiz.questions.slice(this.pager.index - 1, this.pager.index - 1 + this.pager.size) : [];
   }
-    onSelect(question: Question, option: Option,isChecked) {
-      debugger;
-    if(isChecked.checked){
-      question.buttonColor='accent';
+  onSelect(question: Question, option: Option, isChecked) {
+    debugger;
+    if (isChecked.checked) {
+      question.buttonColor = 'accent';
     }
     else
-    question.buttonColor='warn';     
+      question.buttonColor = 'warn';
     if (question.questionTypeID === 1) {
       question.options.forEach((x) => {
         if (x.questionID !== option.questionID)
-          x.selected = false;                   
+          x.selected = false;
       });
     }
     if (this.config.autoMove) {
       this.goTo(this.pager.index + 1);
     }
-    
-    if(isChecked.checked){
-      if(question.subject === 'Physics')
-      this.physicsCount = this.physicsCount+1;
-      else if(question.subject === 'Chemistry')
-      this.chemistryCount = this.chemistryCount+1;
-      else if(question.subject === 'Biology')
-      this.biologyCount = this.biologyCount+1;
+
+    if (isChecked.checked) {
+      if (question.subject === 'Physics')
+        this.physicsCount = this.physicsCount + 1;
+      else if (question.subject === 'Chemistry')
+        this.chemistryCount = this.chemistryCount + 1;
+      else if (question.subject === 'Biology')
+        this.biologyCount = this.biologyCount + 1;
+      else if (question.subject === 'Aptitude')
+        this.aptitudeCount = this.aptitudeCount + 1;
     }
-    else{
-      if(question.subject === 'Physics')
-      this.physicsCount = this.physicsCount-1;
-      else if(question.subject === 'Chemistry')
-      this.chemistryCount = this.chemistryCount-1;
-      else if(question.subject === 'Biology')
-      this.biologyCount = this.biologyCount-1;
+    else {
+      if (question.subject === 'Physics')
+        this.physicsCount = this.physicsCount - 1;
+      else if (question.subject === 'Chemistry')
+        this.chemistryCount = this.chemistryCount - 1;
+      else if (question.subject === 'Biology')
+        this.biologyCount = this.biologyCount - 1;
+      else if (question.subject === 'Aptitude')
+        this.aptitudeCount = this.aptitudeCount - 1;
     }
   }
   goTo(index: number) {
-    if (parseInt(index.toString()) >= 0 && parseInt(index.toString()) < this.pager.count) {
+    if (parseInt(index.toString()) > 0 && parseInt(index.toString()) <= this.pager.count) {
       this.pager.index = parseInt(index.toString());
       this.mode = 'quiz';
     }
   }
-  goToSave(index:number) {
-    let data = this.quiz.questions.filter(f=>f.TestQuestionNo==index);
-    for(var i = 0; i < data.length; i++) {
-      for (let index = 0; index < data[i].options.length; index++) {
-          if(!data[i].options[index].selected)
-          data[i].buttonColor='warn';
-          else {
-            data[i].buttonColor='accent';
-            break;
+  goToSave(index: number) {
+    debugger;
+    let data = this.quiz.questions.filter(f => f.TestQuestionNo == index);
+    for (var i = 0; i < data.length; i++) {
+      for (let j = 0; j < data[i].options.length; j++) {
+        if (!data[i].options[j].selected)
+          data[i].buttonColor = 'warn';
+        else {
+          data[i].buttonColor = 'accent';
+          break;
         }
       }
     }
 
-    this.goTo(index); 
-} 
-  NavigateToSubject(index: number,subjectValue){
-    this.subjectName = subjectValue;
-    if(subjectValue === 'Physics')
-    this.dynamicQuestionArray = this.quiz.questions.filter(f=>f.subject==="Physics");
-
-    else if(subjectValue == 'Chemistry')
-    this.dynamicQuestionArray = this.quiz.questions.filter(f=>f.subject==="Chemistry");
-
-    else
-    this.dynamicQuestionArray = this.quiz.questions.filter(f=>f.subject==="Biology");
-
-    this.goTo(index+1);
+    this.goTo(index);
   }
-  
+  NavigateToSubject(index: number, subjectValue) {
+    this.subjectName = subjectValue;
+    if (subjectValue === 'Physics')
+      this.dynamicQuestionArray = this.quiz.questions.filter(f => f.subject === "Physics");
+
+    else if (subjectValue == 'Chemistry')
+      this.dynamicQuestionArray = this.quiz.questions.filter(f => f.subject === "Chemistry");
+    else if (subjectValue == 'Biology')
+      this.dynamicQuestionArray = this.quiz.questions.filter(f => f.subject === "Biology");
+    else
+      this.dynamicQuestionArray = this.quiz.questions.filter(f => f.subject === "Aptitude");
+
+    this.goTo(index + 1);
+  }
+
   isAnswered(question: Question) {
     return question.options.find(x => x.selected) ? 'Answered' : question.isDefaultQuestion ? 'Default' : 'Not Answered';
   }
-  isCorrect(question: Question) {    
-    return question.options.every(x => x.selected == x.isAnswer) ? 'Correct' : question.options.every(e=>!e.selected) ? 'NotAttempted' : 'Wrong';
+  isCorrect(question: Question) {
+    return question.options.every(x => x.selected == x.isAnswer) ? 'Correct' : question.options.every(e => !e.selected) ? 'NotAttempted' : 'Wrong';
   }
 
   // markForReview(question) {
   //   $('question.questionID').prop('checked', true);
   // }
 
-  getStyle(index:number,question) {
-    let data = this.quiz.questions.filter(f=>f.TestQuestionNo==question.TestQuestionNo);
-    for(var i = 0; i < data.length; i++) {
+  getStyle(index: number, question) {
+    debugger;
+    let data = this.quiz.questions.filter(f => f.TestQuestionNo == question.TestQuestionNo);
+    for (var i = 0; i < data.length; i++) {
       for (let index = 0; index < data[i].options.length; index++) {
-          if(!data[i].options[index].selected)
-          data[i].buttonColor='warn';
-          else {
-            data[i].buttonColor='accent';
-            break;
+        if (!data[i].options[index].selected)
+          data[i].buttonColor = 'warn';
+        else {
+          data[i].buttonColor = 'accent';
+          break;
         }
-      }      
+      }
     }
 
     this.goTo(index);
@@ -271,7 +280,7 @@ export class QuizComponent implements OnInit {
   //     this.spinner.hide();
   //   });
   // }
- 
+
   onSubmit() {
     debugger;
     this.spinner.show();
@@ -296,18 +305,20 @@ export class QuizComponent implements OnInit {
     // });
     this.noOfQuestionNotAttempted = this.totalQuestions - this.noOfQuestionAttempted;
     this.countOfIncorrectQues = this.noOfQuestionAttempted - this.countOfCorrectQues;
-    this.totalMarks = (this.countOfCorrectQues * 4) - this.countOfIncorrectQues;
-    this.percentage=this.totalMarks/7.2;
+    this.totalMarksObtained = (this.countOfCorrectQues * 4) - this.countOfIncorrectQues;
+    this.percentage = (this.totalMarksObtained * 100)/this.quiz.totalMarks;
 
     this.quizService.SubmitQuiz(this.quiz)
       .subscribe(data => {
         if (data === 'Success') {
+          this.mode = 'result';
+          this.spinner.hide();
+          sessionStorage.setItem('IsTestStarted', 'false');
         }
       }, error => {
         alert('error');
       });
-    this.mode = 'result';
-    this.spinner.hide();
+
   }
 
   openDialog(image_url: string): void {
@@ -315,7 +326,7 @@ export class QuizComponent implements OnInit {
       // height: '400px',
       // width: '600px',
       data: { name: 'vaibhav', image_url: image_url }
-      
+
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');

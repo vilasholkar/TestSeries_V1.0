@@ -8,6 +8,8 @@ import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
+import { PlayerComponent } from './views/video/player/player.component';
+import { ForgetPasswordComponent } from './views/account/forget-password/forget-password.component';
 
 export const routes: Routes = [
   {
@@ -44,6 +46,20 @@ export const routes: Routes = [
     }
   },
   {
+    path: 'player/:VideoID',
+    component: PlayerComponent,
+    data: {
+      title: 'Player'
+    }
+  },
+  {
+    path: 'forget-password',
+    component: ForgetPasswordComponent,
+    data: {
+      title: 'Account'
+    }
+  },
+  {
     path: '',
     component: DefaultLayoutComponent,canActivate:[AuthGuard],
     data: {  
@@ -65,6 +81,10 @@ export const routes: Routes = [
       {
         path: 'master',
         loadChildren: './views/master/master.module#MasterModule',canActivate:[AuthGuard]
+      },
+      {
+        path: 'settings',
+        loadChildren: './views/settings/settings.module#SettingsModule',canActivate:[AuthGuard]
       },
       {
         path: 'base',

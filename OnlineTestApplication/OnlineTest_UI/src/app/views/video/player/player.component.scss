@@ -1,0 +1,30 @@
+.mejs__overlay-button {
+  background-image: url('/assets/mejs/mejs-controls.svg');
+}
+.mejs__overlay-loading-bg-img {
+  background-image: url('/assets/mejs/mejs-controls.svg');
+}
+.mejs__button > button {
+  background-image: url('/assets/mejs/mejs-controls.svg');
+}
+audio {
+  max-width: 100%;
+  width: 640px;
+  height: 360px;
+}
+// .ytp-chrome-top .ytp-show-watch-later-title .ytp-share-button-visible .ytp-show-share-title .ytp-show-cards-title
+// {
+//   display: none;
+// }
+// .ytp-watch-later-button, .ytp-button
+// {
+//   display: none;
+// }
+// .ytp-button, .ytp-share-button
+// {
+//   display: none;
+// }
+// .mejs__controls:not([style*="display: none"])
+// {
+// background-color: black;
+// }

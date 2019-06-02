@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/auth-service/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { MatSnackBar,MatSnackBarVerticalPosition } from '@angular/material';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HelperService } from "../../services/helper.service";
 import { APIUrl } from "../../shared/API-end-points";
@@ -11,16 +10,17 @@ import { APIUrl } from "../../shared/API-end-points";
   templateUrl: 'login.component.html'
 })
 export class LoginComponent {
-  isLoginError : boolean = false;
-  verticalPosition: MatSnackBarVerticalPosition = 'top';
+  loginViewModel:any={};
+  isLoginError: boolean = false;
+  PhotoUrl: any;
   constructor(
-    private userService : UserService,
-    private router : Router, 
-    private snackBar: MatSnackBar,
+    private userService: UserService,
+    private router: Router,
     private spinner: NgxSpinnerService,
     private helperSvc: HelperService
   ) { }
   ngOnInit() {
+   // this.loginViewModel.UserTypeID='1';
   }
   // OnSubmit(userName,password,UserTypeID){
   //   this.spinner.show();
@@ -48,48 +48,54 @@ export class LoginComponent {
 
   //   });
   // }
-  OnSubmit(userName,password,UserTypeID){
-    this.spinner.show();
+  OnSubmit() {
     debugger;
-    var data ="?username=" + userName + "&password=" + password + "&UserTypeID="+UserTypeID;
-     // this.userService.userAuthentication(userName,password,UserTypeID).subscribe((data : any)=>{
-      
-    this.helperSvc.getService(APIUrl.GetLoginInfo+data).subscribe((data : any)=>{
-     if(data.Object.UserID > 0)
-     {
-      sessionStorage.setItem('userToken',data.access_token);
-      sessionStorage.setItem('userRoles',data.Object.UserType);
-      sessionStorage.setItem('FirstName',data.Object.FirstName);
-      if(data.Object.UserType==='Admin')
-      {
-      sessionStorage.setItem('UserID',data.Object.UserID);
-      }
-      else if(data.Object.UserType==='Student')
-      {
-      sessionStorage.setItem('StudentID',data.Object.UserID);
-      }
-      this.router.navigate(['/dashboard']);
-      this.spinner.hide();
-      this.helperSvc.notifySuccess(' Welcome ' + data.Object.FirstName + ' ' + data.Object.LastName);
-    }
-    else{
-      this.router.navigate(['/login']);
-      this.spinner.hide();
-      this.helperSvc.notifyError("Error: Incorrect username or password");
-    }
-    },
-    (err : HttpErrorResponse)=>{
-     // this.isLoginError = true;
-      // this.openSnackBar("Error: Incorrect username or password", "Close");
-      this.helperSvc.notifyError("Error: Incorrect username or password");
-       this.spinner.hide();
+    if(this.loginViewModel.UserName!=''){
+      if(this.loginViewModel.Password!=''){
+    this.spinner.show();
 
-    });
+    var data = "?username=" + this.loginViewModel.UserName + "&password=" + this.loginViewModel.Password + "&UserTypeID=" + this.loginViewModel.UserTypeID;
+    // this.userService.userAuthentication(userName,password,UserTypeID).subscribe((data : any)=>{
+
+    this.helperSvc.getService(APIUrl.GetLoginInfo + data).subscribe((data: any) => {
+      if (data.Object.UserID > 0) {
+        sessionStorage.setItem('userToken', data.access_token);
+        sessionStorage.setItem('userRoles', data.Object.UserType);
+        sessionStorage.setItem('FirstName', data.Object.FirstName);
+        (data.Object.PhotoUrl != '' ? this.PhotoUrl = APIUrl.PhotoBaseURL + data.Object.PhotoUrl : this.PhotoUrl = 'assets/img/avatars/default-avatar.png');
+        sessionStorage.setItem('PhotoUrl', this.PhotoUrl);
+        sessionStorage.setItem('IsTestStarted', 'false');
+        if (data.Object.UserType === 'Admin') {
+          sessionStorage.setItem('UserID', data.Object.UserID);
+          this.router.navigate(['/dashboard/admin-dashboard']);
+        }
+        else if (data.Object.UserType === 'Student') {
+          sessionStorage.setItem('StudentID', data.Object.UserID);
+          this.router.navigate(['/dashboard/student-dashboard']);
+        }
+
+        // this.router.navigate(['/dashboard']);
+        this.spinner.hide();
+        this.helperSvc.notifySuccess(' Welcome ' + data.Object.FirstName + ' ' + data.Object.LastName);
+      }
+      else {
+        this.router.navigate(['/login']);
+        this.spinner.hide();
+        this.helperSvc.notifyError("Error: Incorrect username or password");
+      }
+    },
+      (err: HttpErrorResponse) => {
+        // this.isLoginError = true;
+        // this.openSnackBar("Error: Incorrect username or password", "Close");
+        this.helperSvc.notifyError("Error: Incorrect username or password");
+        this.spinner.hide();
+
+      });
+    }
+    else
+    this.helperSvc.notifyError("Password is required.");
   }
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 4000,
-      verticalPosition: this.verticalPosition,
-    });
+    else
+      this.helperSvc.notifyError("Username is required.");
+  }
 }
- }

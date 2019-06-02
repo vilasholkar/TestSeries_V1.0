@@ -32,7 +32,7 @@
                   <table width="100%" style="background-color: white">
                     <tr>
                       <td width="15%" style=" border: none;">
-                        <img src="../../../../assets/img/brand/logo.png" width="120px" height="60px">
+                        <img [src]="helperSvc.MainLogoPath" width="120px" height="60px">
                       </td>
                       <td width="85%" style=" border: none;">
                         <h4>An institute dedicated for the excellence in the prepration of</h4>
@@ -136,6 +136,7 @@
                 <th colspan="2">PHYSICS</th>
                 <th colspan="2">CHEMISTRY</th>
                 <th colspan="2">BIOLOGY</th>
+                <th colspan="2" *ngIf="testType=='AIIMS'">Aptitude</th>
                 <th rowspan="2">TOTAL CORRECT</th>
                 <th rowspan="2">TOTAL WRONG</th>
                 <th rowspan="2">TOTAL ATTEMPT</th>
@@ -149,6 +150,8 @@
                 <th>W</th>
                 <th>R</th>
                 <th>W</th>
+                <th *ngIf="testType=='AIIMS'">R</th>
+                <th *ngIf="testType=='AIIMS'">W</th>
               </tr>
             </thead>
             <tr class="font-weight-400" *ngFor="let topper_AverageModel of topper_Average">
@@ -159,6 +162,8 @@
               <td style="width:5%">{{topper_AverageModel.Chemistry_Wrong}}</td>
               <td style="width:5%">{{topper_AverageModel.Biology_Right}}</td>
               <td style="width:5%">{{topper_AverageModel.Biology_Wrong}}</td>
+              <td *ngIf="testType=='AIIMS'" style="width:5%">{{topper_AverageModel.Aptitude_Right}}</td>
+              <td *ngIf="testType=='AIIMS'" style="width:5%">{{topper_AverageModel.Aptitude_Wrong}}</td>
               <td style="width:10%">{{topper_AverageModel.TotalCorrect}}</td>
               <td style="width:10%">{{topper_AverageModel.TotalWrong}}</td>
               <td style="width:10%">{{topper_AverageModel.TotalAttempt}}</td>
@@ -173,6 +178,8 @@
               <td style="width:5%">{{onlineTestResultModel.Chemistry_Wrong}}</td>
               <td style="width:5%">{{onlineTestResultModel.Biology_Right}}</td>
               <td style="width:5%">{{onlineTestResultModel.Biology_Wrong}}</td>
+              <td *ngIf="testType=='AIIMS'" style="width:5%">{{onlineTestResultModel.Aptitude_Right}}</td>
+              <td *ngIf="testType=='AIIMS'" style="width:5%">{{onlineTestResultModel.Aptitude_Wrong}}</td>
               <td style="width:10%">{{onlineTestResultModel.TotalCorrect}}</td>
               <td style="width:10%">{{onlineTestResultModel.TotalWrong}}</td>
               <td style="width:10%">{{onlineTestResultModel.TotalAttempt}}</td>

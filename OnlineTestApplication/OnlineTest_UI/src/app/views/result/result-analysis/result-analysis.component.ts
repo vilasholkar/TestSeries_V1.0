@@ -18,6 +18,7 @@ export class ResultAnalysisComponent implements OnInit {
   IsBackButton:boolean;
   StudentID: any;
   TestID: any;
+  testType: any;
   testName: any;
   testDate: any;
   enrollmentNo: any;
@@ -123,6 +124,7 @@ export class ResultAnalysisComponent implements OnInit {
           this.doughnutLabelDifficult = ['Correct-' + this.studentAttempt.DifficultCorrect as string, 'Incorrect-' + this.studentAttempt.DifficultInCorrect as string, 'Not Attempt-' + this.studentAttempt.DifficultNotAttempt as string];
           //Mark Review Analysis
           this.onlineTestResult = this.resultAnalysis.onlineTestResult;
+          this.testType = this.onlineTestResult[0].TestTypeName;
           this.testName = this.onlineTestResult[0].TestName;
           this.testDate = this.onlineTestResult[0].TestDate;
           this.enrollmentNo = this.onlineTestResult[0].EnrollmentNo;

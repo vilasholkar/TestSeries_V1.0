@@ -19,6 +19,9 @@ export interface OT_Result {
     Biology_Total: any;
     Biology_Right: any;
     Biology_Wrong: any;
+    Aptitude_Total: any;
+    Aptitude_Right: any;
+    Aptitude_Wrong: any;
     TotalCorrect: any;
     TotalWrong: any;
     TotalAttempt: any;
@@ -110,6 +113,8 @@ export class Topper_Average {
     Chemistry_Wrong: any;
     Biology_Right: any;
     Biology_Wrong: any;
+    Aptitude_Right: any;
+    Aptitude_Wrong: any;
     TotalCorrect: any;
     TotalWrong: any;
     TotalAttempt: any;
@@ -127,6 +132,8 @@ export class Topper_Average {
         this.Chemistry_Wrong = data.Chemistry_Wrong;
         this.Biology_Right = data.Biology_Right;
         this.Biology_Wrong = data.Biology_Wrong;
+        this.Aptitude_Right = data.Aptitude_Right;
+        this.Aptitude_Wrong = data.Aptitude_Wrong;
         this.TotalCorrect = data.TotalCorrect;
         this.TotalWrong = data.TotalWrong;
         this.TotalAttempt = data.TotalAttempt;
@@ -194,6 +201,9 @@ export class OnlineTestResult {
     Biology_Total: any;
     Biology_Right: any;
     Biology_Wrong: any;
+    Aptitude_Total: any;
+    Aptitude_Right: any;
+    Aptitude_Wrong: any;
     TotalCorrect: any;
     TotalWrong: any;
     TotalAttempt: any;
@@ -228,6 +238,9 @@ export class OnlineTestResult {
         this.Biology_Total = data.Biology_Total;
         this.Biology_Right = data.Biology_Right;
         this.Biology_Wrong = data.Biology_Wrong;
+        this.Aptitude_Total = data.Aptitude_Total;
+        this.Aptitude_Right = data.Aptitude_Right;
+        this.Aptitude_Wrong = data.Aptitude_Wrong;
         this.TotalCorrect = data.TotalCorrect;
         this.TotalWrong = data.TotalWrong;
         this.TotalAttempt = data.TotalAttempt;
@@ -241,7 +254,6 @@ export class OnlineTestResult {
     }
 
 }
-
 export class StudentResponse {
 
     StudentResponseID: any;

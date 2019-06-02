@@ -68,6 +68,16 @@ export const navItemsAdmin= [
     name: 'Test Type',
     url: '/master/test-type',
     icon: 'icon-drop'
+  },
+  {
+    name: 'Topic',
+    url: '/master/topic',
+    icon: 'icon-drop'
+  },
+  {
+    name: 'SubTopic',
+    url: '/master/sub-topic',
+    icon: 'icon-drop'
   }
   
 ];
