@@ -14,14 +14,17 @@ namespace ViewModels.Test
         public string TestName { get; set; }
         public string TestDuration { get; set; }
         public string Instructions { get; set; }
+        public int TestSeriesID { get; set; }
         public string TestSeries { get; set; }
+        public int TestTypeID { get; set; }
         public string TestType { get; set; }
-        public int TotalMarks { get; set; }
+        public string TotalMarks { get; set; }
         public string PassingPercentage { get; set; }
         public List<QuestionViewModel> Questions { get; set; }
         public int StudentID { get; set; }
         public int PhysicsQuestionCount { get; set; }
         public int ChemistryQuestionCount { get; set; }
         public int BiologyQuestionCount { get; set; }
+        public int AptitudeQuestionCount { get; set; }
     }
 }

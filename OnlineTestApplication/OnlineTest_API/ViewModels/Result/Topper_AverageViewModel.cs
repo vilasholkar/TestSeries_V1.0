@@ -17,6 +17,8 @@ namespace ViewModels.Result
         public string Chemistry_Wrong { get; set; }
         public string Biology_Right { get; set; }
         public string Biology_Wrong { get; set; }
+        public string Aptitude_Right { get; set; }
+        public string Aptitude_Wrong { get; set; }
         public string TotalCorrect { get; set; }
         public string TotalWrong { get; set; }
         public string TotalAttempt { get; set; }

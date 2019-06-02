@@ -16,6 +16,10 @@ namespace ViewModels.Master
         public List<TestSeriesViewModel> TestSeries { get; set; }
 
         public List<TestTypeViewModel> TestType { get; set; }
+
+        public List<SubjectViewModel> Subject { get; set; }
+        public List<TopicViewModel> Topic { get; set; }
+        public List<SubTopicViewModel> SubTopic{ get; set; }
     }
     public class SessionViewModel
     {

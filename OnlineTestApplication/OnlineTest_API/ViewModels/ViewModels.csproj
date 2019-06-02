@@ -39,12 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account\ForgetPassword.cs" />
     <Compile Include="Account\Login.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Dashboard\StudentDashboardViewModel.cs" />
     <Compile Include="Enum\CommonEnum.cs" />
     <Compile Include="Master\MasterViewModel.cs" />
     <Compile Include="Master\SubjectViewModel.cs" />
+    <Compile Include="Master\SubTopicViewModel.cs" />
+    <Compile Include="Master\TopicViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Question\OptionViewModel.cs" />
     <Compile Include="Question\QuestionTypeViewModel.cs" />
@@ -58,7 +61,10 @@
     <Compile Include="Result\StudentRankViewModel.cs" />
     <Compile Include="Result\StudentResponseViewModel.cs" />
     <Compile Include="Result\Topper_AverageViewModel.cs" />
+    <Compile Include="Settings\ChangePasswordViewModel.cs" />
+    <Compile Include="Settings\GeneralSettingsViewModel.cs" />
     <Compile Include="Student\StudentViewModel.cs" />
+    <Compile Include="StudyMaterial\StudyMaterialViewModel.cs" />
     <Compile Include="TestType\TestTypeViewModel.cs" />
     <Compile Include="Test\EligibleStudentVIewModel.cs" />
     <Compile Include="Test\OnlineTestMasterViewModel.cs" />
