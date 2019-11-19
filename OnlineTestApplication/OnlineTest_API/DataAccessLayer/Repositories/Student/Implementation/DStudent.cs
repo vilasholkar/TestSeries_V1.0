@@ -6,11 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ViewModels.Student;
+using ViewModels;
+using System.Data.Common;
 
 namespace DataAccessLayer
 {
     public class DStudent : IDStudent
     {
+        #region Student
         public List<StudentViewModel> GetStudentDetails()
         {
             string strQuery = @"SELECT  dbo.StudentAccount.StudentAccountID, dbo.StudentAccount.StudentID, dbo.StudentAccount.Password, dbo.StudentAccount.IsActive, 
@@ -56,5 +59,69 @@ namespace DataAccessLayer
 
             //}).ToList();
         }
+        #endregion
+
+        #region Attendance
+        public AttendenceMainModel GetAttendance(string Date, string EnrollmentNo = null)
+        {
+            var sqlParameterList = new List<SqlParameter>();
+            sqlParameterList.Add(new SqlParameter("@Date", Date));
+            sqlParameterList.Add(new SqlParameter("@EnrollmentNo", EnrollmentNo));
+            DataTable dtAttendance = DGeneric.RunSP_ReturnDataSet("sp_GetAttendance", sqlParameterList, null).Tables[0];
+            if (dtAttendance.Rows.Count > 0)
+            {
+                var attendanceObj = new AttendenceMainModel();
+                var studentList = new List<StudentViewModel>();
+                foreach (DataRow dr in dtAttendance.Rows)
+                {
+                    var studentData = studentList.FirstOrDefault(f => f.EnrollmentNo.Equals(dr["EnrollmentNo"].ToString()));
+                    if (studentData != null)
+                    {
+                        studentData.AttendenceList.Add(new Attendance()
+                        {
+                            AttendanceId = Convert.ToInt64(dr["AttendanceId"]),
+                            PunchDate = dr["PunchDate"].ToString(),
+                            PunchIn = dr["PunchIn"].ToString(),
+                            PunchOut = dr["PunchOut"].ToString(),
+                            ArrivalDeparture = dr["ArrivalDeparture"].ToString(),
+                            Status = dr["Status"].ToString()
+                        });
+                    }
+                    else
+                    {
+                        var studentModel = new StudentViewModel();
+                        studentModel.EnrollmentNo = dr["EnrollmentNo"].ToString();
+                        studentModel.FirstName = dr["FirstName"].ToString();
+                        studentModel.LastName = dr["LastName"].ToString();
+                        if (!string.IsNullOrEmpty(dr["AttendanceID"].ToString()))
+                        {
+                            studentModel.AttendenceList.Add(new Attendance()
+                            {
+                                AttendanceId = Convert.ToInt64(dr["AttendanceId"]),
+                                PunchDate = dr["PunchDate"].ToString(),
+                                PunchIn = dr["PunchIn"].ToString(),
+                                PunchOut = dr["PunchOut"].ToString(),
+                                ArrivalDeparture = dr["ArrivalDeparture"].ToString(),
+                                Status = dr["Status"].ToString()
+                            });
+                        }
+                        studentList.Add(studentModel);
+                    }
+                }
+                attendanceObj.StudentList = studentList;
+                attendanceObj.DateRange = GetDates(Date.ConvertDateTimeToDate().Year, Date.ConvertDateTimeToDate().Month);
+                return attendanceObj;
+            }
+            else
+                return new AttendenceMainModel();
+        }
+
+        private List<DateTime> GetDates(int year, int month)
+        {
+            return Enumerable.Range(1, DateTime.DaysInMonth(year, month))  // Days: 1, 2 ... 31 etc.
+                             .Select(day => new DateTime(year, month, day)) // Map each day to a date
+                             .ToList(); // Load dates into a list
+        }
+        #endregion
     }
 }
