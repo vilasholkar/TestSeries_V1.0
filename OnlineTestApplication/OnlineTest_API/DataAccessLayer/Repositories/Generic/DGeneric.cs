@@ -246,7 +246,7 @@ namespace DataAccessLayer
             }
             return dtData;
         }
-        public static List<T> BindDataList<T>(DataTable dt)
+        public static List<T> BindDataList<T>(DataTable dt) where T : class
         {
             var columnNames = dt.Columns.Cast<DataColumn>().Select(c => c.ColumnName.ToLower()).ToList();
             var properties = typeof(T).GetProperties();
@@ -261,7 +261,7 @@ namespace DataAccessLayer
                         {
                             pro.SetValue(objT, row[pro.Name]);
                         }
-                        catch (Exception) { throw; }
+                        catch (Exception) { }
                     }
                 }
                 return objT;
@@ -299,7 +299,7 @@ namespace DataAccessLayer
         }
         public static DateTime ConvertDateTimeToDate(this object date)
         {
-            return DateTime.ParseExact(date.ToString(), "dd/MM/yyyy", CultureInfo.CurrentCulture);
+            return DateTime.ParseExact(date.ToString(), "yyyy-MM-dd", CultureInfo.CurrentCulture);
         }
         public static string ConvertDateTimeToString(this string date)
         {
@@ -328,7 +328,7 @@ namespace DataAccessLayer
                 object obj = sqlCommand.ExecuteScalar();
                 return obj;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
