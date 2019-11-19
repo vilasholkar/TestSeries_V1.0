@@ -10,6 +10,12 @@ namespace BusinessAccessLayer
 {
     public interface IBStudent
     {
-        Response<List<StudentViewModel>> GetStudentDetails();
+        #region Student
+        Response<List<StudentViewModel>> GetStudentDetails();        
+        #endregion
+
+        #region Attendance
+        Response<AttendenceMainModel> GetAttendance(string Date,string EnrollmentNo = null);
+        #endregion
     }
 }

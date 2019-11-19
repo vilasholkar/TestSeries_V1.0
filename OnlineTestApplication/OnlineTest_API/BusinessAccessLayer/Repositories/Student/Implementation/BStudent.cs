@@ -12,6 +12,8 @@ namespace BusinessAccessLayer
     public class BStudent : IBStudent
     {
         private readonly IDStudent _iDStudent;
+
+        #region Student
         public BStudent(IDStudent iDStudent)
         {
             _iDStudent = iDStudent;
@@ -38,5 +40,31 @@ namespace BusinessAccessLayer
                 };
             }
         }
+        #endregion
+
+        #region Attendance
+        public Response<AttendenceMainModel> GetAttendance(string Date, string EnrollmentNo = null)
+        {
+            var studentAttendance = _iDStudent.GetAttendance(Date, EnrollmentNo);
+            if (studentAttendance != null)
+            {
+                return new Response<AttendenceMainModel>()
+                {
+                    IsSuccessful = true,
+                    Message = CommonEnum.Status.Success.ToString(),
+                    Object = studentAttendance
+                };
+            }
+            else
+            {
+                return new Response<AttendenceMainModel>()
+                {
+                    IsSuccessful = false,
+                    Message = CommonEnum.Status.Failed.ToString(),
+                    Object = studentAttendance
+                };
+            }
+        }
+        #endregion
     }
 }
