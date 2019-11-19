@@ -18,11 +18,13 @@ namespace OnlineTestApplication.Controllers
         private readonly IBStudent _iBStudent;
         private readonly IBAccount _iBAccount;
 
-        public StudentController(IBStudent iBStudent,IBAccount iBAccount)
+        public StudentController(IBStudent iBStudent, IBAccount iBAccount)
         {
             _iBStudent = iBStudent;
             _iBAccount = iBAccount;
         }
+
+        #region Student
         [HttpGet]
         [Route("api/GetLoginInfo", Name = "GetLoginInfo")]
         public HttpResponseMessage GetLoginInfo(string UserName, string Password, int UserTypeID)
@@ -53,5 +55,15 @@ namespace OnlineTestApplication.Controllers
             //return response;
             return Request.CreateResponse(HttpStatusCode.OK, _iBStudent.GetStudentDetails());
         }
+        #endregion
+
+        #region Attendance
+        [HttpGet]
+        [Route("api/GetAttendance", Name = "GetAttendance")]
+        public HttpResponseMessage GetAttendance(string Date, string EnrollmentNo = null)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, _iBStudent.GetAttendance(Date, EnrollmentNo));
+        }
+        #endregion
     }
 }
