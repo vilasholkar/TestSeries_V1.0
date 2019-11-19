@@ -8,6 +8,10 @@ namespace ViewModels.Student
 {
     public class StudentViewModel
     {
+        public StudentViewModel()
+        {
+            AttendenceList = new List<Attendance>();
+        }
         public int StudentAccountID { get; set; }
         //public string Password { get; set; }
         public int StudentID { get; set; }
@@ -46,6 +50,6 @@ namespace ViewModels.Student
         //public string Stream { get; set; }
         //public int BatchID { get; set; }
         //public string Batch { get; set; }
-     
+        public List<Attendance> AttendenceList { get; set; }
     }
 }

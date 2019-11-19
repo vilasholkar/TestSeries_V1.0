@@ -63,6 +63,8 @@
     <Compile Include="Result\Topper_AverageViewModel.cs" />
     <Compile Include="Settings\ChangePasswordViewModel.cs" />
     <Compile Include="Settings\GeneralSettingsViewModel.cs" />
+	<Compile Include="Student\Attendance.cs" />
+    <Compile Include="Student\AttendenceMainModel.cs" />
     <Compile Include="Student\StudentViewModel.cs" />
     <Compile Include="StudyMaterial\StudyMaterialViewModel.cs" />
     <Compile Include="TestType\TestTypeViewModel.cs" />
