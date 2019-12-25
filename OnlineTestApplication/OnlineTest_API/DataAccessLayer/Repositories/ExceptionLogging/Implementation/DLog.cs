@@ -29,7 +29,8 @@ namespace DataAccessLayer
             sqlParameterList.Add(new SqlParameter("@ErrorMessage", exceptionMessage));
             sqlParameterList.Add(new SqlParameter("@StackTrace", stackTrace));
             sqlParameterList.Add(new SqlParameter("@UserName", userName));
-            DGeneric.RunSP_ExecuteNonQuery("sp_AddElmahError", sqlParameterList);
+            sqlParameterList.Add(new SqlParameter("@CreateDate", DateTime.Now));
+          string response =  DGeneric.RunSP_ExecuteNonQuery("sp_AddElmahError", sqlParameterList);
         }
     }
 }

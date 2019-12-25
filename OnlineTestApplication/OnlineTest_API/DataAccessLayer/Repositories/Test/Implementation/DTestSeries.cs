@@ -21,7 +21,7 @@ namespace DataAccessLayer
             dataTableMappingList.Add(new DataTableMapping("Table2", "Subject"));
             dataTableMappingList.Add(new DataTableMapping("Table3", "TestSeries"));
             DataSet ds = DGeneric.RunSP_ReturnDataSet("sp_GetAllMasterData", sqlParameterList, dataTableMappingList);
-            List<TestSeriesViewModel> testTypeList = new List<TestSeriesViewModel>();
+            List<TestSeriesViewModel> testSeriesList = new List<TestSeriesViewModel>();
             if (ds.Tables.Count > 0)
             {
                 foreach (DataTable dt in ds.Tables)
@@ -32,20 +32,21 @@ namespace DataAccessLayer
                         switch (tableName)
                         {
                             case "TestSeries":
-                                testTypeList = DGeneric.BindDataList<TestSeriesViewModel>(dt);
+                                testSeriesList = DGeneric.BindDataList<TestSeriesViewModel>(dt);
                                 break;
                         }
                     }
                 }
             }
 
-            return ds.Tables["TestSeries"].AsEnumerable().Select(s => new TestSeriesViewModel()
-            {
-                TestSeriesID = Convert.ToInt32(s["TestSeriesID"]),
-                TestSeries = s["TestSeries"].ToString(),
-                TotalTest = s["TotalTest"].ToString(),
-                Description = s["Description"].ToString(),
-            }).ToList();
+            //return ds.Tables["TestSeries"].AsEnumerable().Select(s => new TestSeriesViewModel()
+            //{
+            //    TestSeriesID = Convert.ToInt32(s["TestSeriesID"]),
+            //    TestSeries = s["TestSeries"].ToString(),
+            //    TotalTest = s["TotalTest"].ToString(),
+            //    Description = s["Description"].ToString(),
+            //}).ToList();
+            return testSeriesList;
         }
         public string AddUpdateTestSeries(TestSeriesViewModel objTestSeries)
         {

@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using ViewModels.Student;
 using ViewModels;
-using System.Data.Common;
 
 namespace DataAccessLayer
 {
@@ -21,9 +20,12 @@ namespace DataAccessLayer
                       dbo.Student.MiddleName, dbo.Student.LastName, dbo.Student.Gender, dbo.Student.DOB, dbo.Student.MobileNumber, dbo.Student.PhoneNumber, dbo.Student.Email, 
                       dbo.Student.Address, dbo.Student.Landmark, dbo.Student.CityID, dbo.Student.Pin, dbo.Student.Medium, dbo.Student.Cast, dbo.Student.PhotoUrl, 
                       dbo.Student.StreamID, dbo.Student.CourseID, dbo.Student.BatchID, dbo.Student.SessionID, dbo.Student.[School/College], dbo.Student.FatherName, 
-                      dbo.Student.FatherOccupation, dbo.Student.FatherMobile, dbo.Student.FatherEmail
-                    FROM dbo.Student RIGHT OUTER JOIN
-                      dbo.StudentAccount ON dbo.Student.StudentID = dbo.StudentAccount.StudentID";
+                      dbo.Student.FatherOccupation, dbo.Student.FatherMobile, dbo.Student.FatherEmail,ss.[Session],s.Stream,c.Course,b.Batch
+                    FROM dbo.StudentAccount left JOIN dbo.Student ON dbo.Student.StudentID = dbo.StudentAccount.StudentID
+											left join dbo.[Session] ss on Student.SessionID= ss.SessionID
+											left join dbo.Stream s on Student.StreamID= s.StreamID
+											left join dbo.Course c on Student.CourseID= c.CourseID
+											left join dbo.Batch b on Student.BatchID= b.BatchID";
 
             DataTable dt = DGeneric.GetData(strQuery).Tables[0];
             if (dt.Rows.Count > 0)
@@ -58,6 +60,21 @@ namespace DataAccessLayer
             //    //BatchID = Convert.ToInt32(x["BatchID"]),
 
             //}).ToList();
+        }
+
+        public List<StudentReport> GetFilteredStudent(StudentReport objSR)
+        {
+                List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+                sqlParameterList.Add(new SqlParameter("@SessionID",!string.IsNullOrEmpty(objSR.SessionID)? objSR.SessionID:null));
+            sqlParameterList.Add(new SqlParameter("@StreamID", objSR.StreamID != null ? objSR.StreamID.Length > 0 ? string.Join(",", objSR.StreamID) : string.Empty : string.Empty));
+            sqlParameterList.Add(new SqlParameter("@CourseID", objSR.CourseID != null ? objSR.CourseID.Length > 0 ? string.Join(",", objSR.CourseID) : string.Empty : string.Empty));
+            sqlParameterList.Add(new SqlParameter("@BatchID", objSR.BatchID != null & objSR.CourseID != null ? objSR.BatchID.Length > 0 & objSR.CourseID.Length > 0 ? string.Join(",", objSR.BatchID) : string.Empty : string.Empty));
+
+            DataTable dt = DGeneric.RunSP_ReturnDataSet("sp_GetFilterStudent", sqlParameterList, null).Tables[0];
+                if(dt.Rows.Count>0)
+                    return  DGeneric.BindDataList<StudentReport>(dt);
+                else
+                return new List<StudentReport>();
         }
         #endregion
 

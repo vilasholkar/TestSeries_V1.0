@@ -10,6 +10,8 @@ namespace DataAccessLayer
     public interface IDStudyMaterial
     {
         List<StudyMaterialViewModel> GetStudyMaterial();
+        StudyMaterialViewModel GetStudyMaterialByID(int StudyMaterialID);
+        List<StudyMaterialViewModel> GetStudyMaterialBySubTopic(string SubTopicID);
 
         string AddUpdateStudyMaterial(StudyMaterialViewModel objStudyMaterial);
 

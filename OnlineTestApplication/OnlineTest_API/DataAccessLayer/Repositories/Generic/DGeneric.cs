@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -252,7 +255,11 @@ namespace DataAccessLayer
             var properties = typeof(T).GetProperties();
             return dt.AsEnumerable().Select(row =>
             {
+                // Create object
                 var objT = Activator.CreateInstance<T>();
+
+                // Get all properties
+ 
                 foreach (var pro in properties)
                 {
                     if (columnNames.Contains(pro.Name.ToLower()))
@@ -261,12 +268,40 @@ namespace DataAccessLayer
                         {
                             pro.SetValue(objT, row[pro.Name]);
                         }
-                        catch (Exception) { }
+                        catch (Exception ex) {  }
                     }
                 }
                 return objT;
             }).ToList();
         }
+
+        public static DataTable ListToDataTable<T>(List<T> items)
+        {
+            DataTable dataTable = new DataTable(typeof(T).Name);
+
+            //Get all the properties
+            PropertyInfo[] Props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            foreach (PropertyInfo prop in Props)
+            {
+                //Defining type of data column gives proper data table 
+                var type = (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>) ? Nullable.GetUnderlyingType(prop.PropertyType) : prop.PropertyType);
+                //Setting column names as Property names
+                dataTable.Columns.Add(prop.Name, type);
+            }
+            foreach (T item in items)
+            {
+                var values = new object[Props.Length];
+                for (int i = 0; i < Props.Length; i++)
+                {
+                    //inserting property values to datatable rows
+                    values[i] = Props[i].GetValue(item, null);
+                }
+                dataTable.Rows.Add(values);
+            }
+            //put a breakpoint here and check datatable
+            return dataTable;
+        }
+       
         public static string ExtractParameterFromQueryString(string queryString)
         {
             Uri myUri = new Uri(queryString);
@@ -328,7 +363,7 @@ namespace DataAccessLayer
                 object obj = sqlCommand.ExecuteScalar();
                 return obj;
             }
-            catch (Exception)
+            catch(Exception)
             {
                 throw;
             }
@@ -388,5 +423,140 @@ namespace DataAccessLayer
                 }
             }
         }
+
+
+        public static string Add_And(string str1, string str2)
+        {
+            string result = string.Empty;
+            if (str1.Trim().Length > 0)
+            {
+                result = str1;
+            }
+            if (str2.Trim().Length > 0)
+            {
+                if (result.Trim().Length > 0)
+                {
+                    result = result + " and " + str2;
+
+                }
+                else
+                {
+                    result = str2;
+                }
+            }
+            return result;
+        }
+        public static string ConvertToSql(this object strDate)
+        {
+            //string strDay, strMonth, strYear;
+            //DateTime datetime = DateTime.ParseExact(strDate.ToString(), "dd/MM/yyyy", CultureInfo.CurrentCulture);
+            //string strmonthName = datetime.ToString("MMM", CultureInfo.InvariantCulture).ToUpper();
+            //strDay = datetime.Day.ToString().PadLeft(2, '0');
+            //strMonth = datetime.Month.ToString().PadLeft(2, '0');
+            //strYear = datetime.Year.ToString();
+            //String finalDate = strYear + "-" + strMonth + "-" + strDay;
+            //return finalDate;
+            string strDay, strMonth, strYear, finalDate = string.Empty;
+            DateTime datetime;
+            if (DateTime.TryParseExact(strDate.ToString(), "MM/dd/yyyy", CultureInfo.CurrentCulture, DateTimeStyles.None, out datetime))
+            {
+                string strmonthName = datetime.ToString("MMM", CultureInfo.CurrentCulture).ToUpper();
+                strDay = datetime.Day.ToString().PadLeft(2, '0');
+                strMonth = datetime.Month.ToString().PadLeft(2, '0');
+                strYear = datetime.Year.ToString();
+                finalDate = strYear + "-" + strMonth + "-" + strDay;
+            }
+            if (DateTime.TryParseExact(strDate.ToString(), "dd/MM/yyyy", CultureInfo.CurrentCulture, DateTimeStyles.None, out datetime))
+            {
+                string strmonthName = datetime.ToString("MMM", CultureInfo.CurrentCulture).ToUpper();
+                strDay = datetime.Day.ToString().PadLeft(2, '0');
+                strMonth = datetime.Month.ToString().PadLeft(2, '0');
+                strYear = datetime.Year.ToString();
+                finalDate = strYear + "-" + strMonth + "-" + strDay;
+            }
+            return finalDate;
+        }
+        public static string Add_Or(string str1, string str2)
+        {
+            string result = string.Empty;
+            if (str1.Trim().Length > 0)
+            {
+                result = str1;
+            }
+            if (str2.Trim().Length > 0)
+            {
+                if (result.Trim().Length > 0)
+                {
+                    result = "(" + result + " or " + str2 + ")";
+
+                }
+                else
+                {
+                    result = str2;
+                }
+            }
+            return result;
+        }
+        public static string MonthStartDate(string strDate)
+        {
+            string strDay, strMonth, strYear;
+            DateTime datetime = DateTime.ParseExact(strDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            strDay = "01";
+            strMonth = datetime.Month.ToString().PadLeft(2, '0');
+            strYear = datetime.Year.ToString();
+            String finalDate = strDay + "/" + strMonth + "/" + strYear;
+            return finalDate;
+        }
+        public static string AddOneDay(string strDate)
+        {
+            DateTime datetime;
+            String finalDate = string.Empty;
+            if (DateTime.TryParseExact(strDate.ToString(), "MM/dd/yyyy", CultureInfo.CurrentCulture, DateTimeStyles.None, out datetime))
+            {
+                finalDate = datetime.AddDays(1).ToShortDateString();
+            }
+            if (DateTime.TryParseExact(strDate.ToString(), "dd/MM/yyyy", CultureInfo.CurrentCulture, DateTimeStyles.None, out datetime))
+            {
+                finalDate = datetime.AddDays(1).ToShortDateString();
+            }
+            return finalDate;
+        }
+
+        //public static List<T> BindDataList1<T>(DataTable dt)
+        //{
+        //    var columnNames = dt.Columns.Cast<DataColumn>().Select(c => c.ColumnName.ToLower()).ToList();
+        //    var properties = typeof(T).GetProperties();
+        //    return dt.AsEnumerable().Select(row =>
+        //    {
+        //        var objT = Activator.CreateInstance<T>();
+        //        foreach (var pro in properties)
+        //        {
+        //            if (columnNames.Contains(pro.Name.ToLower()))
+        //            {
+        //                try
+        //                {
+        //                    if (pro.PropertyType.IsArray)
+        //                    {
+        //                        var values = (IEnumerable)pro.GetValue(dt, null);
+        //                        var elementType = pro.PropertyType.GetElementType();
+        //                        if (elementType != null && !elementType.IsValueType)
+        //                        {
+        //                            var stringValue = string.Join(", ", (object[])values);
+        //                        }
+        //                        else
+        //                        {
+        //                            var stringValue = string.Join(", ", values.OfType<object>());
+        //                        }
+        //                    }
+        //                    else
+        //                    pro.SetValue(objT, row[pro.Name]);
+        //                }
+        //                catch (Exception) { throw; }
+        //            }
+        //        }
+        //        return objT;
+        //    }).ToList();
+        //}
+
     }
 }

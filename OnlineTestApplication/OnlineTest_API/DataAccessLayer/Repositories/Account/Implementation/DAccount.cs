@@ -72,6 +72,27 @@ namespace DataAccessLayer
             //}
             //return Userlist;
         }
+
+        public string UpdateDeviceToken(DeviceTokenViewModel objDeviceToken)
+        {
+            bool response=false;
+                if(objDeviceToken.UserTypeID==1)
+                {
+                    //string strQuery = string.Format("update users set UserPassword='{0}' where UserName='{1}'", objDeviceToken.NewPassword, objDeviceToken.UserName);
+                    //DGeneric.ExecQuery(strQuery);
+                    response = false;
+
+            }
+            else if (objDeviceToken.UserTypeID == 2) {
+                    string strQuery = string.Format("update Student set DeviceToken='{0}' where StudentID={1}", objDeviceToken.DeviceToken, objDeviceToken.UserID);
+                   response = DGeneric.ExecQuery(strQuery);
+            }
+                return response == true ? "Success" : "UnSuccess";
+
+        }
+
+
+
         public ForgetPassword ForgetPassword(ForgetPassword objForgetPassword)
         {
             string MobileNo;
@@ -79,7 +100,7 @@ namespace DataAccessLayer
             {
                 string strQuery = string.Format("Select MobileNumber from Student where EnrollmentNo='{0}'", objForgetPassword.UserName);
                 MobileNo = Convert.ToString(DGeneric.GetValue(strQuery));
-                
+
 
                 if (string.IsNullOrEmpty(MobileNo))
                 {
@@ -111,21 +132,22 @@ namespace DataAccessLayer
             }
             else if (objForgetPassword.Action == "UpdatePassword")
             {
-                if(objForgetPassword.UserTypeID==1)
+                if (objForgetPassword.UserTypeID == 1)
                 {
                     string strQuery = string.Format("update users set UserPassword='{0}' where UserName='{1}'", objForgetPassword.NewPassword, objForgetPassword.UserName);
                     DGeneric.ExecQuery(strQuery);
                     objForgetPassword.Status = "Success";
-                    
+
                 }
-                else if (objForgetPassword.UserTypeID == 2) {
+                else if (objForgetPassword.UserTypeID == 2)
+                {
                     int StudentID = Convert.ToInt32(DGeneric.GetValue(String.Format("select StudentID from Student where EnrollmentNo='{0}'", objForgetPassword.UserName)));
                     string strQuery = string.Format("update StudentAccount set Password='{0}' where StudentID='{1}'", objForgetPassword.NewPassword, StudentID);
                     DGeneric.ExecQuery(strQuery);
                     objForgetPassword.Status = "Success";
 
                 }
-                
+
             }
             return objForgetPassword;
         }

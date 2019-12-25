@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ViewModels.Master;
 using ViewModels.Test;
+using ViewModels.TimeTable;
 
 namespace DataAccessLayer
 {
@@ -29,30 +30,43 @@ namespace DataAccessLayer
 
         public List<CourseViewModel> GetCourseByStream(string StreamId)
         {
-            List<SqlParameter> parameter = new List<SqlParameter>();
-            parameter.Add(new SqlParameter("@StreamID", StreamId));
-            DataTable dt = DGeneric.RunSP_ReturnDataSet("sp_GetStreamCourseBatch", parameter, null).Tables[0];
-            if (dt.Rows.Count > 0)
-                return DGeneric.BindDataList<CourseViewModel>(dt);
+            if(StreamId!="")
+            {
+                List<SqlParameter> parameter = new List<SqlParameter>();
+                parameter.Add(new SqlParameter("@StreamID", StreamId));
+                DataTable dt = DGeneric.RunSP_ReturnDataSet("sp_GetStreamCourseBatch", parameter, null).Tables[0];
+                if (dt.Rows.Count > 0)
+                    return DGeneric.BindDataList<CourseViewModel>(dt);
+                else
+                    return new List<CourseViewModel>();
+                //return dt.AsEnumerable().Select(s => new CourseViewModel()
+                //{
+                //    CourseID = Convert.ToInt32(s["CourseID"]),
+                //    Course = Convert.ToString(s["Course"])
+                //}).ToList();
+            }
             else
-                return new List<CourseViewModel>();
-            //return dt.AsEnumerable().Select(s => new CourseViewModel()
-            //{
-            //    CourseID = Convert.ToInt32(s["CourseID"]),
-            //    Course = Convert.ToString(s["Course"])
-            //}).ToList();
+            return new List<CourseViewModel>();
+
+
         }
 
         public List<BatchViewModel> GetBatchByCourse(string CourseId)
         {
-            List<SqlParameter> parameter = new List<SqlParameter>();
-            parameter.Add(new SqlParameter("CourseID", CourseId));
-            DataTable dt = DGeneric.RunSP_ReturnDataSet("sp_GetStreamCourseBatch", parameter, null).Tables[0];
-            if (dt.Rows.Count > 0)
-                return DGeneric.BindDataList<BatchViewModel>(dt);
+            if (CourseId != "")
+            {
+                List<SqlParameter> parameter = new List<SqlParameter>();
+                parameter.Add(new SqlParameter("CourseID", CourseId));
+                DataTable dt = DGeneric.RunSP_ReturnDataSet("sp_GetStreamCourseBatch", parameter, null).Tables[0];
+                if (dt.Rows.Count > 0)
+                    return DGeneric.BindDataList<BatchViewModel>(dt);
+                else
+                    return new List<BatchViewModel>();
+            }
             else
                 return new List<BatchViewModel>();
         }
+
         //return dt.AsEnumerable().Select(s => new BatchViewModel()
         //{
         //    BatchID = Convert.ToInt32(s["BatchID"]),
@@ -108,6 +122,18 @@ namespace DataAccessLayer
                             case "SubTopic":
                                 masterData.SubTopic = DGeneric.BindDataList<SubTopicViewModel>(dt);
                                 break;
+                            case "Batch":
+                                masterData.Batch = DGeneric.BindDataList<BatchViewModel>(dt);
+                                break;
+                            case "DefaultLecture":
+                                masterData.DefaultLecture = DGeneric.BindDataList<LectureModel>(dt);
+                                break;
+                            case "Users":
+                                masterData.UserList = DGeneric.BindDataList<UserViewModel>(dt);
+                                break;
+                            case "Faculty":
+                                masterData.FacultyList = DGeneric.BindDataList<FacultyViewModel>(dt);
+                                break;
                         }
                     }
                 }
@@ -142,7 +168,7 @@ namespace DataAccessLayer
 
             return subjectViewModelList;
         }
-        
+
         #region Topic
         public List<TopicViewModel> GetTopic()
         {
@@ -170,6 +196,43 @@ namespace DataAccessLayer
 
             return testTypeList;
         }
+        public TopicViewModel GetTopicByID(int TopicID)
+        {
+            var topicViewModelData = new TopicViewModel();
+            List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+            sqlParameterList.Add(new SqlParameter("@TopicID", TopicID));
+            IList<DataTableMapping> dataTableMappingList = new List<DataTableMapping>();
+            dataTableMappingList.Add(new DataTableMapping("Table", "Topic"));
+            dataTableMappingList.Add(new DataTableMapping("Table1", "Course"));
+            dataTableMappingList.Add(new DataTableMapping("Table2", "Batch"));
+            DataSet ds = DGeneric.RunSP_ReturnDataSet("sp_GetTopicByID", sqlParameterList, dataTableMappingList);
+
+            if (ds.Tables.Count > 0)
+            {
+                foreach (DataTable dt in ds.Tables)
+                {
+                    if (dt.Rows.Count > 0)
+                    {
+                        switch (dt.TableName)
+                        {
+                            case "Topic":
+                                topicViewModelData = DGeneric.BindDataList<TopicViewModel>(dt).FirstOrDefault();
+                                topicViewModelData.StreamID = dt.Rows[0]["StreamID"].ToString().Split(',').Select(int.Parse).ToArray();
+                                topicViewModelData.CourseID = dt.Rows[0]["CourseID"].ToString() != string.Empty ? dt.Rows[0]["CourseID"].ToString().Split(',').Select(int.Parse).ToArray() : null;
+                                topicViewModelData.BatchID = dt.Rows[0]["BatchID"].ToString() != string.Empty ? dt.Rows[0]["BatchID"].ToString().Split(',').Select(int.Parse).ToArray() : null;
+                                break;
+                            case "Course":
+                                topicViewModelData.Course = DGeneric.BindDataList<CourseViewModel>(dt);
+                                break;
+                            case "Batch":
+                                topicViewModelData.Batch = DGeneric.BindDataList<BatchViewModel>(dt);
+                                break;
+                        }
+                    }
+                }
+            }
+            return topicViewModelData;
+        }
         public string AddUpdateTopic(TopicViewModel objTopic)
         {
             List<SqlParameter> sqlParameterList = new List<SqlParameter>();
@@ -177,8 +240,13 @@ namespace DataAccessLayer
             sqlParameterList.Add(new SqlParameter("Topic", objTopic.Topic));
             sqlParameterList.Add(new SqlParameter("Description", !string.IsNullOrEmpty(objTopic.Description) ? objTopic.Description : string.Empty));
             sqlParameterList.Add(new SqlParameter("SubjectID", objTopic.SubjectID));
+            sqlParameterList.Add(new SqlParameter("SessionID", objTopic.SessionID));
+            sqlParameterList.Add(new SqlParameter("StreamID", string.Join(",", objTopic.StreamID)));
+            sqlParameterList.Add(new SqlParameter("CourseID", objTopic.CourseID != null ? objTopic.CourseID.Length > 0 ? string.Join(",", objTopic.CourseID) : string.Empty : string.Empty));
+            sqlParameterList.Add(new SqlParameter("BatchID", objTopic.BatchID != null & objTopic.CourseID != null ? objTopic.BatchID.Length > 0 & objTopic.CourseID.Length > 0 ? string.Join(",", objTopic.BatchID) : string.Empty : string.Empty));
+
             sqlParameterList.Add(new SqlParameter("IsActive", objTopic.IsActive));
-            string temp=DGeneric.RunSP_ExecuteNonQuery("sp_AddUpdateTopic", sqlParameterList);
+            string temp = DGeneric.RunSP_ExecuteNonQuery("sp_AddUpdateTopic", sqlParameterList);
             return temp;
         }
 
@@ -189,7 +257,7 @@ namespace DataAccessLayer
             return DGeneric.RunSP_ExecuteNonQuery("sp_DeleteTopic", sqlParameterList);
         }
         #endregion
-     
+
         #region SubTopic
         public List<SubTopicViewModel> GetSubTopic()
         {
@@ -242,5 +310,93 @@ namespace DataAccessLayer
             return DGeneric.RunSP_ExecuteNonQuery("sp_DeleteSubTopic", sqlParameterList);
         }
         #endregion
+
+        #region Slider
+        public List<SliderViewModel> GetSlider(int SliderID)
+        {
+            List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+            sqlParameterList.Add(new SqlParameter("SliderID", SliderID > 0 ? SliderID : 0));
+            DataTable dt = DGeneric.RunSP_ReturnDataSet("sp_GetSlider", sqlParameterList, null).Tables[0];
+            if (dt.Rows.Count > 0)
+                return DGeneric.BindDataList<SliderViewModel>(dt);
+            else
+                return new List<SliderViewModel>();
+        }
+        public string AddUpdateSlider(SliderViewModel objSlider)
+        {
+            List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+            sqlParameterList.Add(new SqlParameter("SliderID", objSlider.SliderID));
+            sqlParameterList.Add(new SqlParameter("SliderNo", string.IsNullOrEmpty(objSlider.SliderNo) ? DGeneric.GetNewId("Slider", "SliderID").ToString() : objSlider.SliderNo));
+            sqlParameterList.Add(new SqlParameter("Tittle", !string.IsNullOrEmpty(objSlider.Tittle) ? objSlider.Tittle : string.Empty));
+            sqlParameterList.Add(new SqlParameter("SliderImage", !string.IsNullOrEmpty(objSlider.SliderImage) ? objSlider.SliderImage : string.Empty));
+            sqlParameterList.Add(new SqlParameter("IsActive", objSlider.IsActive));
+            sqlParameterList.Add(new SqlParameter("CreatedByUserID", objSlider.CreatedByUserID > 0 ? objSlider.CreatedByUserID : 0));
+            sqlParameterList.Add(new SqlParameter("CreatedOnDate", DGeneric.SystemDateTime));
+            return DGeneric.RunSP_ExecuteNonQuery("sp_AddUpdateSlider", sqlParameterList);
+        }
+
+        public string DeleteSlider(SliderViewModel objSlider)
+        {
+            List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+            sqlParameterList.Add(new SqlParameter("SliderID", objSlider.SliderID));
+            return DGeneric.RunSP_ExecuteNonQuery("sp_DeleteSlider", sqlParameterList);
+        }
+        #endregion
+
+        #region Notification
+       public List<NotificationViewModel> GetNotification(int NotificationID, int ReciverID)
+        {
+            List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+            sqlParameterList.Add(new SqlParameter("NotificationID", NotificationID > 0 ? NotificationID : 0));
+            sqlParameterList.Add(new SqlParameter("ReciverID", ReciverID > 0 ? ReciverID : 0));
+            DataTable dt = DGeneric.RunSP_ReturnDataSet("sp_GetNotification", sqlParameterList, null).Tables[0];
+            if (dt.Rows.Count > 0)
+                return DGeneric.BindDataList<NotificationViewModel>(dt);
+            else
+                return new List<NotificationViewModel>();
+        }
+        public string AddUpdateNotification(List<NotificationViewModel> objList)
+        {
+            string response = string.Empty;
+            foreach (var objNotification in objList)
+            {
+                response = DSMSGeneric.SendAndroidNotification(objNotification.DeviceToken, objNotification.Title, objNotification.Description);
+                List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+                sqlParameterList.Add(new SqlParameter("NotificationID", objNotification.NotificationID));
+                sqlParameterList.Add(new SqlParameter("ReciverID", objNotification.ReciverID));
+                sqlParameterList.Add(new SqlParameter("NotificationDate", Convert.ToDateTime(objNotification.NotificationDate)));
+                sqlParameterList.Add(new SqlParameter("Title", !string.IsNullOrEmpty(objNotification.Title) ? objNotification.Title : string.Empty));
+                sqlParameterList.Add(new SqlParameter("Description", !string.IsNullOrEmpty(objNotification.Description) ? objNotification.Description : string.Empty));
+                sqlParameterList.Add(new SqlParameter("ImageURL", !string.IsNullOrEmpty(objNotification.ImageURL) ? objNotification.ImageURL : string.Empty));
+                sqlParameterList.Add(new SqlParameter("RedirectToURL", !string.IsNullOrEmpty(objNotification.RedirectToURL) ? objNotification.RedirectToURL : string.Empty));
+                sqlParameterList.Add(new SqlParameter("IsRead", objNotification.IsRead));
+                response = DGeneric.RunSP_ExecuteNonQuery("sp_AddUpdateNotification", sqlParameterList);
+            }
+
+            return response;
+        }
+        #endregion
+        public List<TopicViewModel> GetTopicBySubject(string SubjectID)
+        {
+            List<SqlParameter> parameter = new List<SqlParameter>();
+            parameter.Add(new SqlParameter("@SubjectID", SubjectID));
+            DataTable dt = DGeneric.RunSP_ReturnDataSet("sp_GetSubjectTopicSubTopic", parameter, null).Tables[0];
+            if (dt.Rows.Count > 0)
+                return DGeneric.BindDataList<TopicViewModel>(dt);
+            else
+                return new List<TopicViewModel>();
+        }
+
+        public List<SubTopicViewModel> GetSubTopicByTopic(string TopicID)
+        {
+            List<SqlParameter> parameter = new List<SqlParameter>();
+            parameter.Add(new SqlParameter("TopicID", TopicID));
+            DataTable dt = DGeneric.RunSP_ReturnDataSet("sp_GetSubjectTopicSubTopic", parameter, null).Tables[0];
+            if (dt.Rows.Count > 0)
+                return DGeneric.BindDataList<SubTopicViewModel>(dt);
+            else
+                return new List<SubTopicViewModel>();
+        }
+
     }
 }

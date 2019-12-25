@@ -10,6 +10,7 @@ namespace DataAccessLayer
     public interface IDAccount
     {
         Login GetUserDetails(Login user);
+        string UpdateDeviceToken(DeviceTokenViewModel objDeviceToken);
         ForgetPassword ForgetPassword(ForgetPassword objForgetPassword);
     }
 }

@@ -84,8 +84,8 @@ namespace DataAccessLayer
                       dbo.OnlineTestResult.TotalCorrect, dbo.OnlineTestResult.TotalWrong, dbo.OnlineTestResult.TotalAttempt, dbo.OnlineTestResult.TotalMarksObtained, 
                       dbo.OnlineTestResult.Percentage, dbo.OnlineTestResult.Rank, dbo.OnlineTestResult.TotalMarks, dbo.OnlineTestResult.QualifyingMarks, 
                       dbo.OnlineTestResult.CreatedOnDate, dbo.OnlineTestResult.IsActive,dbo.OnlineTestResult.IsPresent, dbo.Student.EnrollmentNo, dbo.Student.FirstName, dbo.Student.LastName, 
-                      dbo.Student.MobileNumber,dbo.Student.Cast, dbo.OnlineTest.OnlineTestNo, dbo.OnlineTest.TestSeriesID, dbo.OnlineTest.TestTypeID, dbo.OnlineTest.TestName,  dbo.OnlineTest.StartDate,
-                      dbo.OnlineTest.TestDuration, dbo.TestSeries.TestSeries, dbo.TestType.TestType
+                      dbo.Student.MobileNumber,dbo.Student.Cast, dbo.OnlineTest.OnlineTestNo, dbo.OnlineTest.TestSeriesID, dbo.OnlineTest.TestTypeID, dbo.OnlineTest.TestName,
+                        CONVERT(nvarchar(10), dbo.OnlineTest.StartDate, 103) as StartDate, dbo.OnlineTest.TestDuration, dbo.TestSeries.TestSeries, dbo.TestType.TestType
                         FROM dbo.OnlineTestResult LEFT OUTER JOIN
                       dbo.OnlineTest ON dbo.OnlineTestResult.TestID = dbo.OnlineTest.OnlineTestID LEFT OUTER JOIN
                       dbo.Student ON dbo.OnlineTestResult.StudentID = dbo.Student.StudentID LEFT OUTER JOIN
@@ -115,7 +115,7 @@ namespace DataAccessLayer
                 StudentName = Convert.ToString(s["FirstName"] + " " + s["LastName"]),
                 StudentCaste = Convert.ToString(s["Cast"]),
                 TestName = Convert.ToString(s["TestName"]),
-                TestDate = Convert.ToDateTime(s["StartDate"]),
+                TestDate = Convert.ToString(s["StartDate"]),
                 TestSeriesName = Convert.ToString(s["TestSeries"]),
                 TestTypeName = Convert.ToString(s["TestType"]),
                 Physics_Total = Convert.ToString(s["Physics_Total"]),
@@ -629,7 +629,19 @@ namespace DataAccessLayer
                 }
             }
 
+            dtTestResult.DefaultView.Sort = "Percentage desc";
+            dtTestResult = dtTestResult.DefaultView.ToTable();
+            int i = 1;
+            foreach (DataRow dr1 in dtTestResult.Rows)
+            {
+                if (Convert.ToBoolean(dr1["IsPresent"]) == true)
+                {
+                    dr1["Rank"] = i;
+                    i += 1;
+                }
+            }
             return dtTestResult;
+            
         }
 
         public DataTable Topper_Average(DataTable dtTestResult)
@@ -725,15 +737,18 @@ namespace DataAccessLayer
                     if (dr["MobileNumber"].ToString() != string.Empty)
                     {
                         string MobileNo = dr["MobileNumber"].ToString();
-                        string Message = string.Format(@"Dear {0},you got {1}/{2} ({3}) in {4} of {5} attempts in phy,chem,bio(corr./incorr) are ({6}/{7}),({8}/{9}),({10}/{11}) respectively.",
+                        string DeviceToken = dr["DeviceToken"].ToString();
+                        string Message = string.Format(@"Dear {0},you got {1}/{2} ({3}%) in {4} of {5} attempts in phy,chem,bio(corr./incorr) are ({6}/{7}),({8}/{9}),({10}/{11}) respectively.",
                                                     dr["FirstName"], dr["TotalMarksObtained"], dr["TotalMarks"], dr["Percentage"], dr["TestName"], dr["StartDate"].ToString().ConvertDateTimeToString(),
                                                     dr["Physics_Right"], dr["Physics_Wrong"], dr["Chemistry_Right"], dr["Chemistry_Wrong"], dr["Biology_Right"], dr["Biology_Wrong"]);
                         SMSResponse = DSMSGeneric.SendSingleSMS(MobileNo, Message);
+                        if (!string.IsNullOrEmpty(DeviceToken))
+                            SMSResponse = DSMSGeneric.SendAndroidNotification(DeviceToken, "Result Declared", Message);
                     }
                     if (dr["FatherMobile"].ToString() != string.Empty)
                     {
                         string MobileNo = dr["FatherMobile"].ToString();
-                        string Message = string.Format(@"Dear Parents,{0} got {1}/{2} ({3}) in {4} of {5} attempts in phy,chem,bio(corr./incorr) are ({6}/{7}),({8}/{9}),({10}/{11}) respectively.",
+                        string Message = string.Format(@"Dear Parents,{0} got {1}/{2} ({3}%) in {4} of {5} attempts in phy,chem,bio(corr./incorr) are ({6}/{7}),({8}/{9}),({10}/{11}) respectively.",
                                                     dr["FirstName"], dr["TotalMarksObtained"], dr["TotalMarks"], dr["Percentage"], dr["TestName"], dr["StartDate"].ToString().ConvertDateTimeToString(),
                                                     dr["Physics_Right"], dr["Physics_Wrong"], dr["Chemistry_Right"], dr["Chemistry_Wrong"], dr["Biology_Right"], dr["Biology_Wrong"]);
                         SMSResponse = DSMSGeneric.SendSingleSMS(MobileNo, Message);
@@ -744,8 +759,11 @@ namespace DataAccessLayer
                     if (dr["MobileNumber"].ToString() != string.Empty)
                     {
                         string MobileNo = dr["MobileNumber"].ToString();
+                        string DeviceToken = dr["DeviceToken"].ToString();
                         string Message = string.Format(@"Dear {0},you was absent in {1} of {2}", dr["FirstName"], dr["TestName"], dr["StartDate"].ToString().ConvertDateTimeToString());
                         SMSResponse = DSMSGeneric.SendSingleSMS(MobileNo, Message);
+                        if (!string.IsNullOrEmpty(DeviceToken))
+                            SMSResponse = DSMSGeneric.SendAndroidNotification(DeviceToken, "Result Declared!", Message);
                     }
                     if (dr["FatherMobile"].ToString() != string.Empty)
                     {

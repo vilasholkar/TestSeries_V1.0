@@ -11,11 +11,12 @@ namespace DataAccessLayer
    public interface IDStudent
    {
        #region Student
-       List<StudentViewModel> GetStudentDetails();       
+       List<StudentViewModel> GetStudentDetails();
+        List<StudentReport> GetFilteredStudent(StudentReport objSR);
        #endregion
 
-       #region Attendance
-       AttendenceMainModel GetAttendance(string Date,string EnrollmentNo = null);
+        #region Attendance
+        AttendenceMainModel GetAttendance(string Date,string EnrollmentNo = null);
        #endregion
    }
 }

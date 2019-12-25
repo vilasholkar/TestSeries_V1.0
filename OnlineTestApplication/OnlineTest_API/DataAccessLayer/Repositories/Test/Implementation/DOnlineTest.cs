@@ -24,21 +24,25 @@ namespace DataAccessLayer
                 return DGeneric.BindDataList<OnlineTestViewModel>(dt);
             else
                 return new List<OnlineTestViewModel>();
+
             //return dt.AsEnumerable().Select(s => new OnlineTestViewModel()
             //{
             //    OnlineTestID = Convert.ToInt32(s["OnlineTestID"]),
             //    OnlineTestNo = s["OnlineTestNo"].ToString(),
             //    TestSeriesID = Convert.ToInt32(s["TestSeriesID"]),
-            //    TestSeriesName = s["TestSeries"].ToString(),
+            //    TestSeries = s["TestSeries"].ToString(),
             //    TestTypeID = Convert.ToInt32(s["TestTypeID"]),
-            //    TestTypeName = s["TestType"].ToString(),
+            //    TestType = s["TestType"].ToString(),
             //    TestName = s["TestName"].ToString(),
             //    TestDuration = s["TestDuration"].ToString(),
             //    SessionID = Convert.ToInt32(s["SessionID"]),
             //    //StreamID = s["StreamID"].ToString().Split(',').ToArray(),
             //    //CourseID = Convert.ToInt32(s["CourseID"]),
             //    //BatchID = Convert.ToInt32(s["BatchID"]),
-            //    SubjectID = Convert.ToInt32(s["SubjectID"]),
+            //    //StreamID = s["StreamID"].ToString().Split(',').Select(int.Parse).ToArray(),
+            //    //CourseID = s["CourseID"].ToString() != string.Empty ? dt.Rows[0]["CourseID"].ToString().Split(',').Select(int.Parse).ToArray() : null,
+            //    //BatchID = s["BatchID"].ToString() != string.Empty ? dt.Rows[0]["BatchID"].ToString().Split(',').Select(int.Parse).ToArray() : null,
+            //   // SubjectID = Convert.ToInt32(s["SubjectID"]),
             //    Topic = s["Topic"].ToString(),
             //    Instructions = s["Instructions"].ToString(),
             //    TestMarks = s["TestMarks"].ToString(),
@@ -47,8 +51,8 @@ namespace DataAccessLayer
             //    IsVisible = Convert.ToBoolean(s["IsVisible"]),
             //    StartTime = s["StartTime"].ToString(),
             //    EndTime = s["EndTime"].ToString(),
-            //    StartDate = Convert.ToDateTime(s["StartDate"]),
-            //    EndDate = Convert.ToDateTime(s["EndDate"])
+            //    StartDate = Convert.ToString(s["StartDate"]).ConvertDateTimeToString(),
+            //    EndDate = Convert.ToString(s["EndDate"]).ConvertDateTimeToString()
             //}).ToList();
         }
         public string AddUpdateOnlineTest(OnlineTestViewModel objOnlineTest)
@@ -64,15 +68,15 @@ namespace DataAccessLayer
             sqlParameterList.Add(new SqlParameter("StreamID", string.Join(",", objOnlineTest.StreamID)));
             sqlParameterList.Add(new SqlParameter("CourseID", objOnlineTest.CourseID != null ? objOnlineTest.CourseID.Length > 0 ? string.Join(",", objOnlineTest.CourseID) : string.Empty : string.Empty));
             sqlParameterList.Add(new SqlParameter("BatchID", objOnlineTest.BatchID != null & objOnlineTest.CourseID != null ? objOnlineTest.BatchID.Length > 0 & objOnlineTest.CourseID.Length > 0 ? string.Join(",", objOnlineTest.BatchID) : string.Empty : string.Empty));
-            sqlParameterList.Add(new SqlParameter("SubjectID", objOnlineTest.SubjectID));
+            sqlParameterList.Add(new SqlParameter("SubjectID", objOnlineTest.SubjectID != null ? objOnlineTest.SubjectID.Length > 0 ? string.Join(",", objOnlineTest.SubjectID) : string.Empty : string.Empty));
             sqlParameterList.Add(new SqlParameter("Topic", !string.IsNullOrEmpty(objOnlineTest.Topic) ? objOnlineTest.Topic : string.Empty));
             sqlParameterList.Add(new SqlParameter("Instructions", !string.IsNullOrEmpty(objOnlineTest.Instructions) ? objOnlineTest.Instructions : string.Empty));
             sqlParameterList.Add(new SqlParameter("TestMarks", !string.IsNullOrEmpty(objOnlineTest.TestMarks) ? objOnlineTest.TestMarks : string.Empty));
             sqlParameterList.Add(new SqlParameter("PassingPercentage", !string.IsNullOrEmpty(objOnlineTest.PassingPercentage) ? objOnlineTest.PassingPercentage : string.Empty));
             sqlParameterList.Add(new SqlParameter("IsNegativeMarking", objOnlineTest.IsNegativeMarking));
-            sqlParameterList.Add(new SqlParameter("StartDate", objOnlineTest.StartDate.AddDays(1).Date));
+            sqlParameterList.Add(new SqlParameter("StartDate", Convert.ToDateTime(objOnlineTest.StartDate)));
             sqlParameterList.Add(new SqlParameter("StartTime", !string.IsNullOrEmpty(objOnlineTest.StartTime) ? objOnlineTest.StartTime : string.Empty));
-            sqlParameterList.Add(new SqlParameter("EndDate", objOnlineTest.EndDate.AddDays(1).Date));
+            sqlParameterList.Add(new SqlParameter("EndDate", Convert.ToDateTime(objOnlineTest.EndDate)));
             sqlParameterList.Add(new SqlParameter("EndTime", !string.IsNullOrEmpty(objOnlineTest.EndTime) ? objOnlineTest.EndTime : string.Empty));
             sqlParameterList.Add(new SqlParameter("IsVisible", objOnlineTest.IsVisible));
             sqlParameterList.Add(new SqlParameter("IsActive", true));
@@ -106,6 +110,7 @@ namespace DataAccessLayer
             dataTableMappingList.Add(new DataTableMapping("Table", "OnlineTest"));
             dataTableMappingList.Add(new DataTableMapping("Table1", "Course"));
             dataTableMappingList.Add(new DataTableMapping("Table2", "Batch"));
+            dataTableMappingList.Add(new DataTableMapping("Table3", "Subject"));
             DataSet ds = DGeneric.RunSP_ReturnDataSet("sp_GetOnlineTestById", sqlParameterList, dataTableMappingList);
 
             if (ds.Tables.Count > 0)
@@ -124,12 +129,19 @@ namespace DataAccessLayer
                                 // onlineTestViewModelData.BatchID = dt.Rows[0]["BatchID"].ToString().Split(',').Select(int.Parse).ToArray();
                                 onlineTestViewModelData.CourseID = dt.Rows[0]["CourseID"].ToString() != string.Empty ? dt.Rows[0]["CourseID"].ToString().Split(',').Select(int.Parse).ToArray() : null;
                                 onlineTestViewModelData.BatchID = dt.Rows[0]["BatchID"].ToString() != string.Empty ? dt.Rows[0]["BatchID"].ToString().Split(',').Select(int.Parse).ToArray() : null;
+                                onlineTestViewModelData.SubjectID = dt.Rows[0]["SubjectID"].ToString() != string.Empty ? dt.Rows[0]["SubjectID"].ToString().Split(',').Select(int.Parse).ToArray() : null;
+                                
+                                //onlineTestViewModelData.StartDate = Convert.ToString(dt.Rows[0]["StartDate"]).ConvertDateTimeToString();
+                                //onlineTestViewModelData.EndDate = Convert.ToString(dt.Rows[0]["EndDate"]).ConvertDateTimeToString();
                                 break;
                             case "Course":
                                 onlineTestViewModelData.Course = DGeneric.BindDataList<CourseViewModel>(dt);
                                 break;
                             case "Batch":
                                 onlineTestViewModelData.Batch = DGeneric.BindDataList<BatchViewModel>(dt);
+                                break;
+                            case "Subject":
+                                onlineTestViewModelData.Subject = DGeneric.BindDataList<SubjectViewModel>(dt);
                                 break;
                         }
                     }

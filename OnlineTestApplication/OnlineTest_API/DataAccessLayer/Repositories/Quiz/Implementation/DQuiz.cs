@@ -269,11 +269,11 @@ namespace DataAccessLayer
 
             List<SqlParameter> sqlParameterList = new List<SqlParameter>();
             sqlParameterList.Add(new SqlParameter("@StudentResponseDetails", dtStudentResponse));
-            DGeneric.RunSP_ExecuteNonQuery("sp_AddStudentResponse", sqlParameterList);
+           string response = DGeneric.RunSP_ExecuteNonQuery("sp_AddStudentResponse", sqlParameterList);
 
             string strquery = string.Format(@"UPDATE EligibleStudent SET TestStatusID = {2} WHERE OnlineTestID={0} and StudentID in ({1});", QuizViewModel.OnlineTestID, QuizViewModel.StudentID, '3');
             DGeneric.ExecQuery(strquery);
-            return "Success";
+            return response;
         }
     }
 }

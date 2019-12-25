@@ -44,14 +44,17 @@ namespace DataAccessLayer
                 if (item.TestStatusID == 1 && item.IsMessageSend == false)
                 {
                     string TestName = item.TestName;
-                    string StartDate = item.StartDate.ToShortDateString();
-                    string EndDate = item.EndDate.ToShortDateString();
+                    string StartDate = item.StartDate;
+                    string EndDate = item.EndDate;
                     string StudentName = item.StudentName;
                     string MobileNumber = item.MobileNumber;
                     string FatherMobileNo = item.FatherMobileNo;
+                    string DeviceToken = item.DeviceToken;
                     string StudentMessage = string.Format("Dear {0}, you are assigned {1}. You can attempt test from {2} to {3}.", StudentName, TestName, StartDate, EndDate);
-                    response = DSMSGeneric.SendSingleSMS("8871171445", StudentMessage);
-                    // DSMSGeneric.SendSingleSMS(MobileNumber, StudentMessage);
+                    response = DSMSGeneric.SendSingleSMS(MobileNumber, StudentMessage);
+                    if(!string.IsNullOrEmpty(DeviceToken))
+                        response = DSMSGeneric.SendAndroidNotification(DeviceToken, "Test Alert!", StudentMessage);
+                    
                 }
             }
             var dt = new DataTable();
