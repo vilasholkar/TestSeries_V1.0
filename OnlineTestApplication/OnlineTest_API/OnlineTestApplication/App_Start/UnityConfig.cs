@@ -52,6 +52,10 @@ namespace OnlineTestApplication
 
             container.RegisterType<IDStudyMaterial, DStudyMaterial>();
             container.RegisterType<IBStudyMaterial, BStudyMaterial>();
+
+            container.RegisterType<IDTimeTable, DTimeTable>();
+            container.RegisterType<IBTimeTable, BTimeTable>();
+
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }
     }
