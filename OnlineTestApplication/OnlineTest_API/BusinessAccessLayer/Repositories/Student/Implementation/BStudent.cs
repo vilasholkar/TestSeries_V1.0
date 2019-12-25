@@ -40,6 +40,29 @@ namespace BusinessAccessLayer
                 };
             }
         }
+
+        public Response<List<StudentReport>> GetFilteredStudent(StudentReport objSR)
+        {
+            var studentData = _iDStudent.GetFilteredStudent(objSR);
+            if (studentData != null)
+            {
+                return new Response<List<StudentReport>>
+                {
+                    IsSuccessful = true,
+                    Object = studentData,
+                    Message = "Success"
+                };
+            }
+            else
+            {
+                return new Response<List<StudentReport>>
+                {
+                    IsSuccessful = false,
+                    Message = "error",
+                    Object = null
+                };
+            }
+        }
         #endregion
 
         #region Attendance

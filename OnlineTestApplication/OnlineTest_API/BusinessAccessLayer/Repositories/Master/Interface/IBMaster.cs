@@ -24,6 +24,7 @@ namespace BusinessAccessLayer
 
         #region Topic
         Response<List<TopicViewModel>> GetTopic();
+        Response<TopicMasterViewModel> GetTopicByID(int TopicID);
         string AddUpdateTopic(TopicViewModel objTopic);
         string DeleteTopic(TopicViewModel objTopic);
         #endregion
@@ -33,5 +34,20 @@ namespace BusinessAccessLayer
         string AddUpdateSubTopic(SubTopicViewModel objSubTopic);
         string DeleteSubTopic(SubTopicViewModel objSubTopic);
         #endregion
+
+        #region Slider
+        Response<List<SliderViewModel>> GetSlider(int SliderID);
+        string AddUpdateSlider(SliderViewModel objSlider);
+        string DeleteSlider(SliderViewModel objSlider);
+        #endregion
+
+        #region Notification
+        Response<List<NotificationViewModel>> GetNotification(int NotificationID, int ReciverID);
+        string AddUpdateNotification(List<NotificationViewModel> objNotification);
+        #endregion
+
+        Response<List<TopicViewModel>> GetTopicBySubject(string SubjectID);
+
+        Response<List<SubTopicViewModel>> GetSubTopicByTopic(string TopicID);
     }
 }

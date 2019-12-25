@@ -56,7 +56,15 @@ namespace BusinessAccessLayer
         }
         public string DeleteOnlineTest(int OnlineTestId)
         {
-            return _iDOnlineTest.DeleteOnlineTest(OnlineTestId);
+            var onlineTestData = _iDOnlineTest.DeleteOnlineTest(OnlineTestId);
+            if (!string.IsNullOrEmpty(onlineTestData))
+            {
+                return onlineTestData;
+            }
+            else
+            {
+                return onlineTestData;
+            }
         }
         public Response<OnlineTestViewModel> GetOnlineTestById(int OnlineTestId)
         {

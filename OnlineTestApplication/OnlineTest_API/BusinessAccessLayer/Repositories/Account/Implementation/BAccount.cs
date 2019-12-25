@@ -38,7 +38,32 @@ namespace BusinessAccessLayer
                 };
             }
         }
-       public Response<ForgetPassword> ForgetPassword(ForgetPassword objForgetPassword)
+
+        public Response<string> UpdateDeviceToken(DeviceTokenViewModel objDeviceToken)
+        {
+            var updateDeviceToken = _iDAccount.UpdateDeviceToken(objDeviceToken);
+            if (updateDeviceToken == "Success")
+            {
+                return new Response<string>
+                {
+                    IsSuccessful = true,
+                    Object = updateDeviceToken,
+                    Message = "Success"
+                };
+            }
+            else
+            {
+                return new Response<string>
+                {
+                    IsSuccessful = false,
+                    Message = "error",
+                    Object = null
+                };
+            }
+        }
+
+
+        public Response<ForgetPassword> ForgetPassword(ForgetPassword objForgetPassword)
         {
             var forgetPasswordData = _iDAccount.ForgetPassword(objForgetPassword);
             if (forgetPasswordData != null)

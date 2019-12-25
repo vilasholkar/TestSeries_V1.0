@@ -11,7 +11,8 @@ namespace BusinessAccessLayer
     public interface IBStudent
     {
         #region Student
-        Response<List<StudentViewModel>> GetStudentDetails();        
+        Response<List<StudentViewModel>> GetStudentDetails();
+        Response<List<StudentReport>> GetFilteredStudent(StudentReport objSR);
         #endregion
 
         #region Attendance
