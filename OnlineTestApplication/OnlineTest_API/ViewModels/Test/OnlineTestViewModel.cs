@@ -21,15 +21,15 @@ namespace ViewModels.Test
         public int[] StreamID { get; set; }
         public int[] CourseID { get; set; }
         public int[] BatchID { get; set; }
-        public int SubjectID { get; set; }
+        public int[] SubjectID { get; set; }
         public string Topic { get; set; }
         public string Instructions { get; set; }
         public string TestMarks { get; set; }
         public string PassingPercentage { get; set; }
         public bool IsNegativeMarking { get; set; }
-        public DateTime StartDate { get; set; }
+        public string StartDate { get; set; }
         public string StartTime { get; set; }
-        public DateTime EndDate { get; set; }
+        public string EndDate { get; set; }
         public string EndTime { get; set; }
         public bool IsVisible { get; set; }
         public bool IsActive { get; set; }
@@ -37,5 +37,6 @@ namespace ViewModels.Test
         public DateTime CreatedOnDate { get; set; }
         public List<CourseViewModel> Course { get; set; }
         public List<BatchViewModel> Batch { get; set; }
+        public List<SubjectViewModel> Subject { get; set; }
     }
 }

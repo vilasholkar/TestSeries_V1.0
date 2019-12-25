@@ -15,7 +15,7 @@ namespace ViewModels.Result
         public string StudentCaste { get; set; }
         public int TestID { get; set; }
         public string TestName { get; set; }
-        public DateTime TestDate { get; set; }
+        public string TestDate { get; set; }
         public string TestSeriesName { get; set; }
         public string TestTypeName { get; set; }
         public string Physics_Total { get; set; }

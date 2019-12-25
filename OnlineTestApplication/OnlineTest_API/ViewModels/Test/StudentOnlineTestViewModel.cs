@@ -30,9 +30,9 @@ namespace ViewModels.Test
         public string TestMarks { get; set; }
         public string PassingPercentage { get; set; }
         public bool IsNegativeMarking { get; set; }
-        public DateTime StartDate { get; set; }
+        public string StartDate { get; set; }
         public string StartTime { get; set; }
-        public DateTime EndDate { get; set; }
+        public string EndDate { get; set; }
         public string EndTime { get; set; }
         public bool IsVisible { get; set; }
         public bool IsActive { get; set; }

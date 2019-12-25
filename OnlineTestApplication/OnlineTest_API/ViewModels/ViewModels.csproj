@@ -45,6 +45,8 @@
     <Compile Include="Dashboard\StudentDashboardViewModel.cs" />
     <Compile Include="Enum\CommonEnum.cs" />
     <Compile Include="Master\MasterViewModel.cs" />
+    <Compile Include="Master\NotificationViewModel.cs" />
+    <Compile Include="Master\SliderViewModel.cs" />
     <Compile Include="Master\SubjectViewModel.cs" />
     <Compile Include="Master\SubTopicViewModel.cs" />
     <Compile Include="Master\TopicViewModel.cs" />
@@ -63,8 +65,9 @@
     <Compile Include="Result\Topper_AverageViewModel.cs" />
     <Compile Include="Settings\ChangePasswordViewModel.cs" />
     <Compile Include="Settings\GeneralSettingsViewModel.cs" />
-	<Compile Include="Student\Attendance.cs" />
+    <Compile Include="Student\Attendance.cs" />
     <Compile Include="Student\AttendenceMainModel.cs" />
+    <Compile Include="Student\StudentReport.cs" />
     <Compile Include="Student\StudentViewModel.cs" />
     <Compile Include="StudyMaterial\StudyMaterialViewModel.cs" />
     <Compile Include="TestType\TestTypeViewModel.cs" />
@@ -75,6 +78,8 @@
     <Compile Include="Test\StudentOnlineTestViewModel.cs" />
     <Compile Include="Test\TestSeriesViewModel.cs" />
     <Compile Include="Test\TestTypeViewModel.cs" />
+    <Compile Include="TimeTable\LectureViewModel.cs" />
+    <Compile Include="TimeTable\TimeTableViewModel.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

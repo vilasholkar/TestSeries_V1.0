@@ -42,14 +42,14 @@ namespace ViewModels.Student
         public string Medium { get; set; }
         //public bool IsConfigure { get; set; }
         //public bool IsActive { get; set; }
-        //public int SessionID { get; set; }
-        //public string Session { get; set; }
-        //public int CourseID { get; set; }
-        //public string Course { get; set; }
-        //public int StreamID { get; set; }
-        //public string Stream { get; set; }
-        //public int BatchID { get; set; }
-        //public string Batch { get; set; }
+        public int SessionID { get; set; }
+        public string Session { get; set; }
+        public int CourseID { get; set; }
+        public string Course { get; set; }
+        public int StreamID { get; set; }
+        public string Stream { get; set; }
+        public int BatchID { get; set; }
+        public string Batch { get; set; }
         public List<Attendance> AttendenceList { get; set; }
     }
 }

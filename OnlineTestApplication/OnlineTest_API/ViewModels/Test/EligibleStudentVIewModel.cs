@@ -11,13 +11,14 @@ namespace ViewModels.Test
         public int StudentID { get; set; }
         public int OnlineTestID { get; set; }
         public string TestName { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
         public string EnrollmentNo { get; set; }
         public string StudentName { get; set; }
         public string Gender { get; set; }
         public string MobileNumber { get; set; }
         public string FatherMobileNo { get; set; }
+        public string DeviceToken { get; set; }
         public bool IsEligible { get; set; }
         public int TestStatusID { get; set; }
         public string TestStatus { get; set; }
