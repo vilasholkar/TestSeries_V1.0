@@ -45,7 +45,25 @@ namespace OnlineTestApplication.Controllers
         //    UserManager = userManager;
         //    AccessTokenFormat = accessTokenFormat;
         //}
-        /// <summary>
+        //// <summary>
+        [HttpGet]
+        [Route("api/GetLoginInfo", Name = "GetLoginInfo")]
+        public HttpResponseMessage GetLoginInfo(string UserName, string Password, int UserTypeID)
+        {
+            Login loginsetdetails = new Login();
+            loginsetdetails.UserName = UserName;
+            loginsetdetails.UserPassword = Password;
+            loginsetdetails.UserTypeID = UserTypeID;
+            //Login logingetdetails = DataAccessLayer.DAccount.GetUserDetails1(loginsetdetails);
+            return Request.CreateResponse(HttpStatusCode.OK, _iBAccount.GetUserDetails(loginsetdetails));
+        }
+        [HttpPost]
+        [Route("api/UpdateDeviceToken", Name = "UpdateDeviceToken")]
+        public HttpResponseMessage UpdateDeviceToken(DeviceTokenViewModel objDeviceToken)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, _iBAccount.UpdateDeviceToken(objDeviceToken));
+        }
+
         [HttpPost]
         [Route("api/ForgetPassword", Name = "ForgetPassword")]
         public HttpResponseMessage ForgetPassword(ForgetPassword objForgetPassword)
@@ -393,15 +411,15 @@ namespace OnlineTestApplication.Controllers
             return Ok();
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                UserManager.Dispose();
-            }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        UserManager.Dispose();
+        //    }
 
-            base.Dispose(disposing);
-        }
+        //    base.Dispose(disposing);
+        //}
 
         #region Helpers
 

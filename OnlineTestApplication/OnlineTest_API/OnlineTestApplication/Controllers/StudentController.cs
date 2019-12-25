@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using ViewModels.Account;
+using ViewModels.Student;
 
 namespace OnlineTestApplication.Controllers
 {
@@ -25,28 +26,17 @@ namespace OnlineTestApplication.Controllers
         }
 
         #region Student
-        [HttpGet]
-        [Route("api/GetLoginInfo", Name = "GetLoginInfo")]
-        public HttpResponseMessage GetLoginInfo(string UserName, string Password, int UserTypeID)
-        {
-            Login loginsetdetails = new Login();
-            loginsetdetails.UserName = UserName;
-            loginsetdetails.UserPassword = Password;
-            loginsetdetails.UserTypeID = UserTypeID;
-            //Login logingetdetails = DataAccessLayer.DAccount.GetUserDetails1(loginsetdetails);
-            return Request.CreateResponse(HttpStatusCode.OK, _iBAccount.GetUserDetails(loginsetdetails));
-
-            //if (logingetdetails != null)
-            //{
-            //    var currentUserRole = logingetdetails.UserType;
-            //   // return logingetdetails;
-            //    //return Request.CreateResponse(HttpStatusCode.OK, logingetdetails);
-            //}
-            //else
-            //{
-            //    return Request.CreateResponse(HttpStatusCode.NoContent, logingetdetails);
-            //}
-        }
+        //[HttpGet]
+        //[Route("api/GetLoginInfo", Name = "GetLoginInfo")]
+        //public HttpResponseMessage GetLoginInfo(string UserName, string Password, int UserTypeID)
+        //{
+        //    Login loginsetdetails = new Login();
+        //    loginsetdetails.UserName = UserName;
+        //    loginsetdetails.UserPassword = Password;
+        //    loginsetdetails.UserTypeID = UserTypeID;
+        ////    //Login logingetdetails = DataAccessLayer.DAccount.GetUserDetails1(loginsetdetails);
+        //    return Request.CreateResponse(HttpStatusCode.OK, _iBAccount.GetUserDetails(loginsetdetails));
+        //}
         [HttpGet]
         [Route("api/GetStudentDetails", Name = "GetStudentDetails")]
         public HttpResponseMessage GetStudentDetails()
@@ -54,6 +44,14 @@ namespace OnlineTestApplication.Controllers
             //var response = Request.CreateResponse(HttpStatusCode.OK, JsonConvert.SerializeObject(_iBStudent.GetStudent()));
             //return response;
             return Request.CreateResponse(HttpStatusCode.OK, _iBStudent.GetStudentDetails());
+        }
+
+        [HttpPost]
+        [Route("api/GetFilteredStudent", Name = "GetFilteredStudent")]
+        public HttpResponseMessage GetFilteredStudent(StudentReport objSR)
+        {
+            
+            return Request.CreateResponse(HttpStatusCode.OK, _iBStudent.GetFilteredStudent(objSR));
         }
         #endregion
 
