@@ -65,6 +65,8 @@
     <Compile Include="Repositories\Test\Interface\IBEligibleStudent.cs" />
     <Compile Include="Repositories\Test\Interface\IBOnlineTest.cs" />
     <Compile Include="Repositories\Test\Interface\IBTestSeries.cs" />
+    <Compile Include="Repositories\TimeTable\Implementation\BTimeTable.cs" />
+    <Compile Include="Repositories\TimeTable\Interface\IBTimeTable.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj">
