@@ -1,0 +1,136 @@
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="#fff" type="ball-spin-clockwise-fade">
+  <p style="padding-top:5px; font-size: 15px; color: black">Please Wait...</p>
+</ngx-spinner>
+<button mat-stroked-button id="btnAddNew" *ngIf="btnAddNew" color="primary" (click)="changeShowStatus()"
+  style="outline: 0px;">
+  Add New
+</button>
+<hr>
+<div class="row" *ngIf="showAddDiv">
+  <div class="col-sm-12">
+    <div class="mat-elevation-z8">
+      <div class="card card-accent-primary">
+        <div class="card-header">
+          <strong class="card-title" style="line-height:40px;font-size: 18px;font-weight: 500">{{Title}}</strong>
+          <a mat-icon-button color="primary" class="float-right" (click)="this.showAddDiv=false;this.btnAddNew=true;">
+            <mat-icon aria-label="icon">cancel</mat-icon>
+          </a>
+        </div>
+        <div class="card-body">
+          <form id="SliderForm" name="Form" (ngSubmit)="addSlider()" #sliderForm="ngForm">
+            <div class="row">
+                <div class="col-sm-6 ">
+                    <div class="col-sm-12">
+                        <mat-form-field class="example-full-width">
+                          <input [(ngModel)]="sliderModel.SliderNo" name="SliderNo" autocomplete="off" #SliderNo="ngModel"
+                            required matInput placeholder="SliderNo" type="text" maxlength="20">
+                          <mat-error *ngIf="SliderNo.invalid && (SliderNo.dirty || SliderNo.touched)">
+                            <mat-error *ngIf="SliderNo.errors.required">SliderNo is required.</mat-error>
+                            <mat-error *ngIf="SliderNo.errors.maxlength">Reaches maximum limit.</mat-error>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                  <div class="col-sm-12">
+                    <mat-form-field class="example-full-width">
+                      <input [(ngModel)]="sliderModel.Tittle" name="Tittle" autocomplete="off" #Tittle="ngModel"
+                        required matInput placeholder="Tittle" type="text" maxlength="20">
+                      <mat-error *ngIf="Tittle.invalid && (Tittle.dirty || Tittle.touched)">
+                        <mat-error *ngIf="Tittle.errors.required">Tittle is required.</mat-error>
+                        <mat-error *ngIf="Tittle.errors.maxlength">Reaches maximum limit.</mat-error>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-sm-12">
+                      <div class="form-group">
+                          <input [(ngModel)]="sliderModel.SliderImage" name="SliderImage" autocomplete="off" #SliderImage="ngModel"
+                              placeholder="Slider Image"  type="file" (change)="handleFileInput($event.target.files)">
+                          <!-- <mat-error *ngIf="SliderImage.invalid && (SliderImage.dirty || SliderImage.touched)">
+                            <mat-error *ngIf="SliderImage.errors.required">File Upload is required.</mat-error>
+                          </mat-error> -->
+                          
+                      </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <br>
+                        <mat-checkbox [(ngModel)]="sliderModel.IsActive"  #IsActive="ngModel" name="IsActive">Is Visible
+                        </mat-checkbox>
+                      </div>
+                </div>
+                <div class="col-sm-6">
+                    <img [src]="imgURL" width="400px" height="200px" >
+                </div>
+            </div>
+            
+            <button mat-raised-button color="primary" [disabled]="!sliderForm.form.valid">Save</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-9">
+      <h4>Slider List</h4>
+    </div>
+    <div class="col-sm-3">
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+      </mat-form-field>
+    </div>
+    <div class="col-sm-12">
+      <div class="mat-elevation-z8">
+        <perfect-scrollbar style="position: relative;width: 100%;overflow: auto;">
+          <table mat-table [dataSource]="dataSource" matSort>
+              <ng-container matColumnDef="SliderNo">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Slider No </th>
+                  <td mat-cell *matCellDef="let element"> {{element.SliderNo}} </td>
+                </ng-container>
+            <ng-container matColumnDef="Tittle">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
+              <td mat-cell *matCellDef="let element"> {{element.Tittle}} </td>
+            </ng-container>
+            <ng-container matColumnDef="SliderImage">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Image </th>
+              <td mat-cell *matCellDef="let element"> 
+                <img [src]="baseURL+element.SliderImage" width="100px" height="50px" >
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Visible">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visible </th>
+                <td mat-cell *matCellDef="let element"> 
+                <mat-checkbox  [checked]="element.IsActive" style="pointer-events: none">
+              </mat-checkbox>
+              </td>
+              </ng-container>
+            <ng-container matColumnDef="Edit">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Edit </th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button matTooltip="Edit" color="primary" (click)="getSliderById(element.SliderID)"
+                  aria-hidden="true" style="outline: 0px;">
+                  <mat-icon aria-label="icon">edit</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Delete">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Delete </th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button matTooltip="Delete" color="warn" (click)="deleteSlider(element)"
+                  aria-hidden="true" style="outline: 0px;">
+                  <mat-icon aria-label="icon">delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+            </tr>
+          </table>
+        </perfect-scrollbar>
+        <div class="no-results" *ngIf="IsEmpty">
+          No results
+        </div>
+        <mat-paginator [pageSizeOptions]="PaginationConfig" showFirstLastButtons></mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

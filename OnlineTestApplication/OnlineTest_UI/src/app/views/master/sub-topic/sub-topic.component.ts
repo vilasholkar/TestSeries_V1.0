@@ -88,9 +88,9 @@ export class SubTopicComponent implements OnInit {
       });
   }
   DeleteSubTopic(model: SubTopic) {
-    if (confirm("Are you sure to delete " + model.Topic)) {
+    if (confirm("Are you sure to delete " + model.SubTopic)) {
       this.subTopic = model;
-            this.helperSvc.postService(APIUrl.DeleteTopic, this.subTopic)
+            this.helperSvc.postService(APIUrl.DeleteSubTopic, this.subTopic)
         .subscribe(data => {
           if (data === 'Success') {
             this.getSubTopic();

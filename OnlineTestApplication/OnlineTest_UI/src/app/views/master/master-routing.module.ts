@@ -4,6 +4,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { TestTypeComponent } from './test-type/test-type.component';
 import { TopicComponent } from './topic/topic.component';
 import { SubTopicComponent } from './sub-topic/sub-topic.component';
+import { StudyMaterialComponent } from './study-material/study-material.component';
+import { SliderComponent } from './slider/slider.component';
+import { NotificationComponent } from './notification/notification.component';
 
 
 const routes: Routes = [
@@ -32,6 +35,27 @@ const routes: Routes = [
         component: SubTopicComponent,
         data: {
           title: 'Sub Topic'
+        }
+      },
+      {
+        path: 'study-material',
+        component: StudyMaterialComponent,
+        data: {
+          title: 'Study Material'
+        }
+      },
+      {
+        path: 'slider',
+        component: SliderComponent,
+        data: {
+          title: 'Slider'
+        }
+      },
+      {
+        path: 'notification',
+        component: NotificationComponent,
+        data: {
+          title: 'Notification'
         }
       }
     ]

@@ -116,7 +116,7 @@ export class EligibleStudentComponent implements OnInit {
         this.eligibleStudentArray.push({
           StudentID: data.StudentID, OnlineTestID: data.OnlineTestID,TestName: data.TestName,StartDate: data.StartDate,EndDate: data.EndDate,
            EnrollmentNo: data.EnrollmentNo, StudentName: data.StudentName,
-          Gender: data.Gender, MobileNumber: data.MobileNumber, FatherMobileNo: data.FatherMobileNo,
+          Gender: data.Gender, MobileNumber: data.MobileNumber, FatherMobileNo: data.FatherMobileNo,DeviceToken:data.DeviceToken,
           IsEligible: data.IsEligible, TestStatusID: data.TestStatusID
         });
       }

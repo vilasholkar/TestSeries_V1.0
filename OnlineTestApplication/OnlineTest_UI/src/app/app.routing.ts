@@ -87,6 +87,10 @@ export const routes: Routes = [
         loadChildren: './views/settings/settings.module#SettingsModule',canActivate:[AuthGuard]
       },
       {
+        path: 'timetable',
+        loadChildren: './views/timetable/timetable.module#TimeTableModule',canActivate:[AuthGuard]
+      },
+      {
         path: 'base',
         loadChildren: './views/base/base.module#BaseModule',
       },

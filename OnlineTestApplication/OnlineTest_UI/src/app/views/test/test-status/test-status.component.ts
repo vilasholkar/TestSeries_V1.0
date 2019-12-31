@@ -80,7 +80,7 @@ export class TestStatusComponent implements OnInit {
     this.helperSvc.getService(APIUrl.GetEligibleStudentByTestID + "?OnlineTestID=" + OnlineTestID)
       .subscribe(res => {
         if (res.Message === 'Success') {
-          this.eligibleStudentModel = res.Object as EligibleStudent[];
+          this.eligibleStudentModel = res.Object.filter(f=>f.TestStatusID != 0) as EligibleStudent[];
           this.dataSource = new MatTableDataSource(this.eligibleStudentModel);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;

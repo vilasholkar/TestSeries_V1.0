@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule }   from '@angular/forms';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
@@ -10,6 +11,7 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { Headers, Response, RequestOptions } from '@angular/http';
 import { AuthGuard } from './shared/auth-guard/auth.guard'
 import { AuthInterceptor } from './shared/auth-guard/auth.interceptors'
+
 // Import Services
 import { UserService } from './services/auth-service/user.service'
 import { HelperService } from './services/helper.service'
@@ -44,6 +46,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { CustomMaterialModule } from "./custommaterial.module";
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   imports: [
@@ -60,6 +63,7 @@ import { CustomMaterialModule } from "./custommaterial.module";
     TabsModule.forRoot(),
     ChartsModule,
     HttpClientModule,
+    HttpModule,
     NgxSpinnerModule,
     ToastrModule.forRoot({
       timeOut: 5000,
@@ -83,7 +87,7 @@ import { CustomMaterialModule } from "./custommaterial.module";
     ImageDialogComponent
   ],
   providers: [
-    UserService, HelperService,
+    UserService, HelperService,DatePipe,
     AuthGuard,
     // {
     //   provide : HTTP_INTERCEPTORS,

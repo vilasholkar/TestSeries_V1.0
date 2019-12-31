@@ -1,0 +1,302 @@
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="#fff" type="ball-spin-clockwise-fade">
+  <p style="padding-top:5px; font-size: 15px; color: black">Please Wait...</p>
+</ngx-spinner>
+<div class="row">
+  <div class="col-md-12">
+    <div class="mat-elevation-z8">
+      <div class="card card-accent-primary">
+        <div class="card-header">
+          <strong class="card-title" style="line-height:40px;font-size: 18px;font-weight: 500">{{Title}}</strong>
+        </div>
+        <div class="card-body">
+          <form id="TimeTableForm" name="Form11" (ngSubmit)="GetTimeTableByDate()" #timeTableForm="ngForm">
+            <div class="row">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Date" name="FromDate" [min]="minFromDate" [max]="maxFromDate"
+                      (click)="picker.open()" autocomplete="off" required #FromDate="ngModel"
+                      [(ngModel)]="timeTableModel.FromDate" [matDatepicker]="picker">
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="FromDate.invalid && (FromDate.dirty || FromDate.touched)">
+                      <mat-error *ngIf="FromDate.errors.required">From Date is required.</mat-error>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm-3" *ngIf="false">
+                <div class="form-group">
+                  <mat-form-field>
+                    <mat-select [(ngModel)]="timeTableModel.ShiftID" name="ShiftID" #ShiftID="ngModel"
+                      placeholder="Shift" required>
+                      <mat-option *ngFor="let shift of shift" [value]="shift.ShiftID">
+                        {{shift.Shift}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="ShiftID.invalid && (ShiftID.dirty || ShiftID.touched)">
+                      <mat-error *ngIf="ShiftID.errors.required">Shift is required.</mat-error>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm-3" *ngIf="false">
+                <div class="form-group">
+                  <mat-form-field>
+                    <mat-select [(ngModel)]="timeTableModel.SessionID" name="SessionID" #SessionID="ngModel"
+                      placeholder="Session" required>
+                      <mat-option *ngFor="let sessions of session" [value]="sessions.SessionID">
+                        {{sessions.Session}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="SessionID.invalid && (SessionID.dirty || SessionID.touched)">
+                      <mat-error *ngIf="SessionID.errors.required">Session is required.</mat-error>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm-3" *ngIf="false">
+                <div class="form-group">
+                  <mat-form-field>
+                    <mat-select [(ngModel)]="timeTableModel.StreamID" name="StreamID"
+                      (ngModelChange)="onChangeStream($event)" [ngModelOptions]="{standalone: true}" #StreamID="ngModel"
+                      placeholder="Stream" multiple required>
+                      <mat-option *ngFor="let stream of stream" [value]="stream.StreamID">
+                        {{stream.Stream}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="StreamID.invalid && (StreamID.dirty || StreamID.touched)">
+                      <mat-error *ngIf="StreamID.errors.required">Stream is required.</mat-error>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm-3" *ngIf="false">
+                <div class="form-group">
+                  <mat-form-field>
+                    <mat-select [(ngModel)]="timeTableModel.CourseID" name="CourseID"
+                      (ngModelChange)="onChangeCourse($event)" [ngModelOptions]="{standalone: true}" multiple
+                      placeholder="Course">
+                      <mat-option *ngFor="let course of course" [value]="course.CourseID">
+                        {{course.Course}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <mat-form-field>
+                    <mat-select [(ngModel)]="timeTableModel.BatchID" name="Batch" #Batch="ngModel" placeholder="Batch"
+                      required>
+                      <mat-option *ngFor="let b of batch" [value]="b.BatchID">
+                        {{b.Batch}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="Batch.invalid && (Batch.dirty || Batch.touched)">
+                      <mat-error *ngIf="Batch.errors.required">Batch is required.</mat-error>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <button mat-raised-button color="primary" [disabled]="!timeTableForm.form.valid">Search TimeTable</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <!-- <div class="col-sm-6 col-md-2">
+    <div class="card text-white bg-info">
+      <div class="card-body">
+        <small class=" text-uppercase font-weight-bold">L1</small>
+        <small class="text-muted text-uppercase font-weight-bold">Lecture Timming</small>
+        <div class="text-value">01:00 to 02:00</div>
+        <div class="text-value">Subject</div>
+        <div class="text-value">Faculty</div>
+
+
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-md-2">
+    <mat-card class="example-card" color="primary">
+      <mat-card-content>
+        <h6 class="text-center">L1</h6>
+        <h6 class="text-center">10:00 AM-12:00 PM</h6>
+        <h4 class="text-center">Chemistry</h4>
+        <h5 class="text-center">Ankit Patidar</h5>
+      </mat-card-content>
+    </mat-card>
+  </div> -->
+  <div class="col-sm-6 col-md-2" *ngFor="let lectureData of lectureDataModel index as i; odd as isOdd; even as isEven" >
+    <!-- <ng-container ></ng-container> -->
+    <mat-card class="example-card"  [class.Odd]="isOdd" 
+    [class.even]="isEven">
+      <mat-card-content>
+        <h6 class="text-center">Lecture : {{lectureData.Lecture.LectureName}}</h6>
+        <h6 class="text-center">{{lectureData.Lecture.Time_From}}-{{lectureData.Lecture.Time_To}}</h6>
+        <h4 class="text-center"*ngIf="lectureData.Subject!=''">{{lectureData.Subject}}</h4>
+        <h6 class="text-center"*ngIf="lectureData.Subject==''">Subject not available.</h6>
+        <h6 class="text-center"*ngIf="lectureData.FacultyID!=0">{{lectureData.Faculty}}</h6>
+        <h6 class="text-center"*ngIf="lectureData.FacultyID==0">Faculty not available.</h6>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- <div class="col-sm-6 col-md-2">
+    <div class="card text-white bg-success">
+      <div class="card-body">
+        <div class="h1 text-muted text-right mb-4">
+          <i class="icon-user-follow"></i>
+        </div>
+        <div class="text-value">385</div>
+        <small class="text-muted text-uppercase font-weight-bold">New Clients</small>
+        <div class="progress progress-white progress-xs mt-3">
+          <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0"
+            aria-valuemax="100"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-2">
+    <div class="card text-white bg-warning">
+      <div class="card-body">
+        <div class="h1 text-muted text-right mb-4">
+          <i class="icon-basket-loaded"></i>
+        </div>
+        <div class="text-value">1238</div>
+        <small class="text-muted text-uppercase font-weight-bold">Products sold</small>
+        <div class="progress progress-white progress-xs mt-3">
+          <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0"
+            aria-valuemax="100"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-2">
+    <div class="card text-white bg-primary">
+      <div class="card-body">
+        <div class="h1 text-muted text-right mb-4">
+          <i class="icon-pie-chart"></i>
+        </div>
+        <div class="text-value">28%</div>
+        <small class="text-muted text-uppercase font-weight-bold">Returning Visitors</small>
+        <div class="progress progress-white progress-xs mt-3">
+          <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0"
+            aria-valuemax="100"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-2">
+    <div class="card text-white bg-danger">
+      <div class="card-body">
+        <div class="h1 text-muted text-right mb-4">
+          <i class="icon-speedometer"></i>
+        </div>
+        <div class="text-value">5:34:11</div>
+        <small class="text-muted text-uppercase font-weight-bold">Avg. Time</small>
+        <div class="progress progress-white progress-xs mt-3">
+          <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0"
+            aria-valuemax="100"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-2">
+    <div class="card text-white bg-info">
+      <div class="card-body">
+        <div class="h1 text-muted text-right mb-4">
+          <i class="icon-speech"></i>
+        </div>
+        <div class="text-value">972</div>
+        <small class="text-muted text-uppercase font-weight-bold">Comments</small>
+        <div class="progress progress-white progress-xs mt-3">
+          <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0"
+            aria-valuemax="100"></div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+</div>
+<!-- <div class="card" *ngIf="showTemplateDiv">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-sm-1" style="margin-top: 80px">
+        <div *ngFor="let data2 of batchModel" class="col-sm-12 border" style="height: 115px">
+          <br />
+          <h4> {{data2.Batch}}</h4>
+        </div>
+      </div>
+      <div class="col-sm-11">
+        <div class="row" style="height:80px">
+          <div *ngFor="let data1 of lectureModel" class="{{divClass}}">
+            <input name="LectureID" hidden [(ngModel)]="data1.LectureID" #LectureID="ngModel" class="form-control"
+              type="text">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                  <h6> {{data1.Lecture}}{{data1.LectureName}}</h6>
+              </div>
+              <div class="col-sm-6">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="From" autocomplete="off" name="Time_From" id="Time_From"
+                    [(ngModel)]="data1.Time_From" required type="text">
+                  
+                </mat-form-field>
+              </div>
+              <div class="col-sm-6">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="To" autocomplete="off" name="Time_To" id="Time_To"
+                    [(ngModel)]="data1.Time_To"  required type="text">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div *ngFor="let data of lectureDataModel" class="{{divClass}}">
+            <input name="BatchID" hidden id="{{data.Batch.BatchID}}" class="form-control"
+              value="{{data.Batch.BatchID}}" type="text">
+            <input name="LectureID" hidden id="{{data.Lecture.LectureID}}" class="form-control"
+              value="{{data.Lecture.LectureID}}" type="text">
+            <div class="row">
+              <div class="col-sm-11">
+                <mat-form-field class="example-full-width">
+                  <input matInput id="{{data.Subject}}" [(ngModel)]="data.Subject" placeholder="Subject"
+                    autocomplete="off" name="Subject" type="text">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-11">
+                <mat-form-field>
+                  <mat-select id="{{data.FacultyID}}" name="FacultyID" placeholder="Faculty Name"
+                    [(ngModel)]="data.FacultyID">
+                    <mat-option *ngFor="let faculty of faculty" [value]="faculty.FacultyID">
+                      {{faculty.Faculty}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <button mat-raised-button color="primary" (click)="SaveTimeTable(lectureDataModel)">save</button>
+  </div>
+</div> -->

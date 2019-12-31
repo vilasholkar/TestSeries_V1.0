@@ -114,8 +114,12 @@
               </div>
               <div class="col-sm-4">
                 <div class="form-group">
-                  <mat-form-field class="example-full-width">
-                    <input matInput placeholder="Subject">
+                  <mat-form-field>
+                    <mat-select [(ngModel)]="onlineTestModel.SubjectID" name="SubjectID" multiple placeholder="Subject">
+                      <mat-option *ngFor="let s of subject" [value]="s.SubjectID">
+                        {{s.Subject}}
+                      </mat-option>
+                    </mat-select>
                   </mat-form-field>
                 </div>
               </div>
@@ -131,14 +135,7 @@
             <div class="row">
               <div class="col-sm-4">
                 <div class="form-group">
-                  <!-- <mat-form-field class="example-full-width">
-                            <input [(ngModel)]="onlineTestModel.TestDuration" name="TestDuration" 
-                             #TestDuration="ngModel" required autocomplete="off" type="text" 
-                             matInput placeholder="Test Duration">
-                             <mat-error *ngIf="TestDuration.invalid && (TestDuration.dirty || TestDuration.touched)">
-                              <mat-error *ngIf="TestDuration.errors.required">Test Duration is required.</mat-error>
-                            </mat-error>
-                          </mat-form-field> -->
+                  
                   <mat-form-field>
                     <mat-select placeholder="Test Duration" name="TestDuration" #TestDuration="ngModel" [(ngModel)]="onlineTestModel.TestDuration"
                       required>
@@ -152,7 +149,7 @@
                   </mat-form-field>
                 </div>
               </div>
-              <div class="col-sm-4">
+              <div class="col-sm-2">
                 <div class="form-group">
                   <mat-form-field class="example-full-width">
                     <input matInput placeholder="Start Date" name="StartDate" [min]="minStartDate" [max]="maxStartDate"
@@ -167,20 +164,20 @@
                   </mat-form-field>
                 </div>
               </div>
-              <!-- <div class="col-sm-2">
+              <div class="col-sm-2">
                       <div class="form-group example-wrapper">
                           <mat-form-field class="example-full-width">
                                     <input matInput placeholder="Start Time"name="StartTime" autocomplete="off"required
                                        #StartTime="ngModel"   [(ngModel)]="onlineTestModel.StartTime"
                                           [owlDateTimeTrigger]="dt2" [owlDateTime]="dt2">
-                                    <owl-date-time [pickerType]="'timer'" #dt2></owl-date-time>
+                                    <owl-date-time [pickerType]="'timer'" [hour12Timer] = "true" #dt2></owl-date-time>
                             <mat-error *ngIf="StartTime.invalid && (StartTime.dirty || StartTime.touched)">
                               <mat-error *ngIf="StartTime.errors.required">Start Time is required.</mat-error>
                             </mat-error>
                             </mat-form-field>
                       </div>
-                    </div> -->
-              <div class="col-sm-4">
+                    </div>
+              <div class="col-sm-2">
                 <div class="form-group">
                   <mat-form-field class="example-full-width">
                     <input matInput placeholder="End Date" name="EndDate" autocomplete="off" required [min]="minEndDate"
@@ -200,19 +197,19 @@
                   </p>
                 </div>
               </div>
-              <!-- <div class="col-sm-2">
+              <div class="col-sm-2">
                             <div class="form-group example-wrapper">
                           <mat-form-field class="example-full-width">
                                     <input matInput placeholder="End Time"name="EndTime" autocomplete="off"required
                                        #EndTime="ngModel"   [(ngModel)]="onlineTestModel.EndTime"
                                           [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4">
-                                    <owl-date-time [pickerType]="'timer'" #dt4></owl-date-time>
+                                    <owl-date-time [pickerType]="'timer'" [hour12Timer] = "true" #dt4></owl-date-time>
                             <mat-error *ngIf="EndTime.invalid && (EndTime.dirty || EndTime.touched)">
                               <mat-error *ngIf="EndTime.errors.required">End Time is required.</mat-error>
                             </mat-error>
                             </mat-form-field>
                       </div>
-                    </div> -->
+                    </div>
             </div>
             <div class="row">
               <div class="col-sm-4">
@@ -372,11 +369,11 @@
             </ng-container>
             <ng-container matColumnDef="StartDate">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </th>
-              <td mat-cell *matCellDef="let element"> {{element.StartDate | date: 'dd/MM/yyyy'}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.StartDate }} </td>
             </ng-container>
             <ng-container matColumnDef="EndDate">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> End Date </th>
-              <td mat-cell *matCellDef="let element"> {{element.EndDate | date: 'dd/MM/yyyy'}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.EndDate }} </td>
             </ng-container>
             <ng-container matColumnDef="TestMarks">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Marks </th>

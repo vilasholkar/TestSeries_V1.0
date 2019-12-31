@@ -62,6 +62,15 @@ export const navItemsAdmin= [
   // },
   {
     title: true,
+    name: 'Time Table'
+  },
+  {
+    name: 'Time Table',
+    url: '/timetable/time-table',
+    icon: 'icon-pencil'
+  },
+  {
+    title: true,
     name: 'Master'
   },
   {
@@ -77,6 +86,21 @@ export const navItemsAdmin= [
   {
     name: 'SubTopic',
     url: '/master/sub-topic',
+    icon: 'icon-drop'
+  },
+  {
+    name: 'Study Material',
+    url: '/master/study-material',
+    icon: 'icon-drop'
+  },
+  {
+    name: 'Slider',
+    url: '/master/slider',
+    icon: 'icon-drop'
+  },
+  {
+    name: 'Notification',
+    url: '/master/notification',
     icon: 'icon-drop'
   }
   

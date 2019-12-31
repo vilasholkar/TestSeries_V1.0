@@ -71,6 +71,7 @@ export class LoginComponent {
         }
         else if (data.Object.UserType === 'Student') {
           sessionStorage.setItem('StudentID', data.Object.UserID);
+          sessionStorage.setItem('BatchID', data.Object.BatchID);
           this.router.navigate(['/dashboard/student-dashboard']);
         }
 

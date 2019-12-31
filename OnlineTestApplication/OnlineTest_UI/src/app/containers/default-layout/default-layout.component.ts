@@ -71,6 +71,7 @@ export class DefaultLayoutComponent {
       sessionStorage.removeItem('StudentID');
       sessionStorage.removeItem('PhotoUrl');
       sessionStorage.removeItem('IsTestStarted');
+      sessionStorage.removeItem('BatchID');
 
       this.router.navigate(['/login']);
     }

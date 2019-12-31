@@ -108,6 +108,12 @@ export class Student {
     School: any;
     PhotoUrl: any;
     Medium: any;
+    DeviceToken: any;
+
+    Session:any;
+    Stream:any;
+    Course:any;
+    Batch:any;
 
     constructor(data: any) {
         data = data || {};
@@ -137,5 +143,10 @@ export class Student {
         this.School = data.School;
         this.PhotoUrl = data.PhotoUrl;
         this.Medium = data.Medium;
+        this.DeviceToken = data.DeviceToken;
+        this.Session=data.Session;
+        this.Stream=data.Stream;
+        this.Course=data.Course;
+        this.Batch=data.Batch;
     }
 }

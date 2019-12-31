@@ -40,11 +40,38 @@ export class APIUrl {
     public static ChangePassword = 'api/ChangePassword';
     public static ForgetPassword = 'api/ForgetPassword';
     public static GetTopic = 'api/GetTopic';
+    public static GetTopicByID = 'api/GetTopicByID';
     public static AddUpdateTopic = 'api/AddUpdateTopic';
     public static DeleteTopic = 'api/DeleteTopic';
     public static GetSubTopic = 'api/GetSubTopic';
     public static AddUpdateSubTopic = 'api/AddUpdateSubTopic';
     public static DeleteSubTopic = 'api/DeleteSubTopic';
+
+    public static GetTopicBySubject = 'api/GetTopicBySubject1';
+    public static GetSubTopicByTopic = 'api/GetSubTopicByTopic1';
+    public static AddUpdateStudyMaterial = 'api/AddUpdateStudyMaterial';
+    public static GETStudyMaterial = 'api/GetStudyMaterial';
+    public static GetStudyMaterialByID = 'api/GetStudyMaterialByID';
+    public static DeleteStudyMaterial = 'api/DeleteStudyMaterial';
+
+    public static AddUpdateSlider = 'api/AddUpdateSlider';
+    public static GETSlider = 'api/GetSlider';
+    public static GetSlider = 'api/GetSlider';
+    public static DeleteSlider = 'api/DeleteSlider';
+
+    public static AddUpdateTimeTable = 'api/AddUpdateTimeTable';
+    public static GetTimeTable = 'api/GetTimeTable';
+    public static GetTimeTableByDate = 'api/GetTimeTableByDate';
+    public static DownloadFile = 'api/DownloadFile';
+    public static UploadFile = 'api/UploadFile';
+    public static UploadSliderImage = 'api/UploadSliderImage';
+    
+    
+    public static GetFilteredStudent = 'api/GetFilteredStudent';
+    public static GetNotification = 'api/GetNotification';
+    public static AddUpdateNotification = 'api/AddUpdateNotification';
+    
+
     public static PhotoBaseURL="http://aayamcareerinstitute.co.in";
     public static QuestionImageBaseURL="http://test.aayamcareerinstitute.co.in/Uploads/";
 }

@@ -17,7 +17,7 @@ export class ViewResultComponent implements OnInit {
   PaginationConfig: any;
   @Input() StudentID: any;
   //Element For Material
-  displayedColumns: string[] = ['TestName', 'TotalAttempt', 'TotalCorrect', 'TotalWrong', 'TotalMarks', 'TotalMarksObtained', 'Percentage',
+  displayedColumns: string[] = ['Rank','TestName', 'TotalAttempt', 'TotalCorrect', 'TotalWrong', 'TotalMarks', 'TotalMarksObtained', 'Percentage',
     'Physics_Right', 'Physics_Wrong', 'Chemistry_Right', 'Chemistry_Wrong', 'Biology_Right', 'Biology_Wrong', 'button', 'button1'];
   dataSource: any = [];
   selection = new SelectionModel<OT_Result>(true, []);
@@ -63,12 +63,12 @@ export class ViewResultComponent implements OnInit {
         if (res.Message === 'Success') {
           if (res.Object.length > 0) {
             if (this.TestTypeName === 'NEET') {
-              this.displayedColumns = ['TestName', 'TotalAttempt', 'TotalCorrect', 'TotalWrong', 'TotalMarks', 'TotalMarksObtained', 'Percentage',
+              this.displayedColumns = ['Rank','TestName', 'TotalAttempt', 'TotalCorrect', 'TotalWrong', 'TotalMarks', 'TotalMarksObtained', 'Percentage',
                 'Physics_Right', 'Physics_Wrong', 'Chemistry_Right', 'Chemistry_Wrong', 'Biology_Right', 'Biology_Wrong', 'button', 'button1'];
               res.Object = res.Object.filter(f => f.TestTypeName == this.TestTypeName)
             }
             else if (this.TestTypeName === 'AIIMS') {
-              this.displayedColumns = ['TestName', 'TotalAttempt', 'TotalCorrect', 'TotalWrong', 'TotalMarks', 'TotalMarksObtained', 'Percentage',
+              this.displayedColumns = ['Rank','TestName', 'TotalAttempt', 'TotalCorrect', 'TotalWrong', 'TotalMarks', 'TotalMarksObtained', 'Percentage',
                 'Physics_Right', 'Physics_Wrong', 'Chemistry_Right', 'Chemistry_Wrong', 'Biology_Right', 'Biology_Wrong', 'Aptitude_Right', 'Aptitude_Wrong', 'button', 'button1'];
               res.Object = res.Object.filter(f => f.TestTypeName == this.TestTypeName)
             }

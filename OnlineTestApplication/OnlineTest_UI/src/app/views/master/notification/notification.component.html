@@ -1,0 +1,162 @@
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="#fff" type="ball-spin-clockwise-fade">
+  <p style="padding-top:5px; font-size: 15px; color: black">Please Wait...</p>
+</ngx-spinner>
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h5>Filter Students</h5>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="form-group">
+          <mat-form-field>
+            <mat-select [(ngModel)]="filterModel.SessionID" name="SessionID" #SessionID="ngModel" placeholder="Session">
+              <mat-option *ngFor="let sessions of session" [value]="sessions.SessionID">
+                {{sessions.Session}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <mat-form-field>
+            <mat-select [(ngModel)]="filterModel.StreamID" name="StreamID" (ngModelChange)="onChangeStream($event)"
+              [ngModelOptions]="{standalone: true}" #StreamID="ngModel" placeholder="Stream" multiple>
+              <mat-option *ngFor="let stream of stream" [value]="stream.StreamID">
+                {{stream.Stream}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <mat-form-field>
+            <mat-select [(ngModel)]="filterModel.CourseID" name="CourseID" (ngModelChange)="onChangeCourse($event)"
+              [ngModelOptions]="{standalone: true}" multiple placeholder="Course">
+              <mat-option *ngFor="let course of course" [value]="course.CourseID">
+                {{course.Course}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <mat-form-field>
+            <mat-select [(ngModel)]="filterModel.BatchID" name="Batch" #Batch="ngModel" placeholder="Batch" multiple>
+              <mat-option *ngFor="let b of batch" [value]="b.BatchID">
+                {{b.Batch}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div class="row text-right">
+      <div class="col-sm-12">
+        <button mat-raised-button color="primary" (click)="getStudentData()">Filter </button>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
+<br />
+
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-9">
+      <h4>Student List</h4>
+    </div>
+    <div class="col-sm-3">
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+      </mat-form-field>
+    </div>
+    <div class="col-sm-12">
+      <div class="mat-elevation-z8">
+        <perfect-scrollbar style="position: relative;width: 100%;overflow: auto;">
+          <table mat-table [dataSource]="dataSource" matSort>
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="select">
+              <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? masterToggle() : null"
+                  [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                </mat-checkbox>
+              </th>
+              <td mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                  [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+                </mat-checkbox>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="EnrollmentNo">
+              <th mat-header-cell *matHeaderCellDef> EnrollmentNo </th>
+              <td mat-cell *matCellDef="let element"> {{element.EnrollmentNo}} </td>
+            </ng-container>
+            <ng-container matColumnDef="StudentName">
+              <th mat-header-cell *matHeaderCellDef> StudentName </th>
+              <td mat-cell *matCellDef="let element"> {{element.FirstName}} {{element.LastName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Stream">
+              <th mat-header-cell *matHeaderCellDef> Stream </th>
+              <td mat-cell *matCellDef="let element"> {{element.Stream}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Course">
+              <th mat-header-cell *matHeaderCellDef> Course </th>
+              <td mat-cell *matCellDef="let element"> {{element.Course}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Batch">
+              <th mat-header-cell *matHeaderCellDef> Batch </th>
+              <td mat-cell *matCellDef="let element"> {{element.Batch}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+            </tr>
+          </table>
+        </perfect-scrollbar>
+        <div class="no-results" *ngIf="IsEmpty">
+          No results
+        </div>
+        <mat-paginator [pageSizeOptions]="PaginationConfig" showFirstLastButtons></mat-paginator>
+      </div>
+    </div>
+  </div>
+  <br>
+
+  <form id="dataForm" name="Form" (ngSubmit)="addSlider()" #dataForm="ngForm">
+    <div class="row">
+      <div class="col-sm-4">
+        <mat-form-field>
+          <input matInput name="Title" #Title="ngModel" [(ngModel)]="dataModel.Title" placeholder="Title" required>
+          <mat-error *ngIf="Title.invalid && (Title.dirty || Title.touched)">
+            <mat-error *ngIf="Title.errors.required">Title is required.</mat-error>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-8">
+        <mat-form-field>
+          <textarea  matInput name="Description" #Description="ngModel" [(ngModel)]="dataModel.Description"
+            placeholder="Description" required></textarea>
+            <mat-error *ngIf="Description.invalid && (Description.dirty || Description.touched)">
+              <mat-error *ngIf="Description.errors.required">Description is required.</mat-error>
+            </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+      <button mat-raised-button color="primary" [disabled]="!dataForm.form.valid || !this.selection.selected.length > 0"
+        (click)="sendNotification()" style="outline: 0px;">
+        <mat-icon aria-label="Example icon-button with a heart icon">send</mat-icon>
+        Send
+      </button>
+    </div>
+  </div>
+  </form>
+</div>

@@ -12,6 +12,7 @@ import {StudentOnlineTestService} from '../../services/student/student-online-te
 import { StudentRoutingModule } from './student-routing.module';
 import { ViewOnlineTestComponent } from './view-online-test/view-online-test.component';
 import { ViewResultComponent } from './view-result/view-result.component';
+import { ViewTimeTableComponent } from './view-time-table/view-time-table.component';
 
 @NgModule({
     imports: [
@@ -24,7 +25,8 @@ import { ViewResultComponent } from './view-result/view-result.component';
     ],
     declarations: [
         ViewOnlineTestComponent,
-        ViewResultComponent
+        ViewResultComponent,
+        ViewTimeTableComponent
     ],
     exports:[ViewResultComponent],
     providers: [HttpClientModule,StudentOnlineTestService]

@@ -2,19 +2,23 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { OnlineTestService } from '../../../services/admin/online-test.service';
 import { TestSeriesService } from '../../../services/admin/test-series.service';
 import { TestTypeService } from '../../../services/admin/test-type.service';
-import { Stream, Course, Batch, TestType, Session } from '../../../models/master';
+import { Stream, Course, Batch, TestType, Session, Subject } from '../../../models/master';
 import { OnlineTest, TestSeries } from '../../../models/test';
-import { MatSnackBar, DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from "@angular/material";
+import {DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from "@angular/material";
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { HelperService } from '../../../services/helper.service';
 import { APIUrl } from "../../../shared/API-end-points";
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
-import * as moment from 'moment';
+import * as _moment from 'moment';
+
+import { DateTimeAdapter, OWL_DATE_TIME_FORMATS, OWL_DATE_TIME_LOCALE } from 'ng-pick-datetime';
+import { MomentDateTimeAdapter, OWL_MOMENT_DATE_TIME_FORMATS } from 'ng-pick-datetime-moment';
+const moment = (_moment as any).default ? (_moment as any).default : _moment;
 
 export const MY_FORMATS = {
   parse: {
-    dateInput: 'LL',
+    dateInput: 'DD/MM/YYYY',
   },
   display: {
     dateInput: 'DD/MM/YYYY',
@@ -33,8 +37,10 @@ export const MY_FORMATS = {
     // application's root module. We provide it at the component level here, due to limitations of
     // our example generation script.
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
-
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+    
+    {provide: DateTimeAdapter, useClass: MomentDateTimeAdapter, deps: [OWL_DATE_TIME_LOCALE]},
+    {provide: OWL_DATE_TIME_FORMATS, useValue: OWL_MOMENT_DATE_TIME_FORMATS},
   ],
 })
 
@@ -45,6 +51,7 @@ export class OnlineTestComponent implements OnInit {
   stream: Stream;
   course: Course;
   batch: Batch;
+  subject: Subject;
   testSeries: TestSeries;
   testType: TestType;
   session: Session;
@@ -53,13 +60,15 @@ export class OnlineTestComponent implements OnInit {
   dropdownSettings = {};
   Title: any;
   public minStartDate = new Date();
-  public maxStartDate = new Date(2020, 3, 25);
+  public maxStartDate = new Date(2030, 3, 25);
   public minEndDate = moment();
-  public maxEndDate = new Date(2020, 3, 25);
+  public maxEndDate = new Date(2030, 3, 25);
   dataSource: any = [];
   displayedColumns = ['TestNo', 'TestName', 'TestSeries', 'TestType', 'Duration', 'StartDate', 'EndDate', 'TestMarks', 'ViewQuestion', 'EligibleStudent', 'Edit', 'Delete'];
   testDuration = [
+    { TestDuration: '900', TestDurationText: '15min' },
     { TestDuration: '1800', TestDurationText: '30min' },
+    { TestDuration: '2700', TestDurationText: '45min' },
     { TestDuration: '3600', TestDurationText: '60min' },
     { TestDuration: '5400', TestDurationText: '90min' },
     { TestDuration: '7200', TestDurationText: '120min' },
@@ -72,7 +81,7 @@ export class OnlineTestComponent implements OnInit {
   PaginationConfig: any;
 
   constructor(private onlineTestService: OnlineTestService, private testTypeService: TestTypeService,
-    private testSeriesService: TestSeriesService, public snackBar: MatSnackBar, private helperSvc: HelperService) { }
+    private testSeriesService: TestSeriesService, private helperSvc: HelperService) { }
 
   ngOnInit() {
     debugger;
@@ -105,6 +114,7 @@ export class OnlineTestComponent implements OnInit {
         this.testType = data.Object.TestType;
         this.testSeries = data.Object.TestSeries;
         this.session = data.Object.Session;
+        this.subject = data.Object.Subject;
       }, error => {
         alert('error');
       })
@@ -154,6 +164,7 @@ export class OnlineTestComponent implements OnInit {
       })
   }
   onChangeStream(streamId) {
+    debugger
     this.onlineTestService.getCourseByStream(streamId)
       .subscribe(data => {
         if (data.Message === 'Success')
@@ -189,8 +200,10 @@ export class OnlineTestComponent implements OnInit {
   addOnlineTest() {
     debugger;
     //this.onlineTest = this.onlineTestModel;
-    // this.onlineTestModel.StartDate=moment(this.onlineTestModel.StartDate).format("DD/MM/YYYY");
-    // this.onlineTestModel.EndDate=moment(this.onlineTestModel.EndDate).format("DD/MM/YYYY");
+    this.onlineTestModel.StartDate=moment(this.onlineTestModel.StartDate).format("DD/MM/YYYY");
+    this.onlineTestModel.EndDate=moment(this.onlineTestModel.EndDate).format("DD/MM/YYYY");
+    this.onlineTestModel.StartTime=moment(this.onlineTestModel.StartTime).utcOffset("+05:30").format("hh:mm a");
+    this.onlineTestModel.EndTime=moment(this.onlineTestModel.EndTime).utcOffset("+05:30").format("hh:mm a");
     this.onlineTestService.addUpdateOnlineTest(this.onlineTestModel)
       .subscribe(data => {
         if (data === 'Success') {
@@ -210,7 +223,8 @@ export class OnlineTestComponent implements OnInit {
     //this.onlineTest = model;
     debugger;
     if (confirm("Are you sure to delete " + OnlineTestModel.TestName)) {
-      this.onlineTestService.deleteOnlineTest(OnlineTestModel.OnlineTestID)
+    //  this.onlineTestService.deleteOnlineTest(OnlineTestModel.OnlineTestID)
+      this.helperSvc.postService(APIUrl.DeleteOnlineTest,OnlineTestModel.OnlineTestID)
         .subscribe(data => {
           if (data === 'Success') {
             this.getOnlineTest();
@@ -219,8 +233,11 @@ export class OnlineTestComponent implements OnInit {
             this.helperSvc.notifySuccess('Record Deleted Successfully.');
             //this.isTestTypeReadonly = true;
           }
+          else{
+            this.helperSvc.notifyError(data);
+          }
         }, error => {
-          this.helperSvc.errorHandler("Error : "+error);
+          this.helperSvc.errorHandler(error);
           console.log(error);
         });
     }
@@ -239,8 +256,13 @@ export class OnlineTestComponent implements OnInit {
           this.testSeries = data.Object.MasterData.TestSeries;
           this.session = data.Object.MasterData.Session;
           this.onlineTestModel = data.Object.OnlineTestData;
+          this.onlineTestModel.StartDate=moment(data.Object.OnlineTestData.StartDate,"DD/MM/YYYY");
+          this.onlineTestModel.EndDate=moment(data.Object.OnlineTestData.EndDate,"DD/MM/YYYY");
+          this.onlineTestModel.StartTime=moment(data.Object.OnlineTestData.StartTime,"hh:mm a");
+          this.onlineTestModel.EndTime=moment(data.Object.OnlineTestData.EndTime,"hh:mm a");
           this.course = data.Object.OnlineTestData.Course;
           this.batch = data.Object.OnlineTestData.Batch;
+          this.subject = data.Object.OnlineTestData.Subject;
         }
       }, error => {
         this.helperSvc.errorHandler(error);

@@ -21,6 +21,11 @@ export const navItemsStudent = [
     url: '/student/view-result',
     icon: 'icon-pie-chart'
   },
+  {
+    name: 'View TimeTable',
+    url: '/student/view-time-table',
+    icon: 'icon-pie-chart'
+  },
   // {
   //   title: true,
   //   name: 'Test'

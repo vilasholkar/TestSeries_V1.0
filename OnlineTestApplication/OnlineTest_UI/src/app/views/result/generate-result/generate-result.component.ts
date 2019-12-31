@@ -12,7 +12,7 @@ export class GenerateResultComponent implements OnInit {
   IsEmpty: boolean = false;
   PaginationConfig: any;
   data: OnlineTest[];
-  displayedColumns: string[] = ['OnlineTestNo', 'TestName', 'TestSeriesName', 'TestTypeName', 'TestDuration', 'StartDate', 'EndDate', 'TestMarks', 'button'];
+  displayedColumns: string[] = ['OnlineTestNo', 'TestName', 'TestSeriesName', 'TestTypeName', 'TestDuration', 'StartDate', 'StartTime', 'EndDate', 'EndTime', 'TestMarks', 'button'];
   dataSource: any = [];
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChild('sort') sort: MatSort;

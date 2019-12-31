@@ -22,6 +22,65 @@
               <div class="row">
                 <div class="col-sm-4">
                   <div class="form-group">
+                    <mat-form-field>
+                      <mat-select [(ngModel)]="topicModel.SessionID" name="SessionID" #SessionID="ngModel" 
+                        placeholder="Session" required>
+                        <mat-option *ngFor="let session of sessionModel" [value]="session.SessionID">
+                          {{session.Session}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="SessionID.invalid && (SessionID.dirty || SessionID.touched)">
+                        <mat-error *ngIf="SessionID.errors.required">Session is required.</mat-error>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <mat-form-field>
+                      <mat-select [(ngModel)]="topicModel.StreamID" name="StreamID"
+                        (ngModelChange)="onChangeStream($event)" [ngModelOptions]="{standalone: true}" #StreamID="ngModel"
+                        placeholder="Stream" multiple required>
+                        <mat-option *ngFor="let stream of streamModel" [value]="stream.StreamID">
+                          {{stream.Stream}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="StreamID.invalid && (StreamID.dirty || StreamID.touched)">
+                        <mat-error *ngIf="StreamID.errors.required">Stream is required.</mat-error>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <mat-form-field>
+                      <mat-select [(ngModel)]="topicModel.CourseID" name="CourseID"
+                        (ngModelChange)="onChangeCourse($event)" [ngModelOptions]="{standalone: true}" multiple
+                        placeholder="Course">
+                        <mat-option *ngFor="let course of courseModel" [value]="course.CourseID">
+                          {{course.Course}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <!-- <div class="col-sm-4">
+                    <div class="form-group">
+                      <mat-form-field>
+                        <mat-select [(ngModel)]="topicModel.BatchID" name="BatchID"
+                          (ngModelChange)="onChangeBatch($event)" [ngModelOptions]="{standalone: true}" multiple
+                          placeholder="Batch">
+                          <mat-option *ngFor="let batch of batchModel" [value]="batch.BatchID">
+                            {{batch.Batch}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div> -->
+              </div>
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="form-group">
                     <mat-form-field class="example-full-width">
                       <input matInput placeholder="Topic" autocomplete="off" name="Topic"
                         [(ngModel)]="topicModel.Topic" #Topic="ngModel" required minlength="3" maxlength="20"
@@ -98,10 +157,10 @@
             <ng-container matColumnDef="button">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Edit </th>
               <td mat-cell *matCellDef="let element">
-                <button mat-icon-button color="primary" (click)="getTopicByID(element)" aria-hidden="true"  style="outline: 0px;">
+                <button mat-icon-button color="primary" (click)="getTopicByID(element.TopicID)" aria-hidden="true"  style="outline: 0px;">
                   <mat-icon aria-label="icon">edit</mat-icon>
                 </button>
-                <button mat-icon-button color="primary" (click)="DeleteTopic(element)" aria-hidden="true"  style="outline: 0px;">
+                <button mat-icon-button color="warn" (click)="DeleteTopic(element)" aria-hidden="true"  style="outline: 0px;">
                   <mat-icon aria-label="icon">delete</mat-icon>
                 </button>
               </td>

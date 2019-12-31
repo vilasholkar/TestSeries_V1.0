@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, TemplateRef, ElementRef, Input } from '@angular/core';
-import { Topic,Subject } from '../../../models/master';
+import { Topic,Subject, Session, Stream, Course, Batch } from '../../../models/master';
 import { MatPaginator, MatSort, MatTableDataSource, MatDialog } from '@angular/material';
 import { HelperService } from '../../../services/helper.service'
 import { APIUrl } from "../../../shared/API-end-points";
@@ -18,6 +18,10 @@ export class TopicComponent implements OnInit {
   topic: Topic;
   topicModel: any={} ;
   subjectModel: Subject;
+  sessionModel: Session;
+  streamModel: Stream;
+  courseModel: Course;
+  batchModel: Batch;
   rootNode: any;
   isTopicReadonly: any = true;
   displayedColumns: string[] = ['Topic','Subject','Visible', 'button'];
@@ -31,7 +35,7 @@ export class TopicComponent implements OnInit {
   ngOnInit() {
     this.PaginationConfig = this.helperSvc.PaginationConfig;
     this.getTopic();
-    this.getSubject();
+    this.getMasterData();
    
   }
   changeShowStatus() {
@@ -59,13 +63,31 @@ export class TopicComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
     !this.dataSource.filteredData.length ? this.IsEmpty = true : this.IsEmpty = false;
   }
-  getTopicByID(model: Topic) {
+  // getTopicByID(model: Topic) {
+  //   debugger;
+  //   this.btnAddNew=false;
+  //   this.showAddDiv = true;
+  //   this.Title = "Edit Topic";
+  //   this.topicModel = model;
+  // }
+  getTopicByID(TopicID) {
+    debugger;
     this.btnAddNew=false;
     this.showAddDiv = true;
-    this.Title = "Edit Topic";
-    this.topicModel = model;
+    this.Title = "Edit Test";
+    this.helperSvc.getService(APIUrl.GetTopicByID+"?TopicID="+TopicID)
+      .subscribe(data => {
+        if (data.Message === 'Success') {
+          this.streamModel = data.Object.MasterData.Stream;
+          this.sessionModel = data.Object.MasterData.Session;
+          this.topicModel = data.Object.TopicData;
+          this.courseModel = data.Object.TopicData.Course;
+          this.batchModel = data.Object.TopicData.Batch;
+        }
+      }, error => {
+        this.helperSvc.errorHandler(error);
+      });
   }
- 
   AddTopic() {
    // this.topic = this.topicModel;
     //  this.topicService.addUpdateTopics(this.topic)
@@ -106,13 +128,33 @@ export class TopicComponent implements OnInit {
 
     }
   }
-
-  getSubject() {
+  onChangeStream(streamId) {
+    debugger
+    this.helperSvc.postService_WithoutSpinner(APIUrl.GET_CourseByStream, streamId)
+      .subscribe(data => {
+        if (data.Message === 'Success')
+          this.courseModel = data.Object;
+      }, error => {
+        alert('error');
+      })
+  }
+  onChangeCourse(courseId) {
+    this.helperSvc.postService_WithoutSpinner(APIUrl.GET_BatchByCourse,courseId)
+      .subscribe(data => {
+        if (data.Message === 'Success')
+          this.batchModel = data.Object;
+      }, error => {
+        alert('error');
+      })
+  }
+  getMasterData() {
     debugger;
     this.helperSvc.getService(APIUrl.GetMasterData)
       .subscribe(data => {
         if (data.Message === 'Success') {
           this.subjectModel = data.Object.Subject;
+          this.sessionModel = data.Object.Session;
+          this.streamModel = data.Object.Stream;
         }
       }, error => {
         alert('error');

@@ -25,16 +25,15 @@ export class ViewOnlineTestComponent implements OnInit {
   studentOnlineTestModel: any = {};
   PaginationConfig: any;
   //Element For Material
-  displayedColumns: string[] = ['OnlineTestNo', 'TestName', 'TestSeriesName', 'TestTypeName', 'TestDuration', 'StartDate', 'EndDate', 'TestMarks', 'button'];
-  displayedColumns1: string[] = ['OnlineTestNo', 'TestName', 'TestSeriesName', 'TestTypeName', 'TestDuration', 'StartDate', 'EndDate', 'TestMarks','TestStatus'];
+  displayedColumns: string[] = ['OnlineTestNo', 'TestName', 'TestSeriesName', 'TestTypeName', 'TestDuration', 'StartDate', 'StartTime', 'EndDate', 'EndTime', 'TestMarks', 'button'];
+  displayedColumns1: string[] = ['OnlineTestNo', 'TestName', 'TestSeriesName', 'TestTypeName', 'TestDuration', 'StartDate', 'StartTime', 'EndDate', 'EndTime', 'TestMarks', 'TestStatus'];
   dataSource: any = [];
   dataSource1: any = [];
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChild('sort') sort: MatSort;
   @ViewChild('paginator1') paginator1: MatPaginator;
   @ViewChild('sort1') sort1: MatSort;
-  constructor(private studentOnlineTestService: StudentOnlineTestService,
-    private helperSvc: HelperService,
+  constructor(private helperSvc: HelperService,
     private router: Router,
     private spinner: NgxSpinnerService
   ) { }
@@ -69,7 +68,21 @@ export class ViewOnlineTestComponent implements OnInit {
       .subscribe(res => {
         if (res.Message === 'Success') {
           //For Active Test
-          this.dataSource = new MatTableDataSource(res.Object.filter(f => f.TestStatusID == 1 && moment(f.StartDate) <= moment() && moment(f.EndDate).add(1,'days') >= moment()) as StudentOnlineTest[]);
+          // let start = moment(res.Object[1].StartDate + ' ' + res.Object[1].StartTime,"DD/MM/YYYY HH:mm a");
+          // let end = moment(res.Object[1].EndDate + ' ' + res.Object[1].EndTime,"DD/MM/YYYY HH:mm a");
+          // console.log(moment());
+          // console.log(moment().isBetween(start, end));
+          this.dataSource = new MatTableDataSource(res.Object.filter(f => f.TestStatusID == 1
+            && moment().isBetween(moment(f.StartDate + ' ' + f.StartTime,"DD/MM/YYYY HH:mm a"), moment(f.EndDate + ' ' + f.EndTime,"DD/MM/YYYY HH:mm a"))
+          ) as StudentOnlineTest[]);
+          //console.log(moment(res.Object[1].StartTime,"hh:mm a").format("HH:mm") <= moment().format("HH:mm"));
+          // this.dataSource = new MatTableDataSource(res.Object.filter(f => f.TestStatusID == 1
+          //    && moment(f.StartDate).format("DD/MM/YYYY") <= moment().format("DD/MM/YYYY") 
+          //   && moment(f.StartTime,"hh:mm a").format("HH:mm")<=moment().format("HH:mm")
+          //  //  && moment(f.EndDate).format("DD/MM/YYYY") >= moment().format("DD/MM/YYYY")
+          //   //&& moment(f.EndTime).format("hh:mm a")>=moment().format("hh:mm a")
+          //   // && moment(f.EndDate).add(1,'days') >= moment()
+          // ) as StudentOnlineTest[]);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
           !this.dataSource.filteredData.length ? this.IsEmpty = true : this.IsEmpty = false;

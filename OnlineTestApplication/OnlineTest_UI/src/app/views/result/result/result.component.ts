@@ -80,18 +80,20 @@ export class ResultComponent implements OnInit {
   getStudentDetails() {
     this.helperSvc.getService(APIUrl.GetStudentDetails)
       .subscribe(data => {
-        if (data.Message === 'Success')
+        if (data.Message === 'Success') {
           data.Object.forEach(element => {
             this.studentOptions.push(element);
           });
-        this.filteredStudentOptions = this.studentList.valueChanges
-          .pipe(
-            startWith<string | Student>(''),
-            debounceTime(200),
-            distinctUntilChanged(),
-            map(value => typeof value === 'string' ? value : value.FirstName),
-            map(name => name ? this._filterstudentList(name) : this.studentOptions.slice())
-          );
+          this.filteredStudentOptions = this.studentList.valueChanges
+            .pipe(
+              startWith<string | Student>(''),
+              debounceTime(200),
+              distinctUntilChanged(),
+              map(value => typeof value === 'string' ? value : value.FirstName),
+              map(name => name ? this._filterstudentList(name) : this.studentOptions.slice())
+            );
+
+        }
       }, error => {
         alert('error' + error.Message);
       })

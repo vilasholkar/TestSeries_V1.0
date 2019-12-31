@@ -42,11 +42,19 @@
             </ng-container>
             <ng-container matColumnDef="StartDate">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> StartDate </th>
-              <td mat-cell *matCellDef="let element"> {{element.StartDate| date: 'dd/MM/yyyy'}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.StartDate}} </td>
+            </ng-container>
+            <ng-container matColumnDef="StartTime">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> StartTime </th>
+              <td mat-cell *matCellDef="let element"> {{element.StartTime}} </td>
             </ng-container>
             <ng-container matColumnDef="EndDate">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> EndDate </th>
-              <td mat-cell *matCellDef="let element"> {{element.EndDate| date: 'dd/MM/yyyy'}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.EndDate}} </td>
+            </ng-container>
+            <ng-container matColumnDef="EndTime">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> EndTime </th>
+              <td mat-cell *matCellDef="let element"> {{element.EndTime}} </td>
             </ng-container>
             <ng-container matColumnDef="TestMarks">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Marks </th>
@@ -111,11 +119,19 @@
             </ng-container>
             <ng-container matColumnDef="StartDate">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> StartDate </th>
-              <td mat-cell *matCellDef="let element"> {{element.StartDate| date: 'dd/MM/yyyy'}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.StartDate}} </td>
+            </ng-container>
+            <ng-container matColumnDef="StartTime">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> StartTime </th>
+              <td mat-cell *matCellDef="let element"> {{element.StartTime}} </td>
             </ng-container>
             <ng-container matColumnDef="EndDate">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> EndDate </th>
-              <td mat-cell *matCellDef="let element"> {{element.EndDate| date: 'dd/MM/yyyy'}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.EndDate}} </td>
+            </ng-container>
+            <ng-container matColumnDef="EndTime">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> EndTime </th>
+              <td mat-cell *matCellDef="let element"> {{element.EndTime}} </td>
             </ng-container>
             <ng-container matColumnDef="TestMarks">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Test Marks </th>

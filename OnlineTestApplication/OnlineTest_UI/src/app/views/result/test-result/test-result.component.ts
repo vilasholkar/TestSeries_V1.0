@@ -15,7 +15,7 @@ export class TestResultComponent implements OnInit {
   IsEmpty: boolean = false;
   PaginationConfig: any;
   @Input() OnlineTestID: any;
-  displayedColumns: string[] = ['StudentName',
+  displayedColumns: string[] = ['Rank','StudentName',
     'TotalAttempt', 'TotalCorrect', 'TotalWrong', 'TotalMarks', 'TotalMarksObtained', 'Percentage',
     'Physics_Right', 'Physics_Wrong', 'Chemistry_Right', 'Chemistry_Wrong', 'Biology_Right', 'Biology_Wrong','button', 'button1'];
   dataSource: any = [];
@@ -48,12 +48,12 @@ export class TestResultComponent implements OnInit {
         if (res.Message === 'Success') {
           if (res.Object.length > 0) {
             if (res.Object[0].TestTypeName === 'NEET') {
-              this.displayedColumns=['StudentName',
+              this.displayedColumns=['Rank','StudentName',
               'TotalAttempt', 'TotalCorrect', 'TotalWrong', 'TotalMarks', 'TotalMarksObtained', 'Percentage',
               'Physics_Right', 'Physics_Wrong', 'Chemistry_Right', 'Chemistry_Wrong', 'Biology_Right', 'Biology_Wrong','button', 'button1'];
             }
            else if (res.Object[0].TestTypeName === 'AIIMS') {
-              this.displayedColumns=['StudentName','TotalAttempt', 'TotalCorrect', 'TotalWrong', 'TotalMarks', 'TotalMarksObtained', 'Percentage',
+              this.displayedColumns=['Rank','StudentName','TotalAttempt', 'TotalCorrect', 'TotalWrong', 'TotalMarks', 'TotalMarksObtained', 'Percentage',
               'Physics_Right', 'Physics_Wrong', 'Chemistry_Right', 'Chemistry_Wrong', 'Biology_Right', 'Biology_Wrong','Aptitude_Right', 'Aptitude_Wrong','button', 'button1'];
             }
           }
